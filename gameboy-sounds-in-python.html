@@ -1762,19 +1762,16 @@ jQuery(document).ready(function($) {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So how does a Game Boy console produce sounds?</p>
 <p>It's difficult to find some easily understandable information on the subject, so I did a little bit of googling. It turns out (according to <a href="http://fms.komkon.org/GameBoy/Tech/Software.html">this link</a>) that a Game Boy originally had</p>
-<blockquote>
-<p>two sound channels connected to the output terminals SO1 and SO2</p>
+<blockquote><p>two sound channels connected to the output terminals SO1 and SO2</p>
 </blockquote>
 <p>I'm assuming those two channels are the left and right channels.</p>
 <p>Also, a Game Boy could play</p>
-<blockquote>
-<p>Quadrangular wave patterns with sweep and envelope functions, quadrangular wave patterns with envelope functions, voluntary wave pattern, white noise</p>
-</blockquote>
-<blockquote>
+<blockquote><p>Quadrangular wave patterns with sweep and envelope functions, quadrangular wave patterns with envelope functions, voluntary wave pattern, white noise</p>
 <p>These four sounds can be controlled independantly and then mixed separately for each of the output terminals.</p>
 </blockquote>
-<p>While searching for &quot;quadrangular wave pattern&quot; term, I found <a href="http://sebastianmihai.com/downloads/burlygb/gbsound3.pdf">this link</a>. And also <a href="http://www.emulatronia.com/doctec/consolas/gameboy/gameboy.txt">this one, which goes into the more detailed aspects of the Game Boy microprocessor</a>.</p>
-<p>Long story short, &quot;quadrangular wave patterns&quot; are <a href="http://en.wikipedia.org/wiki/Square_wave">square waves</a>! So let's get to work and make some sounds with that information.</p>
+<p>While searching for "quadrangular wave pattern" term, I found <a href="http://sebastianmihai.com/downloads/burlygb/gbsound3.pdf">this link</a>. And also <a href="http://www.emulatronia.com/doctec/consolas/gameboy/gameboy.txt">this one, which goes into the more detailed aspects of the Game Boy microprocessor</a>.</p>
+<p>Long story short, "quadrangular wave patterns" are <a href="http://en.wikipedia.org/wiki/Square_wave">square waves</a>! So let's get to work and make some sounds with that information.</p>
+
 </div>
 </div>
 </div>
@@ -1786,8 +1783,9 @@ jQuery(document).ready(function($) {
 <p>In this post, we're gonna do the following:</p>
 <ul>
 <li>first, we investigate the unit sounds the Game Boy is capable of producing</li>
-<li>we then move on to applying what we have learned to the synthesis of simple melodies, using the well-known &quot;Nokia composer&quot; format as our input</li>
+<li>we then move on to applying what we have learned to the synthesis of simple melodies, using the well-known "Nokia composer" format as our input</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -1800,13 +1798,13 @@ jQuery(document).ready(function($) {
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's import the tools we're going to use.</p>
+
 </div>
 </div>
 </div>
@@ -1815,8 +1813,8 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
-<span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
 </pre></div>
 
 </div>
@@ -1829,7 +1827,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Audio</span> <span class="c"># awesome IPython tool to embed audio directly in the notebook</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Audio</span> <span class="c"># awesome IPython tool to embed audio directly in the notebook</span>
 </pre></div>
 
 </div>
@@ -1842,7 +1840,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">square</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">square</span>
 </pre></div>
 
 </div>
@@ -1856,6 +1854,7 @@ jQuery(document).ready(function($) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Basically, a Game Boy sound is a square wave. Let's plot this sort of pattern.</p>
+
 </div>
 </div>
 </div>
@@ -1864,7 +1863,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">t</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">10000.</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">10000.</span><span class="p">)</span>
 <span class="n">t</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
@@ -1879,10 +1878,8 @@ jQuery(document).ready(function($) {
 <div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-(1000,)
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>(1000,)</pre>
 </div>
 
 </div>
@@ -1896,10 +1893,10 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span>
 <span class="n">title</span><span class="p">(</span><span class="s">&quot;A square wave!&quot;</span><span class="p">)</span>
 <span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
-<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2112,6 +2109,7 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What does this square wave sound like?</p>
+
 </div>
 </div>
 </div>
@@ -2120,7 +2118,7 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">Audio</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="n">rate</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span> 
+<div class=" highlight hl-ipython3"><pre><span class="n">Audio</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="n">rate</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span> 
 </pre></div>
 
 </div>
@@ -2133,7 +2131,7 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 
 <div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
 
-<div class="output_html rendered_html output_subarea output_pyout">
+<div class="output_html rendered_html output_subarea output_execute_result">
 
                 <audio controls="controls" >
                     <source src="data:audio/wav;base64,UklGRvQHAABXQVZFZm10IBAAAAABAAEAiBMAABAnAAACABAAZGF0YdAHAAD/f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9/AYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgP9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//38BgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGA/3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//fwGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYD/f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9/AYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgP9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//38BgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGA/3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//fwGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYD/f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9/AYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgP9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//38BgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGA/3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//fwGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYD/f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9//3//f/9/AYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgAGAAYABgA==" type="audio/wav" />
@@ -2155,6 +2153,7 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Sounds very much like a gameboy to me!</p>
 <p>Below, we're experimenting with that sound and also with the duty cycle parameter, which is available on the Game Boy according to the documents we found.</p>
+
 </div>
 </div>
 </div>
@@ -2163,8 +2162,8 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">fixed</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="k">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">fixed</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span>
 </pre></div>
 
 </div>
@@ -2177,7 +2176,7 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">play_square_sound</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">duty_cycle</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">10.e3</span><span class="p">,</span> <span class="n">plot_signal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">play_square_sound</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">duty_cycle</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">10.e3</span><span class="p">,</span> <span class="n">plot_signal</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">sample_freq</span><span class="p">)</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">duty</span><span class="o">=</span><span class="n">duty_cycle</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">plot_signal</span><span class="p">:</span> 
@@ -2195,12 +2194,12 @@ IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC5zv/H9tYejLFm2OGAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">interact</span><span class="p">(</span><span class="n">play_square_sound</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">interact</span><span class="p">(</span><span class="n">play_square_sound</span><span class="p">,</span>
          <span class="n">freq</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
          <span class="n">duration</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
          <span class="n">duty_cycle</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>
-         <span class="n">sample_freq</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="mf">10e3</span><span class="p">),</span>
-         <span class="n">plot_signal</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="bp">True</span><span class="p">))</span>
+         <span class="n">sample_freq</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="mi">10</span><span class="n">e3</span><span class="p">),</span>
+         <span class="n">plot_signal</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="k">True</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2362,6 +2361,7 @@ hBBCCCGEEEIIIYQQQgghhBBCCCGEEEKI6Pw/I43kpwpP3cwAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Well, this sounds like a typical Game Boy sound to me!</p>
+
 </div>
 </div>
 </div>
@@ -2371,6 +2371,7 @@ hBBCCCGEEEIIIYQQQgghhBBCCCGEEEKI6Pw/I43kpwpP3cwAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We could improve this sound by adding an envelope effect. The type of envelope I'm using below is an exponential fade-in.</p>
+
 </div>
 </div>
 </div>
@@ -2379,7 +2380,7 @@ hBBCCCGEEEIIIYQQQgghhBBCCCGEEEKI6Pw/I43kpwpP3cwAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">play_square_sound_with_envelope</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">duty_cycle</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">10.e3</span><span class="p">,</span> <span class="n">envelope_duration</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">play_square_sound_with_envelope</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">duty_cycle</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">10.e3</span><span class="p">,</span> <span class="n">envelope_duration</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">sample_freq</span><span class="p">)</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">duty</span><span class="o">=</span><span class="n">duty_cycle</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="n">envelope_duration</span><span class="p">))</span>
     <span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
@@ -2389,7 +2390,7 @@ hBBCCCGEEEIIIYQQQgghhBBCCCGEEEKI6Pw/I43kpwpP3cwAAAAASUVORK5CYII=
      <span class="n">freq</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
      <span class="n">duration</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
      <span class="n">duty_cycle</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>
-     <span class="n">sample_freq</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="mf">10e3</span><span class="p">),</span>
+     <span class="n">sample_freq</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="mi">10</span><span class="n">e3</span><span class="p">),</span>
      <span class="n">envelope_duration</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
 </pre></div>
 
@@ -2602,6 +2603,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's move on to playing some real sounds!</p>
+
 </div>
 </div>
 </div>
@@ -2614,14 +2616,14 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now that we have explored the way the Game Boy generates sounds, we can apply our knowledge to the generation of simple melodies. Here, my test melody will be the classic Tetris melody. A simple way to get this melody in a code-friendly way is to download it from one of the innumerable &quot;Nokia composer sites&quot;, whose format gives us the two things we need for synthesis: duration and pitch. A nice specification for the language can be found <a href="http://merwin.bespin.org/t4a/specs/nokia_rtttl.txt">here</a>.</p>
+<p>Now that we have explored the way the Game Boy generates sounds, we can apply our knowledge to the generation of simple melodies. Here, my test melody will be the classic Tetris melody. A simple way to get this melody in a code-friendly way is to download it from one of the innumerable "Nokia composer sites", whose format gives us the two things we need for synthesis: duration and pitch. A nice specification for the language can be found <a href="http://merwin.bespin.org/t4a/specs/nokia_rtttl.txt">here</a>.</p>
 <p>The melody I'll use below comes from <a href="http://arcadetones.emuunlim.com/ringtones_r/tetris.html">here</a>.</p>
+
 </div>
 </div>
 </div>
@@ -2630,7 +2632,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">tetris</span> <span class="o">=</span> <span class="s">&quot;e6,8b,8c6,8d6,16e6,16d6,8c6,8b,a,8a,8c6,e6,8d6,8c6,b,8b,8c6,d6,e6,c6,a,2a,8p,d6,8f6,a6,8g6,8f6,e6,8e6,8c6,e6,8d6,8c6,b,8b,8c6,d6,e6,c6,a,a&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">tetris</span> <span class="o">=</span> <span class="s">&quot;e6,8b,8c6,8d6,16e6,16d6,8c6,8b,a,8a,8c6,e6,8d6,8c6,b,8b,8c6,d6,e6,c6,a,2a,8p,d6,8f6,a6,8g6,8f6,e6,8e6,8c6,e6,8d6,8c6,b,8b,8c6,d6,e6,c6,a,a&quot;</span>
 </pre></div>
 
 </div>
@@ -2647,14 +2649,14 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To show you how we play this melody, I'll test the &quot;decoding process&quot; (from text to sound) in the lines below.</p>
+<p>To show you how we play this melody, I'll test the "decoding process" (from text to sound) in the lines below.</p>
 <p>The first step is to isolate a note from the melody above. We do this by splitting at the commas:</p>
+
 </div>
 </div>
 </div>
@@ -2663,7 +2665,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">note</span> <span class="o">=</span> <span class="n">tetris</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">note</span> <span class="o">=</span> <span class="n">tetris</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">note</span>
 </pre></div>
 
@@ -2678,10 +2680,8 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&apos;8c6&apos;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&apos;8c6&apos;</pre>
 </div>
 
 </div>
@@ -2695,7 +2695,8 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We then construct two regular expressions that allow us to extract the duration (expressed in quarter, eight, 16th notes) and the pitch (expressed using standard musical notation like &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, etc.) from the note.</p>
+<p>We then construct two regular expressions that allow us to extract the duration (expressed in quarter, eight, 16th notes) and the pitch (expressed using standard musical notation like "a", "b", "c", etc.) from the note.</p>
+
 </div>
 </div>
 </div>
@@ -2704,7 +2705,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">re</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">re</span>
 <span class="n">duration</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;^[0-9]+&quot;</span><span class="p">)</span>
 <span class="n">pitch</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[\D]+[\d]*&quot;</span><span class="p">)</span>
 </pre></div>
@@ -2720,6 +2721,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We test these regular expressions on our notes:</p>
+
 </div>
 </div>
 </div>
@@ -2728,8 +2730,8 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span> <span class="n">duration</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span> <span class="n">duration</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2742,10 +2744,8 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-[&apos;8&apos;]
+<pre>[&apos;8&apos;]
 [&apos;c6&apos;]
-
 </pre>
 </div>
 </div>
@@ -2760,6 +2760,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From this, we can recover duration, frequency and build a sound signal. Here, our duration is '8', which corresponds to an eigth note. And the frequency should correspond to a 'c' in the 6th octave (1046.50 Hz, according to <a href="http://en.wikipedia.org/wiki/Piano_key_frequencies">Wikipedia</a>).</p>
+
 </div>
 </div>
 </div>
@@ -2768,7 +2769,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">t_max</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">t_max</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
 <span class="n">t_max</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">t_max</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">t_max</span>
 </pre></div>
@@ -2784,10 +2785,8 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="output_area"><div class="prompt output_prompt">Out[15]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-0.125
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.125</pre>
 </div>
 
 </div>
@@ -2802,6 +2801,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This duration needs to be multiplied by the duration of one measure, which is arbitrary (it's called the tempo at which you play the piece of music). Finally, we can calculate the frequency of the note we want to play:</p>
+
 </div>
 </div>
 </div>
@@ -2810,7 +2810,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;123456&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;123456&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2824,10 +2824,8 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-[&apos;c6&apos;]
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>[&apos;c6&apos;]</pre>
 </div>
 
 </div>
@@ -2841,13 +2839,13 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">try</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">try</span><span class="p">:</span>
     <span class="n">octave</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span> 
     <span class="n">height</span> <span class="o">=</span> <span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="n">height</span> <span class="o">=</span> <span class="n">pitch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">note</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">octave</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="k">print</span> <span class="s">&quot;height= {0}, octave= {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">octave</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;height= {0}, octave= {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">octave</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2860,9 +2858,7 @@ IYQQQgjRl/8PVjqmE0SZZDsAAAAASUVORK5CYII=
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-height= c, octave= 6
-
+<pre>height= c, octave= 6
 </pre>
 </div>
 </div>
@@ -2877,6 +2873,7 @@ height= c, octave= 6
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can calculate the frequency and then generate the sound:</p>
+
 </div>
 </div>
 </div>
@@ -2885,7 +2882,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">freq</span> <span class="o">=</span> <span class="mi">440</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;a#&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;c#&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="s">&quot;d#&quot;</span><span class="p">,</span> <span class="s">&quot;e&quot;</span><span class="p">,</span> <span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="s">&quot;f#&quot;</span><span class="p">,</span> <span class="s">&quot;g&quot;</span><span class="p">,</span> <span class="s">&quot;g#&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mf">12.</span> <span class="o">+</span> <span class="n">octave</span> <span class="o">-</span> <span class="mi">5</span><span class="p">))</span> 
+<div class=" highlight hl-ipython3"><pre><span class="n">freq</span> <span class="o">=</span> <span class="mi">440</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;a#&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;c#&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="s">&quot;d#&quot;</span><span class="p">,</span> <span class="s">&quot;e&quot;</span><span class="p">,</span> <span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="s">&quot;f#&quot;</span><span class="p">,</span> <span class="s">&quot;g&quot;</span><span class="p">,</span> <span class="s">&quot;g#&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mf">12.</span> <span class="o">+</span> <span class="n">octave</span> <span class="o">-</span> <span class="mi">5</span><span class="p">))</span> 
 <span class="n">freq</span>
 </pre></div>
 
@@ -2900,10 +2897,8 @@ height= c, octave= 6
 <div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-1046.5022612023945
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>1046.5022612023945</pre>
 </div>
 
 </div>
@@ -2917,7 +2912,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">wave</span> <span class="o">=</span> <span class="n">play_square_sound</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">t_max</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">wave</span> <span class="o">=</span> <span class="n">play_square_sound</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">t_max</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2954,13 +2949,13 @@ height= c, octave= 6
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we apply the knowledge we gained here to a complete melody, it looks like this:</p>
+
 </div>
 </div>
 </div>
@@ -2969,7 +2964,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">play_melody</span><span class="p">(</span><span class="n">melody</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">10.e3</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">play_melody</span><span class="p">(</span><span class="n">melody</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">10.e3</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
     <span class="n">duration</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;^[0-9]+&quot;</span><span class="p">)</span>
     <span class="n">pitch</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[\D]+[\d]*&quot;</span><span class="p">)</span> 
     <span class="n">measure_duration</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mf">60.</span> <span class="o">/</span> <span class="n">bpm</span> <span class="c">#usually it&#39;s 4/4 measures</span>
@@ -3022,6 +3017,7 @@ height= c, octave= 6
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So let's try this on our Tetris melody!</p>
+
 </div>
 </div>
 </div>
@@ -3030,7 +3026,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">play_melody</span><span class="p">(</span><span class="n">tetris</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">20.e3</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">160</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">play_melody</span><span class="p">(</span><span class="n">tetris</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="mf">20.e3</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">160</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3064,6 +3060,7 @@ height= c, octave= 6
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Well, this sounds cool! Below, if pasted a couple of other melodies for you to enjoy:</p>
+
 </div>
 </div>
 </div>
@@ -3072,7 +3069,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;d6,32p,c.6,32p,8a,8c6,8a#,16a,16g,f,c,8a,8c6,8g,8a,f,c,d,8d,8e,8g,8f,8e,8d,c,c,c&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">140</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;d6,32p,c.6,32p,8a,8c6,8a#,16a,16g,f,c,8a,8c6,8g,8a,f,c,d,8d,8e,8g,8f,8e,8d,c,c,c&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">140</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3105,7 +3102,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;d#6,b,c#6,a#,16b,16g#,16a#,16b,16b,16g#,16a#,16b,c#6,g,d#6,16p,16g#,16a#,16b,c#6,16p,16b,16a#,g#,g,g#,16f,16g,16g#,16a#,8d#.6,32d#6,32p,32d#6,32p,32d#6,32p,16d6,16d#6,8f.6,16d6,8a#,8p,8f#6,8d#6,8f#,8g#,a#.,16p,16a#,8d#.6,16f6,16f#6,16f6,16d#6,16a#,8g#.,16b,8d#6,16f6,16d#6,8a#.,16b,16a#,16g#,16f,16f#,d#&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">63</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;d#6,b,c#6,a#,16b,16g#,16a#,16b,16b,16g#,16a#,16b,c#6,g,d#6,16p,16g#,16a#,16b,c#6,16p,16b,16a#,g#,g,g#,16f,16g,16g#,16a#,8d#.6,32d#6,32p,32d#6,32p,32d#6,32p,16d6,16d#6,8f.6,16d6,8a#,8p,8f#6,8d#6,8f#,8g#,a#.,16p,16a#,8d#.6,16f6,16f#6,16f6,16d#6,16a#,8g#.,16b,8d#6,16f6,16d#6,8a#.,16b,16a#,16g#,16f,16f#,d#&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">63</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3138,7 +3135,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;16e6,16e6,32p,8e6,16c6,8e6,8g6,8p,8g,8p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,16p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16c7,16p,16c7,16c7,p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16d#6,8p,16d6,8p,16c6&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;16e6,16e6,32p,8e6,16c6,8e6,8g6,8p,8g,8p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,16p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16c7,16p,16c7,16c7,p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16d#6,8p,16d6,8p,16c6&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3171,7 +3168,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;32c,32p,32c7,32p,32a5,32p,32a,32p,32a#5,32p,32a#,2p,32c,32p,32c7,32p,32a5,32p,32a,32p,32a#5,32p,32a#,2p,32f5,32p,32f,32p,32d5,32p,32d,32p,32d#5,32p,32d#,2p,32f5,32p,32f,32p,32d5,32p,32d,32p,32d#5,32p,32d#&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;32c,32p,32c7,32p,32a5,32p,32a,32p,32a#5,32p,32a#,2p,32c,32p,32c7,32p,32a5,32p,32a,32p,32a#5,32p,32a#,2p,32f5,32p,32f,32p,32d5,32p,32d,32p,32d#5,32p,32d#,2p,32f5,32p,32f,32p,32d5,32p,32d,32p,32d#5,32p,32d#&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3204,7 +3201,7 @@ height= c, octave= 6
 <div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;a#,f.,8a#,16a#,16c6,16d6,16d#6,2f6,8p,8f6,16f.6,16f#6,16g#.6,2a#.6,16a#.6,16g#6,16f#.6,8g#.6,16f#.6,2f6,f6,8d#6,16d#6,16f6,2f#6,8f6,8d#6,8c#6,16c#6,16d#6,2f6,8d#6,8c#6,8c6,16c6,16d6,2e6,g6,8f6,16f,16f,8f,16f,16f,8f,16f,16f,8f,8f,a#,f.,8a#,16a#,16c6,16d6,16d#6,2f6,8p,8f6,16f.6,16f#6,16g#.6,2a#.6,c#7,c7,2a6,f6,2f#.6,a#6,a6,2f6,f6,2f#.6,a#6,a6,2f6,d6,2d#.6,f#6,f6,2c#6,a#,c6,16d6,2e6,g6,8f6,16f,16f,8f,16f,16f,8f,16f,16f,8f,8f&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">play_melody</span><span class="p">(</span><span class="s">&quot;a#,f.,8a#,16a#,16c6,16d6,16d#6,2f6,8p,8f6,16f.6,16f#6,16g#.6,2a#.6,16a#.6,16g#6,16f#.6,8g#.6,16f#.6,2f6,f6,8d#6,16d#6,16f6,2f#6,8f6,8d#6,8c#6,16c#6,16d#6,2f6,8d#6,8c#6,8c6,16c6,16d6,2e6,g6,8f6,16f,16f,8f,16f,16f,8f,16f,16f,8f,8f,a#,f.,8a#,16a#,16c6,16d6,16d#6,2f6,8p,8f6,16f.6,16f#6,16g#.6,2a#.6,c#7,c7,2a6,f6,2f#.6,a#6,a6,2f6,f6,2f#.6,a#6,a6,2f6,d6,2d#.6,f#6,f6,2c#6,a#,c6,16d6,2e6,g6,8f6,16f,16f,8f,16f,16f,8f,16f,16f,8f,8f&quot;</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3241,17 +3238,18 @@ height= c, octave= 6
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>What we've done in this post was to develop a simplified model of Game Boy sounds that seems to work quite well. Note that a lot of aspects have been left out in what we did here: sweeping, envelopes, pattern duty... I hope you have enjoyed this post as much as I have! If you're curious about listening to some commented examples of what can be done with the Game Boy, I recommend the following links:</p>
+<p>What we've done in this post was to develop a simplified model of Game Boy sounds that seems to work quite well. Note that a lot of aspects have been left out in what we did here: sweeping, envelopes, pattern duty...
+I hope you have enjoyed this post as much as I have! If you're curious about listening to some commented examples of what can be done with the Game Boy, I recommend the following links:</p>
 <ul>
 <li><a href="http://classicalgaming.wordpress.com/2012/03/22/meet-the-system-nintendo-game-boy/">a selection of Game Boy tracks with commentaries about the techniques that were used to produce them</a></li>
 <li><a href="http://open.spotify.com/album/4dfO5vbi2XiARCycX1TBaR">the album The Smallest Sound from Boy vs Bacteria, which is some nice 8-bit music I enjoy</a></li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -3261,6 +3259,7 @@ height= c, octave= 6
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20140909_GameBoySounds.ipynb">20140909_GameBoySounds.ipynb</a>.</p>
+
 </div>
 </div>
 </div></p></div>
@@ -3288,6 +3287,9 @@ height= c, octave= 6
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://flothesof.github.io/farthest-neighbors.html">The Farthest Neighbors Algorithm</a>
+      </li>
+      <li class="post">
           <a href="http://flothesof.github.io/Japanese-characters-principal-components.html">Exploring Japanese characters with principal component analysis</a>
       </li>
       <li class="post">
@@ -3298,9 +3300,6 @@ height= c, octave= 6
       </li>
       <li class="post">
           <a href="http://flothesof.github.io/xkcd-dating-pools.html">A quantitative analysis of XKCD comic #314</a>
-      </li>
-      <li class="post">
-          <a href="http://flothesof.github.io/smile-recognition.html">Smile Recognition Using OpenCV and scikit-learn</a>
       </li>
     </ul>
   </section>
@@ -3315,7 +3314,7 @@ height= c, octave= 6
 
   <section>
   <h1>Tags</h1>
-    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/statistics.html">statistics</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>  </section>
+    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/statistics.html">Statistics</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>  </section>
 
 
 

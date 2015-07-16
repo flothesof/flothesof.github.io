@@ -1761,9 +1761,9 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
-<span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
-<span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span>
+<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="k">import</span> <span class="n">interact</span>
 </pre></div>
 
 </div>
@@ -1777,15 +1777,15 @@ jQuery(document).ready(function($) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we're going to tackle the following problem:</p>
-<blockquote>
-<p>Given a sequence of bricks, what is the best way to stack them on top of each other so as to cover the greatest possible horizontal distance?</p>
+<blockquote><p>Given a sequence of bricks, what is the best way to stack them on top of each other so as to cover the greatest possible horizontal distance?</p>
 </blockquote>
-<p>By &quot;stack them on top of each other&quot;, we mean two things:</p>
+<p>By "stack them on top of each other", we mean two things:</p>
 <ul>
 <li>the bricks lie on top of each other (no glue or any kind of support)</li>
 <li>they're stable (gravity doesn't make the construction collapse)</li>
 </ul>
 <p>This problem has some similarity with the Jenga game (see picture below), where players remove blocks of woods from an initially stable pyramid, until it collapses. The collapse happening to Jenga towers is essentially due to gravity: removing one block changes the static properties of the structure and destroys it.</p>
+
 </div>
 </div>
 </div>
@@ -1794,7 +1794,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span>
 <span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&quot;http://kristinruffin.files.wordpress.com/2014/03/jenga-falling-for-web.jpg&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -1808,7 +1808,7 @@ jQuery(document).ready(function($) {
 
 <div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
 
-<div class="output_html rendered_html output_subarea output_pyout">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <img src="http://kristinruffin.files.wordpress.com/2014/03/jenga-falling-for-web.jpg"/>
 </div>
 
@@ -1823,7 +1823,8 @@ jQuery(document).ready(function($) {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Other examples of this sort of stacking exist. As an example we can cite the <a href="http://en.wikipedia.org/wiki/Nubian_vault">Nubian vault technique</a>, whose key advantage Wikipedia says is the ability to be built &quot;without any support or shuttering&quot;.</p>
+<p>Other examples of this sort of stacking exist. As an example we can cite the <a href="http://en.wikipedia.org/wiki/Nubian_vault">Nubian vault technique</a>, whose key advantage Wikipedia says is the ability to be built "without any support or shuttering".</p>
+
 </div>
 </div>
 </div>
@@ -1832,7 +1833,8 @@ jQuery(document).ready(function($) {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This post is comprised of several sections. We first describe our model and data representation of this problem in Python. We then move on to write some graphic functions before designing the meat of this post: the &quot;stacking algorithm&quot;. Finally, we examine applications of our code.</p>
+<p>This post is comprised of several sections. We first describe our model and data representation of this problem in Python. We then move on to write some graphic functions before designing the meat of this post: the "stacking algorithm". Finally, we examine applications of our code.</p>
+
 </div>
 </div>
 </div>
@@ -1845,17 +1847,17 @@ jQuery(document).ready(function($) {
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this post, we'll work with &quot;bricks&quot; that we will stack. Our modelling assumptions are as follows:</p>
+<p>In this post, we'll work with "bricks" that we will stack. Our modelling assumptions are as follows:</p>
 <ul>
-<li>a brick of width <span class="math">\(w\)</span> and height <span class="math">\(h\)</span> is modelled as tuple <span class="math">\((w, h)\)</span></li>
+<li>a brick of width $w$ and height $h$ is modelled as tuple $(w, h)$</li>
 <li>a sequence of bricks to be stacked in a given order (the first on bottom, the last on top) is modelled as a list of bricks as defined above</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -1869,6 +1871,7 @@ jQuery(document).ready(function($) {
 <li>the width and height of the brick sequence to be generated</li>
 <li>the number of bricks to generate</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -1877,7 +1880,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">generate_brick_sequence</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">generate_brick_sequence</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 </pre></div>
 
@@ -1892,6 +1895,7 @@ jQuery(document).ready(function($) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below, we test the output on an example case, generating a sequence of five bricks with width 3 and height 4:</p>
+
 </div>
 </div>
 </div>
@@ -1900,7 +1904,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">generate_brick_sequence</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">generate_brick_sequence</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1914,10 +1918,8 @@ jQuery(document).ready(function($) {
 <div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(3, 4), (3, 4), (3, 4), (3, 4), (3, 4)]
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>[(3, 4), (3, 4), (3, 4), (3, 4), (3, 4)]</pre>
 </div>
 
 </div>
@@ -1933,10 +1935,11 @@ jQuery(document).ready(function($) {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To continue, we will do two things, that will in time be translated to two functions.</p>
 <ul>
-<li>a way of plotting brick sequences</li>
+<li>a way of plotting brick sequences </li>
 <li>a way to compute how to stack the bricks in a stable way for maximum range given a sequence of bricks as input</li>
 </ul>
 <p>Among these two things, the first is easy. And fun. So we're starting with that.</p>
+
 </div>
 </div>
 </div>
@@ -1949,7 +1952,6 @@ jQuery(document).ready(function($) {
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -1962,6 +1964,7 @@ jQuery(document).ready(function($) {
 <li>the horizontal shifts to apply to each brick</li>
 </ul>
 <p>And then we loop and draw each brick on top of each other, starting with the first one at the bottom and applying the horizontal shift given as an input. To make this function generic, we keep track of the total height, so as to stack bricks exactly above each other.</p>
+
 </div>
 </div>
 </div>
@@ -1970,7 +1973,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Rectangle</span>
 
 <span class="k">def</span> <span class="nf">plot_brick_sequence</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -1991,6 +1994,7 @@ jQuery(document).ready(function($) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can immediately try our function on an exemple sequence (that I just made up: the stacking is NOT physcally acceptable).</p>
+
 </div>
 </div>
 </div>
@@ -1999,7 +2003,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">bricks</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">bricks</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
 <span class="n">shifts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="n">plot_brick_sequence</span><span class="p">(</span><span class="n">bricks</span><span class="p">,</span> <span class="n">shifts</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -2017,10 +2021,8 @@ jQuery(document).ready(function($) {
 <div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-(0, 10)
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>(0, 10)</pre>
 </div>
 
 </div>
@@ -2094,7 +2096,8 @@ RK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now on to the hard part: the &quot;stacking algorithm&quot;.</p>
+<p>Now on to the hard part: the "stacking algorithm".</p>
+
 </div>
 </div>
 </div>
@@ -2107,19 +2110,19 @@ RK5CYII=
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How does one write such a stacking function? Answer: this situation is described by static mechanics.</p>
-<p>Let's assume we have two blocks: a &quot;top&quot; and a &quot;bottom&quot; block. The horizontal shift for the top block is <span class="math">\(x_i\)</span>. The forces that apply to the top block are:</p>
+<p>Let's assume we have two blocks: a "top" and a "bottom" block. The horizontal shift for the top block is $x_i$. The forces that apply to the top block are:</p>
 <ul>
-<li>gravity, which is proportional to its mass <span class="math">\(m_i\)</span></li>
+<li>gravity, which is proportional to its mass $m_i$</li>
 <li>the reaction force due to the bottom block (a contact pressure)</li>
 </ul>
 <p>In our model, we will assume that the blocks are rigid and thus replace the contact pressure by a point force located at the right most point of the bottom block. This is illustrated by the figure below.</p>
+
 </div>
 </div>
 </div>
@@ -2128,7 +2131,7 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">SVG</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">SVG</span>
 <span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;files/forces.svg&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -2142,7 +2145,7 @@ RK5CYII=
 
 <div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
 
-<div class="output_svg output_subarea output_pyout">
+<div class="output_svg output_subarea output_execute_result">
 <svg height="241.47292" id="svg2" inkscape:version="0.48.5 r10040" sodipodi:docname="forces.svg" version="1.1" width="600" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg">
   <defs id="defs4">
     <marker id="Arrow1Send" inkscape:stockid="Arrow1Send" orient="auto" refX="0" refY="0" style="overflow:visible">
@@ -2468,6 +2471,7 @@ RK5CYII=
 <li>if the center of gravity is located to the right of the pressure force, i.e. the edge of the bottom block, the structure is in an unstable state and will collapse</li>
 </ul>
 <p>This is illustrated by the figure below:</p>
+
 </div>
 </div>
 </div>
@@ -2476,7 +2480,7 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;files/forces_equilibrium.svg&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;files/forces_equilibrium.svg&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2489,7 +2493,7 @@ RK5CYII=
 
 <div class="output_area"><div class="prompt output_prompt">Out[8]:</div>
 
-<div class="output_svg output_subarea output_pyout">
+<div class="output_svg output_subarea output_execute_result">
 <svg height="210.53174" id="svg2" inkscape:version="0.48.5 r10040" sodipodi:docname="forces_equilibrium.svg" version="1.1" width="599.98669" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview bordercolor="#666666" borderopacity="1.0" fit-margin-bottom="0" fit-margin-left="0" fit-margin-right="0" fit-margin-top="0" id="base" inkscape:current-layer="layer1" inkscape:cx="549.15833" inkscape:cy="118.09191" inkscape:document-units="px" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:window-height="1138" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:zoom="0.73655867" pagecolor="#ffffff" showgrid="false" units="px"/>
   <defs id="defs4">
@@ -2577,6 +2581,7 @@ RK5CYII=
 <li>we apply the same procedure as above to our new top and bottom bricks</li>
 </ul>
 <p>To follow this algorithm, we will need to compute the position of the new center of gravity obtained by assembling bricks together. This is coded below:</p>
+
 </div>
 </div>
 </div>
@@ -2585,7 +2590,7 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">compute_horizontal_center_of_mass</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">compute_horizontal_center_of_mass</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
     <span class="n">compute_mass</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">sum_xi_mi</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([(</span><span class="n">shifts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">brick_sequence</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="n">compute_mass</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">))])</span>
     <span class="n">sum_mi</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">compute_mass</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">))])</span>
@@ -2603,6 +2608,7 @@ RK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And finally, the algorithm:</p>
+
 </div>
 </div>
 </div>
@@ -2611,7 +2617,7 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">compute_brick_shifts</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">compute_brick_shifts</span><span class="p">(</span><span class="n">brick_sequence</span><span class="p">):</span>
     <span class="n">shifts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">reverse_brick_sequence</span> <span class="o">=</span> <span class="n">brick_sequence</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">brick</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">reverse_brick_sequence</span><span class="p">):</span>
@@ -2635,6 +2641,7 @@ RK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To test our algorithm, we're going to examine a couple of solutions obtained when stacking rectangular bricks on top of each other. First, we're doing this with an interactive plot:</p>
+
 </div>
 </div>
 </div>
@@ -2643,12 +2650,12 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">plot_nbricks</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">plot_nbricks</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="n">bricks</span> <span class="o">=</span> <span class="n">generate_brick_sequence</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">plot_brick_sequence</span><span class="p">(</span><span class="n">bricks</span><span class="p">,</span> <span class="n">compute_brick_shifts</span><span class="p">(</span><span class="n">bricks</span><span class="p">))</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2661,7 +2668,7 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">interact</span><span class="p">(</span><span class="n">plot_nbricks</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">interact</span><span class="p">(</span><span class="n">plot_nbricks</span><span class="p">,</span>
             <span class="n">l</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
             <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 </pre></div>
@@ -2677,10 +2684,8 @@ RK5CYII=
 <div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&lt;function __main__.plot_nbricks&gt;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;function __main__.plot_nbricks&gt;</pre>
 </div>
 
 </div>
@@ -2778,6 +2783,7 @@ RK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check the solution for 10, 20 and 40 bricks of 2:1 aspect ratios:</p>
+
 </div>
 </div>
 </div>
@@ -2786,8 +2792,8 @@ RK5CYII=
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">format_plot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">);</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">format_plot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">);</span>
 
 <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
 <span class="n">plot_nbricks</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -2970,6 +2976,7 @@ kiRJkiRJkiRJkiRJkiRJkiTBvwKF7IZjYItLYgAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As one can see, the more bricks we stack, the higher the tower gets and the larger vaults we can build by simply stacking these bricks on top of each other.</p>
 <p>This being said we can now move on to some practical questions.</p>
+
 </div>
 </div>
 </div>
@@ -2982,7 +2989,6 @@ kiRJkiRJkiRJkiRJkiRJkiTBvwKF7IZjYItLYgAAAABJRU5ErkJggg==
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -2992,7 +2998,6 @@ kiRJkiRJkiRJkiRJkiRJkiTBvwKF7IZjYItLYgAAAABJRU5ErkJggg==
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -3000,6 +3005,7 @@ kiRJkiRJkiRJkiRJkiRJkiTBvwKF7IZjYItLYgAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One of the questions we can ask ourselves after having written this is: is there a maximum horizontal distance that we can cross with such a structure of stacked bricks? Or is there a limit that we cannot overcome inside our model?</p>
 <p>To examine this question, I'll plot the total distance covered as a function of the number of bricks stacked.</p>
+
 </div>
 </div>
 </div>
@@ -3008,7 +3014,7 @@ kiRJkiRJkiRJkiRJkiRJkiTBvwKF7IZjYItLYgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">l</span> <span class="o">=</span> <span class="mi">1</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">l</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">number_of_bricks</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 <span class="n">distances</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">number_of_bricks</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">number_of_bricks</span><span class="p">):</span>
@@ -3027,11 +3033,11 @@ kiRJkiRJkiRJkiRJkiRJkiTBvwKF7IZjYItLYgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_bricks</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_bricks</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;distance reached as a function of number of {0} width bricks&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;brick unit width (a. u.)&#39;</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;distance covered (a. u.)&#39;</span><span class="p">)</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3278,6 +3284,7 @@ I7WvRn4LVAAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This looks like a logarithmic function. And it doesn't look like the growth stops at some point (even though, from this small sampling it looks like it slows down a lot).</p>
 <p>If anyone is interested, I found a reference in <a href="http://www.amazon.fr/physique-tous-jours-Istv%C3%A0n-Berkes/dp/2711771679">this book</a> that says the growth is unbounded. Therefore you could build this sort of structure to cover any given distance. In practice, this is limited by the accuracy with which you can place your bricks (and also forces other than gravity...).</p>
+
 </div>
 </div>
 </div>
@@ -3290,13 +3297,13 @@ I7WvRn4LVAAAAABJRU5ErkJggg==
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another question we can ask of our model: how does the range covered by the vault change if we change the brick width?</p>
+
 </div>
 </div>
 </div>
@@ -3305,7 +3312,7 @@ I7WvRn4LVAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">brick_widths</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">brick_widths</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">distances</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">brick_widths</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">brick_widths</span><span class="p">:</span>
     <span class="n">bricks</span> <span class="o">=</span> <span class="n">generate_brick_sequence</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -3322,11 +3329,11 @@ I7WvRn4LVAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">brick_widths</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">brick_widths</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;brick width (distance units)&#39;</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;distance units&#39;</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;distance covered by stacking 100 bricks as a function of brick width&#39;</span><span class="p">)</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3586,6 +3593,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The relationship seems linear. We can compute the slope of the previous curve:</p>
+
 </div>
 </div>
 </div>
@@ -3594,7 +3602,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">distances</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">distances</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3608,10 +3616,8 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-3.08868875881981
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>3.08868875881981</pre>
 </div>
 
 </div>
@@ -3626,6 +3632,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we increase the brick width by one unit, the we will increase the range of 100 stacked bricks of the same width by 3.088 units.</p>
+
 </div>
 </div>
 </div>
@@ -3638,7 +3645,6 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -3646,6 +3652,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To finish this post, I'll show how we can stack up arbitrarily shaped bricks. This is one of the nice features of the code we have written so far: it's generic to the point that you can stack bricks of different sizes.</p>
 <p>First, we write a function that gives back a sequence of arbitrarily shaped bricks.</p>
+
 </div>
 </div>
 </div>
@@ -3654,7 +3661,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">generate_random_brick_sequence</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">generate_random_brick_sequence</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">pl</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mf">0.2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 </pre></div>
 
@@ -3669,6 +3676,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And then we write a function that just generates a sequence of <code>n</code> bricks, computes the optimal way to stack them and plots them.</p>
+
 </div>
 </div>
 </div>
@@ -3677,7 +3685,7 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">plot_random_bricks</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">plot_random_bricks</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">bricks</span> <span class="o">=</span> <span class="n">generate_random_brick_sequence</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">shifts</span> <span class="o">=</span>  <span class="n">compute_brick_shifts</span><span class="p">(</span><span class="n">bricks</span><span class="p">)</span>
     <span class="n">plot_brick_sequence</span><span class="p">(</span><span class="n">bricks</span><span class="p">,</span> <span class="n">shifts</span><span class="p">)</span>
@@ -3693,8 +3701,8 @@ ERERERERERERyR//H/dg6WnQlHNmAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">format_plot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">);</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">format_plot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pl</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">);</span>
 
 <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
 <span class="n">plot_random_bricks</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
@@ -3911,31 +3919,29 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAO/j/GcdP7WZUqEAAAAABJRU5ErkJggg==
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I first read about the &quot;brick stacking problem&quot; in a physics book called <a href="http://www.amazon.fr/physique-tous-jours-Istv%C3%A0n-Berkes/dp/2711771679">&quot;la physique de tous les jours&quot;</a>. The book chapter explains the stacking algorithm that inspired me to write the code in this notebook. In this section, I derive the analytical formula for stacking identical bricks on top of each other. The reasoning is carried out on unit length bricks, but is valid for any size of brick.</p>
-<p>In the following, we denote the shift of the left right border of brick <span class="math">\(i\)</span> by <span class="math">\(s(i)\)</span>. The mass of brick of <span class="math">\(i\)</span> is written as <span class="math">\(m_i\)</span>.</p>
-<p>The reasoning is the following: suppose you already know the shifts up to order <span class="math">\(n\)</span> and you're trying to determine the shift for brick <span class="math">\(n+1\)</span>. You want the horizontal center of mass of bricks <span class="math">\([1:n]\)</span> to be exactly equal to the shift of brick <span class="math">\(n+1\)</span>. Thus our first equation:</p>
-<p><span class="math">\[
+<p>I first read about the "brick stacking problem" in a physics book called <a href="http://www.amazon.fr/physique-tous-jours-Istv%C3%A0n-Berkes/dp/2711771679">"la physique de tous les jours"</a>. The book chapter explains the stacking algorithm that inspired me to write the code in this notebook. In this section, I derive the analytical formula for stacking identical bricks on top of each other. The reasoning is carried out on unit length bricks, but is valid for any size of brick.</p>
+<p>In the following, we denote the shift of the left right border of brick $i$ by $s(i)$. The mass of brick of $i$ is written as $m_i$.</p>
+<p>The reasoning is the following: suppose you already know the shifts up to order $n$ and you're trying to determine the shift for brick $n+1$. You want the horizontal center of mass of bricks $[1:n]$ to be exactly equal to the shift of brick $n+1$. Thus our first equation:</p>
+$$
 s(n+1) = c_{mass}([1:n])
-\]</span></p>
-<p>It turns out that the center of mass of the assembly of bricks <span class="math">\([1:n]\)</span> can be computed from the previous shifts. In effect: the center of mass of bricks <span class="math">\([1:n]\)</span> can be written as the center of mass of brick <span class="math">\(n\)</span> alone and of bricks <span class="math">\([1:n-1]\)</span>. Using the previous equation, we also know that the center of mass of bricks <span class="math">\([1:n-1]\)</span> is equal to the shift <span class="math">\(s(n)\)</span>. Thus the following formula, derived from the previous relation and weighted by the brick masses:</p>
-<p><span class="math">\[
+$$<p>It turns out that the center of mass of the assembly of bricks $[1:n]$ can be computed from the previous shifts. In effect: the center of mass of bricks $[1:n]$ can be written as the center of mass of brick $n$ alone and of bricks $[1:n-1]$. Using the previous equation, we also know that the center of mass of bricks $[1:n-1]$ is equal to the shift $s(n)$. Thus the following formula, derived from the previous relation and weighted by the brick masses:</p>
+$$
 c_{mass}([1:n]) = \frac{(\sum_{i=1}^{n-1} m_i)s(n) + m_n(s(n) + 1/2)}{\sum_{i=1}^{n} m_i}
-\]</span></p>
-<p>Injecting this formula in our previous equation we obtain a recurrence equation of order 1 on <span class="math">\(s(n)\)</span>:</p>
-<p><span class="math">\[
+$$<p>Injecting this formula in our previous equation we obtain a recurrence equation of order 1 on $s(n)$:</p>
+$$
 s(n+1) = \frac{(\sum_{i=1}^{n-1} m_i)s(n) + m_n(s(n) + 1/2)}{\sum_{i=1}^{n} m_i}
-\]</span></p>
-<p>Assuming that all masses are actually equal, we obtain: <span class="math">\[
+$$<p>Assuming that all masses are actually equal, we obtain:
+$$
 s(n+1) = \frac{n \, s(n) + 1/2}{n}
-\]</span></p>
-<p>This relation is to be initialized with <span class="math">\(s(1) = 0\)</span>.</p>
+$$</p>
+<p>This relation is to be initialized with $s(1) = 0$.</p>
 <p>The following figure illustrates our demonstration:</p>
+
 </div>
 </div>
 </div>
@@ -3944,7 +3950,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;files/forces_analytical_formula.svg&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;files/forces_analytical_formula.svg&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3957,7 +3963,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 
 <div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
 
-<div class="output_svg output_subarea output_pyout">
+<div class="output_svg output_subarea output_execute_result">
 <svg height="383.46207" id="svg2" inkscape:version="0.48.5 r10040" sodipodi:docname="forces_analytical_formula.svg" version="1.1" width="520.0365" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs id="defs4">
     <marker id="Arrow1Mstart" inkscape:stockid="Arrow1Mstart" orient="auto" refX="0.0" refY="0.0" style="overflow:visible">
@@ -4034,6 +4040,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The formula we derived can easily be coded and compared to what we previously computed.</p>
+
 </div>
 </div>
 </div>
@@ -4042,7 +4049,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 <div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">analytical_shift</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">analytical_shift</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
     <span class="k">else</span><span class="p">:</span>
@@ -4059,7 +4066,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span> <span class="p">[</span><span class="n">analytical_shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span> <span class="p">[</span><span class="n">analytical_shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
 </pre></div>
 
 </div>
@@ -4072,9 +4079,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-[0, 0.5, 0.75, 0.9166666666666666, 1.0416666666666665, 1.1416666666666664, 1.2249999999999996, 1.296428571428571, 1.358928571428571]
-
+<pre>[0, 0.5, 0.75, 0.9166666666666666, 1.0416666666666665, 1.1416666666666664, 1.2249999999999996, 1.296428571428571, 1.358928571428571]
 </pre>
 </div>
 </div>
@@ -4088,10 +4093,10 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 <div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">bricks</span> <span class="o">=</span> <span class="n">generate_brick_sequence</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">bricks</span> <span class="o">=</span> <span class="n">generate_brick_sequence</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">shifts</span> <span class="o">=</span> <span class="n">compute_brick_shifts</span><span class="p">(</span><span class="n">bricks</span><span class="p">)</span>
 <span class="n">shifts</span> <span class="o">=</span> <span class="n">shifts</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="k">print</span> <span class="p">[</span><span class="n">elem</span> <span class="o">-</span> <span class="n">shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">]</span>
+<span class="nb">print</span> <span class="p">[</span><span class="n">elem</span> <span class="o">-</span> <span class="n">shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -4104,9 +4109,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-[0.0, -0.5, -0.75, -0.9166666666666666, -1.0416666666666667, -1.1416666666666666, -1.225, -1.2964285714285715, -1.3589285714285715, -1.414484126984127]
-
+<pre>[0.0, -0.5, -0.75, -0.9166666666666666, -1.0416666666666667, -1.1416666666666666, -1.225, -1.2964285714285715, -1.3589285714285715, -1.414484126984127]
 </pre>
 </div>
 </div>
@@ -4121,6 +4124,7 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed, the results are identical, except for the minus sign that appears in our numerical version.</p>
+
 </div>
 </div>
 </div>
@@ -4129,11 +4133,11 @@ s(n+1) = \frac{n \, s(n) + 1/2}{n}
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>It turns out that the analytical formula can enable us to prove something we hinted at when examining convergence of a brick stack (subsection &quot;how far can we get?&quot;). We can rewrite the total extent of the arch as:</p>
-<p><span class="math">\[
+<p>It turns out that the analytical formula can enable us to prove something we hinted at when examining convergence of a brick stack (subsection "how far can we get?"). We can rewrite the total extent of the arch as:</p>
+$$
 l(n) = \sum_{i=1}^n s(i+1) - s(i) = \frac{1}{2}\sum_{i=1}^n \frac{1}{i}
-\]</span></p>
-<p>However, as it happens, the series on the right, called the harmonic is divergent. This means that if we stack enough bricks, we can end up with any arch extent we'd like! My physics book tells me that this was first proved by <a href="http://en.wikipedia.org/wiki/Nicole_Oresme">Nicole Oresme</a>, &quot;probably one of the most original thinkers of the 14th century&quot; (to quote Wikipedia).</p>
+$$<p>However, as it happens, the series on the right, called the harmonic is divergent. This means that if we stack enough bricks, we can end up with any arch extent we'd like! My physics book tells me that this was first proved by <a href="http://en.wikipedia.org/wiki/Nicole_Oresme">Nicole Oresme</a>, "probably one of the most original thinkers of the 14th century" (to quote Wikipedia).</p>
+
 </div>
 </div>
 </div>
@@ -4143,6 +4147,7 @@ l(n) = \sum_{i=1}^n s(i+1) - s(i) = \frac{1}{2}\sum_{i=1}^n \frac{1}{i}
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20140808_BricksAndArches.ipynb">20140808_BricksAndArches.ipynb</a>.</p>
+
 </div>
 </div>
 </div></p></div>
@@ -4170,6 +4175,9 @@ l(n) = \sum_{i=1}^n s(i+1) - s(i) = \frac{1}{2}\sum_{i=1}^n \frac{1}{i}
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://flothesof.github.io/farthest-neighbors.html">The Farthest Neighbors Algorithm</a>
+      </li>
+      <li class="post">
           <a href="http://flothesof.github.io/Japanese-characters-principal-components.html">Exploring Japanese characters with principal component analysis</a>
       </li>
       <li class="post">
@@ -4180,9 +4188,6 @@ l(n) = \sum_{i=1}^n s(i+1) - s(i) = \frac{1}{2}\sum_{i=1}^n \frac{1}{i}
       </li>
       <li class="post">
           <a href="http://flothesof.github.io/xkcd-dating-pools.html">A quantitative analysis of XKCD comic #314</a>
-      </li>
-      <li class="post">
-          <a href="http://flothesof.github.io/smile-recognition.html">Smile Recognition Using OpenCV and scikit-learn</a>
       </li>
     </ul>
   </section>
@@ -4197,7 +4202,7 @@ l(n) = \sum_{i=1}^n s(i+1) - s(i) = \frac{1}{2}\sum_{i=1}^n \frac{1}{i}
 
   <section>
   <h1>Tags</h1>
-    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/statistics.html">statistics</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>  </section>
+    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/statistics.html">Statistics</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>  </section>
 
 
 

@@ -1762,8 +1762,9 @@ jQuery(document).ready(function($) {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we will use a little geography to determine the topology of Paris as seen from the point of view of my alarm clock. Here's the context: I'd like to move flats in the Paris area and take advantage of the transportation means set up by my company. My company provides a number of bus routes travelling to our offices every morning, with each bus route consisting of a number of stops at given times.</p>
 <p>Using some data that I collected on my company's internal website and coordinates from Google Maps, the goal of this post can be described as:</p>
-<p>&quot;which location within Paris would allow me to get out of the house the latest and still get to work on time?&quot;</p>
+<p>"which location within Paris would allow me to get out of the house the latest and still get to work on time?"</p>
 <p>Let's see if how we can answer this question.</p>
+
 </div>
 </div>
 </div>
@@ -1776,13 +1777,13 @@ jQuery(document).ready(function($) {
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Firsts, we load the data for the bus departure times. We will encode the departure time as the minutes elapsed since midnight.</p>
+
 </div>
 </div>
 </div>
@@ -1791,7 +1792,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">departure_times</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])),</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">departure_times</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])),</span>
     <span class="sd">&quot;&quot;&quot;7	30</span>
 <span class="sd">7	35</span>
 <span class="sd">7	36</span>
@@ -1825,6 +1826,7 @@ jQuery(document).ready(function($) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We now define the location coordinates for each bus in <code>(latitude, longitude)</code> format.</p>
+
 </div>
 </div>
 </div>
@@ -1833,7 +1835,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">location_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])),</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">location_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])),</span>
 <span class="sd">&quot;&quot;&quot;48.878428, 2.282963</span>
 <span class="sd">48.870967, 2.275274</span>
 <span class="sd">48.863403, 2.268703</span>
@@ -1870,13 +1872,13 @@ jQuery(document).ready(function($) {
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With the data points having been defined, we can now visualize tan approximate map of the bus departure times using the latitudes and longitudes of the bus stops as X,Y coordinates.</p>
+
 </div>
 </div>
 </div>
@@ -1885,8 +1887,8 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
 </div>
@@ -1899,7 +1901,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">format_hour</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hour</span><span class="p">:</span> <span class="s">&quot;{0}h{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hour</span> <span class="o">//</span> <span class="mi">60</span><span class="p">,</span> <span class="n">hour</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">format_hour</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hour</span><span class="p">:</span> <span class="s">&quot;{0}h{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hour</span> <span class="o">//</span> <span class="mi">60</span><span class="p">,</span> <span class="n">hour</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">hour</span><span class="p">,</span> <span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lng</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">departure_times</span><span class="p">,</span> <span class="n">location_coords</span><span class="p">):</span>
     <span class="n">text</span><span class="p">(</span><span class="n">lng</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">format_hour</span><span class="p">(</span><span class="n">hour</span><span class="p">),</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">)</span>
@@ -1920,10 +1922,8 @@ jQuery(document).ready(function($) {
 <div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-(48.81, 48.89)
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>(48.81, 48.89)</pre>
 </div>
 
 </div>
@@ -2538,6 +2538,7 @@ height=276
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This being done, we can now start doing some computations!</p>
+
 </div>
 </div>
 </div>
@@ -2550,13 +2551,13 @@ height=276
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we're going to do some computation on a map, let's define a mesh we can use to compute stuff:</p>
+
 </div>
 </div>
 </div>
@@ -2565,7 +2566,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">lat_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">lat_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -2578,7 +2579,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">lat_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">lat_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -2591,7 +2592,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">long_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">long_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -2604,7 +2605,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">long_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">long_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">location_coords</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -2618,6 +2619,7 @@ height=276
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our bus stops are located within the following coordinates:</p>
+
 </div>
 </div>
 </div>
@@ -2626,7 +2628,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span><span class="p">(</span><span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span><span class="p">,</span> <span class="n">long_min</span><span class="p">,</span> <span class="n">long_max</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span><span class="p">,</span> <span class="n">long_min</span><span class="p">,</span> <span class="n">long_max</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2639,9 +2641,7 @@ height=276
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-48.815806 48.878428 2.256867 2.411582
-
+<pre>48.815806 48.878428 2.256867 2.411582
 </pre>
 </div>
 </div>
@@ -2656,6 +2656,7 @@ height=276
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, to compute stuff, we'll use a grid that's a little bit larger than just the coordinates of the bus stops:</p>
+
 </div>
 </div>
 </div>
@@ -2664,8 +2665,8 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">long_min</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">long_max</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">lat_min</span> <span class="o">-</span> <span class="o">.</span><span class="mo">03</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">+</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">long_min</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">long_max</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">lat_min</span> <span class="o">-</span> <span class="o">.</span><span class="mi">03</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">+</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2678,7 +2679,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2691,7 +2692,8 @@ height=276
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The next thing we will need is a function able to compute a distance between two points defined by their respective latitudes and longitudes. The math for this is a little complex but we're lucky: someone already wrote an implementation in Python, which we're going to use. Thanks John D. Cook: <a href="http://www.johndcook.com/blog/python_longitude_latitude/" class="uri">http://www.johndcook.com/blog/python_longitude_latitude/</a>!</p>
+<p>The next thing we will need is a function able to compute a distance between two points defined by their respective latitudes and longitudes. The math for this is a little complex but we're lucky: someone already wrote an implementation in Python, which we're going to use. Thanks John D. Cook: <a href="http://www.johndcook.com/blog/python_longitude_latitude/">http://www.johndcook.com/blog/python_longitude_latitude/</a>!</p>
+
 </div>
 </div>
 </div>
@@ -2700,7 +2702,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">math</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">math</span>
  
 <span class="k">def</span> <span class="nf">distance_on_unit_sphere</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">long1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">long2</span><span class="p">):</span>
  
@@ -2744,6 +2746,7 @@ height=276
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our first question is: how far is each point in our mesh from the nearest bus stop? It turns out this is quite easy to compute, using a little loop.</p>
+
 </div>
 </div>
 </div>
@@ -2752,7 +2755,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">distance_to_bus</span> <span class="o">=</span> <span class="n">nan</span> <span class="o">*</span> <span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">distance_to_bus</span> <span class="o">=</span> <span class="n">nan</span> <span class="o">*</span> <span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
@@ -2776,6 +2779,7 @@ height=276
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can plot the computed distance to the nearest bus stops as an approximate map using latitude and longitude:</p>
+
 </div>
 </div>
 </div>
@@ -2784,7 +2788,7 @@ height=276
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">imshow</span><span class="p">(</span><span class="n">distance_to_bus</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">aspect</span><span class="o">=</span><span class="s">&#39;auto&#39;</span><span class="p">)</span>
 <span class="n">colorbar</span><span class="p">(</span><span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">title</span><span class="p">(</span><span class="s">&#39;distance to bus stop (km)&#39;</span><span class="p">)</span>
@@ -2803,10 +2807,8 @@ height=276
 <div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&lt;matplotlib.text.Text at 0x10686cd30&gt;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.text.Text at 0x10686cd30&gt;</pre>
 </div>
 
 </div>
@@ -8002,6 +8004,7 @@ height=391
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is a nice visualization, but we can do much better if we use the appropriate toolkit! The <code>basemap</code> package that works with <code>matplotlib</code> is exactly what we are looking for.</p>
+
 </div>
 </div>
 </div>
@@ -8010,7 +8013,7 @@ height=391
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="k">import</span> <span class="n">Basemap</span>
 </pre></div>
 
 </div>
@@ -8023,7 +8026,7 @@ height=391
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="k">import</span> <span class="n">LineCollection</span>
 <span class="kn">import</span> <span class="nn">shapefile</span>
 
 <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
@@ -8064,7 +8067,7 @@ height=391
         <span class="n">lines</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         
-<span class="n">im1</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">distance_to_bus</span><span class="p">,</span><span class="n">shading</span><span class="o">=</span><span class="s">&#39;flat&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span><span class="n">latlon</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">im1</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">distance_to_bus</span><span class="p">,</span><span class="n">shading</span><span class="o">=</span><span class="s">&#39;flat&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span><span class="n">latlon</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 <span class="n">cb</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span><span class="s">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="s">&quot;2%&quot;</span><span class="p">)</span>
 <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&#39;km&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;distance to nearest bus stop&#39;</span><span class="p">)</span>
@@ -8081,10 +8084,8 @@ height=391
 <div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&lt;matplotlib.text.Text at 0x107a795f8&gt;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.text.Text at 0x107a795f8&gt;</pre>
 </div>
 
 </div>
@@ -10646,7 +10647,6 @@ height=493
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -10654,9 +10654,9 @@ height=493
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The distances to the nearest bus stop, which we have plotted in the previous image, are nice, but they don't take into account the time at which the bus leaves. To take this information into account in the plot, we can compute the time at which we need to leave a point on the mesh to reach the nearest bus on time.</p>
 <p>We do this by using the following formula:</p>
-<p><span class="math">\[
+$$
 t_{\text{leave_appartment}}(x, y) = t_{\text{nearest_bus_leaves}} - \text{distance_to_bus} * \text{walking_speed}
-\]</span></p>
+$$
 </div>
 </div>
 </div>
@@ -10665,7 +10665,7 @@ t_{\text{leave_appartment}}(x, y) = t_{\text{nearest_bus_leaves}} - \text{distan
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">walking_speed</span> <span class="o">=</span> <span class="mf">10.</span> <span class="c"># minutes per kilometer</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">walking_speed</span> <span class="o">=</span> <span class="mf">10.</span> <span class="c"># minutes per kilometer</span>
 </pre></div>
 
 </div>
@@ -10678,7 +10678,7 @@ t_{\text{leave_appartment}}(x, y) = t_{\text{nearest_bus_leaves}} - \text{distan
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">start_time</span> <span class="o">=</span> <span class="n">nan</span> <span class="o">*</span> <span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">start_time</span> <span class="o">=</span> <span class="n">nan</span> <span class="o">*</span> <span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
@@ -10703,6 +10703,7 @@ t_{\text{leave_appartment}}(x, y) = t_{\text{nearest_bus_leaves}} - \text{distan
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can plot the resulting departure times, just like for the distances:</p>
+
 </div>
 </div>
 </div>
@@ -10711,7 +10712,7 @@ t_{\text{leave_appartment}}(x, y) = t_{\text{nearest_bus_leaves}} - \text{distan
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">labels</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">6.75</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mf">7.25</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mf">7.75</span><span class="p">])</span> <span class="o">*</span> <span class="mi">60</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">labels</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">6.75</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mf">7.25</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mf">7.75</span><span class="p">])</span> <span class="o">*</span> <span class="mi">60</span>
 <span class="n">ticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;6h30&#39;</span><span class="p">,</span> <span class="s">&#39;6h45&#39;</span><span class="p">,</span> <span class="s">&#39;7h&#39;</span><span class="p">,</span> <span class="s">&#39;7h15&#39;</span><span class="p">,</span> <span class="s">&#39;7h30&#39;</span><span class="p">,</span> <span class="s">&#39;7h45&#39;</span><span class="p">]</span>
 
 <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -10736,10 +10737,8 @@ t_{\text{leave_appartment}}(x, y) = t_{\text{nearest_bus_leaves}} - \text{distan
 <div class="output_area"><div class="prompt output_prompt">Out[19]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&lt;matplotlib.text.Text at 0x1138fab70&gt;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.text.Text at 0x1138fab70&gt;</pre>
 </div>
 
 </div>
@@ -15877,6 +15876,7 @@ height=391
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And finally, we can plot this on a real geographic map, superimposing the Paris contours on top.</p>
+
 </div>
 </div>
 </div>
@@ -15885,7 +15885,7 @@ height=391
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="k">import</span> <span class="n">LineCollection</span>
 <span class="kn">import</span> <span class="nn">shapefile</span>
 
 <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
@@ -15926,7 +15926,7 @@ height=391
         <span class="n">lines</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         
-<span class="n">im1</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s">&#39;flat&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">labels</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="n">labels</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">im1</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s">&#39;flat&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">labels</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="n">labels</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
 <span class="n">cbar</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span><span class="s">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="s">&quot;2%&quot;</span><span class="p">)</span>
 <span class="n">cbar</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">cbar</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">(</span><span class="n">ticklabels</span><span class="p">)</span>
@@ -15944,10 +15944,8 @@ height=391
 <div class="output_area"><div class="prompt output_prompt">Out[20]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&lt;matplotlib.text.Text at 0x113b11ba8&gt;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.text.Text at 0x113b11ba8&gt;</pre>
 </div>
 
 </div>
@@ -18587,6 +18585,7 @@ height=479
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can see in the map above, there clearly are some locations that are interesting as they allow me to sleep longer in the morning and some others that are way too far from the bus. One can note that for really long distances, this map is not accurate anymore as it makes the assumption that I'm walking to the bus. This would obviously not be true if I had to get out of the house at 6h45: in that case, I'd probably take a metro or a Vélib to get to the bus stop. So actually, this is not the real topology of the house leaving time, but it gives an approximate sense for the places nearest to the bus stops.</p>
+
 </div>
 </div>
 </div>
@@ -18595,8 +18594,8 @@ height=479
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="conclusion">Conclusion</h1>
-<p>Time to wrap this post up. I hope you've enjoyed how easy it is to work with geographic coordinates using <code>matplotlib</code> and <code>basemap</code>. I tried to use the bus travel times and bus stop locations to make a map that would be useful in the process of looking for a new appartment. The map making process could actually be extended if it were possible to use Google Maps information as an input when computing the travel times.</p>
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1><p>Time to wrap this post up. I hope you've enjoyed how easy it is to work with geographic coordinates using <code>matplotlib</code> and <code>basemap</code>. I tried to use the bus travel times and bus stop locations to make a map that would be useful in the process of looking for a new appartment. The map making process could actually be extended if it were possible to use Google Maps information as an input when computing the travel times.</p>
+
 </div>
 </div>
 </div>
@@ -18606,6 +18605,7 @@ height=479
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20150404_BusDepartures.ipynb">20150404_BusDepartures.ipynb</a>.</p>
+
 </div>
 </div>
 </div></p></div>
@@ -18631,6 +18631,9 @@ height=479
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://flothesof.github.io/farthest-neighbors.html">The Farthest Neighbors Algorithm</a>
+      </li>
+      <li class="post">
           <a href="http://flothesof.github.io/Japanese-characters-principal-components.html">Exploring Japanese characters with principal component analysis</a>
       </li>
       <li class="post">
@@ -18641,9 +18644,6 @@ height=479
       </li>
       <li class="post">
           <a href="http://flothesof.github.io/xkcd-dating-pools.html">A quantitative analysis of XKCD comic #314</a>
-      </li>
-      <li class="post">
-          <a href="http://flothesof.github.io/smile-recognition.html">Smile Recognition Using OpenCV and scikit-learn</a>
       </li>
     </ul>
   </section>
@@ -18658,7 +18658,7 @@ height=479
 
   <section>
   <h1>Tags</h1>
-    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/statistics.html">statistics</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>  </section>
+    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/statistics.html">Statistics</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>  </section>
 
 
 

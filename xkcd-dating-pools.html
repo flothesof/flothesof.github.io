@@ -1762,6 +1762,7 @@ jQuery(document).ready(function($) {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we're going to analyze an XKCD comic about dating pools and derive the statistical analysis that's behind the curves shown in the comic.</p>
 <p>First of all, let's take a look at the comic:</p>
+
 </div>
 </div>
 </div>
@@ -1770,7 +1771,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span>
 <span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&quot;http://imgs.xkcd.com/comics/dating_pools.png&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -1784,7 +1785,7 @@ jQuery(document).ready(function($) {
 
 <div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
 
-<div class="output_html rendered_html output_subarea output_pyout">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <img src="http://imgs.xkcd.com/comics/dating_pools.png"/>
 </div>
 
@@ -1801,9 +1802,10 @@ jQuery(document).ready(function($) {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can see, the comic mentions some analysis involving census bureau data and dating pools. Our goal in this post is to replicate the analysis that leads to these curves. We proceed in two parts:</p>
 <ul>
-<li>first, we will take a closer look at the &quot;standard creepiness rule&quot;</li>
+<li>first, we will take a closer look at the "standard creepiness rule"</li>
 <li>then, we'll apply the creepiness rule to census bureau data available on the internet and see if we get the same type of plot shown in the comic</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -1816,21 +1818,20 @@ jQuery(document).ready(function($) {
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As explained in the comic, the &quot;standard creepiness rule&quot; implies that you can't date people below a certain age that depends on your own age. Assuming this applies to everyone in the population or society you live in, this means that there also is an upper age bound over which people can't date you because you're too young for them.</p>
+<p>As explained in the comic, the "standard creepiness rule" implies that you can't date people below a certain age that depends on your own age. Assuming this applies to everyone in the population or society you live in, this means that there also is an upper age bound over which people can't date you because you're too young for them.</p>
 <p>Formally, we can denote these two bounds as:</p>
 <ul>
 <li>youngest_person_you_can_date = creepiness_rule(your_age)</li>
 <li>your_age = creepiness_rule(oldest_person_that_can_date_you)</li>
 </ul>
-<p>Still more mathematically, if we denote the creepiness rule by <span class="math">\(f\)</span>, upper and lower bounds by <span class="math">\(\text{upper_bound}\)</span> and <span class="math">\(\text{lower_bound}\)</span> and your age by <span class="math">\(x\)</span> then we have:</p>
-<p><span class="math">\[\text{lower_bound} = f(x)\]</span> <span class="math">\[f(\text{upper_bound}) = x \Leftrightarrow \text{upper_bound} = f^{-1}(x)\]</span></p>
-<p>This can be easily implemented, as the inverse creepiness rule is &quot;you can't date people older than twice (your age minus 7 years)&quot;.</p>
+<p>Still more mathematically, if we denote the creepiness rule by $f$, upper and lower bounds by $\text{upper_bound}$ and $\text{lower_bound}$ and your age by $x$ then we have:</p>
+$$\text{lower_bound} = f(x)$$$$f(\text{upper_bound}) = x \Leftrightarrow \text{upper_bound} = f^{-1}(x)$$<p>This can be easily implemented, as the inverse creepiness rule is "you can't date people older than twice (your age minus 7 years)".</p>
+
 </div>
 </div>
 </div>
@@ -1839,7 +1840,7 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">creepiness_rule</span><span class="p">(</span><span class="n">age</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">creepiness_rule</span><span class="p">(</span><span class="n">age</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">age</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">+</span> <span class="mi">7</span>
 
 <span class="k">def</span> <span class="nf">inverse_creepiness_rule</span><span class="p">(</span><span class="n">age</span><span class="p">):</span>
@@ -1857,6 +1858,7 @@ jQuery(document).ready(function($) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can prepare a little plot to look at the lower and upper bounds as a function of your age:</p>
+
 </div>
 </div>
 </div>
@@ -1865,8 +1867,8 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
 </div>
@@ -1879,12 +1881,12 @@ jQuery(document).ready(function($) {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">ages</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">ages</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">creepiness_rule</span><span class="p">(</span><span class="n">ages</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;youngest people you can date&#39;</span><span class="p">)</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">inverse_creepiness_rule</span><span class="p">(</span><span class="n">ages</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;oldest people you can date&#39;</span><span class="p">)</span>
 <span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">xlim</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span> <span class="mi">70</span><span class="p">))</span>
-<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 <span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;your age (years)&quot;</span><span class="p">)</span>
 <span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;age (years)&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1900,10 +1902,8 @@ jQuery(document).ready(function($) {
 <div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-&lt;matplotlib.text.Text at 0x1067969b0&gt;
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.text.Text at 0x1067969b0&gt;</pre>
 </div>
 
 </div>
@@ -2690,13 +2690,14 @@ height=270
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As one can see from the plot above, the dating interval is getting larger with your age. When computed, the interval can be found to be equal to <span class="math">\(\frac{3}{2}age - 14\)</span>.</p>
-<p>Therefore, what I would call &quot;the dating pool paradox&quot; results from two factors that have inverse effects on the dating pool:</p>
+<p>As one can see from the plot above, the dating interval is getting larger with your age. When computed, the interval can be found to be equal to $\frac{3}{2}age - 14$.</p>
+<p>Therefore, what I would call "the dating pool paradox" results from two factors that have inverse effects on the dating pool:</p>
 <ul>
 <li>your dating age interval grows by a factor 1.5</li>
 <li>while at the same time the number of single decreases</li>
 </ul>
 <p>We will explore this phenomenon with some real data in the next section. But first, we'll need to define a dating bounds function and check that it returns the numbers given in the comic.</p>
+
 </div>
 </div>
 </div>
@@ -2705,7 +2706,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">dating_bounds</span><span class="p">(</span><span class="n">age</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">dating_bounds</span><span class="p">(</span><span class="n">age</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">creepiness_rule</span><span class="p">(</span><span class="n">age</span><span class="p">),</span> <span class="n">inverse_creepiness_rule</span><span class="p">(</span><span class="n">age</span><span class="p">))</span>
 </pre></div>
 
@@ -2720,6 +2721,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>When you're 18, you can date people in the following interval:</p>
+
 </div>
 </div>
 </div>
@@ -2728,7 +2730,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">dating_bounds</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">dating_bounds</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2742,10 +2744,8 @@ height=270
 <div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-(16.0, 22.0)
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>(16.0, 22.0)</pre>
 </div>
 
 </div>
@@ -2760,6 +2760,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>When you're 30, your dating pool is in the following age group:</p>
+
 </div>
 </div>
 </div>
@@ -2768,7 +2769,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">dating_bounds</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">dating_bounds</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2782,10 +2783,8 @@ height=270
 <div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-(22.0, 46.0)
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>(22.0, 46.0)</pre>
 </div>
 
 </div>
@@ -2800,6 +2799,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the next section, we apply the previous functions to some real numbers to see if we can indeed derive the dating pool curves Randall Munroe is showing in his comic.</p>
+
 </div>
 </div>
 </div>
@@ -2812,7 +2812,6 @@ height=270
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -2822,14 +2821,14 @@ height=270
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Figures such as the ones said to exist in the comic can indeed be found on the interwebz: <a href="http://www.census.gov/population/www/socdemo/hh-fam/cps2011.html" class="uri">http://www.census.gov/population/www/socdemo/hh-fam/cps2011.html</a>. Downloading the excel file at <a href="http://www.census.gov/population/socdemo/hh-fam/cps2011/tabA1-all.xls" class="uri">http://www.census.gov/population/socdemo/hh-fam/cps2011/tabA1-all.xls</a>, we can continue the analysis and replicate Randall's findings. I edited the data found in the csv file to compute the age pools of singles by considering that the &quot;single person&quot; category is the union of the categories &quot;Married Spouse Absent&quot;, &quot;Widowed&quot;, &quot;Divorced&quot;, &quot;Separated&quot; and &quot;Never Married&quot;.</p>
+<p>Figures such as the ones said to exist in the comic can indeed be found on the interwebz: <a href="http://www.census.gov/population/www/socdemo/hh-fam/cps2011.html">http://www.census.gov/population/www/socdemo/hh-fam/cps2011.html</a>. Downloading the excel file at <a href="http://www.census.gov/population/socdemo/hh-fam/cps2011/tabA1-all.xls">http://www.census.gov/population/socdemo/hh-fam/cps2011/tabA1-all.xls</a>, we can continue the analysis and replicate Randall's findings. I edited the data found in the csv file to compute the age pools of singles by considering that the "single person" category is the union of the categories "Married Spouse Absent", "Widowed", "Divorced", "Separated" and "Never Married".</p>
 <p>The data is given as the number of singles within an age category bounded by lower and upper ages. As an example, there are 7993 thousand singles of both sexes between the ages of 18 and 19.</p>
+
 </div>
 </div>
 </div>
@@ -2838,7 +2837,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">ages_lower</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">85</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">ages_lower</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">85</span><span class="p">])</span>
 <span class="n">ages_upper</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
 <span class="n">data_both_sexes</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">12740</span><span class="p">,</span> <span class="mi">7993</span><span class="p">,</span> <span class="mi">19063</span><span class="p">,</span> <span class="mi">13970</span><span class="p">,</span> <span class="mi">9233</span><span class="p">,</span> <span class="mi">7277</span><span class="p">,</span> <span class="mi">7403</span><span class="p">,</span> <span class="mi">7971</span><span class="p">,</span> <span class="mi">7708</span><span class="p">,</span> <span class="mi">12733</span><span class="p">,</span> <span class="mi">7825</span><span class="p">,</span> <span class="mi">6206</span><span class="p">,</span> <span class="mi">3428</span><span class="p">])</span>
 <span class="n">data_males</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">6559</span><span class="p">,</span> <span class="mi">4082</span><span class="p">,</span> <span class="mi">10079</span><span class="p">,</span> <span class="mi">7726</span><span class="p">,</span> <span class="mi">4952</span><span class="p">,</span> <span class="mi">3639</span><span class="p">,</span> <span class="mi">3729</span><span class="p">,</span> <span class="mi">3860</span><span class="p">,</span> <span class="mi">3557</span><span class="p">,</span> <span class="mi">5461</span><span class="p">,</span> <span class="mi">2614</span><span class="p">,</span> <span class="mi">1592</span><span class="p">,</span> <span class="mi">826</span><span class="p">])</span>
@@ -2856,6 +2855,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Due to the irregular sampling of the data, the next section will be devoted to building an interpolation function that returns the number of singles between given age bounds.</p>
+
 </div>
 </div>
 </div>
@@ -2868,13 +2868,13 @@ height=270
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this section, we'll be writing a function that computes the number of singles between two age bounds. We first compute the number of singles above a certain age:</p>
+
 </div>
 </div>
 </div>
@@ -2883,7 +2883,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">singles_above_age</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">singles_above_age</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns the number of singles found in vector data above a given age</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2908,6 +2908,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check if the function works.</p>
+
 </div>
 </div>
 </div>
@@ -2916,8 +2917,8 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
 </pre></div>
 
 </div>
@@ -2930,10 +2931,8 @@ height=270
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-54786.0
+<pre>54786.0
 54786
-
 </pre>
 </div>
 </div>
@@ -2947,8 +2946,8 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">+</span> <span class="n">data_females</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">+</span> <span class="n">data_females</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2961,10 +2960,8 @@ height=270
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
+<pre>56741.0
 56741.0
-56741.0
-
 </pre>
 </div>
 </div>
@@ -2978,8 +2975,8 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mf">18.5</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">+</span> <span class="n">data_females</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mf">18.5</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">+</span> <span class="n">data_females</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2992,10 +2989,8 @@ height=270
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
+<pre>57718.5
 57718.5
-57718.5
-
 </pre>
 </div>
 </div>
@@ -3009,8 +3004,8 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">16</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="n">singles_above_age</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="n">data_females</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_females</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">16</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3023,10 +3018,8 @@ height=270
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
+<pre>162.5625
 162.5625
-162.5625
-
 </pre>
 </div>
 </div>
@@ -3041,6 +3034,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This seems to work. So let's build a function that returns singles between two age bounds. We are using the fact that the number of people between <code>age1</code> and <code>age2</code> are all those above <code>age1</code> minus the ones above <code>age2</code>.</p>
+
 </div>
 </div>
 </div>
@@ -3049,7 +3043,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">singles_between_bounds</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">singles_between_bounds</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">singles_above_age</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">singles_above_age</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 
@@ -3064,6 +3058,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check that the function works.</p>
+
 </div>
 </div>
 </div>
@@ -3072,8 +3067,8 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">print</span><span class="p">(</span><span class="n">singles_between_bounds</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="n">data_males</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">data_males</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="n">singles_between_bounds</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="n">data_males</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_males</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -3086,10 +3081,8 @@ height=270
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
-6559.0
+<pre>6559.0
 6559
-
 </pre>
 </div>
 </div>
@@ -3104,6 +3097,7 @@ height=270
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is quite neat. We can now move on to the analysis we want to conduct.</p>
+
 </div>
 </div>
 </div>
@@ -3116,13 +3110,13 @@ height=270
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's look at the number of singles in 1 year intervals between 18 and 80!</p>
+
 </div>
 </div>
 </div>
@@ -3131,7 +3125,7 @@ height=270
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">ages</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">ages</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">both</span> <span class="o">=</span> <span class="p">[</span><span class="n">singles_between_bounds</span><span class="p">((</span><span class="n">age</span><span class="p">,</span> <span class="n">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">data_both_sexes</span><span class="p">)</span> <span class="k">for</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">]</span>
 <span class="n">males</span> <span class="o">=</span> <span class="p">[</span><span class="n">singles_between_bounds</span><span class="p">((</span><span class="n">age</span><span class="p">,</span> <span class="n">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">data_males</span><span class="p">)</span> <span class="k">for</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">]</span>
 <span class="n">females</span> <span class="o">=</span> <span class="p">[</span><span class="n">singles_between_bounds</span><span class="p">((</span><span class="n">age</span><span class="p">,</span> <span class="n">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">data_females</span><span class="p">)</span> <span class="k">for</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">]</span>
@@ -4027,6 +4021,7 @@ height=280
 <li>after the rebound, the number of singles diminishes again</li>
 <li>trends for men and women are quite similar except for the fact that the mid-40's rebound reaches a higher peak for women</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -4036,6 +4031,7 @@ height=280
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that our preliminary work is done, we can easily compute dating pools using the previously defined functions.</p>
+
 </div>
 </div>
 </div>
@@ -4048,13 +4044,13 @@ height=280
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We define a function that returns the size of the dating pool for a given age:</p>
+
 </div>
 </div>
 </div>
@@ -4063,7 +4059,7 @@ height=280
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">dating_pool</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">dating_pool</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
     <span class="n">age_bounds</span> <span class="o">=</span> <span class="n">dating_bounds</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">singles_between_bounds</span><span class="p">(</span><span class="n">age_bounds</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
 </pre></div>
@@ -4079,6 +4075,7 @@ height=280
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's get a sample result:</p>
+
 </div>
 </div>
 </div>
@@ -4087,7 +4084,7 @@ height=280
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">dating_pool</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">data_females</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">dating_pool</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">data_females</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -4101,10 +4098,8 @@ height=280
 <div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
 
 
-<div class="output_text output_subarea output_pyout">
-<pre>
-21693.800000000003
-</pre>
+<div class="output_text output_subarea output_execute_result">
+<pre>21693.800000000003</pre>
 </div>
 
 </div>
@@ -4119,6 +4114,7 @@ height=280
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For a 26 year old woman, the dating pool consists of 21 million men.</p>
+
 </div>
 </div>
 </div>
@@ -4128,6 +4124,7 @@ height=280
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To replicate the comic's data, we will now plot the dating pool as a function of age for males and females.</p>
+
 </div>
 </div>
 </div>
@@ -4136,7 +4133,7 @@ height=280
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">ages</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">ages</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
 <span class="n">pool</span> <span class="o">=</span> <span class="p">[</span><span class="n">dating_pool</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">data_females</span><span class="p">)</span> <span class="k">for</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">]</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">pool</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;males&#39;</span><span class="p">)</span>
 <span class="n">pool</span> <span class="o">=</span> <span class="p">[</span><span class="n">dating_pool</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">data_males</span><span class="p">)</span> <span class="k">for</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">]</span>
@@ -4145,7 +4142,7 @@ height=280
 <span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;age (years)&quot;</span><span class="p">)</span>
 <span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;thousands of people&quot;</span><span class="p">)</span>
 <span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -5001,7 +4998,8 @@ height=280
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, to comment on the comic's conclusion: indeed, the dating pool grows for men and women until ages 50 and 40, respectively. However, this assumes that people all share the standard creepiness function.</p>
-<p>What if instead we assumed a more &quot;normal&quot; rule for dating bounds, say +- 5 years. We can easily plot this curve to see what it looks like.</p>
+<p>What if instead we assumed a more "normal" rule for dating bounds, say +- 5 years. We can easily plot this curve to see what it looks like.</p>
+
 </div>
 </div>
 </div>
@@ -5010,7 +5008,7 @@ height=280
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">dating_pool2</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">dating_pool2</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
     <span class="n">age_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">age</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">age</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">singles_between_bounds</span><span class="p">(</span><span class="n">age_bounds</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
 
@@ -5023,7 +5021,7 @@ height=280
 <span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;age (years)&quot;</span><span class="p">)</span>
 <span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;thousands of people&quot;</span><span class="p">)</span>
 <span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper right&#39;</span><span class="p">)</span>
-<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -5818,6 +5816,7 @@ height=280
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So here we have it: if you're not dating at the edge of the bell curve in terms of age (unlike the guy in the webcomic's last panel), your dating pool does go down with age, even though there is a slight rebound between the ages of 40 and 50.</p>
 <p>I hope you have enjoyed this little analysis as much as I have writing it. Feel free to comment if you spot some inaccuracies or have some remarks.</p>
+
 </div>
 </div>
 </div>
@@ -5827,6 +5826,7 @@ height=280
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20150131_XKCDDatingPools.ipynb">20150131_XKCDDatingPools.ipynb</a>.</p>
+
 </div>
 </div>
 </div></p></div>
@@ -5853,6 +5853,9 @@ height=280
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://flothesof.github.io/farthest-neighbors.html">The Farthest Neighbors Algorithm</a>
+      </li>
+      <li class="post">
           <a href="http://flothesof.github.io/Japanese-characters-principal-components.html">Exploring Japanese characters with principal component analysis</a>
       </li>
       <li class="post">
@@ -5863,9 +5866,6 @@ height=280
       </li>
       <li class="post">
           <a href="http://flothesof.github.io/xkcd-dating-pools.html">A quantitative analysis of XKCD comic #314</a>
-      </li>
-      <li class="post">
-          <a href="http://flothesof.github.io/smile-recognition.html">Smile Recognition Using OpenCV and scikit-learn</a>
       </li>
     </ul>
   </section>
@@ -5880,7 +5880,7 @@ height=280
 
   <section>
   <h1>Tags</h1>
-    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/statistics.html">statistics</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>  </section>
+    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/statistics.html">Statistics</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>  </section>
 
 
 
