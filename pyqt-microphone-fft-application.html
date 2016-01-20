@@ -83,7 +83,7 @@ I first tried to start with the example from VisPy but as is part of a <a href="
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
-<span class="n">YouTubeVideo</span><span class="p">(</span><span class="s">&#39;1XxR9U_aUog&#39;</span><span class="p">)</span>
+<span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;1XxR9U_aUog&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -153,8 +153,8 @@ I first tried to start with the example from VisPy but as is part of a <a href="
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="c"># class taken from the SciPy 2015 Vispy talk opening example </span>
-<span class="c"># see https://github.com/vispy/vispy/pull/928</span>
+<div class=" highlight hl-ipython3"><pre><span class="c1"># class taken from the SciPy 2015 Vispy talk opening example </span>
+<span class="c1"># see https://github.com/vispy/vispy/pull/928</span>
 <span class="kn">import</span> <span class="nn">pyaudio</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
@@ -168,21 +168,21 @@ I first tried to start with the example from VisPy but as is part of a <a href="
         <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">pyaudio</span><span class="o">.</span><span class="n">paInt16</span><span class="p">,</span>
                                   <span class="n">channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                   <span class="n">rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="p">,</span>
-                                  <span class="nb">input</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+                                  <span class="nb">input</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                   <span class="n">frames_per_buffer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunksize</span><span class="p">,</span>
                                   <span class="n">stream_callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">new_frame</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="k">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">new_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s">&#39;int16&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;int16&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">None</span><span class="p">,</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paComplete</span>
-        <span class="k">return</span> <span class="k">None</span><span class="p">,</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paContinue</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paComplete</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paContinue</span>
     
     <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
@@ -195,7 +195,7 @@ I first tried to start with the example from VisPy but as is part of a <a href="
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="k">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
 </pre></div>
@@ -268,7 +268,7 @@ I first tried to start with the example from VisPy but as is part of a <a href="
 
 <span class="k">class</span> <span class="nc">MplFigure</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span> <span class="o">=</span> <span class="n">NavigationToolbar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
 </pre></div>
@@ -315,31 +315,31 @@ I first tried to start with the example from VisPy but as is part of a <a href="
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         
-        <span class="c"># customize the UI</span>
+        <span class="c1"># customize the UI</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
         
-        <span class="c"># init class data</span>
+        <span class="c1"># init class data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initData</span><span class="p">()</span>       
         
-        <span class="c"># connect slots</span>
+        <span class="c1"># connect slots</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connectSlots</span><span class="p">()</span>
         
-        <span class="c"># init MPL widget</span>
+        <span class="c1"># init MPL widget</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initMplWidget</span><span class="p">()</span>
         
     <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">hbox_gain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
-        <span class="n">autoGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s">&#39;Auto gain for frequency spectrum&#39;</span><span class="p">)</span>
-        <span class="n">autoGainCheckBox</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QCheckBox</span><span class="p">(</span><span class="n">checked</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+        <span class="n">autoGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Auto gain for frequency spectrum&#39;</span><span class="p">)</span>
+        <span class="n">autoGainCheckBox</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QCheckBox</span><span class="p">(</span><span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">hbox_gain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">autoGain</span><span class="p">)</span>
         <span class="n">hbox_gain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">autoGainCheckBox</span><span class="p">)</span>
         
-        <span class="c"># reference to checkbox</span>
+        <span class="c1"># reference to checkbox</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoGainCheckBox</span> <span class="o">=</span> <span class="n">autoGainCheckBox</span>
         
         <span class="n">hbox_fixedGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
-        <span class="n">fixedGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s">&#39;Manual gain level for frequency spectrum&#39;</span><span class="p">)</span>
+        <span class="n">fixedGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Manual gain level for frequency spectrum&#39;</span><span class="p">)</span>
         <span class="n">fixedGainSlider</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QSlider</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
         <span class="n">hbox_fixedGain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">fixedGain</span><span class="p">)</span>
         <span class="n">hbox_fixedGain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">fixedGainSlider</span><span class="p">)</span>
@@ -351,7 +351,7 @@ I first tried to start with the example from VisPy but as is part of a <a href="
         <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox_gain</span><span class="p">)</span>
         <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox_fixedGain</span><span class="p">)</span>
 
-        <span class="c"># mpl figure</span>
+        <span class="c1"># mpl figure</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span> <span class="o">=</span> <span class="n">MplFigure</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">toolbar</span><span class="p">)</span>
         <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">canvas</span><span class="p">)</span>
@@ -359,14 +359,14 @@ I first tried to start with the example from VisPy but as is part of a <a href="
         <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbox</span><span class="p">)</span> 
         
         <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&#39;LiveFFT&#39;</span><span class="p">)</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;LiveFFT&#39;</span><span class="p">)</span>    
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="c"># timer for callbacks, taken from:</span>
-        <span class="c"># http://ralsina.me/weblog/posts/BB974.html</span>
+        <span class="c1"># timer for callbacks, taken from:</span>
+        <span class="c1"># http://ralsina.me/weblog/posts/BB974.html</span>
         <span class="n">timer</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="p">()</span>
         <span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handleNewData</span><span class="p">)</span>
         <span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-        <span class="c"># keep reference to timer        </span>
+        <span class="c1"># keep reference to timer        </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">timer</span>
         
      
@@ -374,10 +374,10 @@ I first tried to start with the example from VisPy but as is part of a <a href="
         <span class="n">mic</span> <span class="o">=</span> <span class="n">MicrophoneRecorder</span><span class="p">()</span>
         <span class="n">mic</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>  
 
-        <span class="c"># keeps reference to mic        </span>
+        <span class="c1"># keeps reference to mic        </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mic</span> <span class="o">=</span> <span class="n">mic</span>
         
-        <span class="c"># computes the parameters that will be used during plotting</span>
+        <span class="c1"># computes the parameters that will be used during plotting</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">mic</span><span class="o">.</span><span class="n">chunksize</span><span class="p">,</span> 
                                          <span class="mf">1.</span><span class="o">/</span><span class="n">mic</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mic</span><span class="o">.</span><span class="n">chunksize</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="n">mic</span><span class="o">.</span><span class="n">rate</span> <span class="o">*</span> <span class="mi">1000</span>
@@ -388,18 +388,18 @@ I first tried to start with the example from VisPy but as is part of a <a href="
     <span class="k">def</span> <span class="nf">initMplWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;creates initial matplotlib plots in the main window and keeps </span>
 <span class="sd">        references for further use&quot;&quot;&quot;</span>
-        <span class="c"># top plot</span>
+        <span class="c1"># top plot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">32768</span><span class="p">,</span> <span class="mi">32768</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">u&#39;time (ms)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">u&#39;time (ms)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 
-        <span class="c"># bottom plot</span>
+        <span class="c1"># bottom plot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">u&#39;frequency (Hz)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-        <span class="c"># line objects        </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">u&#39;frequency (Hz)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+        <span class="c1"># line objects        </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_top</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="p">,</span> 
                                          <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="p">))</span>
         
@@ -410,24 +410,24 @@ I first tried to start with the example from VisPy but as is part of a <a href="
                                                
     <span class="k">def</span> <span class="nf">handleNewData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; handles the asynchroneously collected sound chunks &quot;&quot;&quot;</span>        
-        <span class="c"># gets the latest frames        </span>
+        <span class="c1"># gets the latest frames        </span>
         <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mic</span><span class="o">.</span><span class="n">get_frames</span><span class="p">()</span>
         
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c"># keeps only the last frame</span>
+            <span class="c1"># keeps only the last frame</span>
             <span class="n">current_frame</span> <span class="o">=</span> <span class="n">frames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="c"># plots the time signal</span>
+            <span class="c1"># plots the time signal</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">line_top</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="p">,</span> <span class="n">current_frame</span><span class="p">)</span>
-            <span class="c"># computes and plots the fft signal            </span>
+            <span class="c1"># computes and plots the fft signal            </span>
             <span class="n">fft_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">current_frame</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoGainCheckBox</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">:</span>
                 <span class="n">fft_frame</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fft_frame</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">fft_frame</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedGainSlider</span><span class="o">.</span><span class="n">value</span><span class="p">())</span> <span class="o">/</span> <span class="mf">5000000.</span>
-                <span class="c">#print(np.abs(fft_frame).max())</span>
+                <span class="c1">#print(np.abs(fft_frame).max())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">line_bottom</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fft_frame</span><span class="p">))</span>            
             
-            <span class="c"># refreshes the plots</span>
+            <span class="c1"># refreshes the plots</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 
@@ -485,7 +485,7 @@ if __name__ == "__main__":
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s">&#39;1XxR9U_aUog&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;1XxR9U_aUog&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -562,6 +562,9 @@ if __name__ == "__main__":
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://flothesof.github.io/roman-emperor-reigns.html">A Wave Reflecting On A Boundary</a>
+      </li>
+      <li class="post">
           <a href="http://flothesof.github.io/sankey-tutorial-matplotlib.html">A tutorial about drawing Sankey graphics using matplotlib</a>
       </li>
       <li class="post">
@@ -572,9 +575,6 @@ if __name__ == "__main__":
       </li>
       <li class="post">
           <a href="http://flothesof.github.io/kaggle-whats-cooking-machine-learning.html">The Kaggle What's Cooking challenge</a>
-      </li>
-      <li class="post">
-          <a href="http://flothesof.github.io/age-moyen-deputes-francais.html">L'âge moyen des députés français</a>
       </li>
     </ul>
   </section>
@@ -589,7 +589,7 @@ if __name__ == "__main__":
 
   <section>
   <h1>Tags</h1>
-    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/digital-signal-processing.html">Digital Signal Processing</a>,    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/coursera.html">Coursera</a>,    <a href="http://flothesof.github.io/tag/pelican.html">Pelican</a>,    <a href="http://flothesof.github.io/tag/matplotlib.html">matplotlib</a>,    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/france.html">France</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/pyqt.html">PyQt</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/mac-os-x.html">Mac OS X</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/language.html">Language</a>,    <a href="http://flothesof.github.io/tag/travis-ci.html">Travis-CI</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/statistics.html">Statistics</a>,    <a href="http://flothesof.github.io/tag/kaggle.html">Kaggle</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/mooc.html">MOOC</a>,    <a href="http://flothesof.github.io/tag/democratie.html">Démocratie</a>,    <a href="http://flothesof.github.io/tag/french.html">French</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/anaconda.html">Anaconda</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>,    <a href="http://flothesof.github.io/tag/gravity.html">Gravity</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/graphics.html">Graphics</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>  </section>
+    <a href="http://flothesof.github.io/tag/animations.html">Animations</a>,    <a href="http://flothesof.github.io/tag/democratie.html">Démocratie</a>,    <a href="http://flothesof.github.io/tag/france.html">France</a>,    <a href="http://flothesof.github.io/tag/anaconda.html">Anaconda</a>,    <a href="http://flothesof.github.io/tag/japanese.html">Japanese</a>,    <a href="http://flothesof.github.io/tag/japan.html">Japan</a>,    <a href="http://flothesof.github.io/tag/buildings.html">Buildings</a>,    <a href="http://flothesof.github.io/tag/geography.html">Geography</a>,    <a href="http://flothesof.github.io/tag/clothes.html">Clothes</a>,    <a href="http://flothesof.github.io/tag/physics.html">Physics</a>,    <a href="http://flothesof.github.io/tag/3d-printing.html">3D Printing</a>,    <a href="http://flothesof.github.io/tag/mooc.html">MOOC</a>,    <a href="http://flothesof.github.io/tag/languages.html">Languages</a>,    <a href="http://flothesof.github.io/tag/waves.html">Waves</a>,    <a href="http://flothesof.github.io/tag/mathematics.html">Mathematics</a>,    <a href="http://flothesof.github.io/tag/sound.html">Sound</a>,    <a href="http://flothesof.github.io/tag/french.html">French</a>,    <a href="http://flothesof.github.io/tag/coursera.html">Coursera</a>,    <a href="http://flothesof.github.io/tag/fractals.html">Fractals</a>,    <a href="http://flothesof.github.io/tag/gambling.html">Gambling</a>,    <a href="http://flothesof.github.io/tag/xkcd.html">XKCD</a>,    <a href="http://flothesof.github.io/tag/kaggle.html">Kaggle</a>,    <a href="http://flothesof.github.io/tag/digital-signal-processing.html">Digital Signal Processing</a>,    <a href="http://flothesof.github.io/tag/pelican.html">Pelican</a>,    <a href="http://flothesof.github.io/tag/game-boy.html">Game Boy</a>,    <a href="http://flothesof.github.io/tag/travis-ci.html">Travis-CI</a>,    <a href="http://flothesof.github.io/tag/visualization.html">Visualization</a>,    <a href="http://flothesof.github.io/tag/language.html">Language</a>,    <a href="http://flothesof.github.io/tag/ipython-notebook.html">IPython Notebook</a>,    <a href="http://flothesof.github.io/tag/pyqt.html">PyQt</a>,    <a href="http://flothesof.github.io/tag/matplotlib.html">matplotlib</a>,    <a href="http://flothesof.github.io/tag/music.html">Music</a>,    <a href="http://flothesof.github.io/tag/graphics.html">Graphics</a>,    <a href="http://flothesof.github.io/tag/math.html">Math</a>,    <a href="http://flothesof.github.io/tag/statistics.html">Statistics</a>,    <a href="http://flothesof.github.io/tag/gravity.html">Gravity</a>,    <a href="http://flothesof.github.io/tag/machine-learning.html">Machine Learning</a>,    <a href="http://flothesof.github.io/tag/real-life.html">Real life</a>,    <a href="http://flothesof.github.io/tag/mac-os-x.html">Mac OS X</a>,    <a href="http://flothesof.github.io/tag/history.html">History</a>,    <a href="http://flothesof.github.io/tag/opencv.html">OpenCV</a>,    <a href="http://flothesof.github.io/tag/windows-7.html">Windows 7</a>,    <a href="http://flothesof.github.io/tag/bricks.html">Bricks</a>,    <a href="http://flothesof.github.io/tag/gaming.html">Gaming</a>  </section>
 
 
 
