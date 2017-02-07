@@ -314,7 +314,490 @@ jQuery(document).ready(function($) {
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <p>{% notebook 20150721_LiveFFT.ipynb cells[:] %}</p>
+        <p>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I've always been interested by audio processing. At the recent SciPy 2015 conference, two talks involving "live" spectrograms were part of the highlights (the first concerning <a href="https://www.youtube.com/watch?v=c9CgHHz_iYk&amp;index=5&amp;list=PLYx7XA2nY5Gcpabmu61kKcToLz0FapmHu">Bokeh</a>, a great Python graphics backend for your browser and the second by the <a href="https://www.youtube.com/watch?v=_3YoaeoiIFI&amp;list=PLYx7XA2nY5Gcpabmu61kKcToLz0FapmHu&amp;index=2">VisPy team</a>, an impressive OpenGL Python rendering toolkit for science).
+This spiked my interest and I've decided to devote a little time to write a simple app for live audio processing.
+I first tried to start with the example from VisPy but as is part of a <a href="https://github.com/vispy/vispy/pull/928">pull request that's not yet merged into the main branch</a>, I decided to start from scratch using some of the code provided by the VisPy example and combine it with my existing knowledge of matplotlib and PyQt.</p>
+<p>The app I want to code should do the following things:</p>
+<ul>
+<li>record a sound from my microphone continuously</li>
+<li>plot the waveform and the spectrum (frequency representation) of the current waveform</li>
+</ul>
+<p>The final result can be seen on YouTube:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
+<span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;1XxR9U_aUog&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+        <iframe
+            width="400"
+            height="300"
+            src="https://www.youtube.com/embed/1XxR9U_aUog"
+            frameborder="0"
+            allowfullscreen
+        ></iframe>
+        
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This blog post works as follows:</p>
+<ul>
+<li>we'll first look at the Microphone class that records sound and explain its behaviour</li>
+<li>in a second step, we'll design a Qt application that plots the data from the microphone</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Continuously-recording-sound-from-the-microphone-using-PyAudio">Continuously recording sound from the microphone using PyAudio<a class="anchor-link" href="#Continuously-recording-sound-from-the-microphone-using-PyAudio">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It is actually a little bit tricky to record sound from the microphone with Python. In particular, I first tried doing this in pure PyQt, but failed. This seems to be possible, but given I did not manage to find code that does this on the internet, I abandoned this way of doing it.</p>
+<p>Inspired by the VisPy talk, I decided to take over their implementation of a continuously recording microphone using PyAudio. The PyAudio bindings are great because they allow you to use most devices on most platforms. On Mac, I haven't been able to install them into Python 3, but I managed to find a conda package compatible with Python 2.7. So the following code needs to run under Python 2.7 on my machine.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># class taken from the SciPy 2015 Vispy talk opening example </span>
+<span class="c1"># see https://github.com/vispy/vispy/pull/928</span>
+<span class="kn">import</span> <span class="nn">pyaudio</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">MicrophoneRecorder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="n">chunksize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">PyAudio</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">pyaudio</span><span class="o">.</span><span class="n">paInt16</span><span class="p">,</span>
+                                  <span class="n">channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                  <span class="n">rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="p">,</span>
+                                  <span class="nb">input</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">frames_per_buffer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunksize</span><span class="p">,</span>
+                                  <span class="n">stream_callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">new_frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">new_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;int16&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paComplete</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paContinue</span>
+    
+    <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="n">frames</span>
+    
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">start_stream</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This class works as a microphone recorder by wrapping functions provided by PyAudio (as shown in the <a href="https://people.csail.mit.edu/hubert/pyaudio/#examples">PyAudio examples</a>). On instantiation it creates a PyAudio object that uses a callback to feed an internal buffer, <code>self.frames</code>, with audio chunks that always have the same length (as defined by <code>chunksize</code>).</p>
+<p>The internal buffer can then be accessed (and emptied) using <code>MicrophoneRecorder.get_frames</code>.</p>
+<p>One of the tricky things in this class is that it actually runs in a thread. So to make sure it stops correctly, a call to <code>atexit</code> is registered at startup. Unfortunately, this also makes the class unrunnable in the IPython notebook (so I won't instantiate it here).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once we have a mechanism for getting the audio, we can design the graphical part of the app: a GUI written using PyQt.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="The-audio-GUI-written-using-PyQt">The audio GUI written using PyQt<a class="anchor-link" href="#The-audio-GUI-written-using-PyQt">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The audio GUI's function is easy to describe: it should fetch the accumulated output from the microphone recorder at regular intervals and plot the corresponding signal. The plotting should comprise both a time series and a frequency spectrum computed with <code>numpy.fft</code>.</p>
+<p>It turns out that the way I do the plooting was to use <code>matplotlib</code>. Although in general not suited for real-time graphical interfaces, it works in this case. The reason is that we don't redraw a whole figure at each call to the plotting but only lines that we have already instantiated. So in fact the updating is quick enough for our means.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Interface a matplotlib plot with PyQt is done using a specific class, whose code is below:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.backends.backend_qt4agg</span> <span class="k">import</span> <span class="n">FigureCanvasQTAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_qt4agg</span> <span class="k">import</span> <span class="n">NavigationToolbar2QT</span> <span class="k">as</span> <span class="n">NavigationToolbar</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">class</span> <span class="nc">MplFigure</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span> <span class="o">=</span> <span class="n">NavigationToolbar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This just creates an object that has a handle to a matplotlib canvas, which will be used to plot our stuff.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The previous object is incorporated into a pretty classic user interface with a checkbox and a slider.</p>
+<ul>
+<li>the checkbox allows for automatic scaling of the spectrum, which is useful if you're recording sounds at different amplitudes and not sure of your output beforehand</li>
+<li>on the other hand, if you uncheck the box, you can control the normalization of the spectrum using a fixed gain provided by the slider</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="k">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+
+<span class="k">class</span> <span class="nc">LiveFFTWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="c1"># customize the UI</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
+        
+        <span class="c1"># init class data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initData</span><span class="p">()</span>       
+        
+        <span class="c1"># connect slots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connectSlots</span><span class="p">()</span>
+        
+        <span class="c1"># init MPL widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initMplWidget</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">hbox_gain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">autoGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Auto gain for frequency spectrum&#39;</span><span class="p">)</span>
+        <span class="n">autoGainCheckBox</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QCheckBox</span><span class="p">(</span><span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">hbox_gain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">autoGain</span><span class="p">)</span>
+        <span class="n">hbox_gain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">autoGainCheckBox</span><span class="p">)</span>
+        
+        <span class="c1"># reference to checkbox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoGainCheckBox</span> <span class="o">=</span> <span class="n">autoGainCheckBox</span>
+        
+        <span class="n">hbox_fixedGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">fixedGain</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Manual gain level for frequency spectrum&#39;</span><span class="p">)</span>
+        <span class="n">fixedGainSlider</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QSlider</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="n">hbox_fixedGain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">fixedGain</span><span class="p">)</span>
+        <span class="n">hbox_fixedGain</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">fixedGainSlider</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixedGainSlider</span> <span class="o">=</span> <span class="n">fixedGainSlider</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox_gain</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox_fixedGain</span><span class="p">)</span>
+
+        <span class="c1"># mpl figure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span> <span class="o">=</span> <span class="n">MplFigure</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">toolbar</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">canvas</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbox</span><span class="p">)</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;LiveFFT&#39;</span><span class="p">)</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="c1"># timer for callbacks, taken from:</span>
+        <span class="c1"># http://ralsina.me/weblog/posts/BB974.html</span>
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="p">()</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handleNewData</span><span class="p">)</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="c1"># keep reference to timer        </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">timer</span>
+        
+     
+    <span class="k">def</span> <span class="nf">initData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">mic</span> <span class="o">=</span> <span class="n">MicrophoneRecorder</span><span class="p">()</span>
+        <span class="n">mic</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>  
+
+        <span class="c1"># keeps reference to mic        </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mic</span> <span class="o">=</span> <span class="n">mic</span>
+        
+        <span class="c1"># computes the parameters that will be used during plotting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">mic</span><span class="o">.</span><span class="n">chunksize</span><span class="p">,</span> 
+                                         <span class="mf">1.</span><span class="o">/</span><span class="n">mic</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mic</span><span class="o">.</span><span class="n">chunksize</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="n">mic</span><span class="o">.</span><span class="n">rate</span> <span class="o">*</span> <span class="mi">1000</span>
+                
+    <span class="k">def</span> <span class="nf">connectSlots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">initMplWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;creates initial matplotlib plots in the main window and keeps </span>
+<span class="sd">        references for further use&quot;&quot;&quot;</span>
+        <span class="c1"># top plot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">32768</span><span class="p">,</span> <span class="mi">32768</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;time (ms)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+        <span class="c1"># bottom plot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;frequency (Hz)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+        <span class="c1"># line objects        </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_top</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax_top</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="p">,</span> 
+                                         <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_bottom</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax_bottom</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span><span class="p">,</span>
+                                               <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span><span class="p">))</span>
+                                               
+
+                                               
+    <span class="k">def</span> <span class="nf">handleNewData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handles the asynchroneously collected sound chunks &quot;&quot;&quot;</span>        
+        <span class="c1"># gets the latest frames        </span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mic</span><span class="o">.</span><span class="n">get_frames</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># keeps only the last frame</span>
+            <span class="n">current_frame</span> <span class="o">=</span> <span class="n">frames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># plots the time signal</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line_top</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_vect</span><span class="p">,</span> <span class="n">current_frame</span><span class="p">)</span>
+            <span class="c1"># computes and plots the fft signal            </span>
+            <span class="n">fft_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">current_frame</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoGainCheckBox</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">:</span>
+                <span class="n">fft_frame</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fft_frame</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fft_frame</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedGainSlider</span><span class="o">.</span><span class="n">value</span><span class="p">())</span> <span class="o">/</span> <span class="mf">5000000.</span>
+                <span class="c1">#print(np.abs(fft_frame).max())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line_bottom</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_vect</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fft_frame</span><span class="p">))</span>            
+            
+            <span class="c1"># refreshes the plots</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The refreshing part of the app is handled with a <code>QTimer</code> that gets called 10 times a second and refreshes the gui at that time by calling the <code>handleNewData</code> function. That function gets the latest frame from the microphone, plots the time series, computes the Fourier transform and plots its modulus.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The whole app can be run using the following commands:</p>
+
+</div>
+</div>
+</div>import sys
+
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    window = LiveFFTWidget()
+    sys.exit(app.exec_())
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Demo-time">Demo time<a class="anchor-link" href="#Demo-time">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I made a little video from the app working live on YouTube:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;1XxR9U_aUog&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+        <iframe
+            width="400"
+            height="300"
+            src="https://www.youtube.com/embed/1XxR9U_aUog"
+            frameborder="0"
+            allowfullscreen
+        ></iframe>
+        
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this post, we learned how to code a little app for live sound recording using PyAudio, a little audio processing using numpy and displaying the data using matplotlib embedded in the PyQt framework.</p>
+
+</div>
+</div>
+</div>
+ 
+
+</p>
     </article>
 
         <div class="tags">

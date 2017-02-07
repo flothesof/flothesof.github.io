@@ -314,7 +314,689 @@ jQuery(document).ready(function($) {
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <p>{% notebook 20151230_Radoteur.ipynb cells[:] %}</p>
+        <p>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dans ce billet, nous allons implémenter l'algorithme du "radoteur", un algorithme attribué à <a href="https://fr.wikipedia.org/wiki/Roland_Moreno">Roland Moreno</a>. Cet algorithme a pour but de générer, à partir d'un texte descriptif d'un produit, un nom susceptible d'être utilisé comme marque pour ce produit. L'intérêt conceptuel de l'algorithme est de produire une suite de caractères qui peut être vue comme la somme des mots qui le décrivent.</p>
+<p>Ce billet se base sur l'explication de l'algorithme trouvée <a href="ftp://ftp-public.4d.fr/Notes_Techniques/NT/2001/200107-23-Radoteur.pdf">ici</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Description-de-l'algorithme">Description de l'algorithme<a class="anchor-link" href="#Description-de-l'algorithme">&#182;</a></h1><p>Pour fonctionner, l'algorithme a besoin de données d'entrée, c'est-à-dire une série de mots à partir de laquelle on veut en générer de nouveaux. Dans notre post nous utiliserons la chaîne de caractères suivante (tirée du document cité en introduction) :</p>
+<blockquote><p>SOIENT CINQUANTE MOTS D’ANGLAIS PRIS AU HASARD, SHANNON POSTULE L’EXISTENCE D’UNE LOI DE COMPOSITION DE CE SOUS-ENSEMBLE DE LA LANGUE, NON NEUTRE, ENTIÈREMENT DÉTERMINÉ, ET VA S’ATTACHER À DEMONTRER LA RIGUEUR DE CETTE LOI.</p>
+</blockquote>
+<p>Ensuite, l'algorithme procède de la manière suivante :</p>
+<ul>
+<li>initialisation : on tire un mot de la suite au hasard et on en garde la première lettre. Ceci définit en même temps une position donnée dans la chaîne, à partir de laquelle on va continuer à appliquer l'algorithme.</li>
+<li>construction de caractères successifs <ul>
+<li>à partir de la position courante, on avance dans la chaîne jusqu'à rencontrer à nouveau la lettre actuelle</li>
+<li>la prochaine lettre à garder est la lettre qui vient après la lettre trouvée</li>
+<li>on reprend la recherche à partir de la position de la nouvelle lettre</li>
+</ul>
+</li>
+<li>l'algorithme termine quand le dernier caractère ajouté à notre suite est un espace, une virgule...</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Impl&#233;mentation">Impl&#233;mentation<a class="anchor-link" href="#Impl&#233;mentation">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On définit tout d'abord la chaîne de caractères avec laquelle on travaille :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_string</span> <span class="o">=</span> <span class="s2">&quot;SOIENT CINQUANTE MOTS D’ANGLAIS PRIS AU HASARD, SHANNON POSTULE L’EXISTENCE D’UNE LOI DE COMPOSITION DE CE SOUS-ENSEMBLE DE LA LANGUE, NON NEUTRE, ENTIÈREMENT DÉTERMINÉ, ET VA S’ATTACHER À DEMONTRER LA RIGUEUR DE CETTE LOI.&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ensuite, on choisit l'un des mots présents pour démarrer notre algorithme.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="n">input_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">words</span><span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;CETTE&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On peut résumer ces étapes sous la forme d'une fonction :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">init_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retourne le caractère de départ et la position dans la chaîne, </span>
+<span class="sd">    choisis au hasard.&quot;&quot;&quot;</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">input_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">start_char</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">r</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[:</span><span class="n">r</span><span class="p">]])</span> 
+    <span class="k">return</span> <span class="n">start_char</span><span class="p">,</span> <span class="n">position</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On vérifie le fonctionnement de la fonction :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">init_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;S&#39;, 48)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_string</span><span class="p">[</span><span class="mi">48</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;S&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Comme on le voit, la lettre et la position se correspondent.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">init_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;C&#39;, 7)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_string</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;C&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On peut maintenant implémenter la recherche du prochain caractère. Il suffit pour cela de démarrer la recherche de la prochaine occurence de la lettre courante à partir de la position actuelle.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start_char</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span>
+<span class="n">position</span> <span class="o">=</span> <span class="mi">7</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">while</span> <span class="n">input_string</span><span class="p">[</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">start_char</span><span class="p">:</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+<span class="n">position</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>72</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_string</span><span class="p">[</span><span class="mi">73</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[24]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;C&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Maintenant que les bases sont posées, nous pouvons résumer ceci sous forme d'une fonction :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">build_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="n">start_char</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construit une chaîne selon l&#39;algorithme du radoteur.&quot;&quot;&quot;</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">start_char</span>
+    <span class="k">while</span> <span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">input_string</span><span class="p">[(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+        <span class="n">chain</span> <span class="o">+=</span> <span class="n">input_string</span><span class="p">[(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)]</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chain</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Testons :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">build_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[43]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;STE &#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_string</span><span class="p">[</span><span class="mi">48</span><span class="p">:]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[44]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;SHANNON POSTULE L’EXISTENCE D’UNE LOI DE COMPOSITION DE CE SOUS-ENSEMBLE DE LA LANGUE, NON NEUTRE, ENTIÈREMENT DÉTERMINÉ, ET VA S’ATTACHER À DEMONTRER LA RIGUEUR DE CETTE LOI.&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On s'attend effectivement à la sortie 'STE' pour ces caractères de départ. L'algorithme est donc bien implémenté. A noter que l'on a ici utilisé deux subtilités dans le code :</p>
+<ul>
+<li>une position modulo la longueur de la chaîne afin d'introduire un cycle dans la recherche des lettres</li>
+<li>une limite de caractères de 30 pour éviter des chaînes trop longues</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On peut maintenant générer pleins de mots de cette manière :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">set</span><span class="p">([</span><span class="n">build_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="o">*</span><span class="n">init_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">)])</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[46]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;ASHEMONCOSONE,&#39;,
+ &#39;CE &#39;,
+ &#39;CENGURISIOUEUE &#39;,
+ &#39;CHARENTETTR &#39;,
+ &#39;CIS &#39;,
+ &#39;D,&#39;,
+ &#39;DE &#39;,
+ &#39;DE,&#39;,
+ &#39;DERI.&#39;,
+ &#39;DETENQU &#39;,
+ &#39;DÉ,&#39;,
+ &#39;D’ENE &#39;,
+ &#39;EMIGLEXI &#39;,
+ &#39;EREUANN &#39;,
+ &#39;HA &#39;,
+ &#39;LA &#39;,
+ &#39;LANGUTINTT &#39;,
+ &#39;LAUL’USE &#39;,
+ &#39;LE &#39;,
+ &#39;LOINTS &#39;,
+ &#39;LOMBLANONTE &#39;,
+ &#39;MPRD’ACE &#39;,
+ &#39;N &#39;,
+ &#39;NT &#39;,
+ &#39;POITRENÉT &#39;,
+ &#39;PONS’AISANOSTIÈRMOIE &#39;,
+ &#39;R &#39;,
+ &#39;S &#39;,
+ &#39;S-EMER &#39;,
+ &#39;SOTUN &#39;,
+ &#39;STE &#39;,
+ &#39;VATA &#39;,
+ &#39;À &#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On peut appliquer cette technique à d'autres ensemble. Par exemple pour trouver des noms de marques (comme on peut le lire sur la notice wikipédia de son inventeur). Imaginons que l'on cherche à créer un produit avec la description suivante :</p>
+<blockquote><p>Parfum capiteux, doux, subtil, idéal pour les soirées en ville.</p>
+</blockquote>
+<p>On peut lui appliquer notre algorithme :</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_string</span> <span class="o">=</span> <span class="s1">&#39;Parfum capiteux, doux, subtil, idéal pour les soirées en ville.&#39;</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">set</span><span class="p">([</span><span class="n">build_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="o">*</span><span class="n">init_chain</span><span class="p">(</span><span class="n">input_string</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">)])</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[50]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;CALESURÉAR &#39;,
+ &#39;DÉEN &#39;,
+ &#39;E.&#39;,
+ &#39;IRFUX,&#39;,
+ &#39;LL,&#39;,
+ &#39;PAPOILEUX,&#39;,
+ &#39;PIL &#39;,
+ &#39;S &#39;,
+ &#39;VITIDOUM &#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Parmi ces propositions, on pourrait garder le Vitidoum, le Papoileux ou encore l'Irfux.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Nous avons implémenté l'algorithme du radoteur. Les résultats sont intéressants, mais pas forcéments tous valides. Je pense que ceci explique pourquoi cet algorithme ne peut fournir que des candidats qu'il faut ensuite trier manuellement pour retenir ceux qui sont pertinents.</p>
+
+</div>
+</div>
+</div>
+ 
+
+</p>
     </article>
 
         <div class="tags">
