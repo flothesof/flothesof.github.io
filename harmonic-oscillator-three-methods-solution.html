@@ -1427,19 +1427,22 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What's an <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscillator</a>? It's a relatively simple model for natural systems that finds wide applications.</p>
 <p>A classical example of such a system is a mass that is connected to a spring. If the mass $m$ is located according to the coordinates $x(t)$, and the spring stiffness is $k$, then Newton's equations of momentum read:</p>
-$$
+<p>$$
 m \ddot{x} + k x = 0
-$$<p>Let's simplify the notation in the following way:</p>
-$$
+$$</p>
+<p>Let's simplify the notation in the following way:</p>
+<p>$$
 \ddot{x} + \omega_0^2 x = 0
-$$<p>where $\omega_0^2 = \frac{k}{m}$. The above equation is the harmonic oscillator model equation. This equation alone does not allow numerical computing unless we also specify initial conditions, which define the oscillators state at the time origin.</p>
+$$</p>
+<p>where $\omega_0^2 = \frac{k}{m}$. The above equation is the harmonic oscillator model equation. This equation alone does not allow numerical computing unless we also specify initial conditions, which define the oscillators state at the time origin.</p>
 <p>Here, since we have a second derivative in time of the position $x$, we need to specify two things: the initial position and the initial speed of the oscillator. These are denoted as:</p>
-$$
+<p>$$
 \begin{align}
 x(t = 0) = x_0 \\
 \dot{x}(t=0) = \dot{x}_0
 \end{align}
-$$<p>In this notebook, we will explore three options for solving the evolution problem of this harmonic oscillator:</p>
+$$</p>
+<p>In this notebook, we will explore three options for solving the evolution problem of this harmonic oscillator:</p>
 <ul>
 <li>solve it analytically</li>
 <li>solve it numerically with our own numerical scheme</li>
@@ -2609,7 +2612,7 @@ BSncRUQsSOEuImJBCncREQtSuIuIWNBflPWYpUw2wBcAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's discretize our problem as an explicite <a href="https://en.wikipedia.org/wiki/Finite_difference_method">finite difference scheme</a>. The problem becomes:</p>
-$$
+<p>$$
 \left\{
 \begin{align}
 x^{n+1} = &amp;&amp; (2 - \omega_0^2dt^2)x^n - x^{n-1} \\
@@ -2617,7 +2620,8 @@ x^0 = &amp;&amp; x_0 \\
 x^1 = &amp;&amp; x_0 + \dot{x}_0 dt
 \end{align}
 \right.
-$$<p>As we can see from the equation above, we need to keep track of the two previous positions $x^n$ and $x^{n-1}$ to compute the solution for the next time step. Also, the value $x^1$ is computed from the knowledge of the initial speed by a first order Taylor approximation.</p>
+$$</p>
+<p>As we can see from the equation above, we need to keep track of the two previous positions $x^n$ and $x^{n-1}$ to compute the solution for the next time step. Also, the value $x^1$ is computed from the knowledge of the initial speed by a first order Taylor approximation.</p>
 <p>To solve this, I wrote a class in the next cell called <code>HarmonicOdeSolver</code>. It provides two methods, apart from <code>__init__</code>:</p>
 <ul>
 <li><code>step</code> that iterates the numerical system one single step in time</li>
@@ -4198,14 +4202,15 @@ Let's move on to the last part of this exploration.</p>
 <p>Scipy offers a number of tools for dealing with ordinary differential equations: <a href="https://docs.scipy.org/doc/scipy-0.18.1/reference/integrate.html">https://docs.scipy.org/doc/scipy-0.18.1/reference/integrate.html</a>. 
 Here, we'll use the <a href="https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint"><code>odeint</code></a> routine.</p>
 <p>The documentation says that this routine solves first order differential equations. This means that we need to recast our problem as a first order system. To do this, we write out a vector of unknowns:</p>
-$$
+<p>$$
 u = 
 \begin{pmatrix}
 \dot{x} \\
 x
 \end{pmatrix}
-$$<p>Hence we can write:</p>
-$$
+$$</p>
+<p>Hence we can write:</p>
+<p>$$
 \frac{d}{dt}
 \begin{pmatrix}
 \dot{x} \\ x
@@ -4213,7 +4218,8 @@ $$
 \begin{pmatrix}
 -\omega_0^2 x \\ \dot{x}
 \end{pmatrix}
-$$
+$$</p>
+
 </div>
 </div>
 </div>
