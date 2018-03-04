@@ -1415,7 +1415,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20160830_SegmentingAnImageWithWatershed.ipynb">20160830_SegmentingAnImageWithWatershed.ipynb</a>.</em></p>
-
 </div>
 </div>
 </div>
@@ -1424,7 +1423,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This week, I've been watching the <a href="https://www.youtube.com/watch?v=TVALdmVJtAU">Scipy 2016 tutorial for Scikit-image on YouTube</a>. This tutorial has prompted me to write a little application of the technique of segmentation using the watershed algorithms. This post is essentially based on the material found on Github <a href="https://github.com/scikit-image/skimage-tutorials/blob/master/lessons/4_segmentation.ipynb">here</a> and the official documentation for <a href="http://scikit-image.org/">scikit-image</a>.</p>
-
 </div>
 </div>
 </div>
@@ -1432,7 +1430,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Goal-of-this-post">Goal of this post<a class="anchor-link" href="#Goal-of-this-post">&#182;</a></h1>
+<h1 id="Goal-of-this-post">Goal of this post<a class="anchor-link" href="#Goal-of-this-post">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1441,7 +1439,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The goal of this post is to clearly explain the different steps used to provide a useful segmentation of an image using the watershed algorithm.</p>
-
 </div>
 </div>
 </div>
@@ -1450,7 +1447,7 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To this end, we're going to use an image from wikipedia dealing with one of my current interests: cuneiform tablets.</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg/800px-Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg" alt="tablet"></p>
+<p><img alt="tablet" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg/800px-Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg"/></p>
 <p>As one sees in the image above, there might be several steps involved before getting a clean image with signs in it:</p>
 <ul>
 <li>isolate the tablet from the background</li>
@@ -1458,7 +1455,6 @@ h6:hover .anchor-link {
 <li>threshold these to produce a final image</li>
 </ul>
 <p>Let's get started!</p>
-
 </div>
 </div>
 </div>
@@ -1466,7 +1462,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Loading-the-image">Loading the image<a class="anchor-link" href="#Loading-the-image">&#182;</a></h1>
+<h1 id="Loading-the-image">Loading the image<a class="anchor-link" href="#Loading-the-image">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1475,148 +1471,114 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To work on the image, we first need to retrieve it as an array of pixels. Luckily for us, scikit-image allows you to download an image if you hand an url to the <code>imread</code> function:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">io</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg/800px-Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg/800px-Tablet_with_Cuneiform_Inscription_LACMA_M.79.106.2_%284_of_4%29.jpg"</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check the properties of this image:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(531, 800, 3)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's a 531 by 800 pixels image with a rgb tuple defining the color of each pixel.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span><span class="o">.</span><span class="n">dtype</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>dtype(&#39;uint8&#39;)</pre>
-</div>
-
-</div>
-
+<pre>dtype('uint8')</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The colors are defined by integers (values between 0 and 255), which we will convert to floats while working on them.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">img_as_float</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">img_as_float</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Segmenting-the-background">Segmenting the background<a class="anchor-link" href="#Segmenting-the-background">&#182;</a></h1>
+<h1 id="Segmenting-the-background">Segmenting the background<a class="anchor-link" href="#Segmenting-the-background">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1630,7 +1592,6 @@ h6:hover .anchor-link {
 <li>create the seeds using a contour filter of the tablet image</li>
 <li>perform the segmentation</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -1638,7 +1599,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Creating-the-seeds">Creating the seeds<a class="anchor-link" href="#Creating-the-seeds">&#182;</a></h2>
+<h2 id="Creating-the-seeds">Creating the seeds<a class="anchor-link" href="#Creating-the-seeds">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1647,87 +1608,65 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We first create a gray image, from which we will compute edges.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">color</span>
 <span class="n">gray</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">rgb2gray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's display the gray image:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;image.cmap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;image.interpolation&#39;</span><span class="p">]</span> <span class="o">=</span><span class="s1">&#39;nearest&#39;</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-muted&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'image.cmap'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'gray'</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'image.interpolation'</span><span class="p">]</span> <span class="o">=</span><span class="s1">'nearest'</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-muted'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0x8667d68&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0x8667d68></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWEAAADtCAYAAABu+sTAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXlwXNd95/u5ve97owE09o0gCS4gRYmkNpOUKEeSFcfb
@@ -3161,104 +3100,73 @@ zTUNT0/Xd4qpTTjbbNMAaHa7PaAPc2gdMW8BfIIIIogg5hJCCC0qKiqgssPDw2hzFN8m6DEXRBBB
 cBBBBBHEPCLIhIMIIogg5hFBJhxEEEEEMY9YiCZqwShqQQQRxN8KGq9Q2ctC0G05iCCCCGIeEZSE
 gwgiiCDmEUEmHEQQQQQxjwgy4SCCCCKIeUSQCQcRRBBBzCOCTDiIIIIIYh7x/wFGbNBe1YZBbwAA
 AABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, we filter it using an edge filter.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">filters</span>
 <span class="n">elevation_map</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">canny</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>C:\Anaconda3\lib\site-packages\skimage\filters\__init__.py:28: skimage_deprecation: Call to deprecated function ``canny``. Use ``skimage.feature.canny`` instead.
   def canny(*args, **kwargs):
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's display this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">elevation_map</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0xbc48828&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0xbc48828></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWEAAAD3CAYAAADMt+U9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztfWvQpVV15rMQ21HaIKI0ZERaJVwnitSMkSGZmGgQTAas
@@ -3528,63 +3436,42 @@ aTALCdPB3ZZfCuB0ABcR0SmizHkAnsPM3wPgdQB+N/KpSLhQKGwazKiEMz8+dgGAPxza+gSAI8dv
 5u3MTMm/YxUTmR8f2wHgpwCAiF4I4Js8/CayhUpHFAqFQgKc2G2ZmT9MRC8jos9h8vvQr43s1g/4
 FAqFwgJR6YhCoVBYIIqEC4VCYYEoEi4UCoUFoki4UCgUFogi4UKhUFggioQLhUJhgSgSLhQKhQWi
 SLhQKBQWiP8Pbfg/5W8nIpAAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The canny filter found some edges inside and outside the tablet. To really make the interior stick out, we average it using a gaussian filter:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">filled_elevation_map</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">elevation_map</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">filled_elevation_map</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0xc051a90&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0xc051a90></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWcAAADyCAYAAACRZATJAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXuMrdlZ5vesuuyqfa3bubT72N1oMHbMyIig2BoJNIAM
@@ -4172,83 +4059,63 @@ BTkHAoFDAXd/kbtbh4/L2pyik6JtxwC8AwDM7BoAK54VuOq64FvIGoFAINAB3P28md2KrAjTCIDP
 ufsJM7sl+7Pf6e7fMrMbzOznyOpzv3un9+50vSh8FAgEAgcQIWsEAoHAAUSQcyAQCBxABDkHAoHA
 AUSQcyAQCBxABDkHAoHAAUSQcyAQCBxABDkHAoHAAUSQcyAQCBxA/D8wmSYYrsBsQAAAAABJRU5E
 rkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We now initialize the seeds by thresholding the previous image:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">filled_elevation_map</span><span class="p">)</span>
 <span class="n">threshold</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0.13830405859398809</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This allows us to make seeds for the background (1) and the tablet (2):</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
-<span class="n">seeds</span><span class="p">[</span><span class="n">filled_elevation_map</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="o">/</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">seeds</span><span class="p">[</span><span class="n">filled_elevation_map</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">seeds</span><span class="p">[</span><span class="n">filled_elevation_map</span> <span class="o"><</span> <span class="n">threshold</span> <span class="o">/</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">seeds</span><span class="p">[</span><span class="n">filled_elevation_map</span> <span class="o">></span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4260,47 +4127,30 @@ rkJggg==
 <li>1: background</li>
 <li>2: foreground</li>
 </ul>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0xc2bcb38&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0xc2bcb38></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWEAAAD3CAYAAADMt+U9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHP1JREFUeJzt3X2QHPV95/H3R8jibIQVkI0wYNg1WDzayKpEhsPJsQRj
@@ -4434,21 +4284,17 @@ YTOrjE5CWBlmW5a0GDg2Ij4MXAl8r1VNDmEzq4wOW8JZLj52AfDD9LUeBuZMnPXXiEPYzCqjwxDO
 cvGxti8u5C/mzKwyyjhEzS1hM6uKrW2sO15nWZaLj7V9cSGHsJlVQkQMRYQy3g6vs4ksFx9bBXwW
 QNJpwG8ivSZyI+6OMDPLIDLMthwRP5d0nqRnSa4PvaTVdn0BHzOzArk7wsysQA5hM7MCOYTNzArk
 EDYzK5BD2MysQA5hM7MCOYTNzArkEDYzK9D/B5w2rAvk0O6UAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Performing-the-watershed">Performing the watershed<a class="anchor-link" href="#Performing-the-watershed">&#182;</a></h2>
+<h2 id="Performing-the-watershed">Performing the watershed<a class="anchor-link" href="#Performing-the-watershed">¶</a></h2>
 </div>
 </div>
 </div>
@@ -4457,70 +4303,50 @@ EDYzK5BD2MysQA5hM7MCOYTNzArkEDYzK9D/B5w2rAvk0O6UAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now flood the image:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">watershed</span>
 <span class="n">segmentation</span> <span class="o">=</span> <span class="n">watershed</span><span class="p">(</span><span class="n">filled_elevation_map</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What does the result look like?</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0xcefd128&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0xcefd128></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWcAAADtCAYAAABj5LSHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGTxJREFUeJzt3X+QXeVdx/H3ZxsWStKmIW2CEpJAIwSYUsgfsZqqaYsh
@@ -4637,22 +4463,17 @@ T/pC/zsR8b4Jtl0BfCoiPirpA8BfRMQH0pe8fRHxcvqkNgB8PiIGJiuDRwiaWWU0UxmVdAewEpgr
 6SmyGnB/dtjYGBH/JOkKSd8n+3L3uvTS+cB2ZZNazwBubxTM0MXZt83MOklSnHbaabn2ffXVVyes
 OXeSa85mVhllqow6nM2sMhzOZmYF5HA2Mysgh7OZWQE5nM3MCsjhbGZWQGWaQ9B3pTOzqjjapn3b
 woNQzMwKyDVnM7MCcjibmRWQw9nMrIAczmZmBeRwNjMroP8H0XeX2H/Ypi0AAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Great! We can recognize our tablet!</p>
-
 </div>
 </div>
 </div>
@@ -4661,48 +4482,31 @@ woNQzMwKyDVnM7MCcjibmRWQw9nMrIAczmZmBeRwNjMroP8H0XeX2H/Ypi0AAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can extract the tablet itself from the contour:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">segmentation</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">tuple</span><span class="p">([</span><span class="o">*</span><span class="n">segmentation</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
 <span class="n">tablet</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">img</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tablet</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xdaceba8&gt;</pre>
+<pre><matplotlib.image.AxesImage at 0xdaceba8></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAD/CAYAAAD2Qb01AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeQJPd14PlvuqrK8t62N9PjHTDAYAAQjqATKZASCXIl
@@ -6856,21 +6660,17 @@ IK7FuzLlKLB2PDJkZXkW7+z+gL/R78Q7sbLdz7gVKMlafh3emfM6YNUYZbwcSONdAVUD7PG3YVnA
 ci72s+0F9gE/8dsDlfOczF/nw5O7gcqJ13c+/JrvH/5fCVpOf71L8A7q9gJ/wbuqJ4g5o0A7UJzV
 FqicwHp/ffuAp/CufhzVjPaVDcYYk2Ps5K4xxuQYK/zGGJNjrPAbY0yOscJvjDE5xgq/McbkGCv8
 xhiTY6zwG2NMjrHCb4wxOeY/jpc2SHh1xzMAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Cleaning-the-characters">Cleaning the characters<a class="anchor-link" href="#Cleaning-the-characters">&#182;</a></h1>
+<h1 id="Cleaning-the-characters">Cleaning the characters<a class="anchor-link" href="#Cleaning-the-characters">¶</a></h1>
 </div>
 </div>
 </div>
@@ -6879,18 +6679,17 @@ xhiTY6zwG2NMjrHCb4wxOeY/jpc2SHh1xzMAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have our tablet, we can start working on the characters itself. What assyriologist often do to work with tablets is to first produce a transcription such as this one:</p>
-<p><img src="http://members.westnet.com.au/gary-david-thompson/Strassmaier_Drawing_2014-09-28_140428.jpg" alt="transcription"></p>
+<p><img alt="transcription" src="http://members.westnet.com.au/gary-david-thompson/Strassmaier_Drawing_2014-09-28_140428.jpg"/></p>
 <p>The transcription can be helpful for reading a tablet when it is not available anymore or quite simply to make a clearer picture of the signs, as tablets are difficult to read.</p>
 <p>To obtain a sort of automated transcription, let's apply a local <a href="http://scikit-image.org/docs/dev/auto_examples/color_exposure/plot_local_equalize.html#sphx-glr-auto-examples-color-exposure-plot-local-equalize-py">histogram equalization</a> to the tablet, to remove the artifacts from the lighting.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
 <span class="n">equalized</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">rgb2gray</span><span class="p">(</span><span class="n">tablet</span><span class="p">)</span>
 <span class="n">selem</span> <span class="o">=</span> <span class="n">disk</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
@@ -6898,47 +6697,27 @@ xhiTY6zwG2NMjrHCb4wxOeY/jpc2SHh1xzMAAAAASUVORK5CYII=
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">equalized</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>C:\Anaconda3\lib\site-packages\skimage\util\dtype.py:110: UserWarning: Possible precision loss when converting from float64 to uint8
-  &#34;%s to %s&#34; % (dtypeobj_in, dtypeobj))
+  "%s to %s" % (dtypeobj_in, dtypeobj))
 </pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0xdb86a90&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0xdb86a90></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWQAAADyCAYAAAB6U7/KAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXd8VGX2/983kzJJJr03UiEESGghhCpVQg1IV0RQQUUE
@@ -8437,49 +8216,35 @@ iRBCBgUFuTW2paUFOZSKCykUCsVA4+kOqBJkhUIxZFDFhRQKhcJDUB6yQqFQeAieLshqYYhCoRgy
 N7a6GplANbaCRk9IKY/31TVUyEKhUCjcQErZKYT4P9gKHXkB7/WlGIPykBUKhcJjUDFkhUKh8BCU
 ICsUCoWHoARZoVAoPAQlyAqFQuEhKEFWKBQKD0EJskKhUHgISpAVCoXCQ1CCrFAoFB7C/wcLZs9A
 KH6DFwAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's have a look at the resulting histogram:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">equalized</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">256</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAEACAYAAACznAEdAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAFQVJREFUeJzt3V2MXGd9x/Hv3042EILSlOZF3Q0mVRQICCnkwm1FK21V
@@ -8578,78 +8343,55 @@ GXAU2Dvr/WmgPtfQWS11iE4Q7C3lvw48Wup6EPi1We/rCHX6OnAC+D/gGPBnwGX96gPso7O64Qhw
 06z3f8z6fRV4qhzLb9IZs124+gHvBM7U/iZ/WP7P9f17bEn92nL83l7q9GSpz1+X8saOnyemSZKA
 +RoykiTNkIEgSQIMBElSYSBIkgADQZJUGAiSJMBAkCQVBoIkCYD/B6/NnkP41gpfAAAAAElFTkSu
 QmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ideally, we would like to have some points at the bottom of the tablet and some at the surface and do the watershed on them.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">equalized</span><span class="p">)</span>
-<span class="n">seeds</span><span class="p">[</span><span class="n">equalized</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">seeds</span><span class="p">[(</span><span class="n">equalized</span> <span class="o">&gt;</span> <span class="mi">140</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">equalized</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">seeds</span><span class="p">[</span><span class="n">equalized</span> <span class="o"><</span> <span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">seeds</span><span class="p">[(</span><span class="n">equalized</span> <span class="o">></span> <span class="mi">140</span><span class="p">)</span> <span class="o">&</span> <span class="p">(</span><span class="n">equalized</span> <span class="o"><</span> <span class="mi">200</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">seeds</span><span class="p">[(</span><span class="o">~</span><span class="n">mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">3</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">seeds</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[21]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.colorbar.Colorbar at 0xeba2278&gt;</pre>
+<pre><matplotlib.colorbar.Colorbar at 0xeba2278></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWEAAAD3CAYAAADMt+U9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztfXvUXVV1728CwrWkBXw0VKlEBUW8CGIFKvYSBJGHApUm
@@ -8946,78 +8688,54 @@ ZbWsGwFs18z60+Ak7HA4JgYdSdiy+Fjx4kLeMedwOCYG4zhEzS1hh8MxKXigIO6jwjXL4mPFiws5
 CTscjokAM89jZjKGHYUsLIuPXQPgrQBARPsB+BnXayJrcHeEw+FwGMCG3ZaZ+RtEdDgR3YtqfegT
 c/n6Aj4Oh8MxQrg7wuFwOEYIJ2GHw+EYIZyEHQ6HY4RwEnY4HI4RwknY4XA4RggnYYfD4RghnIQd
 DodjhHASdjgcjhHi/wNbs+7/nCBFKgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">sobel</span><span class="p">(</span><span class="n">equalized</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">watershed</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[24]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xef5a240&gt;</pre>
+<pre><matplotlib.image.AxesImage at 0xef5a240></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAD/CAYAAAD2Qb01AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnW3MJld53//XQkwxBGfT1OvGa0wq82KjtkAVk9ateFqM
@@ -9193,30 +8911,25 @@ H8HmzvmzAG4pZONNAL6PzRNQTwL4SjOGP1qZnX+5se0pAE8D+GfN9qrs7Nj8Ply4uVuVndjkzvfO
 +TN7c6U2O5t+/yo2Qd1TAP4TNk/11Gjn5QC+A+CHW9uqshPA0aa/pwEcw+bpR1Mb+ZUNhBCyMnhz
 lxBCVgaFnxBCVgaFnxBCVgaFnxBCVgaFnxBCVgaFnxBCVgaFnxBCVgaFnxBCVsb/BwOC5y7Xw497
 AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can produce our cleaned image and compare it to the original:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndi</span>
 <span class="n">cleaned</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
 <span class="c1"># signs</span>
@@ -9225,66 +8938,47 @@ AAAAAElFTkSuQmCC
 <span class="c1"># border of tablet</span>
 <span class="n">cleaned</span><span class="p">[</span><span class="n">filters</span><span class="o">.</span><span class="n">canny</span><span class="p">(</span><span class="n">mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>C:\Anaconda3\lib\site-packages\skimage\filters\__init__.py:28: skimage_deprecation: Call to deprecated function ``canny``. Use ``skimage.feature.canny`` instead.
   def canny(*args, **kwargs):
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's compare both images in full size:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tablet</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABHgAAAF+CAYAAAD5k635AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmQJvd93/d339fTz33MvbM3LpKgSBAQKVE0pehWIsl2
@@ -14530,30 +14224,25 @@ j1Wb5ywfl+Q6uuQ55xzXqs9zlo/rguY6avmXhBBCCCGEEEIIIcQKJZMsCyGEEEIIIYQQQqxwUuAR
 QgghhBBCCCGEWOGkwCOEEEIIIYQQQgixwkmBRwghhBBCCCGEEGKFkwKPEEIIIYQQQgghxAonBR4h
 hBBCCCGEEEKIFU4KPEIIIYQQQgghhBArnBR4hBBCCCGEEEIIIVa4/w9jYhAfy5gDLAAAAABJRU5E
 rkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also apply some zoom on this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="n">zoom</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ax</span><span class="p">:</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -14563,22 +14252,13 @@ rkJggg==
 <span class="n">zoom</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAFYCAYAAABOJQqoAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvVmsZNl1JbbuPMQcL94851iZVVmskZNIiRq62zIFSi00
@@ -16950,21 +16630,17 @@ NOsA/tq27W8LIQ7hxptv6ll8dVDP4rcP6jl8dVDP4jfGuj+HVaEQBQUFBQUFBQUFhTVYdw2ygoKC
 goKCgoKCws0EFSArKCgoKCgoKCgorIEKkBUUFBQUFBQUFBTWQAXICgoKCgoKCgoKCmugAmQFBQUF
 BQUFBQWFNVABsoKCgoKCgoKCgsIaqABZQUFBQUFBQUFBYQ1UgKygoKCgoKCgoKCwBv8/V/WfxV+6
 7scAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
@@ -16974,12 +16650,9 @@ BQUFBQWFNVABsoKCgoKCgoKCgsIaqABZQUFBQUFBQUFBYQ1UgKygoKCgoKCgoKCwBv8/V/WfxV+6
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blogpost, we've manipulated a couple of standard image segmentation algorithms using scikit-image. We've applied it to a cuneiform tablet inscription available on wikipedia and obtained a simplified representation from it, essentially applying the watershed algorithm to it.</p>
 <p>Further work ideas are numerous here: the final image, although meant to simplifiy the analysis of the original tablet which is difficult due to lighting issues, does reach this goal. So the question is: would it be possible to single out each sign and perform a more accurate automatic transcription?</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

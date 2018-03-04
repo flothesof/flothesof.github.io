@@ -1415,7 +1415,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we will visualize the Paris Vélib bicycle stations using pandas and then, to do interactive exploration, <code>bokeh</code>. The goal is to get familiar with the plotting syntax of <code>bokeh</code>, which is quite different from <code>matplotlib</code>, the classic plotting package in the Python scientific stack.</p>
-
 </div>
 </div>
 </div>
@@ -1423,7 +1422,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Fetching-the-data">Fetching the data<a class="anchor-link" href="#Fetching-the-data">&#182;</a></h1>
+<h1 id="Fetching-the-data">Fetching the data<a class="anchor-link" href="#Fetching-the-data">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1432,138 +1431,120 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>JC Decaux, the company responsible for the Paris shared biking system Vélib, has an open-data service available here: <a href="https://developer.jcdecaux.com/#/opendata/vls?page=static">https://developer.jcdecaux.com/#/opendata/vls?page=static</a>. We can use it to fetch the static data describing the different stations.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s2">&quot;https://developer.jcdecaux.com/rest/vls/stations/Paris.json&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s2">"https://developer.jcdecaux.com/rest/vls/stations/Paris.json"</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's look at the head of the data:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>address</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>name</th>
-      <th>number</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>RUE DES CHAMPEAUX (PRES DE LA GARE ROUTIERE) -...</td>
-      <td>48.864528</td>
-      <td>2.416171</td>
-      <td>31705 - CHAMPEAUX (BAGNOLET)</td>
-      <td>31705</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>52 RUE D'ENGHIEN / ANGLE RUE DU FAUBOURG POISS...</td>
-      <td>48.872420</td>
-      <td>2.348395</td>
-      <td>10042 - POISSONNIÈRE - ENGHIEN</td>
-      <td>10042</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>74 BOULEVARD DES BATIGNOLLES - 75008 PARIS</td>
-      <td>48.882149</td>
-      <td>2.319860</td>
-      <td>08020 - METRO ROME</td>
-      <td>8020</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>37 RUE CASANOVA - 75001 PARIS</td>
-      <td>48.868217</td>
-      <td>2.330494</td>
-      <td>01022 - RUE DE LA PAIX</td>
-      <td>1022</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>139 AVENUE JEAN LOLIVE / MAIL CHARLES DE GAULL...</td>
-      <td>48.893269</td>
-      <td>2.412716</td>
-      <td>35014 - DE GAULLE (PANTIN)</td>
-      <td>35014</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>address</th>
+<th>latitude</th>
+<th>longitude</th>
+<th>name</th>
+<th>number</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>RUE DES CHAMPEAUX (PRES DE LA GARE ROUTIERE) -...</td>
+<td>48.864528</td>
+<td>2.416171</td>
+<td>31705 - CHAMPEAUX (BAGNOLET)</td>
+<td>31705</td>
+</tr>
+<tr>
+<th>1</th>
+<td>52 RUE D'ENGHIEN / ANGLE RUE DU FAUBOURG POISS...</td>
+<td>48.872420</td>
+<td>2.348395</td>
+<td>10042 - POISSONNIÈRE - ENGHIEN</td>
+<td>10042</td>
+</tr>
+<tr>
+<th>2</th>
+<td>74 BOULEVARD DES BATIGNOLLES - 75008 PARIS</td>
+<td>48.882149</td>
+<td>2.319860</td>
+<td>08020 - METRO ROME</td>
+<td>8020</td>
+</tr>
+<tr>
+<th>3</th>
+<td>37 RUE CASANOVA - 75001 PARIS</td>
+<td>48.868217</td>
+<td>2.330494</td>
+<td>01022 - RUE DE LA PAIX</td>
+<td>1022</td>
+</tr>
+<tr>
+<th>4</th>
+<td>139 AVENUE JEAN LOLIVE / MAIL CHARLES DE GAULL...</td>
+<td>48.893269</td>
+<td>2.412716</td>
+<td>35014 - DE GAULLE (PANTIN)</td>
+<td>35014</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's see what we can do with it!</p>
-
 </div>
 </div>
 </div>
@@ -1571,7 +1552,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Examining-the-data">Examining the data<a class="anchor-link" href="#Examining-the-data">&#182;</a></h1>
+<h1 id="Examining-the-data">Examining the data<a class="anchor-link" href="#Examining-the-data">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1580,165 +1561,139 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A first question that can be asked is "how many stations are there in each city / neighbourhood?". It turns out that we can extract a 5 digit postcode from each address field quite easily using regular expressions. This is because the <code>pandas.str.findall</code> function <a href="http://pandas.pydata.org/pandas-docs/stable/text.html">accepts regular expressions as arguments</a>.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;postcode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;\d\d\d\d\d&quot;</span><span class="p">)]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'postcode'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"\d\d\d\d\d"</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>address</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>name</th>
-      <th>number</th>
-      <th>postcode</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>RUE DES CHAMPEAUX (PRES DE LA GARE ROUTIERE) -...</td>
-      <td>48.864528</td>
-      <td>2.416171</td>
-      <td>31705 - CHAMPEAUX (BAGNOLET)</td>
-      <td>31705</td>
-      <td>93170</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>52 RUE D'ENGHIEN / ANGLE RUE DU FAUBOURG POISS...</td>
-      <td>48.872420</td>
-      <td>2.348395</td>
-      <td>10042 - POISSONNIÈRE - ENGHIEN</td>
-      <td>10042</td>
-      <td>75010</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>74 BOULEVARD DES BATIGNOLLES - 75008 PARIS</td>
-      <td>48.882149</td>
-      <td>2.319860</td>
-      <td>08020 - METRO ROME</td>
-      <td>8020</td>
-      <td>75008</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>37 RUE CASANOVA - 75001 PARIS</td>
-      <td>48.868217</td>
-      <td>2.330494</td>
-      <td>01022 - RUE DE LA PAIX</td>
-      <td>1022</td>
-      <td>75001</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>139 AVENUE JEAN LOLIVE / MAIL CHARLES DE GAULL...</td>
-      <td>48.893269</td>
-      <td>2.412716</td>
-      <td>35014 - DE GAULLE (PANTIN)</td>
-      <td>35014</td>
-      <td>93500</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>address</th>
+<th>latitude</th>
+<th>longitude</th>
+<th>name</th>
+<th>number</th>
+<th>postcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>RUE DES CHAMPEAUX (PRES DE LA GARE ROUTIERE) -...</td>
+<td>48.864528</td>
+<td>2.416171</td>
+<td>31705 - CHAMPEAUX (BAGNOLET)</td>
+<td>31705</td>
+<td>93170</td>
+</tr>
+<tr>
+<th>1</th>
+<td>52 RUE D'ENGHIEN / ANGLE RUE DU FAUBOURG POISS...</td>
+<td>48.872420</td>
+<td>2.348395</td>
+<td>10042 - POISSONNIÈRE - ENGHIEN</td>
+<td>10042</td>
+<td>75010</td>
+</tr>
+<tr>
+<th>2</th>
+<td>74 BOULEVARD DES BATIGNOLLES - 75008 PARIS</td>
+<td>48.882149</td>
+<td>2.319860</td>
+<td>08020 - METRO ROME</td>
+<td>8020</td>
+<td>75008</td>
+</tr>
+<tr>
+<th>3</th>
+<td>37 RUE CASANOVA - 75001 PARIS</td>
+<td>48.868217</td>
+<td>2.330494</td>
+<td>01022 - RUE DE LA PAIX</td>
+<td>1022</td>
+<td>75001</td>
+</tr>
+<tr>
+<th>4</th>
+<td>139 AVENUE JEAN LOLIVE / MAIL CHARLES DE GAULL...</td>
+<td>48.893269</td>
+<td>2.412716</td>
+<td>35014 - DE GAULLE (PANTIN)</td>
+<td>35014</td>
+<td>93500</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This allows us to easily count the number of stations in given locations:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;bmh&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'bmh'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'postcode'</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">'bar'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAGqCAYAAAAWf7K6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X18nHd55/vvZRtSYrDrAHECRlEhCwTWJbgmpalo1Co8
@@ -2049,22 +2004,17 @@ DpABYDA+IOlKSV+X9DVJb3L3vZJ+V9JHVZ01/glJL6xvv0HSn6taubhZ0rck/b/1x94r6Yn16sNH
 tKQzBnN3AMDKxQ/pAUCf6h/Se4m7Xz3qWQAA/eMMMgAAANDAATIA9I9/igOAgrBiAQAAADRwBhkA
 AABo4AAZAAAAaOAAGQAAAGjgABkAAABo4AAZAAAAaOAAGQAAAGj4/wEt0fJben10igAAAABJRU5E
 rkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This allows us to determine that there are the most stations in the 15th arrondissement of Paris.</p>
-
 </div>
 </div>
 </div>
@@ -2073,35 +2023,25 @@ rkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also decide to plot each station as a dot on a map. Let's try that:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'scatter'</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'longitude'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'latitude'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAskAAAI7CAYAAAAebwb/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvX+UXsV55/mt9+0O6ActO0QN8jJYjYWjHLtFTwM+IDoI
@@ -2825,22 +2765,17 @@ xhPvOHKiUjsBfAzA3wL4PoCHYum4CcCTAL4uIj8D8CCAswakmxBCvEO6TgFCCCE+IyIfBnCCUuod
 daeFEEKaAD3JhBDiISLyOhFZ3fv7fAC/j24IBiGEEANwdQtCCPGT4wB8TkROQjfm+CNKqb+uOU2E
 ENIYGG5BCCGEEEJIDIZbEEIIIYQQEoMimRBCCCGEkBgUyYQQQgghhMSgSCaEEEHW6FsAAAAeSURB
 VEIIISQGRTIhhBBCCCExKJIJIYQQQgiJ8f8BA3CrCpM0LZIAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can faintly distinguish the Seine River contour, were there are no Vélib stations.</p>
-
 </div>
 </div>
 </div>
@@ -2849,249 +2784,212 @@ VEIIISQGRTIhhBBCCCExKJIJIYQQQgiJ8f8BA3CrCpM0LZIAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, a last visualization could be to compute the mean coordinates of stations for each postcode and plot them on a map:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'postcode'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">mean_stations</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[9]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>number</th>
-    </tr>
-    <tr>
-      <th>postcode</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>75001</th>
-      <td>48.862984</td>
-      <td>2.339561</td>
-      <td>1021.384615</td>
-    </tr>
-    <tr>
-      <th>75002</th>
-      <td>48.868225</td>
-      <td>2.342684</td>
-      <td>2026.416667</td>
-    </tr>
-    <tr>
-      <th>75003</th>
-      <td>48.862940</td>
-      <td>2.359657</td>
-      <td>3013.733333</td>
-    </tr>
-    <tr>
-      <th>75004</th>
-      <td>48.855631</td>
-      <td>2.356978</td>
-      <td>4030.791667</td>
-    </tr>
-    <tr>
-      <th>75005</th>
-      <td>48.845414</td>
-      <td>2.348918</td>
-      <td>5029.631579</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>latitude</th>
+<th>longitude</th>
+<th>number</th>
+</tr>
+<tr>
+<th>postcode</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>75001</th>
+<td>48.862984</td>
+<td>2.339561</td>
+<td>1021.384615</td>
+</tr>
+<tr>
+<th>75002</th>
+<td>48.868225</td>
+<td>2.342684</td>
+<td>2026.416667</td>
+</tr>
+<tr>
+<th>75003</th>
+<td>48.862940</td>
+<td>2.359657</td>
+<td>3013.733333</td>
+</tr>
+<tr>
+<th>75004</th>
+<td>48.855631</td>
+<td>2.356978</td>
+<td>4030.791667</td>
+</tr>
+<tr>
+<th>75005</th>
+<td>48.845414</td>
+<td>2.348918</td>
+<td>5029.631579</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>number</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>51.000000</td>
-      <td>51.000000</td>
-      <td>51.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>48.856930</td>
-      <td>2.350670</td>
-      <td>23765.439084</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>0.029586</td>
-      <td>0.062251</td>
-      <td>13170.681267</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>48.808535</td>
-      <td>2.222189</td>
-      <td>1021.384615</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>48.832531</td>
-      <td>2.309834</td>
-      <td>13470.615741</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>48.856693</td>
-      <td>2.348918</td>
-      <td>21703.833333</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>48.881089</td>
-      <td>2.399400</td>
-      <td>33554.500000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>48.909302</td>
-      <td>2.474920</td>
-      <td>44101.500000</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>latitude</th>
+<th>longitude</th>
+<th>number</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>count</th>
+<td>51.000000</td>
+<td>51.000000</td>
+<td>51.000000</td>
+</tr>
+<tr>
+<th>mean</th>
+<td>48.856930</td>
+<td>2.350670</td>
+<td>23765.439084</td>
+</tr>
+<tr>
+<th>std</th>
+<td>0.029586</td>
+<td>0.062251</td>
+<td>13170.681267</td>
+</tr>
+<tr>
+<th>min</th>
+<td>48.808535</td>
+<td>2.222189</td>
+<td>1021.384615</td>
+</tr>
+<tr>
+<th>25%</th>
+<td>48.832531</td>
+<td>2.309834</td>
+<td>13470.615741</td>
+</tr>
+<tr>
+<th>50%</th>
+<td>48.856693</td>
+<td>2.348918</td>
+<td>21703.833333</td>
+</tr>
+<tr>
+<th>75%</th>
+<td>48.881089</td>
+<td>2.399400</td>
+<td>33554.500000</td>
+</tr>
+<tr>
+<th>max</th>
+<td>48.909302</td>
+<td>2.474920</td>
+<td>44101.500000</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="p">[</span><span class="s1">&#39;station_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="p">[</span><span class="s1">'station_count'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'postcode'</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also label the points <a href="http://stackoverflow.com/questions/15910019/annotate-data-points-while-plotting-from-pandas-dataframe/15911372#15911372">as in this SO thread</a>.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">label_point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">})</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'x'</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'val'</span><span class="p">:</span> <span class="n">val</span><span class="p">})</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s1">&#39;val&#39;</span><span class="p">]))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s1">'val'</span><span class="p">]))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">mean_stations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">mean_stations</span><span class="p">[</span><span class="s1">&#39;station_count&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">mean_stations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'scatter'</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'longitude'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'latitude'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">mean_stations</span><span class="p">[</span><span class="s1">'station_count'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">label_point</span><span class="p">(</span><span class="n">mean_stations</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">mean_stations</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">mean_stations</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAskAAAI7CAYAAAAebwb/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XtUV1X+//Hn+QBiihDppHhhGjNHStTiY5ZcC4fRciQv
@@ -3873,39 +3771,26 @@ CcDVBJ76/gZYBJTUUHYe8A0z+7uZLQ3uewK4EzhCIJ/4d6ETnXsXmAmsA/YAayvV4xngU2CLmR0F
 3gN6XKDeIiKeY4GHAiIi4mVm9iLQyTk3tqHrIiLSFOhJsoiIB5nZ182sV/D1t4BxBFIwRESkDmh2
 CxERb2oLLDazzgRyjl9xzuU2cJ1ERJoMpVuIiIiIiFSidAsRERERkUrUSRYRERERqUSdZBERERGR
 StRJFhERERGpRJ1kEREREZFK1EkWEREREank/wPsIfNXv/UsMgAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 48.86298384,  48.86822491,  48.86294019,  48.85563069,
         48.84541393,  48.84970745,  48.85669329,  48.87365634,
@@ -3921,65 +3806,50 @@ StRJFhERERGpRJ1kEREREZFK1EkWEREREank/wPsIfNXv/UsMgAAAABJRU5ErkJggg==
         48.81425975,  48.82415844,  48.81336175,  48.81130206,
         48.84703447,  48.8199541 ,  48.81861291])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can put everything together: stations and mean locations of stations.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'postcode'</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> 
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'scatter'</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'longitude'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'latitude'</span><span class="p">,</span> 
         <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">cmap</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">postcode</span><span class="o">.</span><span class="n">values</span><span class="p">],</span>
-       <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;index of location&#39;</span><span class="p">)</span>
-<span class="n">mean_stations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+       <span class="n">colormap</span><span class="o">=</span><span class="s1">'cubehelix'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'index of location'</span><span class="p">)</span>
+<span class="n">mean_stations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'scatter'</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'longitude'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'latitude'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">label_point</span><span class="p">(</span><span class="n">mean_stations</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">mean_stations</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">mean_stations</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApMAAAI7CAYAAACwWRB+AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xlc1VX6wPHPuQv7IggIgqi4tFIuqKWiFtpUmpaaWpbT
@@ -6677,21 +6547,17 @@ uO7NjvadwGrgbuARYEPDOC4CHgU2SnoeuAs4rMW4IyKGhooP1RERw0XSFcABts+e6rFERAyznJmM
 iKEg6XBJR5Xri4EvUlz6joiIHsq3uSNiWMwCbpJ0EMU9kd+3ffsUjykiYujlMndERERE1JbL3BER
 ERFRWyaTEREREVFbJpMRERERUVsmkxERERFRWyaTEREREVFbJpMRERERUdv/AclyvX0BDLenAAAA
 AElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Using-Bokeh">Using Bokeh<a class="anchor-link" href="#Using-Bokeh">&#182;</a></h1>
+<h1 id="Using-Bokeh">Using Bokeh<a class="anchor-link" href="#Using-Bokeh">¶</a></h1>
 </div>
 </div>
 </div>
@@ -6701,7 +6567,6 @@ AElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The maps I plotted in the previous section were static. This is a limiting factor when exploring a dataset. To really come to grips with the data, it is often useful to make it interactive, which is what we will do using <code>bokeh</code>. We will follow the <a href="http://bokeh.pydata.org/en/latest/docs/user_guide/quickstart.html#userguide-quickstart">quickstart guide to Bokeh</a> and try to obtain the same plots as above using this framework.</p>
 <p>To get a feeling for how <code>bokeh</code> works, we will first use the high level <code>bokeh.charts</code> interface and then the medium and low-level <code>bokeh.plotting</code> and <code>bokeh.models</code>.</p>
-
 </div>
 </div>
 </div>
@@ -6709,7 +6574,7 @@ AElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="High-level-version">High level version<a class="anchor-link" href="#High-level-version">&#182;</a></h2>
+<h2 id="High-level-version">High level version<a class="anchor-link" href="#High-level-version">¶</a></h2>
 </div>
 </div>
 </div>
@@ -6718,76 +6583,55 @@ AElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, we import the different elements we need for bokeh.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.plotting</span> <span class="k">as</span> <span class="nn">bp</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's tell bokeh to show things in the notebook:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">output_notebook</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
 <div class="output_html rendered_html output_subarea ">
-
-    <div class="bk-banner">
-        <a href="http://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
-        <span id="c7910fea-5485-40e7-b694-e013597092d5">Loading BokehJS ...</span>
-    </div>
+<div class="bk-banner">
+<a class="bk-logo bk-logo-small bk-logo-notebook" href="http://bokeh.pydata.org" target="_blank"></a>
+<span id="c7910fea-5485-40e7-b694-e013597092d5">Loading BokehJS ...</span>
 </div>
-
 </div>
-
+</div>
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
-
-<div id="850eede0-0ea9-45ff-a727-398a98811a8c"></div>
+<div id="249a6317-c1af-4972-9be7-73176ef721bc"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
+var element = $('#249a6317-c1af-4972-9be7-73176ef721bc');
 
 (function(global) {
   function now() {
@@ -6872,63 +6716,47 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 }(this));
 </script>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's use the high level function found the charts module:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.charts</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bokeh</span><span class="o">.</span><span class="n">charts</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">,</span>
-                        <span class="n">tools</span><span class="o">=</span><span class="s2">&quot;crosshair, hover, wheel_zoom, pan&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bokeh</span><span class="o">.</span><span class="n">charts</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'longitude'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'latitude'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'postcode'</span><span class="p">,</span>
+                        <span class="n">tools</span><span class="o">=</span><span class="s2">"crosshair, hover, wheel_zoom, pan"</span><span class="p">)</span>
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
 <div class="output_html rendered_html output_subarea ">
-
-
-    <div class="plotdiv" id="1c804d5d-118d-42db-9a3b-9ee34c09c435"></div>
+<div class="plotdiv" id="1c804d5d-118d-42db-9a3b-9ee34c09c435"></div>
 <script type="text/javascript">
   
   (function(global) {
@@ -7015,31 +6843,21 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
   }(this));
 </script>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[20]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-<p><code>&lt;Bokeh Notebook handle for <strong>In[20]</strong>&gt;</code></p>
-</div>
-
-</div>
-
+<p><code><Bokeh Notebook handle for <strong>In[20]</strong>></code></p>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That was easy! The visualization is interesting and we didn't have much to do to obtain it.</p>
-
 </div>
 </div>
 </div>
@@ -7048,7 +6866,6 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What if we want a hover tool displaying the address over each station? I didn't find any easy way to extend the previous chart, so let's switch to a lower level of plotting and do this in detail.</p>
-
 </div>
 </div>
 </div>
@@ -7056,7 +6873,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Medium-and-low-level-bokeh">Medium and low-level bokeh<a class="anchor-link" href="#Medium-and-low-level-bokeh">&#182;</a></h2>
+<h2 id="Medium-and-low-level-bokeh">Medium and low-level bokeh<a class="anchor-link" href="#Medium-and-low-level-bokeh">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7071,38 +6888,27 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <li>show the plot</li>
 </ul>
 <p>Let's do a simple scatter plot to show how this goes:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;simple scatter plot&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"simple scatter plot"</span><span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
 <div class="output_html rendered_html output_subarea ">
-
-
-    <div class="plotdiv" id="34e0c02a-bd5e-463d-bddb-40216998bf2c"></div>
+<div class="plotdiv" id="34e0c02a-bd5e-463d-bddb-40216998bf2c"></div>
 <script type="text/javascript">
   
   (function(global) {
@@ -7189,24 +6995,15 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
   }(this));
 </script>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[21]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-<p><code>&lt;Bokeh Notebook handle for <strong>In[21]</strong>&gt;</code></p>
-</div>
-
-</div>
-
+<p><code><Bokeh Notebook handle for <strong>In[21]</strong>></code></p>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -7217,7 +7014,6 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <li>add colors to each dot according to postcode</li>
 <li>add labels showing the adress of a station using hovering</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -7226,135 +7022,104 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will start with the colors. I didn't figure out how to apply this easily with bokeh, so I had to resort to a manual generation of each color code using matplotlib classes, in particular a ScalarMappable.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 
 <span class="n">color_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">cmap</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">postcode</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
 <span class="n">norm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
 <span class="n">norm</span><span class="o">.</span><span class="n">autoscale</span><span class="p">(</span><span class="n">color_index</span><span class="p">)</span>
-<span class="n">sm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="s1">&#39;hot&#39;</span><span class="p">)</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="s1">'hot'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can test the output into rgba space using <code>to_rgba</code>:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[23]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>(10, 0, 0, 255)</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's just generate the list of colors we need:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;#</span><span class="si">%02x%02x%02x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">g</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">color_index</span><span class="p">]</span>
+    <span class="s2">"#</span><span class="si">%02x%02x%02x</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">g</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">color_index</span><span class="p">]</span>
 <span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[25]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;#ffb700&#39;,
- &#39;#830000&#39;,
- &#39;#660000&#39;,
- &#39;#0a0000&#39;,
- &#39;#ffff22&#39;,
- &#39;#ff0a00&#39;,
- &#39;#ff9d00&#39;,
- &#39;#c40000&#39;,
- &#39;#9d0000&#39;,
- &#39;#730000&#39;]</pre>
-</div>
-
-</div>
-
+<pre>['#ffb700',
+ '#830000',
+ '#660000',
+ '#0a0000',
+ '#ffff22',
+ '#ff0a00',
+ '#ff9d00',
+ '#c40000',
+ '#9d0000',
+ '#730000']</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -7365,15 +7130,14 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <li>we need to build a datasource containing a description field</li>
 <li>and a hover tool, based on this description field from the data source</li>
 </ul>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.models</span> <span class="k">as</span> <span class="nn">bm</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">ColumnDataSource</span><span class="p">(</span>
@@ -7387,7 +7151,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 
 <span class="n">hover</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">HoverTool</span><span class="p">(</span>
         <span class="n">tooltips</span><span class="o">=</span><span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="s2">&quot;@desc&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"address"</span><span class="p">,</span> <span class="s2">"@desc"</span><span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
 
@@ -7395,51 +7159,38 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <span class="n">pan</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">PanTool</span><span class="p">()</span>
 <span class="n">zoom</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">WheelZoomTool</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, here's the scatter plot, in low-level plotting language, with hovering tooltips!</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Vélib stations in Paris&quot;</span><span class="p">,</span> 
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Vélib stations in Paris"</span><span class="p">,</span> 
               <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">hover</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">zoom</span><span class="p">])</span>
-<span class="n">p</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s1">'c'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
 <div class="output_html rendered_html output_subarea ">
-
-
-    <div class="plotdiv" id="87ac6776-61f4-4a5f-a3f5-55b98f609573"></div>
+<div class="plotdiv" id="87ac6776-61f4-4a5f-a3f5-55b98f609573"></div>
 <script type="text/javascript">
   
   (function(global) {
@@ -7526,39 +7277,29 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
   }(this));
 </script>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[27]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-<p><code>&lt;Bokeh Notebook handle for <strong>In[27]</strong>&gt;</code></p>
-</div>
-
-</div>
-
+<p><code><Bokeh Notebook handle for <strong>In[27]</strong>></code></p>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I've just found out that it is possible to <a href="http://bokeh.pydata.org/en/latest/docs/user_guide/geo.html">plot markers on top of a Google Map using <code>bokeh</code></a>. Let's try and do this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">geo_source</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">GeoJSONDataSource</span><span class="p">(</span>
         <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
@@ -7570,7 +7311,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 
 <span class="n">hover</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">HoverTool</span><span class="p">(</span>
         <span class="n">tooltips</span><span class="o">=</span><span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="s2">&quot;@desc&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"address"</span><span class="p">,</span> <span class="s2">"@desc"</span><span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
 
@@ -7578,31 +7319,21 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <span class="n">pan</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">PanTool</span><span class="p">()</span>
 <span class="n">zoom</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">WheelZoomTool</span><span class="p">()</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Vélib stations in Paris&quot;</span><span class="p">,</span> 
+<span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Vélib stations in Paris"</span><span class="p">,</span> 
               <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">hover</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">zoom</span><span class="p">])</span>
-<span class="n">p</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">geo_source</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s1">'c'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">geo_source</span><span class="p">)</span>
 
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
 <div class="output_html rendered_html output_subarea ">
-
-
-    <div class="plotdiv" id="c1ef20c9-555d-4c26-8ddf-2c0988d432a3"></div>
+<div class="plotdiv" id="c1ef20c9-555d-4c26-8ddf-2c0988d432a3"></div>
 <script type="text/javascript">
   
   (function(global) {
@@ -7689,31 +7420,21 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
   }(this));
 </script>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[28]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
-<p><code>&lt;Bokeh Notebook handle for <strong>In[28]</strong>&gt;</code></p>
-</div>
-
-</div>
-
+<p><code><Bokeh Notebook handle for <strong>In[28]</strong>></code></p>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Unfortunately, this doesn't work, yet. There are several bug reports describing this behaviour (one of them is here: <a href="https://github.com/bokeh/bokeh/issues/3737">https://github.com/bokeh/bokeh/issues/3737</a>). Hopefully, this will get fixed soon!</p>
-
 </div>
 </div>
 </div>
@@ -7721,7 +7442,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Using-Folium">Using Folium<a class="anchor-link" href="#Using-Folium">&#182;</a></h1>
+<h1 id="Using-Folium">Using Folium<a class="anchor-link" href="#Using-Folium">¶</a></h1>
 </div>
 </div>
 </div>
@@ -7730,28 +7451,25 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A last thing I wanted to try was to use Folium for displaying interactive maps. It seems very simple to use to get markers on a map using an OpenStreetMap tiling.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">map_osm</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.86</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">lng</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
                          <span class="n">df</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
@@ -7759,21 +7477,13 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
     <span class="n">map_osm</span><span class="o">.</span><span class="n">circle_marker</span><span class="p">([</span><span class="n">lat</span><span class="p">,</span> <span class="n">lng</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">popup</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
 <span class="n">map_osm</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[30]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <iframe srcdoc="<!DOCTYPE html>
 <head>
@@ -9421,7 +9131,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_170.bindPopup(&quot;N&#176; 12-14 RUE CLAUDE VELLEFAUX- 75010 PARIS&quot;);
+      circle_170.bindPopup(&quot;N° 12-14 RUE CLAUDE VELLEFAUX- 75010 PARIS&quot;);
       circle_170._popup.options.maxWidth = 300;
       map.addLayer(circle_170)
       
@@ -12580,7 +12290,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_521.bindPopup(&quot;Avenue du Mahatma Gandhi face &#224; la Fondation Louis Vuitton dans le Bois de Boulogne - 75016 PARIS&quot;);
+      circle_521.bindPopup(&quot;Avenue du Mahatma Gandhi face à la Fondation Louis Vuitton dans le Bois de Boulogne - 75016 PARIS&quot;);
       circle_521._popup.options.maxWidth = 300;
       map.addLayer(circle_521)
       
@@ -13147,7 +12857,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_584.bindPopup(&quot;22 rue de la Chauss&#233;e d'Antin - 75009 PARIS&quot;);
+      circle_584.bindPopup(&quot;22 rue de la Chaussée d'Antin - 75009 PARIS&quot;);
       circle_584._popup.options.maxWidth = 300;
       map.addLayer(circle_584)
       
@@ -13741,7 +13451,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_650.bindPopup(&quot;8 place de la r&#233;publique - 75011 PARIS&quot;);
+      circle_650.bindPopup(&quot;8 place de la république - 75011 PARIS&quot;);
       circle_650._popup.options.maxWidth = 300;
       map.addLayer(circle_650)
       
@@ -14497,7 +14207,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_734.bindPopup(&quot;FACE AU N&#176;16 BOULEVARD DE BERCY - 75012 PARIS&quot;);
+      circle_734.bindPopup(&quot;FACE AU N°16 BOULEVARD DE BERCY - 75012 PARIS&quot;);
       circle_734._popup.options.maxWidth = 300;
       map.addLayer(circle_734)
       
@@ -15397,7 +15107,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_834.bindPopup(&quot;47-83 BOULEVARD DE L'HOPITAL (All&#233;e de la grille) - 75013 PARIS&quot;);
+      circle_834.bindPopup(&quot;47-83 BOULEVARD DE L'HOPITAL (Allée de la grille) - 75013 PARIS&quot;);
       circle_834._popup.options.maxWidth = 300;
       map.addLayer(circle_834)
       
@@ -18385,7 +18095,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_1166.bindPopup(&quot;2 rue de Ch&#233;zy - 92200 NEUILLY&quot;);
+      circle_1166.bindPopup(&quot;2 rue de Chézy - 92200 NEUILLY&quot;);
       circle_1166._popup.options.maxWidth = 300;
       map.addLayer(circle_1166)
       
@@ -18475,7 +18185,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_1176.bindPopup(&quot;28 Bd de la R&#233;publique 92100 BOULOGNE BILLANCOURT&quot;);
+      circle_1176.bindPopup(&quot;28 Bd de la République 92100 BOULOGNE BILLANCOURT&quot;);
       circle_1176._popup.options.maxWidth = 300;
       map.addLayer(circle_1176)
       
@@ -18610,7 +18320,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_1191.bindPopup(&quot;52-54 RUE PERGOL&#200;SE - 75016 PARIS&quot;);
+      circle_1191.bindPopup(&quot;52-54 RUE PERGOLÈSE - 75016 PARIS&quot;);
       circle_1191._popup.options.maxWidth = 300;
       map.addLayer(circle_1191)
       
@@ -18736,7 +18446,7 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
                             fillColor: 'black',
                             fillOpacity: 0.6
                             });
-      circle_1205.bindPopup(&quot;Route de S&#232;vres &#224; Neuilly - 75016 PARIS&quot;);
+      circle_1205.bindPopup(&quot;Route de Sèvres à Neuilly - 75016 PARIS&quot;);
       circle_1205._popup.options.maxWidth = 300;
       map.addLayer(circle_1205)
       
@@ -18971,19 +18681,15 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 
 </body>" style="width: 100%; height: 500px; border: none"></iframe>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That's it for today! I hope you had fun!</p>
-
 </div>
 </div>
 </div>
@@ -18992,12 +18698,9 @@ var element = $('#850eede0-0ea9-45ff-a727-398a98811a8c');
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20160205_VisualizingVelibStations.ipynb">20160205_VisualizingVelibStations.ipynb</a>.</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

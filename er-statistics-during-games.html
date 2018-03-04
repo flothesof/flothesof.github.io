@@ -1415,7 +1415,6 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20161015_SimpleStatisticalTestERAttendance.ipynb">20161015_SimpleStatisticalTestERAttendance.ipynb</a>.</em></p>
-
 </div>
 </div>
 </div>
@@ -1425,7 +1424,6 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, I am trying to answer a question arising from the lecture of the following article: J. S. Furyk et al., “Emergency department presentations during the State of Origin rugby league series: a retrospective statewide analysis,” The Medical journal of Australia, vol. 197, no. 11, pp. 663–666, 2012. You can find the PDF <a href="https://www.mja.com.au/system/files/issues/197_11_101212/fur11557_fm.pdf">here</a>.</p>
 <p>The authors of the study conclude they have a statistically significantly lower emergency room attendance during game days. The question is: can we replicate their conclusion from their data?</p>
-
 </div>
 </div>
 </div>
@@ -1433,7 +1431,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="What-is-this-study-about?">What is this study about?<a class="anchor-link" href="#What-is-this-study-about?">&#182;</a></h1>
+<h1 id="What-is-this-study-about?">What is this study about?<a class="anchor-link" href="#What-is-this-study-about?">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1445,7 +1443,6 @@ h6:hover .anchor-link {
 <blockquote><p>Main outcome measures: Number of patients presenting to Queensland EDs on 24 game days and 80 control days.</p>
 <p>In total, there were 49 702 ED presentations on game days and 172 351 presentations on control days.</p>
 </blockquote>
-
 </div>
 </div>
 </div>
@@ -1454,225 +1451,174 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's transform this data in a neat little table:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">49702</span><span class="p">],</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">172351</span><span class="p">]],</span> 
-                  <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rugby game&#39;</span><span class="p">,</span> <span class="s1">&#39;control&#39;</span><span class="p">],</span> 
-                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;number of days&#39;</span><span class="p">,</span> <span class="s1">&#39;attendees&#39;</span><span class="p">])</span>
+                  <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'rugby game'</span><span class="p">,</span> <span class="s1">'control'</span><span class="p">],</span> 
+                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'number of days'</span><span class="p">,</span> <span class="s1">'attendees'</span><span class="p">])</span>
 <span class="n">df</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[1]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>number of days</th>
-      <th>attendees</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>rugby game</th>
-      <td>24</td>
-      <td>49702</td>
-    </tr>
-    <tr>
-      <th>control</th>
-      <td>80</td>
-      <td>172351</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>number of days</th>
+<th>attendees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>rugby game</th>
+<td>24</td>
+<td>49702</td>
+</tr>
+<tr>
+<th>control</th>
+<td>80</td>
+<td>172351</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's do some simple math. What's the average number of people in the ER for these two categories of days?</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees per day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;number of days&#39;</span><span class="p">]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'attendees per day'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'attendees'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">'number of days'</span><span class="p">]</span>
 <span class="n">df</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>number of days</th>
-      <th>attendees</th>
-      <th>attendees per day</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>rugby game</th>
-      <td>24</td>
-      <td>49702</td>
-      <td>2070.916667</td>
-    </tr>
-    <tr>
-      <th>control</th>
-      <td>80</td>
-      <td>172351</td>
-      <td>2154.387500</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>number of days</th>
+<th>attendees</th>
+<th>attendees per day</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>rugby game</th>
+<td>24</td>
+<td>49702</td>
+<td>2070.916667</td>
+</tr>
+<tr>
+<th>control</th>
+<td>80</td>
+<td>172351</td>
+<td>2154.387500</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that on average, there were less people in the ER on game days than on control days. 83 to be precise:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees per day&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;control&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees per day&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;rugby game&#39;</span><span class="p">]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'attendees per day'</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'control'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'attendees per day'</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'rugby game'</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>83.470833333333303</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Is 83 people (more or less), a lot, compared to roughly 2100 per day?</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="mi">83</span> <span class="o">/</span> <span class="mi">2100</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0.039523809523809524</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's 4 percent. The article says that this 4 percent difference is statistically significant. How can we prove that?</p>
-
 </div>
 </div>
 </div>
@@ -1682,7 +1628,6 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is a tough question. We need a statiscal model to answer it.</p>
 <p>Why? Because intuitively you know that there are many reasons to observe variations in numbers and doing it over 24 / 80 days averages the result, but maybe not enough.</p>
-
 </div>
 </div>
 </div>
@@ -1690,7 +1635,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Single-day-model">Single day model<a class="anchor-link" href="#Single-day-model">&#182;</a></h1>
+<h1 id="Single-day-model">Single day model<a class="anchor-link" href="#Single-day-model">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1704,114 +1649,86 @@ h6:hover .anchor-link {
 <li>a standard deviation</li>
 </ul>
 <p>We'll use a gaussian distribution based on these two values. Let's write a function that simulates a single day attendance:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">single_day</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
-    <span class="s2">&quot;Simulates the number of ER attendees for a single day.&quot;</span>
+    <span class="s2">"Simulates the number of ER attendees for a single day."</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">std</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we say that on average the standard deviation is a 100 people per day, we can simulate a distribution for a single day:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>2149.6714153011235</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can do this for 24 days in a row:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)]</span>
 <span class="n">dist</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>[2086.1735698828816,
  2164.7688538100692,
@@ -1838,45 +1755,32 @@ h6:hover .anchor-link {
  1957.5251813786542,
  2045.5617275474817]</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's ask pandas about this distribution's mean and standard deviation:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>count      24.000000
 mean     2080.898268
@@ -1888,45 +1792,32 @@ min      1908.671976
 max      2257.921282
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One thing that appears in the above data is that the mean of the data does not necessarily reflect the mean we supplied to the generating function (2080 instead of 2100). The same goes for the standard deviation. This is a sample size effect which disappears if we work with large samples. We'll try 10x, 100x and 1000x larger samples below.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">240</span><span class="p">)])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>count     240.000000
 mean     2100.234578
@@ -1938,36 +1829,24 @@ min      1775.873266
 max      2485.273149
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2400</span><span class="p">)])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>count    2400.000000
 mean     2103.999784
@@ -1979,36 +1858,24 @@ min      1798.048784
 max      2419.310757
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24000</span><span class="p">)])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>count    24000.000000
 mean      2099.943087
@@ -2020,19 +1887,7 @@ min       1707.759975
 max       2547.908425
 dtype: float64</pre>
 </div>
-
 </div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We see a progression: 2080, 2100, 2103, 2099. This is a wiggly thing. That's the reason for which we need to do statistical tests to see if it's a significant thing to have a difference in 4% on average.</p>
-
 </div>
 </div>
 </div>
@@ -2040,7 +1895,15 @@ dtype: float64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Running-statistical-tests">Running statistical tests<a class="anchor-link" href="#Running-statistical-tests">&#182;</a></h1>
+<p>We see a progression: 2080, 2100, 2103, 2099. This is a wiggly thing. That's the reason for which we need to do statistical tests to see if it's a significant thing to have a difference in 4% on average.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Running-statistical-tests">Running statistical tests<a class="anchor-link" href="#Running-statistical-tests">¶</a></h1>
 </div>
 </div>
 </div>
@@ -2049,7 +1912,6 @@ dtype: float64</pre>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How do statistical tests work? I'll quote an illustration from Allen Downey found in his wonderful article: <a href="http://allendowney.blogspot.fr/2016/06/there-is-still-only-one-test.html">"There is still only one test"</a>.</p>
-
 </div>
 </div>
 </div>
@@ -2057,43 +1919,30 @@ dtype: float64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="https://lh4.googleusercontent.com/Bud31guq0w0FvylY57VMR0zHkYqxIpYAfOqgZietyvv1n2ToNEHwHKZWYix8pwct8kDKsZKiwvOWm6PIFEL3gBIQmbakQYHwVT02nn9_H8Fht_zaSBlrRNcqwZa950Vb5nt-5B84" alt="onlyonetest"></p>
-
+<p><img alt="onlyonetest" src="https://lh4.googleusercontent.com/Bud31guq0w0FvylY57VMR0zHkYqxIpYAfOqgZietyvv1n2ToNEHwHKZWYix8pwct8kDKsZKiwvOWm6PIFEL3gBIQmbakQYHwVT02nn9_H8Fht_zaSBlrRNcqwZa950Vb5nt-5B84"/></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;number of days&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'attendees'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'number of days'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>2135.125</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2103,15 +1952,14 @@ dtype: float64</pre>
 <p>Our <strong>model under the H0 hypothesis</strong> ("there is no effect of rugby games") is that on average 2135.125 people visit the ER. Using our previously discussed random model, we can simulate a lot of samples of 24 / 80 days under this assumption.</p>
 <p><strong>Test statistic</strong>: using the data from the 80 control days and 24 game days, we'll simply substract the number of attendees in the control case from the number of attendees in the game case, normalizing by the number of days in control and game cases.</p>
 <p>Let's use the <a href="http://greenteapress.com/thinkstats2/html/thinkstats2010.html">HypothesisTest class found in Allen Downey's book Think Stats2</a> for this.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">HypothesisTest</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
@@ -2119,197 +1967,159 @@ dtype: float64</pre>
         <span class="bp">self</span><span class="o">.</span><span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TestStatistic</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">PValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-        <span class="s2">&quot;Returns p-value of actual data based on simulated data.&quot;</span>
+        <span class="s2">"Returns p-value of actual data based on simulated data."</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_stats</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">TestStatistic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RunModel</span><span class="p">())</span> 
                            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters</span><span class="p">)]</span>
 
-        <span class="n">count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_stats</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_stats</span> <span class="k">if</span> <span class="n">x</span> <span class="o">>=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">count</span> <span class="o">/</span> <span class="n">iters</span>
 
     <span class="k">def</span> <span class="nf">TestStatistic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="s2">&quot;Test statistic for the current test.&quot;</span>
+        <span class="s2">"Test statistic for the current test."</span>
         <span class="k">raise</span> <span class="n">UnimplementedMethodException</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">MakeModel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">RunModel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;Returns a simulated data sample.&quot;</span>
+        <span class="s2">"Returns a simulated data sample."</span>
         <span class="k">raise</span> <span class="n">UnimplementedMethodException</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our only needed simulation parameter is going to be the standard deviation of the attendance or "by how many people can attendance vary per day". We'll use the arbitrarily value of 100 (for now).</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">variance_param</span> <span class="o">=</span> <span class="mi">100</span> 
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can generate our model easily with the function already defined previously:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ERTest</span><span class="p">(</span><span class="n">HypothesisTest</span><span class="p">):</span>
-    <span class="s2">&quot;Model for replicating the Furyk et al. (2012) study.&quot;</span>
+    <span class="s2">"Model for replicating the Furyk et al. (2012) study."</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">variance_param</span> <span class="o">=</span> <span class="n">variance_param</span>
         
     <span class="k">def</span> <span class="nf">TestStatistic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulated_data</span><span class="p">):</span>
-        <span class="s2">&quot;The statistic is the relative difference in control vs game day attendees.&quot;</span>
+        <span class="s2">"The statistic is the relative difference in control vs game day attendees."</span>
         <span class="n">sum_game</span><span class="p">,</span> <span class="n">sum_control</span> <span class="o">=</span> <span class="n">simulated_data</span>
         <span class="n">test_stat</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum_control</span> <span class="o">/</span> <span class="mf">80.</span> <span class="o">-</span> <span class="n">sum_game</span> <span class="o">/</span> <span class="mf">24.</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">test_stat</span>
 
     <span class="k">def</span> <span class="nf">RunModel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;Returns a simulated data set of 104 observations under the H0 hypothesis.&quot;</span>
+        <span class="s2">"Returns a simulated data set of 104 observations under the H0 hypothesis."</span>
         <span class="n">simulated_data</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">single_day</span><span class="p">(</span><span class="mf">2135.125</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variance_param</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)),</span>
                          <span class="nb">sum</span><span class="p">(</span><span class="n">single_day</span><span class="p">(</span><span class="mf">2135.125</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variance_param</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">80</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">simulated_data</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Good, now we're ready to run our simulation.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49702</span><span class="p">,</span> <span class="mi">172351</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ert</span> <span class="o">=</span> <span class="n">ERTest</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ert</span><span class="o">.</span><span class="n">actual</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[19]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>83.4708333333333</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ert</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[20]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0.0001</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What this means is that using the above hypotheses, the likelihood to observe our actual result, with a difference in means of 83 people per day and the given sample sizes (24 / 80) is very unlikely to be due to chance.</p>
-
 </div>
 </div>
 </div>
@@ -2318,68 +2128,54 @@ dtype: float64</pre>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To get a better feeling for the distribution of the test statistic, let's plot it:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;bmh&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'bmh'</span><span class="p">)</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_test_stat</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="s2">&quot;Plots the test statistic distribution and observed value.&quot;</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_test_stat</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">""</span><span class="p">):</span>
+    <span class="s2">"Plots the test statistic distribution and observed value."</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">test_stats</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cumulative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">ylim</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">actual</span><span class="p">,</span> <span class="o">*</span><span class="n">ylim</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;observed test stat&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;test statistic: control - game days (in people per day)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">actual</span><span class="p">,</span> <span class="o">*</span><span class="n">ylim</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'observed test stat'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'test statistic: control - game days (in people per day)'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_test_stat</span><span class="p">(</span><span class="n">ert</span><span class="p">,</span> <span class="s2">&quot;variance: </span><span class="si">{}</span><span class="s2"> people per day&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variance_param</span><span class="p">))</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_test_stat</span><span class="p">(</span><span class="n">ert</span><span class="p">,</span> <span class="s2">"variance: </span><span class="si">{}</span><span class="s2"> people per day"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variance_param</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYcAAAEdCAYAAADn46tbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXmYFsW1/z9fEFQQIRgHFR1EIa6IwSUm0Zg4BtEkYtw1
@@ -2681,22 +2477,17 @@ ReC7Znb8RtalD0G5dcq6XSXNBM41s7EZ53s3MMfM/jPLfLNEYee2byevXWEHwp3NbHhLl5+bbUId
 pyVQ2H72L4Sh/DXAI5uAYuhEmMH0u43Jx8yeBp7OpFL+UWemSDoBWFusFM3s1taqQ3v3OThOJb5D
 MAtMI+6T3bbV2Tji6Oc9wsyZm9q4OklaygTR3vLdaCQ9S5it2KZ91c1KjuM4TgN85OA4juM0wJWD
 4ziO0wBXDo7jOE4DXDk4juM4DXDl4DiO4zTAlYPjOI7TgP8PiOZOcFmZt44AAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What this means is that if we had randomly taken 24 days and 80 days with a standard deviation of 100 people, there's almost no chance of observing a difference in number of people of 83.</p>
-
 </div>
 </div>
 </div>
@@ -2705,68 +2496,46 @@ MAtMI+6T3bbV2Tji6Oc9wsyZm9q4OklaygTR3vLdaCQ9S5it2KZ91c1KjuM4TgN85OA4juM0wJWD
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What if the standard deviation was larger? Luckily we can repeat our experiment by changing only this value.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">variance_param</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">ert1</span> <span class="o">=</span> <span class="n">ERTest</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">)</span>
 <span class="n">ert1</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[24]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>0.2327</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_test_stat</span><span class="p">(</span><span class="n">ert1</span><span class="p">,</span> <span class="s2">&quot;variance: </span><span class="si">{}</span><span class="s2"> people per day&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variance_param</span><span class="p">))</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_test_stat</span><span class="p">(</span><span class="n">ert1</span><span class="p">,</span> <span class="s2">"variance: </span><span class="si">{}</span><span class="s2"> people per day"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variance_param</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAAEdCAYAAADwwTuSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXmYFcXVuN/DsKiAKOiAogMoRFFRgxtZlOgoolHI5waa
@@ -3071,22 +2840,17 @@ l8j+HjjjscrX0evsHByyy7nJkH9X4F++DsfHrq3WuNbheq/fd4jdFzj/4Drgf2L57oFrCe1f13si
 90nQ+mC3n6xan4jI+cCOuLFU1ccKVYak+jQMoyZ+iOtemIfzR13TuMXJD99aWosbyfNIIxcnSkN1
 ZYSWb96IyBu40ZONeq1a95RhGIaRM9bSMAzDMHLGjIZhGIaRM2Y0DMMwjJwxo2EYhmHkjBkNwzAM
 I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, we see that the observed difference would be likely to be observed by chance. Having a difference of 83 people per day is likely to be normal over 24/80 days if numbers fluctuate by 500 people every day.</p>
-
 </div>
 </div>
 </div>
@@ -3095,7 +2859,6 @@ I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The point of all of this is: if we don't know by how much numbers fluctuate every day and how (here I used a Gaussian assumption but really, I have no idea), we can't say if this is statistically significant. I wonder why the authors have not mentioned this basic statistic of their sample in the article.</p>
-
 </div>
 </div>
 </div>
@@ -3103,7 +2866,7 @@ I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions-and-last-plot">Conclusions and last plot<a class="anchor-link" href="#Conclusions-and-last-plot">&#182;</a></h1>
+<h1 id="Conclusions-and-last-plot">Conclusions and last plot<a class="anchor-link" href="#Conclusions-and-last-plot">¶</a></h1>
 </div>
 </div>
 </div>
@@ -3112,168 +2875,138 @@ I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To conclude, let's do a parametric plot of P-values, depending on the unknown parameter, the standard deviation of the number of people per day at the ER in Queensland, Australia.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pvalues</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">variances</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">750</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">variance_param</span> <span class="ow">in</span> <span class="n">variances</span><span class="p">:</span>
     <span class="n">ert2</span> <span class="o">=</span> <span class="n">ERTest</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">)</span>
     <span class="n">pvalues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ert2</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="p">[</span><span class="n">variances</span><span class="p">,</span> <span class="n">pvalues</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;variance (people per day)&#39;</span><span class="p">,</span> <span class="s1">&#39;p-value&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="p">[</span><span class="n">variances</span><span class="p">,</span> <span class="n">pvalues</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'variance (people per day)'</span><span class="p">,</span> <span class="s1">'p-value'</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 <span class="n">df2</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[27]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>variance (people per day)</th>
-      <th>p-value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>10.0</td>
-      <td>0.000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>50.0</td>
-      <td>0.000</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>100.0</td>
-      <td>0.000</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>150.0</td>
-      <td>0.006</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>200.0</td>
-      <td>0.040</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>250.0</td>
-      <td>0.088</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>300.0</td>
-      <td>0.115</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>350.0</td>
-      <td>0.140</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>400.0</td>
-      <td>0.178</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>500.0</td>
-      <td>0.245</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>750.0</td>
-      <td>0.300</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>1000.0</td>
-      <td>0.391</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>variance (people per day)</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>10.0</td>
+<td>0.000</td>
+</tr>
+<tr>
+<th>1</th>
+<td>50.0</td>
+<td>0.000</td>
+</tr>
+<tr>
+<th>2</th>
+<td>100.0</td>
+<td>0.000</td>
+</tr>
+<tr>
+<th>3</th>
+<td>150.0</td>
+<td>0.006</td>
+</tr>
+<tr>
+<th>4</th>
+<td>200.0</td>
+<td>0.040</td>
+</tr>
+<tr>
+<th>5</th>
+<td>250.0</td>
+<td>0.088</td>
+</tr>
+<tr>
+<th>6</th>
+<td>300.0</td>
+<td>0.115</td>
+</tr>
+<tr>
+<th>7</th>
+<td>350.0</td>
+<td>0.140</td>
+</tr>
+<tr>
+<th>8</th>
+<td>400.0</td>
+<td>0.178</td>
+</tr>
+<tr>
+<th>9</th>
+<td>500.0</td>
+<td>0.245</td>
+</tr>
+<tr>
+<th>10</th>
+<td>750.0</td>
+<td>0.300</td>
+</tr>
+<tr>
+<th>11</th>
+<td>1000.0</td>
+<td>0.391</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;variance (people per day)&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;p-value&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;-o&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'variance (people per day)'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'p-value'</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">'-o'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[28]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x111051b38&gt;</pre>
+<pre><matplotlib.axes._subplots.AxesSubplot at 0x111051b38></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAESCAYAAAD9gqKNAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8VPXV+PHPSSAhEAghEJZAwuqGKKKyuKEGFR9tqWvR
@@ -3550,27 +3283,20 @@ naDntLZdG98jA9iC08nubW39Nu57K06bw3I4SBEZgjOi2QD3h0T9/CycTvXWh2o0YalLqBtgTHtT
 Z4zmjhBI/0hEce9ruBendFbpu0xVrwxNq0x7sYRgzJEL1ul1WJ62i0h3nHLeVpwr0EyEsZKRMcYY
 wDqVjTHGuCwhGGOMASwhGGOMcVlCMMYYA1hCMMYY47KEYIwxBoD/DyTX6l5zBzNYAAAAAElFTkSu
 QmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The point that this plot makes is: depending on the attendance at the ER, the numbers used in the study can or cannot be statistically significant. If the fluctuation in attendance for a 2100 people ER is above 200 people per day (roughly 10%), the numbers from the study would be judged non significant. On the other hand, if the numbers are around 50 people per day (low fluctuation) then there is a real effect. It would be interesting to contact the author about this point.</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

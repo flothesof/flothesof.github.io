@@ -1417,7 +1417,6 @@ h6:hover .anchor-link {
 <p>Cette semaine, après avoir travaillé sur <a href="http://flothesof.github.io/age-moyen-deputes-francais.html">l'âge moyen des députés français</a>, je vous propose de nous intéresser à celui des sénateurs.</p>
 <p>Premier constat : la tâche ne va pas être aussi facile que dans le cas des députés. En effet, je n'ai pas réussi à trouver une base de données avec les dates de naissance des sénateurs ou de fichier PDF comme dans le cas des députés avec toutes les données d'un coup. Il va donc falloir travailler un peu plus afin d'extraire les données du <a href="http://www.senat.fr/senateurs/senatl.html">site web du sénat et son index alphabétique</a>.</p>
 <p>Afin de faire ceci, nous allons utiliser les outils Python classique pour ce genre de tâche : <code>requests</code> et <code>beautiful soup</code>.</p>
-
 </div>
 </div>
 </div>
@@ -1425,7 +1424,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Comment-extraire-la-date-de-naissance-d'un-s&#233;nateur-de-sa-notice-bibliographique-?">Comment extraire la date de naissance d'un s&#233;nateur de sa notice bibliographique ?<a class="anchor-link" href="#Comment-extraire-la-date-de-naissance-d'un-s&#233;nateur-de-sa-notice-bibliographique-?">&#182;</a></h1>
+<h1 id="Comment-extraire-la-date-de-naissance-d'un-sénateur-de-sa-notice-bibliographique-?">Comment extraire la date de naissance d'un sénateur de sa notice bibliographique ?<a class="anchor-link" href="#Comment-extraire-la-date-de-naissance-d'un-sénateur-de-sa-notice-bibliographique-?">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1435,56 +1434,41 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Tout part de la notice bibliographique du sénateur. Par exemple, celle de <a href="http://www.senat.fr/senateur/berson_michel11068s.html">Michel Berson, sénateur de l'Essonne</a>.</p>
 <p>On peut télécherger le contenu de cette page à l'aide du code suivant :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://www.senat.fr/senateur/berson_michel11068s.html&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://www.senat.fr/senateur/berson_michel11068s.html"</span><span class="p">)</span>
 <span class="n">r</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;Response [200]&gt;</pre>
-</div>
-
-</div>
-
+<pre><Response [200]></pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1492,246 +1476,187 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>La réponse 200 signifie que le téléchargement de la page s'est bien passé.</p>
 <p>Pour extraire la date de naissance, il faut regarder le code HTML de la page et utiliser <code>beautiful soup</code>. On construit notre soupe :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
-<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>La date de naissance se trouve dans un tag 'dd' lui-même contenu dans un tag 'dl'. On peut trouver ces éléments ainsi :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">items</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;dl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;dd&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">items</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'dl'</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'dd'</span><span class="p">)</span>
 <span class="n">items</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;dd&gt;
- &lt;a class=&#34;link-color-01&#34; href=&#34;mailto:m.berson@senat.fr&#34;&gt;m.berson@senat.fr&lt;/a&gt; 
- &lt;/dd&gt;, &lt;dd&gt;
- &lt;ul class=&#34;list-contact-01&#34;&gt;
- &lt;li&gt;&lt;a href=&#34;http://www.michelberson.fr&#34; target=&#34;_blank&#34;&gt;&lt;img alt=&#34;http://www.michelberson.fr&#34; src=&#34;/fileadmin/templates/images/data/picto_contact_blog.png&#34;/&gt;&lt;/a&gt;&lt;/li&gt;
- &lt;li&gt;&lt;a href=&#34;http://www.facebook.com/michel.berson&#34; target=&#34;_blank&#34;&gt;&lt;img alt=&#34;Profil Facebook&#34; src=&#34;/fileadmin/templates/images/data/picto_contact_facebook.png&#34;/&gt;&lt;/a&gt;&lt;/li&gt;
- &lt;/ul&gt;
- &lt;ul class=&#34;list-contact-01&#34;&gt;
- &lt;li&gt;&lt;a href=&#34;http://twitter.com/michel_berson&#34; target=&#34;_blank&#34;&gt;&lt;img alt=&#34;Compte Twitter&#34; src=&#34;/fileadmin/templates/images/data/picto_contact_twitter.png&#34;/&gt;&lt;/a&gt;&lt;/li&gt;
- &lt;/ul&gt;
- &lt;/dd&gt;, &lt;dd&gt;Né le 21 avril 1945&lt;/dd&gt;, &lt;dd&gt;Cadre dans le secteur bancaire&lt;/dd&gt;, &lt;dd&gt;&lt;img alt=&#34;Place dans l&#39;hémicycle&#34; src=&#34;/fileadmin/templates/images/senateurs/hemicycle/place-hemicycle_311.jpg&#34; width=&#34;170&#34;&gt;
- &lt;/img&gt;&lt;/dd&gt;, &lt;dd&gt;&lt;a href=&#34;/senateurs/sencir.html#c265&#34;&gt;&lt;img alt=&#34;Circonscription&#34; src=&#34;/fileadmin/templates/images/senateurs/dpt/circonscription_91.jpg&#34;/&gt;&lt;/a&gt;
- &lt;div class=&#34;link link-type-02&#34;&gt;
- &lt;a href=&#34;/senateurs/sencir.html#c265&#34;&gt;Tous les Sénateurs de la
- circonscription&lt;/a&gt;
- &lt;/div&gt;
- &lt;/dd&gt;]</pre>
-</div>
-
-</div>
-
+<pre>[<dd>
+ <a class="link-color-01" href="mailto:m.berson@senat.fr">m.berson@senat.fr</a> 
+ </dd>, <dd>
+ <ul class="list-contact-01">
+ <li><a href="http://www.michelberson.fr" target="_blank"><img alt="http://www.michelberson.fr" src="/fileadmin/templates/images/data/picto_contact_blog.png"/></a></li>
+ <li><a href="http://www.facebook.com/michel.berson" target="_blank"><img alt="Profil Facebook" src="/fileadmin/templates/images/data/picto_contact_facebook.png"/></a></li>
+ </ul>
+ <ul class="list-contact-01">
+ <li><a href="http://twitter.com/michel_berson" target="_blank"><img alt="Compte Twitter" src="/fileadmin/templates/images/data/picto_contact_twitter.png"/></a></li>
+ </ul>
+ </dd>, <dd>Né le 21 avril 1945</dd>, <dd>Cadre dans le secteur bancaire</dd>, <dd><img alt="Place dans l'hémicycle" src="/fileadmin/templates/images/senateurs/hemicycle/place-hemicycle_311.jpg" width="170">
+ </img></dd>, <dd><a href="/senateurs/sencir.html#c265"><img alt="Circonscription" src="/fileadmin/templates/images/senateurs/dpt/circonscription_91.jpg"/></a>
+ <div class="link link-type-02">
+ <a href="/senateurs/sencir.html#c265">Tous les Sénateurs de la
+ circonscription</a>
+ </div>
+ </dd>]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>La date de naissance qui nous intéresse est dans le deuxième item :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Né&#39;</span><span class="p">)]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'Né'</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Né le 21 avril 1945&#39;]</pre>
-</div>
-
-</div>
-
+<pre>['Né le 21 avril 1945']</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut, sur le même principe, également écrire une fonction qui extrait le nom du sénateur de la page :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;h1&#39;</span><span class="p">,</span><span class="s1">&#39;title-01&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">,</span><span class="s1">'title-01'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;M. Michel Berson&#39;</pre>
-</div>
-
-</div>
-
+<pre>'M. Michel Berson'</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Maintenant que nous savons faire ça, nous pouvons écrire un fonction qui extrait la date de naissance de l'url de la page d'un sénateur, de même que son nom :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">url2data</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Télécharge la page de l&#39;url et extrait la date de naissance du sénateur.&quot;&quot;&quot;</span>
+    <span class="sd">"""Télécharge la page de l'url et extrait la date de naissance du sénateur."""</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
-        <span class="n">birthdate</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;dl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;dd&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Né&#39;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;h1&#39;</span><span class="p">,</span><span class="s1">&#39;title-01&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+        <span class="n">birthdate</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'dl'</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'dd'</span><span class="p">)</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'Né'</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">,</span><span class="s1">'title-01'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span><span class="p">(</span><span class="s2">&quot;Something went wrong with the web request&quot;</span><span class="p">)</span>
+        <span class="k">raise</span><span class="p">(</span><span class="s2">"Something went wrong with the web request"</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut tester la fonction :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url2data</span><span class="p">(</span><span class="s2">&quot;http://www.senat.fr/senateur/berson_michel11068s.html&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url2data</span><span class="p">(</span><span class="s2">"http://www.senat.fr/senateur/berson_michel11068s.html"</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>(&#39;M. Michel Berson&#39;, &#39;Né le 21 avril 1945&#39;)</pre>
-</div>
-
-</div>
-
+<pre>('M. Michel Berson', 'Né le 21 avril 1945')</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Pour avoir toutes les dates de naissances, il nous faut maintenant appliquer cette procédure à toutes les urls que l'on trouve sur l'index alphabétique du sénat.</p>
-
 </div>
 </div>
 </div>
@@ -1739,7 +1664,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="R&#233;p&#233;ter-l'op&#233;ration-d'extraction-pour-chaque-s&#233;nateur">R&#233;p&#233;ter l'op&#233;ration d'extraction pour chaque s&#233;nateur<a class="anchor-link" href="#R&#233;p&#233;ter-l'op&#233;ration-d'extraction-pour-chaque-s&#233;nateur">&#182;</a></h1>
+<h1 id="Répéter-l'opération-d'extraction-pour-chaque-sénateur">Répéter l'opération d'extraction pour chaque sénateur<a class="anchor-link" href="#Répéter-l'opération-d'extraction-pour-chaque-sénateur">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1748,876 +1673,783 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A partir de la page d'index biographique, nous pouvons, de la même manière que précédemment, extraire les liens vers les différentes pages de sénateurs :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://www.senat.fr/senateurs/senatl.html&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://www.senat.fr/senateurs/senatl.html"</span><span class="p">)</span>
 <span class="n">r</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;Response [200]&gt;</pre>
-</div>
-
-</div>
-
+<pre><Response [200]></pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On fait une petite sousoupe :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Et maintenant on cherche des liens qui sont dans des balises du type ul li a. Tant qu'à faire, on ne garde que ceux qui pointen vers une page de sénateur :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;ul li a&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/senateur/&#39;</span><span class="p">)]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'href'</span><span class="p">)</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'ul li a'</span><span class="p">)</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'href'</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'/senateur/'</span><span class="p">)]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>348</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous dénombrons bien 348 sénateurs. Passons à l'extraction des dates de naissance.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">birthdates</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">,</span> <span class="n">bd</span> <span class="o">=</span> <span class="n">url2data</span><span class="p">(</span><span class="s2">&quot;http://www.senat.fr&quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">bd</span> <span class="o">=</span> <span class="n">url2data</span><span class="p">(</span><span class="s2">"http://www.senat.fr"</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
     <span class="n">birthdates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">bd</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Regardons le résultat :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">birthdates</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;M. Abdourahamane Soilihi&#39;: &#39;Né le 4 octobre 1959&#39;,
- &#39;M. Alain Anziani&#39;: &#39;Né le 30 mai 1951&#39;,
- &#39;M. Alain Bertrand&#39;: &#39;Né le 23 février 1951&#39;,
- &#39;M. Alain Chatillon&#39;: &#39;Né le 15 mars 1943&#39;,
- &#39;M. Alain Dufaut&#39;: &#39;Né le 2 janvier 1944&#39;,
- &#39;M. Alain Duran&#39;: &#39;Né le 2 janvier 1958&#39;,
- &#39;M. Alain Fouché&#39;: &#39;Né le 4 décembre 1942&#39;,
- &#39;M. Alain Gournac&#39;: &#39;Né le 13 septembre 1943&#39;,
- &#39;M. Alain Houpert&#39;: &#39;Né le 13 août 1957&#39;,
- &#39;M. Alain Joyandet&#39;: &#39;Né le 15 janvier 1954&#39;,
- &#39;M. Alain Marc&#39;: &#39;Né le 29 janvier 1957&#39;,
- &#39;M. Alain Milon&#39;: &#39;Né le 16 septembre 1947&#39;,
- &#39;M. Alain Néri&#39;: &#39;Né le 1er mai 1942&#39;,
- &#39;M. Alain Richard&#39;: &#39;Né le 29 août 1945&#39;,
- &#39;M. Alain Vasselle&#39;: &#39;Né le 27 juin 1947&#39;,
- &#39;M. Albéric de Montgolfier&#39;: &#39;Né le 6 juillet 1964&#39;,
- &#39;M. Alex Türk&#39;: &#39;Né le 25 janvier 1950&#39;,
- &#39;M. André Gattolin&#39;: &#39;Né le 24 juin 1960&#39;,
- &#39;M. André Reichardt&#39;: &#39;Né le 5 décembre 1949&#39;,
- &#39;M. André Trillard&#39;: &#39;Né le 24 octobre 1947&#39;,
- &#39;M. Antoine Karam&#39;: &#39;Né le 21 février 1950&#39;,
- &#39;M. Antoine Lefèvre&#39;: &#39;Né le 18 février 1966&#39;,
- &#39;M. Benoît Huré&#39;: &#39;Né le 5 juin 1953&#39;,
- &#39;M. Bernard Cazeau&#39;: &#39;Né le 27 avril 1939&#39;,
- &#39;M. Bernard Delcros&#39;: &#39;Né le 12 février 1953&#39;,
- &#39;M. Bernard Fournier&#39;: &#39;Né le 13 septembre 1946&#39;,
- &#39;M. Bernard Lalande&#39;: &#39;Né le 6 avril 1954&#39;,
- &#39;M. Bernard Saugey&#39;: &#39;Né le 3 mars 1943&#39;,
- &#39;M. Bruno Gilles&#39;: &#39;Né le 26 décembre 1960&#39;,
- &#39;M. Bruno Retailleau&#39;: &#39;Né le 20 novembre 1960&#39;,
- &#39;M. Bruno Sido&#39;: &#39;Né le 19 février 1951&#39;,
- &#39;M. Charles Guené&#39;: &#39;Né le 6 avril 1952&#39;,
- &#39;M. Charles Revet&#39;: &#39;Né le 9 novembre 1937&#39;,
- &#39;M. Christian Cambon&#39;: &#39;Né le 8 mars 1948&#39;,
- &#39;M. Christian Favier&#39;: &#39;Né le 20 février 1951&#39;,
- &#39;M. Christian Manable&#39;: &#39;Né le 19 juin 1948&#39;,
- &#39;M. Christian Namy&#39;: &#39;Né le 19 octobre 1938&#39;,
- &#39;M. Christophe Béchu&#39;: &#39;Né le 11 juin 1974&#39;,
- &#39;M. Christophe-André Frassa&#39;: &#39;Né le 4 février 1968&#39;,
- &#39;M. Claude Bérit-Débat&#39;: &#39;Né le 19 février 1946&#39;,
- &#39;M. Claude Haut&#39;: &#39;Né le 22 décembre 1944&#39;,
- &#39;M. Claude Kern&#39;: &#39;Né le 13 mars 1959&#39;,
- &#39;M. Claude Malhuret&#39;: &#39;Né le 8 mars 1950&#39;,
- &#39;M. Claude Nougein&#39;: &#39;Né le 4 décembre 1946&#39;,
- &#39;M. Claude Raynal&#39;: &#39;Né le 10 octobre 1957&#39;,
- &#39;M. Cyril Pellevat&#39;: &#39;Né le 18 février 1981&#39;,
- &#39;M. Cédric Perrin&#39;: &#39;Né le 20 janvier 1974&#39;,
- &#39;M. Daniel Chasseing&#39;: &#39;Né le 10 avril 1945&#39;,
- &#39;M. Daniel Dubois&#39;: &#39;Né le 5 février 1952&#39;,
- &#39;M. Daniel Gremillet&#39;: &#39;Né le 31 juillet 1953&#39;,
- &#39;M. Daniel Laurent&#39;: &#39;Né le 4 février 1949&#39;,
- &#39;M. Daniel Percheron&#39;: &#39;Né le 31 août 1942&#39;,
- &#39;M. Daniel Raoul&#39;: &#39;Né le 28 juillet 1941&#39;,
- &#39;M. Daniel Reiner&#39;: &#39;Né le 17 janvier 1941&#39;,
- &#39;M. David Assouline&#39;: &#39;Né le 16 juin 1959&#39;,
- &#39;M. David Rachline&#39;: &#39;Né le 2 décembre 1987&#39;,
- &#39;M. Didier Guillaume&#39;: &#39;Né le 11 mai 1959&#39;,
- &#39;M. Didier Mandelli&#39;: &#39;Né le 7 août 1964&#39;,
- &#39;M. Didier Marie&#39;: &#39;Né le 19 mai 1960&#39;,
- &#39;M. Didier Robert&#39;: &#39;Né le 26 avril 1964&#39;,
- &#39;M. Dominique Bailly&#39;: &#39;Né le 2 janvier 1960&#39;,
- &#39;M. Dominique Watrin&#39;: &#39;Né le 14 juin 1953&#39;,
- &#39;M. Dominique de Legge&#39;: &#39;Né le 18 février 1952&#39;,
- &#39;M. Francis Delattre&#39;: &#39;Né le 11 septembre 1946&#39;,
- &#39;M. Franck Montaugé&#39;: &#39;Né le 14 septembre 1961&#39;,
- &#39;M. François Baroin&#39;: &#39;Né le 21 juin 1965&#39;,
- &#39;M. François Bonhomme&#39;: &#39;Né le 5 mai 1969&#39;,
- &#39;M. François Calvet&#39;: &#39;Né le 1er avril 1953&#39;,
- &#39;M. François Commeinhes&#39;: &#39;Né le 10 novembre 1949&#39;,
- &#39;M. François Fortassin&#39;: &#39;Né le 2 août 1939&#39;,
- &#39;M. François Grosdidier&#39;: &#39;Né le 25 février 1961&#39;,
- &#39;M. François Marc&#39;: &#39;Né le 19 mars 1950&#39;,
- &#39;M. François Patriat&#39;: &#39;Né le 21 mars 1943&#39;,
- &#39;M. François Pillet&#39;: &#39;Né le 13 mai 1950&#39;,
- &#39;M. François Zocchetto&#39;: &#39;Né le 14 décembre 1958&#39;,
- &#39;M. François-Noël Buffet&#39;: &#39;Né le 28 août 1963&#39;,
- &#39;M. Félix Desplan&#39;: &#39;Né le 22 février 1943&#39;,
- &#39;M. Gaëtan Gorce&#39;: &#39;Né le 2 décembre 1958&#39;,
- &#39;M. Georges Labazée&#39;: &#39;Né le 16 juin 1943&#39;,
- &#39;M. Georges Patient&#39;: &#39;Né le 1er avril 1949&#39;,
- &#39;M. Gilbert Barbier&#39;: &#39;Né le 3 mars 1940&#39;,
- &#39;M. Gilbert Bouchet&#39;: &#39;Né le 8 janvier 1947&#39;,
- &#39;M. Gilbert Roger&#39;: &#39;Né le 9 novembre 1953&#39;,
- &#39;M. Guillaume Arnell&#39;: &#39;Né le 20 janvier 1958&#39;,
- &#39;M. Guy-Dominique Kennel&#39;: &#39;Né le 14 avril 1952&#39;,
- &#39;M. Gérard Bailly&#39;: &#39;Né le 28 janvier 1940&#39;,
- &#39;M. Gérard Collomb&#39;: &#39;Né le 20 juin 1947&#39;,
- &#39;M. Gérard Cornu&#39;: &#39;Né le 6 février 1952&#39;,
- &#39;M. Gérard César&#39;: &#39;Né le 19 décembre 1934&#39;,
- &#39;M. Gérard Dériot&#39;: &#39;Né le 1er novembre 1944&#39;,
- &#39;M. Gérard Larcher&#39;: &#39;Né le 14 septembre 1949&#39;,
- &#39;M. Gérard Longuet&#39;: &#39;Né le 24 février 1946&#39;,
- &#39;M. Gérard Miquel&#39;: &#39;Né le 17 juin 1946&#39;,
- &#39;M. Gérard Roche&#39;: &#39;Né le 29 décembre 1942&#39;,
- &#39;M. Henri Cabanel&#39;: &#39;Né le 9 mars 1959&#39;,
- &#39;M. Henri Tandonnet&#39;: &#39;Né le 14 décembre 1949&#39;,
- &#39;M. Henri de Raincourt&#39;: &#39;Né le 17 novembre 1948&#39;,
- &#39;M. Hervé Marseille&#39;: &#39;Né le 20 août 1954&#39;,
- &#39;M. Hervé Maurey&#39;: &#39;Né le 7 mai 1961&#39;,
- &#39;M. Hervé Poher&#39;: &#39;Né le 19 mai 1952&#39;,
- &#39;M. Hilarion Vendegou&#39;: &#39;Né le 4 septembre 1941&#39;,
- &#39;M. Hubert Falco&#39;: &#39;Né le 15 mai 1947&#39;,
- &#39;M. Hugues Portelli&#39;: &#39;Né le 22 décembre 1947&#39;,
- &#39;M. Jackie Pierre&#39;: &#39;Né le 27 mai 1946&#39;,
- &#39;M. Jacques Bigot&#39;: &#39;Né le 31 juillet 1952&#39;,
- &#39;M. Jacques Chiron&#39;: &#39;Né le 3 octobre 1949&#39;,
- &#39;M. Jacques Cornano&#39;: &#39;Né le 18 novembre 1956&#39;,
- &#39;M. Jacques Gautier&#39;: &#39;Né le 18 septembre 1946&#39;,
- &#39;M. Jacques Genest&#39;: &#39;Né le 6 août 1950&#39;,
- &#39;M. Jacques Gillot&#39;: &#39;Né le 4 mars 1948&#39;,
- &#39;M. Jacques Grosperrin&#39;: &#39;Né le 17 octobre 1955&#39;,
- &#39;M. Jacques Legendre&#39;: &#39;Né le 2 décembre 1941&#39;,
- &#39;M. Jacques Mézard&#39;: &#39;Né le 3 décembre 1947&#39;,
- &#39;M. Jacques-Bernard Magner&#39;: &#39;Né le 1er juin 1952&#39;,
- &#39;M. Jean Bizet&#39;: &#39;Né le 30 août 1947&#39;,
- &#39;M. Jean Desessard&#39;: &#39;Né le 6 septembre 1952&#39;,
- &#39;M. Jean Louis Masson&#39;: &#39;Né le 25 mars 1947&#39;,
- &#39;M. Jean Pierre Vogel&#39;: &#39;Né le 7 août 1956&#39;,
- &#39;M. Jean-Baptiste Lemoyne&#39;: &#39;Né le 15 septembre 1977&#39;,
- &#39;M. Jean-Claude Boulard&#39;: &#39;Né le 28 mars 1943&#39;,
- &#39;M. Jean-Claude Carle&#39;: &#39;Né le 9 juin 1948&#39;,
- &#39;M. Jean-Claude Frécon&#39;: &#39;Né le 3 septembre 1944&#39;,
- &#39;M. Jean-Claude Gaudin&#39;: &#39;Né le 8 octobre 1939&#39;,
- &#39;M. Jean-Claude Lenoir&#39;: &#39;Né le 27 décembre 1944&#39;,
- &#39;M. Jean-Claude Leroy&#39;: &#39;Né le 3 juin 1952&#39;,
- &#39;M. Jean-Claude Luche&#39;: &#39;Né le 7 août 1952&#39;,
- &#39;M. Jean-Claude Requier&#39;: &#39;Né le 4 octobre 1947&#39;,
- &#39;M. Jean-François Husson&#39;: &#39;Né le 17 avril 1961&#39;,
- &#39;M. Jean-François Longeot&#39;: &#39;Né le 27 décembre 1956&#39;,
- &#39;M. Jean-François Mayet&#39;: &#39;Né le 30 janvier 1940&#39;,
- &#39;M. Jean-François Rapin&#39;: &#39;Né le 11 mai 1966&#39;,
- &#39;M. Jean-Jacques Filleul&#39;: &#39;Né le 22 juin 1943&#39;,
- &#39;M. Jean-Jacques Lasserre&#39;: &#39;Né le 11 mars 1944&#39;,
- &#39;M. Jean-Jacques Lozach&#39;: &#39;Né le 8 février 1954&#39;,
- &#39;M. Jean-Jacques Panunzi&#39;: &#39;Né le 5 avril 1956&#39;,
- &#39;M. Jean-Louis Carrère&#39;: &#39;Né le 4 décembre 1944&#39;,
- &#39;M. Jean-Louis Tourenne&#39;: &#39;Né le 25 août 1944&#39;,
- &#39;M. Jean-Léonce Dupont&#39;: &#39;Né le 31 janvier 1955&#39;,
- &#39;M. Jean-Marc Gabouty&#39;: &#39;Né le 17 mai 1949&#39;,
- &#39;M. Jean-Marie Bockel&#39;: &#39;Né le 22 juin 1950&#39;,
- &#39;M. Jean-Marie Morisset&#39;: &#39;Né le 18 août 1947&#39;,
- &#39;M. Jean-Marie Vanlerenberghe&#39;: &#39;Né le 29 mars 1939&#39;,
- &#39;M. Jean-Noël Cardoux&#39;: &#39;Né le 18 décembre 1946&#39;,
- &#39;M. Jean-Noël Guérini&#39;: &#39;Né le 1er janvier 1951&#39;,
- &#39;M. Jean-Paul Emorine&#39;: &#39;Né le 20 mars 1944&#39;,
- &#39;M. Jean-Paul Fournier&#39;: &#39;Né le 16 octobre 1945&#39;,
- &#39;M. Jean-Pierre Bosino&#39;: &#39;Né le 15 janvier 1959&#39;,
- &#39;M. Jean-Pierre Caffet&#39;: &#39;Né le 8 novembre 1951&#39;,
- &#39;M. Jean-Pierre Cantegrit&#39;: &#39;Né le 2 juillet 1933&#39;,
- &#39;M. Jean-Pierre Godefroy&#39;: &#39;Né le 23 septembre 1944&#39;,
- &#39;M. Jean-Pierre Grand&#39;: &#39;Né le 18 novembre 1950&#39;,
- &#39;M. Jean-Pierre Leleux&#39;: &#39;Né le 8 mai 1947&#39;,
- &#39;M. Jean-Pierre Masseret&#39;: &#39;Né le 23 août 1944&#39;,
- &#39;M. Jean-Pierre Raffarin&#39;: &#39;Né le 3 août 1948&#39;,
- &#39;M. Jean-Pierre Sueur&#39;: &#39;Né le 28 février 1947&#39;,
- &#39;M. Jean-Pierre Vial&#39;: &#39;Né le 17 février 1951&#39;,
- &#39;M. Jean-Vincent Placé&#39;: &#39;Né le 12 mars 1968&#39;,
- &#39;M. Jean-Yves Leconte&#39;: &#39;Né le 31 octobre 1966&#39;,
- &#39;M. Jean-Yves Roux&#39;: &#39;Né le 18 janvier 1970&#39;,
- &#39;M. Jeanny Lorgeoux&#39;: &#39;Né le 2 janvier 1950&#39;,
- &#39;M. Joseph Castelli&#39;: &#39;Né le 4 juin 1948&#39;,
- &#39;M. Joël Guerriau&#39;: &#39;Né le 9 novembre 1957&#39;,
- &#39;M. Joël Labbé&#39;: &#39;Né le 18 octobre 1952&#39;,
- &#39;M. Jérôme Bignon&#39;: &#39;Né le 1er janvier 1949&#39;,
- &#39;M. Jérôme Durain&#39;: &#39;Né le 2 juin 1969&#39;,
- &#39;M. Ladislas Poniatowski&#39;: &#39;Né le 10 novembre 1946&#39;,
- &#39;M. Louis Duvernois&#39;: &#39;Né le 17 mai 1941&#39;,
- &#39;M. Louis Nègre&#39;: &#39;Né le 8 février 1947&#39;,
- &#39;M. Louis Pinton&#39;: &#39;Né le 24 octobre 1948&#39;,
- &#39;M. Louis-Jean de Nicolaÿ&#39;: &#39;Né le 18 septembre 1949&#39;,
- &#39;M. Loïc Hervé&#39;: &#39;Né le 8 juin 1980&#39;,
- &#39;M. Luc Carvounas&#39;: &#39;Né le 8 juin 1971&#39;,
- &#39;M. Marc Daunis&#39;: &#39;Né le 22 avril 1955&#39;,
- &#39;M. Marc Laménie&#39;: &#39;Né le 11 juillet 1956&#39;,
- &#39;M. Martial Bourquin&#39;: &#39;Né le 23 juillet 1952&#39;,
- &#39;M. Mathieu Darnaud&#39;: &#39;Né le 11 juillet 1975&#39;,
- &#39;M. Maurice Antiste&#39;: &#39;Né le 22 juin 1953&#39;,
- &#39;M. Maurice Vincent&#39;: &#39;Né le 20 septembre 1955&#39;,
- &#39;M. Michel Amiel&#39;: &#39;Né le 3 juillet 1954&#39;,
- &#39;M. Michel Berson&#39;: &#39;Né le 21 avril 1945&#39;,
- &#39;M. Michel Billout&#39;: &#39;Né le 19 février 1958&#39;,
- &#39;M. Michel Boutant&#39;: &#39;Né le 23 novembre 1956&#39;,
- &#39;M. Michel Bouvard&#39;: &#39;Né le 17 mars 1955&#39;,
- &#39;M. Michel Canevet&#39;: &#39;Né le 14 décembre 1960&#39;,
- &#39;M. Michel Delebarre&#39;: &#39;Né le 27 avril 1946&#39;,
- &#39;M. Michel Fontaine&#39;: &#39;Né le 6 mai 1952&#39;,
- &#39;M. Michel Forissier&#39;: &#39;Né le 12 septembre 1943&#39;,
- &#39;M. Michel Houel&#39;: &#39;Né le 8 novembre 1942&#39;,
- &#39;M. Michel Le Scouarnec&#39;: &#39;Né le 12 juillet 1949&#39;,
- &#39;M. Michel Magras&#39;: &#39;Né le 6 janvier 1954&#39;,
- &#39;M. Michel Mercier&#39;: &#39;Né le 7 mars 1947&#39;,
- &#39;M. Michel Raison&#39;: &#39;Né le 5 novembre 1949&#39;,
- &#39;M. Michel Savin&#39;: &#39;Né le 25 novembre 1958&#39;,
- &#39;M. Michel Vaspart&#39;: &#39;Né le 22 février 1948&#39;,
- &#39;M. Michel Vergoz&#39;: &#39;Né le 10 janvier 1950&#39;,
- &#39;M. Nuihau Laurey&#39;: &#39;Né le 29 décembre 1964&#39;,
- &#39;M. Olivier Cadic&#39;: &#39;Né le 22 avril 1962&#39;,
- &#39;M. Olivier Cigolotti&#39;: &#39;Né le 16 août 1963&#39;,
- &#39;M. Pascal Allizard&#39;: &#39;Né le 19 décembre 1962&#39;,
- &#39;M. Patrick Abate&#39;: &#39;Né le 28 décembre 1956&#39;,
- &#39;M. Patrick Chaize&#39;: &#39;Né le 22 mars 1963&#39;,
- &#39;M. Patrick Masclet&#39;: &#39;Né le 31 mai 1952&#39;,
- &#39;M. Paul Vergès&#39;: &#39;Né le 5 mars 1925&#39;,
- &#39;M. Philippe Adnot&#39;: &#39;Né le 25 août 1945&#39;,
- &#39;M. Philippe Bas&#39;: &#39;Né le 20 juillet 1958&#39;,
- &#39;M. Philippe Bonnecarrère&#39;: &#39;Né le 12 juillet 1955&#39;,
- &#39;M. Philippe Dallier&#39;: &#39;Né le 8 décembre 1962&#39;,
- &#39;M. Philippe Dominati&#39;: &#39;Né le 12 avril 1954&#39;,
- &#39;M. Philippe Esnol&#39;: &#39;Né le 2 avril 1954&#39;,
- &#39;M. Philippe Kaltenbach&#39;: &#39;Né le 9 janvier 1966&#39;,
- &#39;M. Philippe Leroy&#39;: &#39;Né le 3 février 1940&#39;,
- &#39;M. Philippe Madrelle&#39;: &#39;Né le 21 avril 1937&#39;,
- &#39;M. Philippe Mouiller&#39;: &#39;Né le 20 septembre 1969&#39;,
- &#39;M. Philippe Nachbar&#39;: &#39;Né le 26 septembre 1950&#39;,
- &#39;M. Philippe Paul&#39;: &#39;Né le 25 janvier 1965&#39;,
- &#39;M. Pierre Camani&#39;: &#39;Né le 19 février 1952&#39;,
- &#39;M. Pierre Charon&#39;: &#39;Né le 1er mars 1951&#39;,
- &#39;M. Pierre Frogier&#39;: &#39;Né le 16 novembre 1950&#39;,
- &#39;M. Pierre Laurent&#39;: &#39;Né le 1er juillet 1957&#39;,
- &#39;M. Pierre Médevielle&#39;: &#39;Né le 17 avril 1960&#39;,
- &#39;M. Pierre-Yves Collombat&#39;: &#39;Né le 18 juillet 1945&#39;,
- &#39;M. Rachel Mazuir&#39;: &#39;Né le 12 février 1940&#39;,
- &#39;M. Raymond Vall&#39;: &#39;Né le 13 janvier 1942&#39;,
- &#39;M. René Danesi&#39;: &#39;Né le 30 août 1947&#39;,
- &#39;M. René Vandierendonck&#39;: &#39;Né le 1er avril 1951&#39;,
- &#39;M. René-Paul Savary&#39;: &#39;Né le 3 janvier 1953&#39;,
- &#39;M. Richard Yung&#39;: &#39;Né le 22 septembre 1947&#39;,
- &#39;M. Robert Hue&#39;: &#39;Né le 19 octobre 1946&#39;,
- &#39;M. Robert Laufoaulu&#39;: &#39;Né le 7 juillet 1947&#39;,
- &#39;M. Robert Navarro&#39;: &#39;Né le 1er mai 1952&#39;,
- &#39;M. Robert del Picchia&#39;: &#39;Né le 10 novembre 1942&#39;,
- &#39;M. Roger Karoutchi&#39;: &#39;Né le 26 août 1951&#39;,
- &#39;M. Roger Madec&#39;: &#39;Né le 27 octobre 1950&#39;,
- &#39;M. Roland Courteau&#39;: &#39;Né le 24 février 1943&#39;,
- &#39;M. Ronan Dantec&#39;: &#39;Né le 5 août 1963&#39;,
- &#39;M. Rémy Pointereau&#39;: &#39;Né le 30 mars 1953&#39;,
- &#39;M. Serge Dassault&#39;: &#39;Né le 4 avril 1925&#39;,
- &#39;M. Serge Larcher&#39;: &#39;Né le 17 octobre 1945&#39;,
- &#39;M. Simon Sutour&#39;: &#39;Né le 18 août 1952&#39;,
- &#39;M. Stéphane Ravier&#39;: &#39;Né le 4 août 1969&#39;,
- &#39;M. Thani Mohamed Soilihi&#39;: &#39;Né le 20 juin 1972&#39;,
- &#39;M. Thierry Carcenac&#39;: &#39;Né le 19 décembre 1950&#39;,
- &#39;M. Thierry Foucaud&#39;: &#39;Né le 18 janvier 1954&#39;,
- &#39;M. Vincent Capo-Canellas&#39;: &#39;Né le 4 mai 1967&#39;,
- &#39;M. Vincent Delahaye&#39;: &#39;Né le 23 août 1959&#39;,
- &#39;M. Vincent Eblé&#39;: &#39;Né le 15 octobre 1957&#39;,
- &#39;M. Xavier Pintat&#39;: &#39;Né le 15 mars 1954&#39;,
- &#39;M. Yannick Botrel&#39;: &#39;Né le 9 décembre 1951&#39;,
- &#39;M. Yannick Vaugrenard&#39;: &#39;Né le 25 juin 1950&#39;,
- &#39;M. Yves Daudigny&#39;: &#39;Né le 23 février 1947&#39;,
- &#39;M. Yves Détraigne&#39;: &#39;Né le 21 décembre 1954&#39;,
- &#39;M. Yves Pozzo di Borgo&#39;: &#39;Né le 3 mai 1948&#39;,
- &#39;M. Yves Rome&#39;: &#39;Né le 25 avril 1950&#39;,
- &#39;M. Yvon Collin&#39;: &#39;Né le 10 avril 1944&#39;,
- &#39;M. Éric Bocquet&#39;: &#39;Né le 8 novembre 1957&#39;,
- &#39;M. Éric Doligé&#39;: &#39;Né le 25 mai 1943&#39;,
- &#39;M. Éric Jeansannetas&#39;: &#39;Né le 21 octobre 1962&#39;,
- &#39;Mme Agnès Canayer&#39;: &#39;Née le 21 septembre 1965&#39;,
- &#39;Mme Aline Archimbaud&#39;: &#39;Née le 2 novembre 1948&#39;,
- &#39;Mme Anne Chain-Larché&#39;: &#39;Née le 11 avril 1958&#39;,
- &#39;Mme Anne Emery-Dumas&#39;: &#39;Née le 30 août 1959&#39;,
- &#39;Mme Anne-Catherine Loisier&#39;: &#39;Née le 13 mars 1969&#39;,
- &#39;Mme Annick Billon&#39;: &#39;Née le 3 août 1967&#39;,
- &#39;Mme Annie David&#39;: &#39;Née le 17 janvier 1963&#39;,
- &#39;Mme Annie Guillemot&#39;: &#39;Née le 27 janvier 1956&#39;,
- &#39;Mme Bariza Khiari&#39;: &#39;Née le 3 septembre 1946&#39;,
- &#39;Mme Brigitte Gonthier-Maurin&#39;: &#39;Née le 23 avril 1956&#39;,
- &#39;Mme Brigitte Micouleau&#39;: &#39;Née le 10 septembre 1951&#39;,
- &#39;Mme Caroline Cayeux&#39;: &#39;Née le 1er novembre 1948&#39;,
- &#39;Mme Catherine Deroche&#39;: &#39;Née le 24 février 1953&#39;,
- &#39;Mme Catherine Di Folco&#39;: &#39;Née le 30 novembre 1960&#39;,
- &#39;Mme Catherine Génisson&#39;: &#39;Née le 22 avril 1949&#39;,
- &#39;Mme Catherine Morin-Desailly&#39;: &#39;Née le 6 juillet 1960&#39;,
- &#39;Mme Catherine Procaccia&#39;: &#39;Née le 13 octobre 1949&#39;,
- &#39;Mme Catherine Tasca&#39;: &#39;Née le 13 décembre 1941&#39;,
- &#39;Mme Catherine Troendlé&#39;: &#39;Née le 20 février 1961&#39;,
- &#39;Mme Chantal Deseyne&#39;: &#39;Née le 29 janvier 1957&#39;,
- &#39;Mme Chantal Jouanno&#39;: &#39;Née le 12 juillet 1969&#39;,
- &#39;Mme Christiane Hummel&#39;: &#39;Née le 8 mai 1942&#39;,
- &#39;Mme Christiane Kammermann&#39;: &#39;Née le 10 juillet 1932&#39;,
- &#39;Mme Christine Prunaud&#39;: &#39;Née le 4 septembre 1950&#39;,
- &#39;Mme Claire-Lise Campion&#39;: &#39;Née le 27 juillet 1951&#39;,
- &#39;Mme Claudine Lepage&#39;: &#39;Née le 10 août 1949&#39;,
- &#39;Mme Colette Giudicelli&#39;: &#39;Née le 24 novembre 1943&#39;,
- &#39;Mme Colette Mélot&#39;: &#39;Née le 20 avril 1947&#39;,
- &#39;Mme Corinne Bouchoux&#39;: &#39;Née le 5 janvier 1964&#39;,
- &#39;Mme Corinne Féret&#39;: &#39;Née le 17 septembre 1961&#39;,
- &#39;Mme Corinne Imbert&#39;: &#39;Née le 20 novembre 1958&#39;,
- &#39;Mme Cécile Cukierman&#39;: &#39;Née le 26 avril 1976&#39;,
- &#39;Mme Danielle Michel&#39;: &#39;Née le 3 avril 1947&#39;,
- &#39;Mme Delphine Bataille&#39;: &#39;Née le 16 septembre 1969&#39;,
- &#39;Mme Dominique Estrosi Sassone&#39;: &#39;Née le 14 novembre 1958&#39;,
- &#39;Mme Dominique Gillot&#39;: &#39;Née le 11 juillet 1949&#39;,
- &#39;Mme Esther Benbassa&#39;: &#39;Née le 27 mars 1950&#39;,
- &#39;Mme Evelyne Yonnet&#39;: &#39;Née le 9 octobre 1954&#39;,
- &#39;Mme Fabienne Keller&#39;: &#39;Née le 20 octobre 1959&#39;,
- &#39;Mme Françoise Cartron&#39;: &#39;Née le 27 mars 1949&#39;,
- &#39;Mme Françoise Férat&#39;: &#39;Née le 5 mars 1949&#39;,
- &#39;Mme Françoise Gatel&#39;: &#39;Née le 14 mars 1953&#39;,
- &#39;Mme Françoise Laborde&#39;: &#39;Née le 8 juillet 1958&#39;,
- &#39;Mme Frédérique Espagnac&#39;: &#39;Née le 19 avril 1972&#39;,
- &#39;Mme Gisèle Jourda&#39;: &#39;Née le 24 mars 1955&#39;,
- &#39;Mme Hermeline Malherbe&#39;: &#39;Née le 18 février 1969&#39;,
- &#39;Mme Hélène Conway-Mouret&#39;: &#39;Née le 13 septembre 1960&#39;,
- &#39;Mme Isabelle Debré&#39;: &#39;Née le 23 mai 1957&#39;,
- &#39;Mme Jacky Deromedi&#39;: &#39;Née le 15 juin 1944&#39;,
- &#39;Mme Jacqueline Gourault&#39;: &#39;Née le 20 novembre 1950&#39;,
- &#39;Mme Josette Durrieu&#39;: &#39;Née le 20 mars 1937&#39;,
- &#39;Mme Joëlle Garriaud-Maylam&#39;: &#39;Née le 20 mars 1955&#39;,
- &#39;Mme Karine Claireaux&#39;: &#39;Née le 15 novembre 1963&#39;,
- &#39;Mme Lana Tetuanui&#39;: &#39;Née le 23 février 1970&#39;,
- &#39;Mme Laurence Cohen&#39;: &#39;Née le 15 janvier 1953&#39;,
- &#39;Mme Leila Aïchi&#39;: &#39;Née le 14 mai 1970&#39;,
- &#39;Mme Marie Mercier&#39;: &#39;Née le 16 juin 1958&#39;,
- &#39;Mme Marie-Annick Duchêne&#39;: &#39;Née le 23 août 1940&#39;,
- &#39;Mme Marie-Christine Blandin&#39;: &#39;Née le 22 septembre 1952&#39;,
- &#39;Mme Marie-France Beaufils&#39;: &#39;Née le 22 novembre 1946&#39;,
- &#39;Mme Marie-Françoise Perol-Dumont&#39;: &#39;Née le 26 mai 1952&#39;,
- &#39;Mme Marie-Hélène Des Esgaulx&#39;: &#39;Née le 26 mai 1950&#39;,
- &#39;Mme Marie-Noëlle Lienemann&#39;: &#39;Née le 12 juillet 1951&#39;,
- &#39;Mme Marie-Pierre Monier&#39;: &#39;Née le 28 février 1958&#39;,
- &#39;Mme Maryvonne Blondin&#39;: &#39;Née le 20 janvier 1947&#39;,
- &#39;Mme Michelle Demessine&#39;: &#39;Née le 18 juin 1947&#39;,
- &#39;Mme Michelle Meunier&#39;: &#39;Née le 24 janvier 1956&#39;,
- &#39;Mme Michèle André&#39;: &#39;Née le 6 février 1947&#39;,
- &#39;Mme Mireille Jouve&#39;: &#39;Née le 30 décembre 1960&#39;,
- &#39;Mme Nathalie Goulet&#39;: &#39;Née le 24 mai 1958&#39;,
- &#39;Mme Nelly Tocqueville&#39;: &#39;Née le 2 mai 1950&#39;,
- &#39;Mme Nicole Bonnefoy&#39;: &#39;Née le 11 août 1958&#39;,
- &#39;Mme Nicole Bricq&#39;: &#39;Née le 10 juin 1947&#39;,
- &#39;Mme Nicole Duranton&#39;: &#39;Née le 13 octobre 1958&#39;,
- &#39;Mme Odette Herviaux&#39;: &#39;Née le 6 janvier 1948&#39;,
- &#39;Mme Pascale Gruny&#39;: &#39;Née le 18 février 1960&#39;,
- &#39;Mme Patricia Morhet-Richaud&#39;: &#39;Née le 28 juillet 1961&#39;,
- &#39;Mme Patricia Schillinger&#39;: &#39;Née le 18 janvier 1963&#39;,
- &#39;Mme Samia Ghali&#39;: &#39;Née le 10 juin 1968&#39;,
- &#39;Mme Sophie Joissains&#39;: &#39;Née le 25 octobre 1969&#39;,
- &#39;Mme Sophie Primas&#39;: &#39;Née le 6 juin 1962&#39;,
- &#39;Mme Stéphanie Riocreux&#39;: &#39;Née le 20 mai 1966&#39;,
- &#39;Mme Sylvie Goy-Chavent&#39;: &#39;Née le 23 mai 1963&#39;,
- &#39;Mme Sylvie Robert&#39;: &#39;Née le 28 août 1963&#39;,
- &#39;Mme Valérie Létard&#39;: &#39;Née le 13 octobre 1962&#39;,
- &#39;Mme Vivette Lopez&#39;: &#39;Née le 27 décembre 1954&#39;,
- &#39;Mme Éliane Assassi&#39;: &#39;Née le 2 octobre 1958&#39;,
- &#39;Mme Éliane Giraud&#39;: &#39;Née le 12 mars 1952&#39;,
- &#39;Mme Élisabeth Doineau&#39;: &#39;Née le 7 avril 1961&#39;,
- &#39;Mme Élisabeth Lamure&#39;: &#39;Née le 20 novembre 1947&#39;,
- &#39;Mme Évelyne Didier&#39;: &#39;Née le 14 mars 1948&#39;}</pre>
-</div>
-
-</div>
-
+<pre>{'M. Abdourahamane Soilihi': 'Né le 4 octobre 1959',
+ 'M. Alain Anziani': 'Né le 30 mai 1951',
+ 'M. Alain Bertrand': 'Né le 23 février 1951',
+ 'M. Alain Chatillon': 'Né le 15 mars 1943',
+ 'M. Alain Dufaut': 'Né le 2 janvier 1944',
+ 'M. Alain Duran': 'Né le 2 janvier 1958',
+ 'M. Alain Fouché': 'Né le 4 décembre 1942',
+ 'M. Alain Gournac': 'Né le 13 septembre 1943',
+ 'M. Alain Houpert': 'Né le 13 août 1957',
+ 'M. Alain Joyandet': 'Né le 15 janvier 1954',
+ 'M. Alain Marc': 'Né le 29 janvier 1957',
+ 'M. Alain Milon': 'Né le 16 septembre 1947',
+ 'M. Alain Néri': 'Né le 1er mai 1942',
+ 'M. Alain Richard': 'Né le 29 août 1945',
+ 'M. Alain Vasselle': 'Né le 27 juin 1947',
+ 'M. Albéric de Montgolfier': 'Né le 6 juillet 1964',
+ 'M. Alex Türk': 'Né le 25 janvier 1950',
+ 'M. André Gattolin': 'Né le 24 juin 1960',
+ 'M. André Reichardt': 'Né le 5 décembre 1949',
+ 'M. André Trillard': 'Né le 24 octobre 1947',
+ 'M. Antoine Karam': 'Né le 21 février 1950',
+ 'M. Antoine Lefèvre': 'Né le 18 février 1966',
+ 'M. Benoît Huré': 'Né le 5 juin 1953',
+ 'M. Bernard Cazeau': 'Né le 27 avril 1939',
+ 'M. Bernard Delcros': 'Né le 12 février 1953',
+ 'M. Bernard Fournier': 'Né le 13 septembre 1946',
+ 'M. Bernard Lalande': 'Né le 6 avril 1954',
+ 'M. Bernard Saugey': 'Né le 3 mars 1943',
+ 'M. Bruno Gilles': 'Né le 26 décembre 1960',
+ 'M. Bruno Retailleau': 'Né le 20 novembre 1960',
+ 'M. Bruno Sido': 'Né le 19 février 1951',
+ 'M. Charles Guené': 'Né le 6 avril 1952',
+ 'M. Charles Revet': 'Né le 9 novembre 1937',
+ 'M. Christian Cambon': 'Né le 8 mars 1948',
+ 'M. Christian Favier': 'Né le 20 février 1951',
+ 'M. Christian Manable': 'Né le 19 juin 1948',
+ 'M. Christian Namy': 'Né le 19 octobre 1938',
+ 'M. Christophe Béchu': 'Né le 11 juin 1974',
+ 'M. Christophe-André Frassa': 'Né le 4 février 1968',
+ 'M. Claude Bérit-Débat': 'Né le 19 février 1946',
+ 'M. Claude Haut': 'Né le 22 décembre 1944',
+ 'M. Claude Kern': 'Né le 13 mars 1959',
+ 'M. Claude Malhuret': 'Né le 8 mars 1950',
+ 'M. Claude Nougein': 'Né le 4 décembre 1946',
+ 'M. Claude Raynal': 'Né le 10 octobre 1957',
+ 'M. Cyril Pellevat': 'Né le 18 février 1981',
+ 'M. Cédric Perrin': 'Né le 20 janvier 1974',
+ 'M. Daniel Chasseing': 'Né le 10 avril 1945',
+ 'M. Daniel Dubois': 'Né le 5 février 1952',
+ 'M. Daniel Gremillet': 'Né le 31 juillet 1953',
+ 'M. Daniel Laurent': 'Né le 4 février 1949',
+ 'M. Daniel Percheron': 'Né le 31 août 1942',
+ 'M. Daniel Raoul': 'Né le 28 juillet 1941',
+ 'M. Daniel Reiner': 'Né le 17 janvier 1941',
+ 'M. David Assouline': 'Né le 16 juin 1959',
+ 'M. David Rachline': 'Né le 2 décembre 1987',
+ 'M. Didier Guillaume': 'Né le 11 mai 1959',
+ 'M. Didier Mandelli': 'Né le 7 août 1964',
+ 'M. Didier Marie': 'Né le 19 mai 1960',
+ 'M. Didier Robert': 'Né le 26 avril 1964',
+ 'M. Dominique Bailly': 'Né le 2 janvier 1960',
+ 'M. Dominique Watrin': 'Né le 14 juin 1953',
+ 'M. Dominique de Legge': 'Né le 18 février 1952',
+ 'M. Francis Delattre': 'Né le 11 septembre 1946',
+ 'M. Franck Montaugé': 'Né le 14 septembre 1961',
+ 'M. François Baroin': 'Né le 21 juin 1965',
+ 'M. François Bonhomme': 'Né le 5 mai 1969',
+ 'M. François Calvet': 'Né le 1er avril 1953',
+ 'M. François Commeinhes': 'Né le 10 novembre 1949',
+ 'M. François Fortassin': 'Né le 2 août 1939',
+ 'M. François Grosdidier': 'Né le 25 février 1961',
+ 'M. François Marc': 'Né le 19 mars 1950',
+ 'M. François Patriat': 'Né le 21 mars 1943',
+ 'M. François Pillet': 'Né le 13 mai 1950',
+ 'M. François Zocchetto': 'Né le 14 décembre 1958',
+ 'M. François-Noël Buffet': 'Né le 28 août 1963',
+ 'M. Félix Desplan': 'Né le 22 février 1943',
+ 'M. Gaëtan Gorce': 'Né le 2 décembre 1958',
+ 'M. Georges Labazée': 'Né le 16 juin 1943',
+ 'M. Georges Patient': 'Né le 1er avril 1949',
+ 'M. Gilbert Barbier': 'Né le 3 mars 1940',
+ 'M. Gilbert Bouchet': 'Né le 8 janvier 1947',
+ 'M. Gilbert Roger': 'Né le 9 novembre 1953',
+ 'M. Guillaume Arnell': 'Né le 20 janvier 1958',
+ 'M. Guy-Dominique Kennel': 'Né le 14 avril 1952',
+ 'M. Gérard Bailly': 'Né le 28 janvier 1940',
+ 'M. Gérard Collomb': 'Né le 20 juin 1947',
+ 'M. Gérard Cornu': 'Né le 6 février 1952',
+ 'M. Gérard César': 'Né le 19 décembre 1934',
+ 'M. Gérard Dériot': 'Né le 1er novembre 1944',
+ 'M. Gérard Larcher': 'Né le 14 septembre 1949',
+ 'M. Gérard Longuet': 'Né le 24 février 1946',
+ 'M. Gérard Miquel': 'Né le 17 juin 1946',
+ 'M. Gérard Roche': 'Né le 29 décembre 1942',
+ 'M. Henri Cabanel': 'Né le 9 mars 1959',
+ 'M. Henri Tandonnet': 'Né le 14 décembre 1949',
+ 'M. Henri de Raincourt': 'Né le 17 novembre 1948',
+ 'M. Hervé Marseille': 'Né le 20 août 1954',
+ 'M. Hervé Maurey': 'Né le 7 mai 1961',
+ 'M. Hervé Poher': 'Né le 19 mai 1952',
+ 'M. Hilarion Vendegou': 'Né le 4 septembre 1941',
+ 'M. Hubert Falco': 'Né le 15 mai 1947',
+ 'M. Hugues Portelli': 'Né le 22 décembre 1947',
+ 'M. Jackie Pierre': 'Né le 27 mai 1946',
+ 'M. Jacques Bigot': 'Né le 31 juillet 1952',
+ 'M. Jacques Chiron': 'Né le 3 octobre 1949',
+ 'M. Jacques Cornano': 'Né le 18 novembre 1956',
+ 'M. Jacques Gautier': 'Né le 18 septembre 1946',
+ 'M. Jacques Genest': 'Né le 6 août 1950',
+ 'M. Jacques Gillot': 'Né le 4 mars 1948',
+ 'M. Jacques Grosperrin': 'Né le 17 octobre 1955',
+ 'M. Jacques Legendre': 'Né le 2 décembre 1941',
+ 'M. Jacques Mézard': 'Né le 3 décembre 1947',
+ 'M. Jacques-Bernard Magner': 'Né le 1er juin 1952',
+ 'M. Jean Bizet': 'Né le 30 août 1947',
+ 'M. Jean Desessard': 'Né le 6 septembre 1952',
+ 'M. Jean Louis Masson': 'Né le 25 mars 1947',
+ 'M. Jean Pierre Vogel': 'Né le 7 août 1956',
+ 'M. Jean-Baptiste Lemoyne': 'Né le 15 septembre 1977',
+ 'M. Jean-Claude Boulard': 'Né le 28 mars 1943',
+ 'M. Jean-Claude Carle': 'Né le 9 juin 1948',
+ 'M. Jean-Claude Frécon': 'Né le 3 septembre 1944',
+ 'M. Jean-Claude Gaudin': 'Né le 8 octobre 1939',
+ 'M. Jean-Claude Lenoir': 'Né le 27 décembre 1944',
+ 'M. Jean-Claude Leroy': 'Né le 3 juin 1952',
+ 'M. Jean-Claude Luche': 'Né le 7 août 1952',
+ 'M. Jean-Claude Requier': 'Né le 4 octobre 1947',
+ 'M. Jean-François Husson': 'Né le 17 avril 1961',
+ 'M. Jean-François Longeot': 'Né le 27 décembre 1956',
+ 'M. Jean-François Mayet': 'Né le 30 janvier 1940',
+ 'M. Jean-François Rapin': 'Né le 11 mai 1966',
+ 'M. Jean-Jacques Filleul': 'Né le 22 juin 1943',
+ 'M. Jean-Jacques Lasserre': 'Né le 11 mars 1944',
+ 'M. Jean-Jacques Lozach': 'Né le 8 février 1954',
+ 'M. Jean-Jacques Panunzi': 'Né le 5 avril 1956',
+ 'M. Jean-Louis Carrère': 'Né le 4 décembre 1944',
+ 'M. Jean-Louis Tourenne': 'Né le 25 août 1944',
+ 'M. Jean-Léonce Dupont': 'Né le 31 janvier 1955',
+ 'M. Jean-Marc Gabouty': 'Né le 17 mai 1949',
+ 'M. Jean-Marie Bockel': 'Né le 22 juin 1950',
+ 'M. Jean-Marie Morisset': 'Né le 18 août 1947',
+ 'M. Jean-Marie Vanlerenberghe': 'Né le 29 mars 1939',
+ 'M. Jean-Noël Cardoux': 'Né le 18 décembre 1946',
+ 'M. Jean-Noël Guérini': 'Né le 1er janvier 1951',
+ 'M. Jean-Paul Emorine': 'Né le 20 mars 1944',
+ 'M. Jean-Paul Fournier': 'Né le 16 octobre 1945',
+ 'M. Jean-Pierre Bosino': 'Né le 15 janvier 1959',
+ 'M. Jean-Pierre Caffet': 'Né le 8 novembre 1951',
+ 'M. Jean-Pierre Cantegrit': 'Né le 2 juillet 1933',
+ 'M. Jean-Pierre Godefroy': 'Né le 23 septembre 1944',
+ 'M. Jean-Pierre Grand': 'Né le 18 novembre 1950',
+ 'M. Jean-Pierre Leleux': 'Né le 8 mai 1947',
+ 'M. Jean-Pierre Masseret': 'Né le 23 août 1944',
+ 'M. Jean-Pierre Raffarin': 'Né le 3 août 1948',
+ 'M. Jean-Pierre Sueur': 'Né le 28 février 1947',
+ 'M. Jean-Pierre Vial': 'Né le 17 février 1951',
+ 'M. Jean-Vincent Placé': 'Né le 12 mars 1968',
+ 'M. Jean-Yves Leconte': 'Né le 31 octobre 1966',
+ 'M. Jean-Yves Roux': 'Né le 18 janvier 1970',
+ 'M. Jeanny Lorgeoux': 'Né le 2 janvier 1950',
+ 'M. Joseph Castelli': 'Né le 4 juin 1948',
+ 'M. Joël Guerriau': 'Né le 9 novembre 1957',
+ 'M. Joël Labbé': 'Né le 18 octobre 1952',
+ 'M. Jérôme Bignon': 'Né le 1er janvier 1949',
+ 'M. Jérôme Durain': 'Né le 2 juin 1969',
+ 'M. Ladislas Poniatowski': 'Né le 10 novembre 1946',
+ 'M. Louis Duvernois': 'Né le 17 mai 1941',
+ 'M. Louis Nègre': 'Né le 8 février 1947',
+ 'M. Louis Pinton': 'Né le 24 octobre 1948',
+ 'M. Louis-Jean de Nicolaÿ': 'Né le 18 septembre 1949',
+ 'M. Loïc Hervé': 'Né le 8 juin 1980',
+ 'M. Luc Carvounas': 'Né le 8 juin 1971',
+ 'M. Marc Daunis': 'Né le 22 avril 1955',
+ 'M. Marc Laménie': 'Né le 11 juillet 1956',
+ 'M. Martial Bourquin': 'Né le 23 juillet 1952',
+ 'M. Mathieu Darnaud': 'Né le 11 juillet 1975',
+ 'M. Maurice Antiste': 'Né le 22 juin 1953',
+ 'M. Maurice Vincent': 'Né le 20 septembre 1955',
+ 'M. Michel Amiel': 'Né le 3 juillet 1954',
+ 'M. Michel Berson': 'Né le 21 avril 1945',
+ 'M. Michel Billout': 'Né le 19 février 1958',
+ 'M. Michel Boutant': 'Né le 23 novembre 1956',
+ 'M. Michel Bouvard': 'Né le 17 mars 1955',
+ 'M. Michel Canevet': 'Né le 14 décembre 1960',
+ 'M. Michel Delebarre': 'Né le 27 avril 1946',
+ 'M. Michel Fontaine': 'Né le 6 mai 1952',
+ 'M. Michel Forissier': 'Né le 12 septembre 1943',
+ 'M. Michel Houel': 'Né le 8 novembre 1942',
+ 'M. Michel Le Scouarnec': 'Né le 12 juillet 1949',
+ 'M. Michel Magras': 'Né le 6 janvier 1954',
+ 'M. Michel Mercier': 'Né le 7 mars 1947',
+ 'M. Michel Raison': 'Né le 5 novembre 1949',
+ 'M. Michel Savin': 'Né le 25 novembre 1958',
+ 'M. Michel Vaspart': 'Né le 22 février 1948',
+ 'M. Michel Vergoz': 'Né le 10 janvier 1950',
+ 'M. Nuihau Laurey': 'Né le 29 décembre 1964',
+ 'M. Olivier Cadic': 'Né le 22 avril 1962',
+ 'M. Olivier Cigolotti': 'Né le 16 août 1963',
+ 'M. Pascal Allizard': 'Né le 19 décembre 1962',
+ 'M. Patrick Abate': 'Né le 28 décembre 1956',
+ 'M. Patrick Chaize': 'Né le 22 mars 1963',
+ 'M. Patrick Masclet': 'Né le 31 mai 1952',
+ 'M. Paul Vergès': 'Né le 5 mars 1925',
+ 'M. Philippe Adnot': 'Né le 25 août 1945',
+ 'M. Philippe Bas': 'Né le 20 juillet 1958',
+ 'M. Philippe Bonnecarrère': 'Né le 12 juillet 1955',
+ 'M. Philippe Dallier': 'Né le 8 décembre 1962',
+ 'M. Philippe Dominati': 'Né le 12 avril 1954',
+ 'M. Philippe Esnol': 'Né le 2 avril 1954',
+ 'M. Philippe Kaltenbach': 'Né le 9 janvier 1966',
+ 'M. Philippe Leroy': 'Né le 3 février 1940',
+ 'M. Philippe Madrelle': 'Né le 21 avril 1937',
+ 'M. Philippe Mouiller': 'Né le 20 septembre 1969',
+ 'M. Philippe Nachbar': 'Né le 26 septembre 1950',
+ 'M. Philippe Paul': 'Né le 25 janvier 1965',
+ 'M. Pierre Camani': 'Né le 19 février 1952',
+ 'M. Pierre Charon': 'Né le 1er mars 1951',
+ 'M. Pierre Frogier': 'Né le 16 novembre 1950',
+ 'M. Pierre Laurent': 'Né le 1er juillet 1957',
+ 'M. Pierre Médevielle': 'Né le 17 avril 1960',
+ 'M. Pierre-Yves Collombat': 'Né le 18 juillet 1945',
+ 'M. Rachel Mazuir': 'Né le 12 février 1940',
+ 'M. Raymond Vall': 'Né le 13 janvier 1942',
+ 'M. René Danesi': 'Né le 30 août 1947',
+ 'M. René Vandierendonck': 'Né le 1er avril 1951',
+ 'M. René-Paul Savary': 'Né le 3 janvier 1953',
+ 'M. Richard Yung': 'Né le 22 septembre 1947',
+ 'M. Robert Hue': 'Né le 19 octobre 1946',
+ 'M. Robert Laufoaulu': 'Né le 7 juillet 1947',
+ 'M. Robert Navarro': 'Né le 1er mai 1952',
+ 'M. Robert del Picchia': 'Né le 10 novembre 1942',
+ 'M. Roger Karoutchi': 'Né le 26 août 1951',
+ 'M. Roger Madec': 'Né le 27 octobre 1950',
+ 'M. Roland Courteau': 'Né le 24 février 1943',
+ 'M. Ronan Dantec': 'Né le 5 août 1963',
+ 'M. Rémy Pointereau': 'Né le 30 mars 1953',
+ 'M. Serge Dassault': 'Né le 4 avril 1925',
+ 'M. Serge Larcher': 'Né le 17 octobre 1945',
+ 'M. Simon Sutour': 'Né le 18 août 1952',
+ 'M. Stéphane Ravier': 'Né le 4 août 1969',
+ 'M. Thani Mohamed Soilihi': 'Né le 20 juin 1972',
+ 'M. Thierry Carcenac': 'Né le 19 décembre 1950',
+ 'M. Thierry Foucaud': 'Né le 18 janvier 1954',
+ 'M. Vincent Capo-Canellas': 'Né le 4 mai 1967',
+ 'M. Vincent Delahaye': 'Né le 23 août 1959',
+ 'M. Vincent Eblé': 'Né le 15 octobre 1957',
+ 'M. Xavier Pintat': 'Né le 15 mars 1954',
+ 'M. Yannick Botrel': 'Né le 9 décembre 1951',
+ 'M. Yannick Vaugrenard': 'Né le 25 juin 1950',
+ 'M. Yves Daudigny': 'Né le 23 février 1947',
+ 'M. Yves Détraigne': 'Né le 21 décembre 1954',
+ 'M. Yves Pozzo di Borgo': 'Né le 3 mai 1948',
+ 'M. Yves Rome': 'Né le 25 avril 1950',
+ 'M. Yvon Collin': 'Né le 10 avril 1944',
+ 'M. Éric Bocquet': 'Né le 8 novembre 1957',
+ 'M. Éric Doligé': 'Né le 25 mai 1943',
+ 'M. Éric Jeansannetas': 'Né le 21 octobre 1962',
+ 'Mme Agnès Canayer': 'Née le 21 septembre 1965',
+ 'Mme Aline Archimbaud': 'Née le 2 novembre 1948',
+ 'Mme Anne Chain-Larché': 'Née le 11 avril 1958',
+ 'Mme Anne Emery-Dumas': 'Née le 30 août 1959',
+ 'Mme Anne-Catherine Loisier': 'Née le 13 mars 1969',
+ 'Mme Annick Billon': 'Née le 3 août 1967',
+ 'Mme Annie David': 'Née le 17 janvier 1963',
+ 'Mme Annie Guillemot': 'Née le 27 janvier 1956',
+ 'Mme Bariza Khiari': 'Née le 3 septembre 1946',
+ 'Mme Brigitte Gonthier-Maurin': 'Née le 23 avril 1956',
+ 'Mme Brigitte Micouleau': 'Née le 10 septembre 1951',
+ 'Mme Caroline Cayeux': 'Née le 1er novembre 1948',
+ 'Mme Catherine Deroche': 'Née le 24 février 1953',
+ 'Mme Catherine Di Folco': 'Née le 30 novembre 1960',
+ 'Mme Catherine Génisson': 'Née le 22 avril 1949',
+ 'Mme Catherine Morin-Desailly': 'Née le 6 juillet 1960',
+ 'Mme Catherine Procaccia': 'Née le 13 octobre 1949',
+ 'Mme Catherine Tasca': 'Née le 13 décembre 1941',
+ 'Mme Catherine Troendlé': 'Née le 20 février 1961',
+ 'Mme Chantal Deseyne': 'Née le 29 janvier 1957',
+ 'Mme Chantal Jouanno': 'Née le 12 juillet 1969',
+ 'Mme Christiane Hummel': 'Née le 8 mai 1942',
+ 'Mme Christiane Kammermann': 'Née le 10 juillet 1932',
+ 'Mme Christine Prunaud': 'Née le 4 septembre 1950',
+ 'Mme Claire-Lise Campion': 'Née le 27 juillet 1951',
+ 'Mme Claudine Lepage': 'Née le 10 août 1949',
+ 'Mme Colette Giudicelli': 'Née le 24 novembre 1943',
+ 'Mme Colette Mélot': 'Née le 20 avril 1947',
+ 'Mme Corinne Bouchoux': 'Née le 5 janvier 1964',
+ 'Mme Corinne Féret': 'Née le 17 septembre 1961',
+ 'Mme Corinne Imbert': 'Née le 20 novembre 1958',
+ 'Mme Cécile Cukierman': 'Née le 26 avril 1976',
+ 'Mme Danielle Michel': 'Née le 3 avril 1947',
+ 'Mme Delphine Bataille': 'Née le 16 septembre 1969',
+ 'Mme Dominique Estrosi Sassone': 'Née le 14 novembre 1958',
+ 'Mme Dominique Gillot': 'Née le 11 juillet 1949',
+ 'Mme Esther Benbassa': 'Née le 27 mars 1950',
+ 'Mme Evelyne Yonnet': 'Née le 9 octobre 1954',
+ 'Mme Fabienne Keller': 'Née le 20 octobre 1959',
+ 'Mme Françoise Cartron': 'Née le 27 mars 1949',
+ 'Mme Françoise Férat': 'Née le 5 mars 1949',
+ 'Mme Françoise Gatel': 'Née le 14 mars 1953',
+ 'Mme Françoise Laborde': 'Née le 8 juillet 1958',
+ 'Mme Frédérique Espagnac': 'Née le 19 avril 1972',
+ 'Mme Gisèle Jourda': 'Née le 24 mars 1955',
+ 'Mme Hermeline Malherbe': 'Née le 18 février 1969',
+ 'Mme Hélène Conway-Mouret': 'Née le 13 septembre 1960',
+ 'Mme Isabelle Debré': 'Née le 23 mai 1957',
+ 'Mme Jacky Deromedi': 'Née le 15 juin 1944',
+ 'Mme Jacqueline Gourault': 'Née le 20 novembre 1950',
+ 'Mme Josette Durrieu': 'Née le 20 mars 1937',
+ 'Mme Joëlle Garriaud-Maylam': 'Née le 20 mars 1955',
+ 'Mme Karine Claireaux': 'Née le 15 novembre 1963',
+ 'Mme Lana Tetuanui': 'Née le 23 février 1970',
+ 'Mme Laurence Cohen': 'Née le 15 janvier 1953',
+ 'Mme Leila Aïchi': 'Née le 14 mai 1970',
+ 'Mme Marie Mercier': 'Née le 16 juin 1958',
+ 'Mme Marie-Annick Duchêne': 'Née le 23 août 1940',
+ 'Mme Marie-Christine Blandin': 'Née le 22 septembre 1952',
+ 'Mme Marie-France Beaufils': 'Née le 22 novembre 1946',
+ 'Mme Marie-Françoise Perol-Dumont': 'Née le 26 mai 1952',
+ 'Mme Marie-Hélène Des Esgaulx': 'Née le 26 mai 1950',
+ 'Mme Marie-Noëlle Lienemann': 'Née le 12 juillet 1951',
+ 'Mme Marie-Pierre Monier': 'Née le 28 février 1958',
+ 'Mme Maryvonne Blondin': 'Née le 20 janvier 1947',
+ 'Mme Michelle Demessine': 'Née le 18 juin 1947',
+ 'Mme Michelle Meunier': 'Née le 24 janvier 1956',
+ 'Mme Michèle André': 'Née le 6 février 1947',
+ 'Mme Mireille Jouve': 'Née le 30 décembre 1960',
+ 'Mme Nathalie Goulet': 'Née le 24 mai 1958',
+ 'Mme Nelly Tocqueville': 'Née le 2 mai 1950',
+ 'Mme Nicole Bonnefoy': 'Née le 11 août 1958',
+ 'Mme Nicole Bricq': 'Née le 10 juin 1947',
+ 'Mme Nicole Duranton': 'Née le 13 octobre 1958',
+ 'Mme Odette Herviaux': 'Née le 6 janvier 1948',
+ 'Mme Pascale Gruny': 'Née le 18 février 1960',
+ 'Mme Patricia Morhet-Richaud': 'Née le 28 juillet 1961',
+ 'Mme Patricia Schillinger': 'Née le 18 janvier 1963',
+ 'Mme Samia Ghali': 'Née le 10 juin 1968',
+ 'Mme Sophie Joissains': 'Née le 25 octobre 1969',
+ 'Mme Sophie Primas': 'Née le 6 juin 1962',
+ 'Mme Stéphanie Riocreux': 'Née le 20 mai 1966',
+ 'Mme Sylvie Goy-Chavent': 'Née le 23 mai 1963',
+ 'Mme Sylvie Robert': 'Née le 28 août 1963',
+ 'Mme Valérie Létard': 'Née le 13 octobre 1962',
+ 'Mme Vivette Lopez': 'Née le 27 décembre 1954',
+ 'Mme Éliane Assassi': 'Née le 2 octobre 1958',
+ 'Mme Éliane Giraud': 'Née le 12 mars 1952',
+ 'Mme Élisabeth Doineau': 'Née le 7 avril 1961',
+ 'Mme Élisabeth Lamure': 'Née le 20 novembre 1947',
+ 'Mme Évelyne Didier': 'Née le 14 mars 1948'}</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut facilement construire une dataframe pandas avec ces données :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">birthdates</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">birthdates</span><span class="p">],</span> 
-             <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Nom&#39;</span><span class="p">,</span> <span class="s1">&#39;Date de naissance&#39;</span><span class="p">))</span>
+             <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">'Nom'</span><span class="p">,</span> <span class="s1">'Date de naissance'</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[18]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nom</th>
-      <th>Date de naissance</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Mme Catherine Génisson</td>
-      <td>Née le 22 avril 1949</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mme Anne Chain-Larché</td>
-      <td>Née le 11 avril 1958</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>M. Georges Patient</td>
-      <td>Né le 1er avril 1949</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Mme Corinne Bouchoux</td>
-      <td>Née le 5 janvier 1964</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>M. Martial Bourquin</td>
-      <td>Né le 23 juillet 1952</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Nom</th>
+<th>Date de naissance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>Mme Catherine Génisson</td>
+<td>Née le 22 avril 1949</td>
+</tr>
+<tr>
+<th>1</th>
+<td>Mme Anne Chain-Larché</td>
+<td>Née le 11 avril 1958</td>
+</tr>
+<tr>
+<th>2</th>
+<td>M. Georges Patient</td>
+<td>Né le 1er avril 1949</td>
+</tr>
+<tr>
+<th>3</th>
+<td>Mme Corinne Bouchoux</td>
+<td>Née le 5 janvier 1964</td>
+</tr>
+<tr>
+<th>4</th>
+<td>M. Martial Bourquin</td>
+<td>Né le 23 juillet 1952</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut, comme dans mon billet précédent, calculer des dates de naissance numériques à l'aide de ces données :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">convert2date</span><span class="p">(</span><span class="n">date_str</span><span class="p">):</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;janvier&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;février&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;mars&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;avril&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-         <span class="s1">&#39;mai&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;juin&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;juillet&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;août&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> 
-         <span class="s1">&#39;septembre&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;octobre&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;novembre&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;décembre&#39;</span><span class="p">:</span><span class="mi">12</span><span class="p">}</span>
-    <span class="n">splits</span> <span class="o">=</span> <span class="n">date_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'janvier'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'février'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'mars'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'avril'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+         <span class="s1">'mai'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'juin'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'juillet'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">'août'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> 
+         <span class="s1">'septembre'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">'octobre'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'novembre'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">'décembre'</span><span class="p">:</span><span class="mi">12</span><span class="p">}</span>
+    <span class="n">splits</span> <span class="o">=</span> <span class="n">date_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span>
     
-    <span class="k">if</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;1er&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'1er'</span><span class="p">):</span>
         <span class="n">splits</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">splits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+        <span class="n">splits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'1'</span><span class="p">)</span>
     
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'/'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">'/'</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date de naissance2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date de naissance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">convert2date</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Date de naissance2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Date de naissance'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">convert2date</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[21]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nom</th>
-      <th>Date de naissance</th>
-      <th>Date de naissance2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Mme Catherine Génisson</td>
-      <td>Née le 22 avril 1949</td>
-      <td>1949-04-22</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mme Anne Chain-Larché</td>
-      <td>Née le 11 avril 1958</td>
-      <td>1958-04-11</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>M. Georges Patient</td>
-      <td>Né le 1er avril 1949</td>
-      <td>1949-04-01</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Mme Corinne Bouchoux</td>
-      <td>Née le 5 janvier 1964</td>
-      <td>1964-01-05</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>M. Martial Bourquin</td>
-      <td>Né le 23 juillet 1952</td>
-      <td>1952-07-23</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Nom</th>
+<th>Date de naissance</th>
+<th>Date de naissance2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>Mme Catherine Génisson</td>
+<td>Née le 22 avril 1949</td>
+<td>1949-04-22</td>
+</tr>
+<tr>
+<th>1</th>
+<td>Mme Anne Chain-Larché</td>
+<td>Née le 11 avril 1958</td>
+<td>1958-04-11</td>
+</tr>
+<tr>
+<th>2</th>
+<td>M. Georges Patient</td>
+<td>Né le 1er avril 1949</td>
+<td>1949-04-01</td>
+</tr>
+<tr>
+<th>3</th>
+<td>Mme Corinne Bouchoux</td>
+<td>Née le 5 janvier 1964</td>
+<td>1964-01-05</td>
+</tr>
+<tr>
+<th>4</th>
+<td>M. Martial Bourquin</td>
+<td>Né le 23 juillet 1952</td>
+<td>1952-07-23</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Enfin, on peut calculer l'âge de chaque sénateur :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date de naissance2&#39;</span><span class="p">]</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mf">365.25</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge&#39;</span><span class="p">]]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Date de naissance2'</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mf">365.25</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Âge'</span><span class="p">]]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[24]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nom</th>
-      <th>Date de naissance</th>
-      <th>Date de naissance2</th>
-      <th>Âge</th>
-      <th>Âge (années)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Mme Catherine Génisson</td>
-      <td>Née le 22 avril 1949</td>
-      <td>1949-04-22</td>
-      <td>24379 days</td>
-      <td>66.746064</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mme Anne Chain-Larché</td>
-      <td>Née le 11 avril 1958</td>
-      <td>1958-04-11</td>
-      <td>21103 days</td>
-      <td>57.776865</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>M. Georges Patient</td>
-      <td>Né le 1er avril 1949</td>
-      <td>1949-04-01</td>
-      <td>24400 days</td>
-      <td>66.803559</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Mme Corinne Bouchoux</td>
-      <td>Née le 5 janvier 1964</td>
-      <td>1964-01-05</td>
-      <td>19008 days</td>
-      <td>52.041068</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>M. Martial Bourquin</td>
-      <td>Né le 23 juillet 1952</td>
-      <td>1952-07-23</td>
-      <td>23191 days</td>
-      <td>63.493498</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Nom</th>
+<th>Date de naissance</th>
+<th>Date de naissance2</th>
+<th>Âge</th>
+<th>Âge (années)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>Mme Catherine Génisson</td>
+<td>Née le 22 avril 1949</td>
+<td>1949-04-22</td>
+<td>24379 days</td>
+<td>66.746064</td>
+</tr>
+<tr>
+<th>1</th>
+<td>Mme Anne Chain-Larché</td>
+<td>Née le 11 avril 1958</td>
+<td>1958-04-11</td>
+<td>21103 days</td>
+<td>57.776865</td>
+</tr>
+<tr>
+<th>2</th>
+<td>M. Georges Patient</td>
+<td>Né le 1er avril 1949</td>
+<td>1949-04-01</td>
+<td>24400 days</td>
+<td>66.803559</td>
+</tr>
+<tr>
+<th>3</th>
+<td>Mme Corinne Bouchoux</td>
+<td>Née le 5 janvier 1964</td>
+<td>1964-01-05</td>
+<td>19008 days</td>
+<td>52.041068</td>
+</tr>
+<tr>
+<th>4</th>
+<td>M. Martial Bourquin</td>
+<td>Né le 23 juillet 1952</td>
+<td>1952-07-23</td>
+<td>23191 days</td>
+<td>63.493498</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Analyse-des-donn&#233;es-recueillies">Analyse des donn&#233;es recueillies<a class="anchor-link" href="#Analyse-des-donn&#233;es-recueillies">&#182;</a></h1>
+<h1 id="Analyse-des-données-recueillies">Analyse des données recueillies<a class="anchor-link" href="#Analyse-des-données-recueillies">¶</a></h1>
 </div>
 </div>
 </div>
@@ -2626,63 +2458,44 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant tracer de jolis histogrammes :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;âge&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;histogramme des âges des sénateurs&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'âge'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'histogramme des âges des sénateurs'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[26]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x8c08908&gt;</pre>
+<pre><matplotlib.text.Text at 0x8c08908></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEiCAYAAAAf0W5kAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XtcVHX+P/DXzHBzZGQYLiqii4qXYMVa0TU1AS8V6n4l
@@ -2870,22 +2683,17 @@ cHAwJk2ahIULF0KtVmP06NEYOHAgAGDcuHE4d+4c5s2bB61Wi9jYWBQUFFj/7uzs2bPx4YcfYu7c
 uaipqUFgYCAmT57szJtD1Cq8RJSoBQ4fPox33nkHa9eudXYUIrvi4SCiRtTV1eHQoUOwWCwoLy/H
 J598gt///vfOjkVkd3wnQNSIuro6LF68GGfPnoWHhweGDBmCxMREeHl5OTsakV2xBIiIFIyHg4iI
 FIwlQESkYCwBIiIFYwkQESkYS4CISMFYAkRECvb/AMH57yO9u+AhAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut demander à pandas de nous calculer les données statistiques usuelles pour ces âges :</p>
-
 </div>
 </div>
 </div>
@@ -2894,88 +2702,67 @@ FIwlQESkYCwBIiIFYwkQESkYS4CISMFYAkRECvb/AMH57yO9u+AhAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Afin de comparer ces âges à la population française, nous réutilisons le code de mon post précédent :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;http://www.insee.fr/fr/ppp/bases-de-donnees/donnees-detaillees/bilan-demo/fichiers-xls/pop-1janvier-fm.xls&#39;</span><span class="p">,</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">'http://www.insee.fr/fr/ppp/bases-de-donnees/donnees-detaillees/bilan-demo/fichiers-xls/pop-1janvier-fm.xls'</span><span class="p">,</span>
                       <span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
                       <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                       <span class="n">skipfooter</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">decimation_factor</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">french_pop_ages</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_pop</span><span class="p">[</span><span class="s1">&#39;Ensemble&#39;</span><span class="p">]):</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_pop</span><span class="p">[</span><span class="s1">'Ensemble'</span><span class="p">]):</span>
     <span class="n">french_pop_ages</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ind</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">/</span> <span class="n">decimation_factor</span><span class="p">))]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span> <span class="c1"># recommended import according to the docs</span>
 
 <span class="n">age_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">ecdf_mp</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">ECDF</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">ecdf_mp</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">ECDF</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">ecdf_french_pop</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">ECDF</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span>
 <span class="n">y_mp</span> <span class="o">=</span> <span class="n">ecdf_mp</span><span class="p">(</span><span class="n">age_grid</span><span class="p">)</span>
 <span class="n">y_french_pop</span> <span class="o">=</span> <span class="n">ecdf_french_pop</span><span class="p">(</span><span class="n">age_grid</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_mp</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sénateurs&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_french_pop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;population française&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_mp</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'sénateurs'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_french_pop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'population française'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[29]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.legend.Legend at 0xb220a90&gt;</pre>
+<pre><matplotlib.legend.Legend at 0xb220a90></pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEECAYAAAAvY19bAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XtclFX+B/DPACICozKECjO5tOGNIbwAYeKqEGr5cpVW
@@ -3138,48 +2925,34 @@ YTh06BAA4NChQ04fk6lTpyItLQ2bN2/GokWLEBISgvnz50suDsCdX2pfX19cuXIFwJ3kp1KpJBmL
 feJ0TinG4cKFC9i6dStqa2vRs2dPzJkzBwaDQZKx+OSTT3DkyBG4uroiMDAQs2bNQlVVlWRikZKS
 glOnTqGiogLdunWDRqNBREREs+9/9+7dOHDgANzc3MyazsklG4iIJIaDu0REEsPET0QkMUz8REQS
 w8RPRCQxTPxERBLDxE9EJDFM/EREEsPET0QkMf8P9GL9OhZZbHQAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finalement, on peut passer à la comparaison des statistiques par quartiles :</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[30]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>count    348.000000
 mean      62.791947
@@ -3191,36 +2964,24 @@ min       28.134155
 max       90.877481
 Name: Âge (années), dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[31]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>count    64461.000000
 mean        40.705931
@@ -3232,19 +2993,15 @@ min          0.000000
 max        105.000000
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finalement, on peut produire le tableau récapitulatif suivant :</p>
-
 </div>
 </div>
 </div>
@@ -3287,7 +3044,6 @@ dtype: float64</pre>
 </tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </div>
@@ -3295,7 +3051,7 @@ dtype: float64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
@@ -3305,12 +3061,9 @@ dtype: float64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Cette nouvelle analyse consolide l'idée selon laquelle les français sont représentés par des élus dans une tranche d'âge bien éloignée d'une répartition comparable à la population française.</p>
 <p>Evidemment, il est difficile de tirer des conclusions générales à partir de ce chiffre, mais il est frappant à quel point les sénateurs sont vieux par rapport disons, l'âge de la retraite. D'une certaine manière, la moitié des sénateurs ont plus que l'âge de la retraite.</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

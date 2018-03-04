@@ -1416,7 +1416,6 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post is a quick and dirty exploration of an aspect of my Japanese learning. The gist behind it is the following: I use a flashcard software called <a href="http://ankisrs.net/">Anki</a> to guide my learning. I use two decks for learning Japanese: one contains my vocabulary and is recognition only, while the other contains my kanji cards and forces me to write the Japanese characters and remember their structure.</p>
 <p>In this post, I use the data from both decks combined to create a graph of how the information for a given learning day is connected.</p>
-
 </div>
 </div>
 </div>
@@ -1424,224 +1423,188 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Simple-text-exploration-of-the-data">Simple text exploration of the data<a class="anchor-link" href="#Simple-text-exploration-of-the-data">&#182;</a></h1>
+<h1 id="Simple-text-exploration-of-the-data">Simple text exploration of the data<a class="anchor-link" href="#Simple-text-exploration-of-the-data">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># necessary imports</span>
 <span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="k">import</span> <span class="n">interact</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Firts, let's read the raw text files containing the data from my decks. <code>jp-kanji</code> contains the kanji I have reviewed today, while <code>jp-vocab</code> contains all the words that I have in my Japanese vocabulary deck.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kanji</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="s1">&#39;files/kanji.csv&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kanji</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="s1">'files/kanji.csv'</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myvocab</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="s1">&#39;files/jp_vocab.csv&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myvocab</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="s1">'files/jp_vocab.csv'</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The characters I have read so far are encoded using UTF-8. To work with them, I'm converting them to Python unicode.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">codecs</span> <span class="k">import</span> <span class="n">decode</span>
-<span class="n">kanji</span> <span class="o">=</span> <span class="p">[</span><span class="n">decode</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kanji</span><span class="p">]</span>
-<span class="n">myvocab</span> <span class="o">=</span> <span class="p">[</span><span class="n">decode</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">myvocab</span><span class="p">]</span>
+<span class="n">kanji</span> <span class="o">=</span> <span class="p">[</span><span class="n">decode</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kanji</span><span class="p">]</span>
+<span class="n">myvocab</span> <span class="o">=</span> <span class="p">[</span><span class="n">decode</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">myvocab</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kanji</span><span class="p">:</span>
     <span class="nb">print</span> <span class="n">k</span><span class="p">,</span> 
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>淡 貯 腹 妃 翁 葬 鉄 賀 委 屈 漏 穏 料 庸 累 酌 糾 陵 星 斜 斉 沈 尾 展 雰
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now write a function that filters my vocabulary list according to whether a given kanji is present in a word or not.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_associated_vocab</span><span class="p">(</span><span class="n">kanji</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">kanji</span> <span class="ow">in</span> <span class="n">s</span><span class="p">,</span> <span class="n">myvocab</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="n">get_associated_vocab</span><span class="p">(</span><span class="n">kanji</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
     <span class="nb">print</span> <span class="n">w</span><span class="p">,</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can explore this interactively using the IPython notebook tool <code>interact</code>:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">print_my_vocab</span><span class="p">(</span><span class="n">kanji_char</span><span class="p">):</span>
     <span class="n">words</span> <span class="o">=</span> <span class="n">get_associated_vocab</span><span class="p">(</span><span class="n">kanji_char</span><span class="p">)</span>
-    <span class="nb">print</span> <span class="s2">&quot;You selected character &quot;</span> <span class="o">+</span> <span class="n">kanji_char</span>
+    <span class="nb">print</span> <span class="s2">"You selected character "</span> <span class="o">+</span> <span class="n">kanji_char</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s2">&quot;Matches in your vocabulary found!&quot;</span>
+        <span class="nb">print</span> <span class="s2">"Matches in your vocabulary found!"</span>
         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
             <span class="nb">print</span> <span class="n">w</span>
     <span class="k">else</span><span class="p">:</span> 
-        <span class="nb">print</span> <span class="s2">&quot;No match in your vocabulary&quot;</span>
+        <span class="nb">print</span> <span class="s2">"No match in your vocabulary"</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ind</span><span class="p">:</span> <span class="n">print_my_vocab</span><span class="p">(</span><span class="n">kanji</span><span class="p">[</span><span class="n">ind</span><span class="p">]),</span>
          <span class="n">ind</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kanji</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>You selected character 料
 Matches in your vocabulary found!
 料理
-晩御飯 は 日本 料理 レストランで食べました。おいしかったお好み焼き食べました。&lt;br&gt;&lt;br&gt;
+晩御飯 は 日本 料理 レストランで食べました。おいしかったお好み焼き食べました。<br><br>
 材料
 小麦粉はケーキの主な材料だ。
 食料品
@@ -1649,29 +1612,20 @@ Matches in your vocabulary found!
 </pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[33]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;function __main__.&lt;lambda&gt;&gt;</pre>
-</div>
-
-</div>
-
+<pre><function __main__.<lambda>></pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Graphical-exploration-using-NetworkX">Graphical exploration using NetworkX<a class="anchor-link" href="#Graphical-exploration-using-NetworkX">&#182;</a></h1>
+<h1 id="Graphical-exploration-using-NetworkX">Graphical exploration using NetworkX<a class="anchor-link" href="#Graphical-exploration-using-NetworkX">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1682,57 +1636,44 @@ Matches in your vocabulary found!
 <p><a href="http://networkx.github.io/">NetworkX</a> is a toolkit for the study of networks, written in Python. Inspired by this <a href="http://networkx.github.io/documentation/latest/examples/drawing/chess_masters.html">example from the gallery</a>, we can leverage its graphical tools to visualize the data I have analyzed so far.</p>
 <p>My aim here is to make a plot with all the kanji reviewed today and link them to their associated vocabulary.</p>
 <p>While writing this post, I encountered some problems with the display of Japanese characters. It turns out that this was due to my <code>matplotlib</code> installation and its fonts, that didn't support Japanese characters. I have solved this problem by copying one of my Japanese system fonts within the <code>matplotlib</code> fonts directory located, in my case, at <em>C:\Python27\Lib\site-packages\matplotlib\mpl-data\fonts</em>. A helpful link in this process was <a href="http://stackoverflow.com/questions/23197124/display-non-ascii-japanese-characters-in-pandas-plot-legend">http://stackoverflow.com/questions/23197124/display-non-ascii-japanese-characters-in-pandas-plot-legend</a>.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below is a simple test graph that shows how to display a node labelled with a Japanese character.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;車&quot;</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;Aozora Mincho&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="sa">u</span><span class="s2">"車"</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">'Aozora Mincho'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAAENCAYAAADzFzkJAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAFlNJREFUeJzt3X2QVeVhx/HvZWGjvCiCQUTQpYIVX6qYBnFa67XahBAj
@@ -1836,43 +1777,36 @@ p4ATgQvidgcBYwjh8jylRz2XEp7eliTtB85g75FG1jGEy1CV3Az8Y1zOjkxywHtx+X5CeOwL5zQk
 qRuV+kDCj8fvfYBvALeX2bftM52OJHzeWttHyK8lhBHAX1P8g2RLgKspXvk5hnBpqxptliTVwRmE
 y0dZ1xDmK14ijCDajAB+kVn/DeHTgFcAZ2bK/5wwOllBmOto+7veOcIfR3qecOfVrwmXqFJcQ5gn
 2U6YWP9h4n6SJEmSJEmSJEmSJEmSJEmSJEmSJKmn+H935MRcdpIbKwAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This being done, we can move on to more serious things. We create our graph with the following code.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
 <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
@@ -1882,26 +1816,17 @@ y0dZ1xDmK14ijCDajAB+kVn/DeHTgFcAZ2bK/5wwOllBmOto+7veOcIfR3qecOfVrwmXqFJcQ5gn
     <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">today</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">get_associated_vocab</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
         <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;Aozora Mincho&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">'Aozora Mincho'</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
-<span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
+<span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAl0AAAJPCAYAAABGnGG7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XV8HHX+x/FXGpeNNLQ4lCLFrnA4lIMih9sd7sUOP5xD
@@ -3070,30 +2995,25 @@ RERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERE
 RERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERE
 RERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERE
 RERERERERERERERERERERERERERERIau/wdlHrO4Z/U6yAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is quite nice, but we can improve it a little bit by using some coloring, inspired by <a href="http://networkx.github.io/documentation/latest/examples/drawing/ego_graph.html">this example</a>.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="prompt input_prompt">In [63]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># creating the graph</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
 <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
@@ -3108,11 +3028,11 @@ RERERERERERERERERERERERERERERIau/wdlHrO4Z/U6yAAAAABJRU5ErkJggg==
 <span class="n">node_color</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="n">today</span><span class="p">:</span>
-        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'w'</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">kanji</span><span class="p">:</span>
-        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'r'</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'y'</span><span class="p">)</span>
 
 <span class="c1"># plotting</span>
 <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>        
@@ -3120,27 +3040,18 @@ RERERERERERERERERERERERERERERIau/wdlHrO4Z/U6yAAAAABJRU5ErkJggg==
 <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> 
         <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">node_color</span><span class="o">=</span><span class="n">node_color</span><span class="p">,</span>
-        <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;Aozora Mincho&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+        <span class="n">font_family</span><span class="o">=</span><span class="s1">'Aozora Mincho'</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
         <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
-<span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
+<span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAv8AAALxCAYAAADL8clSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8zdfjx/FXlkjsTe09WrW32hQxqzSp3dqjtf06KLVp
@@ -5261,15 +5172,11 @@ AJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACY
 kH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/
 AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAAmJB/AACYkH8AAJiQfwAA
 mJB/AACYCFYYRv0SavhiAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5278,98 +5185,84 @@ mJB/AACYCFYYRv0SavhiAAAAAElFTkSuQmCC
 <p>While using visualizations like the one above during the last few days, I have noticed that when there are a lot of words and characters to display, the graph gets messy. Therefore, I'll try to produce a more structured version of the previous graph in the next cells.</p>
 <p>The graphical output that we have done above consists of two separate steps. The first step is to compute the node positions in the final graph. The second one is drawing using the previous positions.</p>
 <p>In the previous cell, we computed the positions of our nodes using <code>nx.spring_layout(G)</code>. The positions computed by the spring algorithm are stored in a dictionary:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="prompt input_prompt">In [64]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pos</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[64]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>{u&#39;\u5983&#39;: array([ 0.63895377,  0.67500245]),
- u&#39;\u6589&#39;: array([ 0.03343059,  0.3185518 ]),
- u&#39;\u6599\u7406&#39;: array([ 0.97669519,  0.64441187]),
- u&#39;\u6c88&#39;: array([ 0.31158778,  0.16515432]),
- u&#39;\u6de1&#39;: array([ 0.0082795 ,  0.60559574]),
- u&#39;\u6f0f&#39;: array([ 0.10637716,  0.18282049]),
+<pre>{u'\u5983': array([ 0.63895377,  0.67500245]),
+ u'\u6589': array([ 0.03343059,  0.3185518 ]),
+ u'\u6599\u7406': array([ 0.97669519,  0.64441187]),
+ u'\u6c88': array([ 0.31158778,  0.16515432]),
+ u'\u6de1': array([ 0.0082795 ,  0.60559574]),
+ u'\u6f0f': array([ 0.10637716,  0.18282049]),
  datetime.date(2014, 11, 5): array([ 0.33843229,  0.39933709]),
- u&#39;\u8caf&#39;: array([ 0.06449885,  0.24593801]),
- u&#39;\u6599&#39;: array([ 0.81613867,  0.5326309 ]),
- u&#39;\u659c&#39;: array([ 0.71547702,  0.32610618]),
- u&#39;\u661f&#39;: array([ 0.47509264,  0.80911579]),
- u&#39;\u59d4\u54e1&#39;: array([ 0.92043342,  0.23380841]),
- u&#39;\u50be\u659c&#39;: array([ 0.96810298,  0.32317835]),
- u&#39;\u6d41\u308c\u661f&#39;: array([ 0.39479764,  0.9914399 ]),
- u&#39;\u7d66\u6599&#39;: array([ 0.92811008,  0.72305464]),
- u&#39;\u7d2f&#39;: array([ 0.59474906,  0.01805415]),
- u&#39;\u5e74\u8cc0&#39;: array([ 0.46854098,  0.        ]),
- u&#39;\u5eb8&#39;: array([ 0.        ,  0.42477971]),
- u&#39;\u5c3e&#39;: array([ 0.51802025,  0.22415128]),
- u&#39;\u7fc1&#39;: array([ 0.10560111,  0.64988196]),
- u&#39;\u8cc0&#39;: array([ 0.37718882,  0.04015944]),
- u&#39;\u9244&#39;: array([ 0.32000005,  0.80690719]),
- u&#39;\u5c48&#39;: array([ 0.53514343,  0.47579271]),
- u&#39;\u885b\u661f&#39;: array([ 0.63198603,  0.98454265]),
- u&#39;\u914c&#39;: array([ 0.5064797 ,  0.07996336]),
- u&#39;\u7a4f&#39;: array([ 0.09442873,  0.75785548]),
- u&#39;\u5c55\u89a7\u4f1a&#39;: array([ 0.21722116,  0.08730433]),
- u&#39;\u5c55&#39;: array([ 0.17416823,  0.15397226]),
- u&#39;\u98df\u6599\u54c1&#39;: array([ 0.89176716,  0.19228279]),
- u&#39;\u5730\u4e0b\u9244&#39;: array([ 0.48069608,  1.        ]),
- u&#39;\u738b\u5983&#39;: array([ 0.8761446 ,  0.82716321]),
- u&#39;\u9244\u9aa8&#39;: array([ 0.16174776,  0.86162271]),
- u&#39;\u5c0f\u9ea6\u7c89\u306f\u30b1\u30fc\u30ad\u306e\u4e3b\u306a\u6750\u6599\u3060\u3002&#39;: array([ 0.99668281,  0.55111055]),
- u&#39;\u6750\u6599&#39;: array([ 0.83223969,  0.87208056]),
- u&#39;\u6669\u5fa1\u98ef \u306f \u65e5\u672c \u6599\u7406 \u30ec\u30b9\u30c8\u30e9\u30f3\u3067\u98df\u3079\u307e\u3057\u305f\u3002\u304a\u3044\u3057\u304b\u3063\u305f\u304a\u597d\u307f\u713c\u304d\u98df\u3079\u307e\u3057\u305f\u3002&lt;br&gt;&lt;br&gt;&#39;: array([ 0.99848304,  0.45215401]),
- u&#39;\u846c&#39;: array([ 0.28533294,  0.0447483 ]),
- u&#39;\u96f0&#39;: array([ 0.01251561,  0.51255702]),
- u&#39;\u7a4f\u3084\u304b&#39;: array([ 0.22307882,  0.91305033]),
- u&#39;\u9675&#39;: array([ 0.07011004,  0.37885549]),
- u&#39;\u8179&#39;: array([ 0.13798064,  0.52279467]),
- u&#39;\u7cfe&#39;: array([ 0.3268805 ,  0.62509542]),
- u&#39;\u59d4&#39;: array([ 0.69909341,  0.16646906])}</pre>
-</div>
-
-</div>
-
+ u'\u8caf': array([ 0.06449885,  0.24593801]),
+ u'\u6599': array([ 0.81613867,  0.5326309 ]),
+ u'\u659c': array([ 0.71547702,  0.32610618]),
+ u'\u661f': array([ 0.47509264,  0.80911579]),
+ u'\u59d4\u54e1': array([ 0.92043342,  0.23380841]),
+ u'\u50be\u659c': array([ 0.96810298,  0.32317835]),
+ u'\u6d41\u308c\u661f': array([ 0.39479764,  0.9914399 ]),
+ u'\u7d66\u6599': array([ 0.92811008,  0.72305464]),
+ u'\u7d2f': array([ 0.59474906,  0.01805415]),
+ u'\u5e74\u8cc0': array([ 0.46854098,  0.        ]),
+ u'\u5eb8': array([ 0.        ,  0.42477971]),
+ u'\u5c3e': array([ 0.51802025,  0.22415128]),
+ u'\u7fc1': array([ 0.10560111,  0.64988196]),
+ u'\u8cc0': array([ 0.37718882,  0.04015944]),
+ u'\u9244': array([ 0.32000005,  0.80690719]),
+ u'\u5c48': array([ 0.53514343,  0.47579271]),
+ u'\u885b\u661f': array([ 0.63198603,  0.98454265]),
+ u'\u914c': array([ 0.5064797 ,  0.07996336]),
+ u'\u7a4f': array([ 0.09442873,  0.75785548]),
+ u'\u5c55\u89a7\u4f1a': array([ 0.21722116,  0.08730433]),
+ u'\u5c55': array([ 0.17416823,  0.15397226]),
+ u'\u98df\u6599\u54c1': array([ 0.89176716,  0.19228279]),
+ u'\u5730\u4e0b\u9244': array([ 0.48069608,  1.        ]),
+ u'\u738b\u5983': array([ 0.8761446 ,  0.82716321]),
+ u'\u9244\u9aa8': array([ 0.16174776,  0.86162271]),
+ u'\u5c0f\u9ea6\u7c89\u306f\u30b1\u30fc\u30ad\u306e\u4e3b\u306a\u6750\u6599\u3060\u3002': array([ 0.99668281,  0.55111055]),
+ u'\u6750\u6599': array([ 0.83223969,  0.87208056]),
+ u'\u6669\u5fa1\u98ef \u306f \u65e5\u672c \u6599\u7406 \u30ec\u30b9\u30c8\u30e9\u30f3\u3067\u98df\u3079\u307e\u3057\u305f\u3002\u304a\u3044\u3057\u304b\u3063\u305f\u304a\u597d\u307f\u713c\u304d\u98df\u3079\u307e\u3057\u305f\u3002<br><br>': array([ 0.99848304,  0.45215401]),
+ u'\u846c': array([ 0.28533294,  0.0447483 ]),
+ u'\u96f0': array([ 0.01251561,  0.51255702]),
+ u'\u7a4f\u3084\u304b': array([ 0.22307882,  0.91305033]),
+ u'\u9675': array([ 0.07011004,  0.37885549]),
+ u'\u8179': array([ 0.13798064,  0.52279467]),
+ u'\u7cfe': array([ 0.3268805 ,  0.62509542]),
+ u'\u59d4': array([ 0.69909341,  0.16646906])}</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>My plan in the next cells is to compute the positions by myself instead of using the built-in algorithm.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># creating the graph</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
 <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
@@ -5383,9 +5276,9 @@ mJB/AACYCFYYRv0SavhiAAAAAElFTkSuQmCC
 <span class="n">node_color</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">kanji</span><span class="p">:</span>
-        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'r'</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'y'</span><span class="p">)</span>
 
 <span class="c1"># computing positions </span>
 <span class="n">pos</span> <span class="o">=</span> <span class="p">{}</span>
@@ -5405,27 +5298,18 @@ mJB/AACYCFYYRv0SavhiAAAAAElFTkSuQmCC
 <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> 
         <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">node_color</span><span class="o">=</span><span class="n">node_color</span><span class="p">,</span>
-        <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;Aozora Mincho&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+        <span class="n">font_family</span><span class="o">=</span><span class="s1">'Aozora Mincho'</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
         <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
-<span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
+<span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwkAAALxCAYAAAAXLepMAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmczdUfx/HXnX2xZ1+TLCHLjJ0UZSeVfd8qSyEpUok2
@@ -6788,30 +6672,25 @@ JwoSRERERETEiYIEERERERFxoiBBREREREScKEgQEREREREnChJERERERMSJggQREREREXGiIEFE
 RERERJwoSBAREREREScKEkRERERExImCBBERERERcaIgQUREREREnChIEBERERERJwoSRERERETE
 iYIEERERERFxoiBBREREREScKEgQEREREREnChJERERERMSJggQREREREXHy/0C0Mai5NrmEAAAA
 AElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is still not satisfying. So based on the above layout, we will build a small particle simulation. First, we define a particle class that will be able to model repulsive forces, based on its mass, inertia, and spring-like behaviour with a set of "neighbours" to which the particle is linked.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[138]:</div>
+<div class="prompt input_prompt">In [138]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">particle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">neighbours</span><span class="o">=</span><span class="p">[],</span> <span class="n">stiffness</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
         <span class="c1"># inits a particle with a given mass and a given stiffness linkind it to its neighbours</span>
@@ -6836,26 +6715,23 @@ AElFTkSuQmCC
             <span class="n">force_vector</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stiffness</span> <span class="o">*</span> <span class="p">(</span><span class="n">particles</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span> 
         <span class="k">return</span> <span class="n">force_vector</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, we can code the simulation. First, we build the list of nodes we want to work with.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[144]:</div>
+<div class="prompt input_prompt">In [144]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>  
 <span class="n">particles</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kanji</span><span class="p">:</span>
@@ -6865,61 +6741,54 @@ AElFTkSuQmCC
     <span class="k">for</span> <span class="n">neigh</span> <span class="ow">in</span> <span class="n">neighbours</span><span class="p">:</span>
         <span class="n">particles</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">=</span> <span class="n">particle</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="n">neigh</span><span class="p">],</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">neighbours</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[145]:</div>
+<div class="prompt input_prompt">In [145]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_pos_dict</span><span class="p">():</span>
     <span class="n">pos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">particles</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="p">[</span><span class="n">particles</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">particles</span><span class="p">]))</span>
     <span class="n">pos</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">pos</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[146]:</div>
+<div class="prompt input_prompt">In [146]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_current_particles</span><span class="p">():</span>
     <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>                
     <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">get_pos_dict</span><span class="p">(),</span> 
         <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">node_color</span><span class="o">=</span><span class="n">node_color</span><span class="p">,</span>
-        <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;Aozora Mincho&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+        <span class="n">font_family</span><span class="o">=</span><span class="s1">'Aozora Mincho'</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
         <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, we build the iteration steps:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="prompt input_prompt">In [147]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">iterate</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">current_p</span> <span class="ow">in</span> <span class="n">particles</span><span class="p">:</span>
         <span class="n">external_force</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">))</span>
@@ -6932,45 +6801,33 @@ AElFTkSuQmCC
     <span class="k">for</span> <span class="n">current_p</span> <span class="ow">in</span> <span class="n">particles</span><span class="p">:</span>
         <span class="n">particles</span><span class="p">[</span><span class="n">current_p</span><span class="p">]</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's move this graph.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[168]:</div>
+<div class="prompt input_prompt">In [168]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">iterate</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">plot_current_particles</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAv8AAAMECAYAAAAo2UpMAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl0U9XCxuFfmpa2actQ5hmRQWWUAoJwAVEQGRxQVAZR
@@ -7927,132 +7784,109 @@ HwAAMiH+AQAgE+IfAAAyIf4BACAT4h8AADIh/gEAIBPiHwAAMiH+AQAgE+IfAAAyIf4BACAT4h8A
 ADIh/gEAIBPiHwAAMiH+AQAgE+IfAAAyIf4BACAT4h8AADIh/gEAIBPiHwAAMiH+AQAgE+IfAAAy
 If4BACAT4h8AADIh/gEAIBPiHwAAMiH+AQAgE+IfAAAyIf4BACAT4h8AADIh/gEAIBPiHwAAMiH+
 AQAgE+IfAAAyIf4BACAT4h8AADLxv4DQ03RqAao0AAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="prompt input_prompt">In [86]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">iterate_and_plot</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
     <span class="n">iterate</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
     <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>                
     <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">get_pos_dict</span><span class="p">(),</span> 
         <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">node_color</span><span class="o">=</span><span class="n">node_color</span><span class="p">,</span>
-        <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;Aozora Mincho&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+        <span class="n">font_family</span><span class="o">=</span><span class="s1">'Aozora Mincho'</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
         <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
+    <span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">);</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="prompt input_prompt">In [87]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="k">import</span> <span class="n">ButtonWidget</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">clear_output</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In [92]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">ButtonWidget</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;iteration&quot;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">ButtonWidget</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"iteration"</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="n">b</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">iterate_and_plot</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In [65]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">iterate_and_plot</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_text output_error">
 <pre>
 <span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
 <span class="ansi-red-intense-fg ansi-bold">NetworkXError</span>                             Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-65-da81b97f4cf4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>iterate_and_plot<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">0.02</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold"><ipython-input-65-da81b97f4cf4></span> in <span class="ansi-cyan-fg"><module></span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----> 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>iterate_and_plot<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">0.02</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
 
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-54-11d0c0839f22&gt;</span> in <span class="ansi-cyan-fg">iterate_and_plot</span><span class="ansi-blue-intense-fg ansi-bold">(dt)</span>
+<span class="ansi-green-intense-fg ansi-bold"><ipython-input-54-11d0c0839f22></span> in <span class="ansi-cyan-fg">iterate_and_plot</span><span class="ansi-blue-intense-fg ansi-bold">(dt)</span>
 <span class="ansi-green-fg">      7</span>         node_color<span class="ansi-yellow-intense-fg ansi-bold">=</span>node_color<span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-fg">      8</span>         font_family<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Aozora Mincho&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> font_size<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">15</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 9</span><span class="ansi-yellow-intense-fg ansi-bold">         node_size=1000)
-</span><span class="ansi-green-fg">     10</span>     axis<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;off&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">;</span>
+<span class="ansi-green-fg">      8</span>         font_family<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">'Aozora Mincho'</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> font_size<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">15</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">----> 9</span><span class="ansi-yellow-intense-fg ansi-bold">         node_size=1000)
+</span><span class="ansi-green-fg">     10</span>     axis<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">'off'</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">;</span>
 
 <span class="ansi-green-intense-fg ansi-bold">C:\Python27\lib\site-packages\networkx\drawing\nx_pylab.pyc</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-intense-fg ansi-bold">(G, pos, ax, hold, **kwds)</span>
 <span class="ansi-green-fg">    129</span>         plt<span class="ansi-yellow-intense-fg ansi-bold">.</span>hold<span class="ansi-yellow-intense-fg ansi-bold">(</span>h<span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    130</span>     <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 131</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>draw_networkx<span class="ansi-yellow-intense-fg ansi-bold">(</span>G<span class="ansi-yellow-intense-fg ansi-bold">,</span> pos<span class="ansi-yellow-intense-fg ansi-bold">=</span>pos<span class="ansi-yellow-intense-fg ansi-bold">,</span> ax<span class="ansi-yellow-intense-fg ansi-bold">=</span>ax<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwds<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">--> 131</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>draw_networkx<span class="ansi-yellow-intense-fg ansi-bold">(</span>G<span class="ansi-yellow-intense-fg ansi-bold">,</span> pos<span class="ansi-yellow-intense-fg ansi-bold">=</span>pos<span class="ansi-yellow-intense-fg ansi-bold">,</span> ax<span class="ansi-yellow-intense-fg ansi-bold">=</span>ax<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwds<span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    132</span>         ax<span class="ansi-yellow-intense-fg ansi-bold">.</span>set_axis_off<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    133</span>         plt<span class="ansi-yellow-intense-fg ansi-bold">.</span>draw_if_interactive<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
 
 <span class="ansi-green-intense-fg ansi-bold">C:\Python27\lib\site-packages\networkx\drawing\nx_pylab.pyc</span> in <span class="ansi-cyan-fg">draw_networkx</span><span class="ansi-blue-intense-fg ansi-bold">(G, pos, with_labels, **kwds)</span>
 <span class="ansi-green-fg">    262</span>         pos <span class="ansi-yellow-intense-fg ansi-bold">=</span> nx<span class="ansi-yellow-intense-fg ansi-bold">.</span>drawing<span class="ansi-yellow-intense-fg ansi-bold">.</span>spring_layout<span class="ansi-yellow-intense-fg ansi-bold">(</span>G<span class="ansi-yellow-intense-fg ansi-bold">)</span>  <span class="ansi-red-intense-fg ansi-bold"># default to spring layout</span>
 <span class="ansi-green-fg">    263</span> 
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 264</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>node_collection <span class="ansi-yellow-intense-fg ansi-bold">=</span> draw_networkx_nodes<span class="ansi-yellow-intense-fg ansi-bold">(</span>G<span class="ansi-yellow-intense-fg ansi-bold">,</span> pos<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwds<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">--> 264</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>node_collection <span class="ansi-yellow-intense-fg ansi-bold">=</span> draw_networkx_nodes<span class="ansi-yellow-intense-fg ansi-bold">(</span>G<span class="ansi-yellow-intense-fg ansi-bold">,</span> pos<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwds<span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    265</span>     edge_collection <span class="ansi-yellow-intense-fg ansi-bold">=</span> draw_networkx_edges<span class="ansi-yellow-intense-fg ansi-bold">(</span>G<span class="ansi-yellow-intense-fg ansi-bold">,</span> pos<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwds<span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    266</span>     <span class="ansi-green-intense-fg ansi-bold">if</span> with_labels<span class="ansi-yellow-intense-fg ansi-bold">:</span>
 
 <span class="ansi-green-intense-fg ansi-bold">C:\Python27\lib\site-packages\networkx\drawing\nx_pylab.pyc</span> in <span class="ansi-cyan-fg">draw_networkx_nodes</span><span class="ansi-blue-intense-fg ansi-bold">(G, pos, nodelist, node_size, node_color, node_shape, alpha, cmap, vmin, vmax, ax, linewidths, label, **kwds)</span>
 <span class="ansi-green-fg">    373</span>         xy <span class="ansi-yellow-intense-fg ansi-bold">=</span> numpy<span class="ansi-yellow-intense-fg ansi-bold">.</span>asarray<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">[</span>pos<span class="ansi-yellow-intense-fg ansi-bold">[</span>v<span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">for</span> v <span class="ansi-green-intense-fg ansi-bold">in</span> nodelist<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    374</span>     <span class="ansi-green-intense-fg ansi-bold">except</span> KeyError <span class="ansi-green-intense-fg ansi-bold">as</span> e<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 375</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> nx<span class="ansi-yellow-intense-fg ansi-bold">.</span>NetworkXError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Node %s has no position.&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">%</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">--> 375</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> nx<span class="ansi-yellow-intense-fg ansi-bold">.</span>NetworkXError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">'Node %s has no position.'</span><span class="ansi-yellow-intense-fg ansi-bold">%</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span>
 <span class="ansi-green-fg">    376</span>     <span class="ansi-green-intense-fg ansi-bold">except</span> ValueError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">    377</span>         <span class="ansi-green-intense-fg ansi-bold">raise</span> nx<span class="ansi-yellow-intense-fg ansi-bold">.</span>NetworkXError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Bad value in node positions.&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    377</span>         <span class="ansi-green-intense-fg ansi-bold">raise</span> nx<span class="ansi-yellow-intense-fg ansi-bold">.</span>NetworkXError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">'Bad value in node positions.'</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
 
 <span class="ansi-red-intense-fg ansi-bold">NetworkXError</span>: Node datetime.date(2014, 11, 5) has no position.</pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAALxCAYAAAApLdIrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHNpJREFUeJzt3V9onvX9//F3JDkoMuqfSrFJoK4JSUptKqutRZQojHYd
@@ -8186,74 +8020,53 @@ D9ann3469R3qtra22r9//7kcm/NEM/sHvkkz+6e3t7c2bNhQK1eurIsuuqi2bt0q8Kmq5vbPvffe
 W5s3b67+/v766quv6pFHHqnLLrvsHE/O+eD222+vV199tY4ePVqdnZ31wAMP1IkTJ6pq9u3sRVcA
 ABBk3l90BQAAnDsCHwAAggh8AAAIIvABACCIwAcAgCACHwAAggh8AAAIIvABACDI/wFgKcihQ5U1
 +gAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In [59]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">particles</span><span class="p">[</span><span class="sa">u</span><span class="s2">&quot;星&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">particles</span><span class="p">[</span><span class="sa">u</span><span class="s2">&quot;星&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">particles</span><span class="p">[</span><span class="sa">u</span><span class="s2">"星"</span><span class="p">]</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">particles</span><span class="p">[</span><span class="sa">u</span><span class="s2">"星"</span><span class="p">]</span><span class="o">.</span><span class="n">pos</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[59]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>array([             nan,  -1.10393199e+11])</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pos</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That's it! A brand new tool for visualizing the connections between your kanji deck and your vocabulary!</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
