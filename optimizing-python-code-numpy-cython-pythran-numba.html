@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I had the pleasure of attending a <a href="http://calcul.math.cnrs.fr/spip.php?article284">workshop</a> given by the <a href="http://calcul.math.cnrs.fr">groupe calcul (CNRS)</a> this week. The topic was: how do you optimize the execution speed of your Python code, under the hypothesis that you already tried to make it fast using NumPy?</p>
 <p>The training was held over three days and presented three interesting ways to achieve speedups: <a href="http://cython.readthedocs.io/en/latest/">Cython</a>, <a href="https://pythonhosted.org/pythran/">pythran</a> and <a href="http://numba.pydata.org">numba</a>.</p>
@@ -1421,8 +1597,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post uses the following versions of the libraries:</p>
 </div>
@@ -1433,7 +1608,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cython</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">cython</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cython</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">cython</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">pythran</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">pythran</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numba</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">numba</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
@@ -1475,16 +1650,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Introducing-the-discrete-Laplacian">Introducing the discrete Laplacian<a class="anchor-link" href="#Introducing-the-discrete-Laplacian">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>When working with images, the <a href="https://en.wikipedia.org/wiki/Discrete_Laplace_operator">discrete Laplacian operator</a> is often used for edge detection.</p>
 <p>Intuitively, if you want to find the edges of an image, you compute the Laplacian and threshold it to see the edges appear. Let's give an example using scikit-image.</p>
@@ -1497,7 +1670,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.data</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.data</span>
 <span class="kn">import</span> <span class="nn">skimage.color</span>
 </pre></div>
 </div>
@@ -1509,7 +1682,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astronaut</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astronaut</span><span class="p">()</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">rgb2gray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
@@ -1528,8 +1701,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's write a function that uses the scikit-image implementation of the discrete Laplace operator and thresholds the result with a fixed threshold.</p>
 </div>
@@ -1540,7 +1712,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">laplace</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">laplace</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
@@ -1552,7 +1724,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">laplace_skimage</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">laplace_skimage</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">"""Applies Laplace operator to 2D image using skimage implementation. </span>
 <span class="sd">    Then tresholds the result and returns boolean image."""</span>
     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">laplace</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
@@ -1564,8 +1736,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's apply the function and check its result.</p>
 </div>
@@ -1576,7 +1747,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">laplace_skimage</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">laplace_skimage</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1587,7 +1758,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">edges</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">edges</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -1604,8 +1775,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's display the obtained edges, along with the original image.</p>
 </div>
@@ -1616,7 +1786,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -1628,7 +1798,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
     <span class="sd">"""Compares two images, left and right."""</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
@@ -1643,7 +1813,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">compare</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">edges</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">compare</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">edges</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1652,7 +1822,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAloAAAEgCAYAAABsCt3QAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsvdmPXdd1PvidO89D3XtrZBVnWiRF
@@ -3619,15 +3789,14 @@ b8h7zA/ARzyex2cT+RdJn8AGmI9df9R1Sf6a8w14iWNZUx/ADHiOHrbAXZyfAk9AB6yBkzh/Gq+7
 eH86dg+/9HQF3NfWR9T6Gsdufw3XtJ6O7N/8GraH6vMr6moqw2rNr4N6i2aYf8EjSZJUyNhbh5Ik
 Sc1y0JIkSSrEQUuSJKkQBy1JkqRCHLQkSZIKcdCSJEkqxEFLkiSpkB8YeX2CpdCWHAAAAABJRU5E
 rkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Since the topic of this post is to deal with optimization, we will now suppose that we're not using scikit-image.</p>
 <p>As is usually the case when you're working on your own problems, we'll implement the Laplacian algorithm by ourselves using NumPy.</p>
@@ -3635,16 +3804,14 @@ rkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="NumPy-implementation">NumPy implementation<a class="anchor-link" href="#NumPy-implementation">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So here we go: we write a function that makes use of vectorized NumPy to perform the same operation than the scikit-image implementation.</p>
 </div>
@@ -3655,7 +3822,7 @@ rkJggg==
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">"""Applies Laplace operator to 2D image using our own NumPy implementation. </span>
 <span class="sd">    Then tresholds the result and returns boolean image."""</span>
     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -3667,8 +3834,7 @@ rkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you're paying attention closely, we're not actually implementing exactly the same function as scikit-image, since we're excluding all border pixels of the image from our calculation.</p>
 <p>Let's check the result is qualitatively correct.</p>
@@ -3680,7 +3846,7 @@ rkJggg==
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -3701,7 +3867,7 @@ rkJggg==
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">compare</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">compare</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -3710,7 +3876,7 @@ rkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAloAAAEgCAYAAABsCt3QAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsvVmPndd1Nvi8Z57nUyOryOJkkRQt
@@ -5677,15 +5843,14 @@ b1NEHEXEekRs0Jz7w4g4oEM5SinLpZSVyTqwD4zo0Pk0BevXP5uH+gXWsFyfmRzV69gMPIDWB15o
 wElu7wE3wBi4ABZy+2J+H+f+XtsZfsm0C1x2LUeO9T6Xp8lvuEvn05T5rV//m6Hz9SvHZQ2boRy1
 65h/wSNJklRJ21OHkiRJc8tGS5IkqRIbLUmSpEpstCRJkiqx0ZIkSarERkuSJKkSGy1JkqRKvgAS
 yZen8KcJuwAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And let's also check that our implementation quantitavely agrees with scikit-image on every interior pixel.</p>
 </div>
@@ -5696,7 +5861,7 @@ yZen8KcJuwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_skimage</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_skimage</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -5713,24 +5878,21 @@ yZen8KcJuwAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Good, we're now all set for the next step. Let's pretend that we think our implementation is slow. How do we objectively measure that? And then: how do we make it faster?</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Profiling-and-timing">Profiling and timing<a class="anchor-link" href="#Profiling-and-timing">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, we think our NumPy version is slow. How can we put a number on that feeling? The first idea is to time the execution on our test image. We can easily do this with the <code>%time</code> line magic.</p>
 </div>
@@ -5741,7 +5903,7 @@ yZen8KcJuwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">time</span> laplace_numpy(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">time</span> laplace_numpy(image)
 </pre></div>
 </div>
 </div>
@@ -5772,16 +5934,14 @@ Wall time: 5.08 ms
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Mmmh, around 5 milliseconds per call. If we run this multiple times, the results slightly vary.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Therefore, it is better to use the  <code>%timeit</code> line magic, which averages the timing operation and gives us a more accurate measurement.</p>
 </div>
@@ -5792,7 +5952,7 @@ Wall time: 5.08 ms
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numpy(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numpy(image)
 </pre></div>
 </div>
 </div>
@@ -5810,8 +5970,7 @@ Wall time: 5.08 ms
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How does the scikit-image implementation compare to that?</p>
 </div>
@@ -5822,7 +5981,7 @@ Wall time: 5.08 ms
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_skimage(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_skimage(image)
 </pre></div>
 </div>
 </div>
@@ -5840,8 +5999,7 @@ Wall time: 5.08 ms
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Approximately the same, albeit a little slower.</p>
 <p>So, our function is too slow for say, our realtime application. To make it go faster, we first need to have an idea about what takes time in it.
@@ -5851,8 +6009,7 @@ Our function works in two steps: first we compute the laplacian and then we thre
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using %prun gives us a high level view of what's happening inside our call.</p>
 </div>
@@ -5863,7 +6020,7 @@ Our function works in two steps: first we compute the laplacian and then we thre
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">prun</span> -r laplace_numpy(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">prun</span> -r laplace_numpy(image)
 <span class="n">r</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -5898,16 +6055,14 @@ Our function works in two steps: first we compute the laplacian and then we thre
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is not very informative. But we understand that most of the time (column tottime) is spent inside our laplace_numpy function.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What about %lprun?</p>
 </div>
@@ -5918,7 +6073,7 @@ Our function works in two steps: first we compute the laplacian and then we thre
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> line_profiler
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> line_profiler
 </pre></div>
 </div>
 </div>
@@ -5929,7 +6084,7 @@ Our function works in two steps: first we compute the laplacian and then we thre
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f laplace_numpy laplace_numpy(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f laplace_numpy laplace_numpy(image)
 <span class="n">r</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -5962,8 +6117,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Running <code>%lprun -r -f laplace_numpy laplace_numpy(image)</code> means that we aske <code>%lprun</code> to show how long each line took to execute inside the function <code>laplace_numpy</code> and return the result as an object.</p>
 <p>Here, we can answer the earlier question: computing the laplacian is what takes the most time in this function.</p>
@@ -5971,8 +6125,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see if <a href="https://github.com/vpelletier/pprofile"><code>pprofile</code></a> confirms that measurement.</p>
 </div>
@@ -5983,7 +6136,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pprofile</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pprofile</span>
 <span class="k">def</span> <span class="nf">func_to_profile</span><span class="p">():</span>
     <span class="n">prof</span> <span class="o">=</span> <span class="n">pprofile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
     <span class="k">with</span> <span class="n">prof</span><span class="p">():</span>
@@ -5999,7 +6152,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">func_to_profile</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">func_to_profile</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -6036,8 +6189,7 @@ Line #|      Hits|         Time| Time per hit|      %|Source code
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>pprofile confirms the previous assessment: it's the laplacian computation that takes time.</p>
 <p>What's more, pprofile is a little bit simpler to use than line_profiler. However, it doesn't feature a cell magic (although there's already someone asking for this <a href="https://github.com/vpelletier/pprofile/issues/21">here</a>).</p>
@@ -6045,24 +6197,21 @@ Line #|      Hits|         Time| Time per hit|      %|Source code
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>At this point, we know that to make our function faster, the first thing to optimize is the computation of the laplacian. Let's try that using Cython.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Cython">Cython<a class="anchor-link" href="#Cython">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What Cython does, like the other tools we'll see below, is to compile our Python code into C code that will hopefully be very fast. 
 Since Cython has a so-called IPython magic function, we'll be able to continue working in the notebook. 
@@ -6075,7 +6224,7 @@ If we use the <code>-a</code> option with the Cython magic, we can obtain an ann
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> cython
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> cython
 </pre></div>
 </div>
 </div>
@@ -6086,7 +6235,7 @@ If we use the <code>-a</code> option with the Cython magic, we can obtain an ann
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
 <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
    
 <span class="k">def</span> <span class="nf">laplace_cython</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
@@ -6109,7 +6258,7 @@ If we use the <code>-a</code> option with the Cython magic, we can obtain an ann
 <!-- Generated by Cython 0.27.3 -->
 <html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 <title>Cython: _cython_magic_862e7a2cc089394207c84948a1866a79.pyx</title>
 <style type="text/css">
     
@@ -6474,17 +6623,17 @@ body.cython { font-family: courier; font-size: 12; }
 <body class="cython">
 <p><span style="border-bottom: solid 1px grey;">Generated by Cython 0.27.3</span></p>
 <p>
-<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br/>
+<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br>
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <div class="cython"><pre class="cython line score-8" onclick="toggleDiv(this)">+<span class="">1</span>: <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span></pre>
-<pre class="cython code score-8 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
+<pre class="cython code score-8">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class="py_c_api">PyDict_SetItem</span>(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) <span class="error_goto">__PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="pyx_macro_api">__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
 </pre><pre class="cython line score-0"> <span class="">2</span>: </pre>
 <pre class="cython line score-19" onclick="toggleDiv(this)">+<span class="">3</span>: <span class="k">def</span> <span class="nf">laplace_cython</span><span class="p">(</span><span class="n">image</span><span class="p">):</span></pre>
-<pre class="cython code score-19 ">/* Python wrapper */
+<pre class="cython code score-19">/* Python wrapper */
 static PyObject *__pyx_pw_46_cython_magic_862e7a2cc089394207c84948a1866a79_1laplace_cython(PyObject *__pyx_self, PyObject *__pyx_v_image); /*proto*/
 static char __pyx_doc_46_cython_magic_862e7a2cc089394207c84948a1866a79_laplace_cython[] = "Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.\n    Cython implementation.";
 static PyMethodDef __pyx_mdef_46_cython_magic_862e7a2cc089394207c84948a1866a79_1laplace_cython = {"laplace_cython", (PyCFunction)__pyx_pw_46_cython_magic_862e7a2cc089394207c84948a1866a79_1laplace_cython, METH_O, __pyx_doc_46_cython_magic_862e7a2cc089394207c84948a1866a79_laplace_cython};
@@ -6533,7 +6682,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
 </pre><pre class="cython line score-0"> <span class="">4</span>:     <span class="sd">"""Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.</span></pre>
 <pre class="cython line score-0"> <span class="">5</span>: <span class="sd">    Cython implementation."""</span></pre>
 <pre class="cython line score-134" onclick="toggleDiv(this)">+<span class="">6</span>:     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:</span><span class="o">-</span><span class="mf">2</span><span class="p">,</span> <span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mf">2</span><span class="p">:,</span> <span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mf">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="mf">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mf">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span></pre>
-<pre class="cython code score-134 ">  __pyx_slice_ = <span class="py_c_api">PySlice_New</span>(Py_None, __pyx_int_neg_2, Py_None);<span class="error_goto"> if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 6, __pyx_L1_error)</span>
+<pre class="cython code score-134">  __pyx_slice_ = <span class="py_c_api">PySlice_New</span>(Py_None, __pyx_int_neg_2, Py_None);<span class="error_goto"> if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 6, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_slice_);
   <span class="refnanny">__Pyx_GIVEREF</span>(__pyx_slice_);
   __pyx_slice__2 = <span class="py_c_api">PySlice_New</span>(__pyx_int_1, __pyx_int_neg_1, Py_None);<span class="error_goto"> if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 6, __pyx_L1_error)</span>
@@ -6611,7 +6760,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_tuple__15);
   <span class="refnanny">__Pyx_GIVEREF</span>(__pyx_tuple__15);
 </pre><pre class="cython line score-48" onclick="toggleDiv(this)">+<span class="">7</span>:     <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">laplacian</span><span class="p">)</span> <span class="o">></span> <span class="mf">0.05</span></pre>
-<pre class="cython code score-48 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)</span>
+<pre class="cython code score-48">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_3 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_abs);<span class="error_goto"> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 7, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_3);
@@ -6664,7 +6813,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
   __pyx_v_thresh = __pyx_t_3;
   __pyx_t_3 = 0;
 </pre><pre class="cython line score-2" onclick="toggleDiv(this)">+<span class="">8</span>:     <span class="k">return</span> <span class="n">thresh</span></pre>
-<pre class="cython code score-2 ">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
+<pre class="cython code score-2">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
   <span class="pyx_macro_api">__Pyx_INCREF</span>(__pyx_v_thresh);
   __pyx_r = __pyx_v_thresh;
   goto __pyx_L0;
@@ -6675,8 +6824,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What the above code shows is that Cython couldn't optimize our function much, as indicated by the yellow hue of the lines above. The yellow intensity in each line shows the amount of interaction with Python objects that it found. The more you have to use Python objects, the less speedup you are likely to achieve.</p>
 <p>Let's time this first compiled version.</p>
@@ -6688,7 +6836,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
 </pre></div>
 </div>
 </div>
@@ -6706,8 +6854,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It performs roughly at the same speed that our NumPy version. So there's no much use in switching to Cython. Can we do better? The key is to eliminate interaction with Python through different ways. A first one is to declare our input image is an array.</p>
 </div>
@@ -6718,7 +6865,7 @@ static PyObject *__pyx_pf_46_cython_magic_862e7a2cc089394207c84948a1866a79_lapla
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
 <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span>
 
@@ -6756,7 +6903,7 @@ In file included from /Users/kappamaki/anaconda/lib/python3.6/site-packages/nump
 <!-- Generated by Cython 0.27.3 -->
 <html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 <title>Cython: _cython_magic_53222c7a36e00268207d0fde8ad0c365.pyx</title>
 <style type="text/css">
     
@@ -7121,11 +7268,11 @@ body.cython { font-family: courier; font-size: 12; }
 <body class="cython">
 <p><span style="border-bottom: solid 1px grey;">Generated by Cython 0.27.3</span></p>
 <p>
-<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br/>
+<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br>
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <div class="cython"><pre class="cython line score-16" onclick="toggleDiv(this)">+<span class="">1</span>: <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span></pre>
-<pre class="cython code score-16 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
+<pre class="cython code score-16">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class="py_c_api">PyDict_SetItem</span>(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) <span class="error_goto">__PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="pyx_macro_api">__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
@@ -7137,7 +7284,7 @@ body.cython { font-family: courier; font-size: 12; }
 </pre><pre class="cython line score-0"> <span class="">2</span>: <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span></pre>
 <pre class="cython line score-0"> <span class="">3</span>: </pre>
 <pre class="cython line score-21" onclick="toggleDiv(this)">+<span class="">4</span>: <span class="k">def</span> <span class="nf">laplace_cython</span><span class="p">(</span><span class="n">cnp</span><span class="o">.</span><span class="n">ndarray</span> <span class="n">image</span><span class="p">):</span></pre>
-<pre class="cython code score-21 ">/* Python wrapper */
+<pre class="cython code score-21">/* Python wrapper */
 static PyObject *__pyx_pw_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_1laplace_cython(PyObject *__pyx_self, PyObject *__pyx_v_image); /*proto*/
 static char __pyx_doc_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_laplace_cython[] = "Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.\n    Cython implementation.";
 static PyMethodDef __pyx_mdef_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_1laplace_cython = {"laplace_cython", (PyCFunction)__pyx_pw_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_1laplace_cython, METH_O, __pyx_doc_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_laplace_cython};
@@ -7191,7 +7338,7 @@ static PyObject *__pyx_pf_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_lapla
 </pre><pre class="cython line score-0"> <span class="">5</span>:     <span class="sd">"""Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.</span></pre>
 <pre class="cython line score-0"> <span class="">6</span>: <span class="sd">    Cython implementation."""</span></pre>
 <pre class="cython line score-134" onclick="toggleDiv(this)">+<span class="">7</span>:     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:</span><span class="o">-</span><span class="mf">2</span><span class="p">,</span> <span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mf">2</span><span class="p">:,</span> <span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mf">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="mf">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mf">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="mf">1</span><span class="p">:</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span></pre>
-<pre class="cython code score-134 ">  __pyx_slice_ = <span class="py_c_api">PySlice_New</span>(Py_None, __pyx_int_neg_2, Py_None);<span class="error_goto"> if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 7, __pyx_L1_error)</span>
+<pre class="cython code score-134">  __pyx_slice_ = <span class="py_c_api">PySlice_New</span>(Py_None, __pyx_int_neg_2, Py_None);<span class="error_goto"> if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 7, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_slice_);
   <span class="refnanny">__Pyx_GIVEREF</span>(__pyx_slice_);
   __pyx_slice__2 = <span class="py_c_api">PySlice_New</span>(__pyx_int_1, __pyx_int_neg_1, Py_None);<span class="error_goto"> if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 7, __pyx_L1_error)</span>
@@ -7269,7 +7416,7 @@ static PyObject *__pyx_pf_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_lapla
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_tuple__15);
   <span class="refnanny">__Pyx_GIVEREF</span>(__pyx_tuple__15);
 </pre><pre class="cython line score-48" onclick="toggleDiv(this)">+<span class="">8</span>:     <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">laplacian</span><span class="p">)</span> <span class="o">></span> <span class="mf">0.05</span></pre>
-<pre class="cython code score-48 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)</span>
+<pre class="cython code score-48">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_3 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_abs);<span class="error_goto"> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 8, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_3);
@@ -7322,7 +7469,7 @@ static PyObject *__pyx_pf_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_lapla
   __pyx_v_thresh = __pyx_t_3;
   __pyx_t_3 = 0;
 </pre><pre class="cython line score-2" onclick="toggleDiv(this)">+<span class="">9</span>:     <span class="k">return</span> <span class="n">thresh</span></pre>
-<pre class="cython code score-2 ">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
+<pre class="cython code score-2">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
   <span class="pyx_macro_api">__Pyx_INCREF</span>(__pyx_v_thresh);
   __pyx_r = __pyx_v_thresh;
   goto __pyx_L0;
@@ -7337,7 +7484,7 @@ static PyObject *__pyx_pf_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_lapla
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
 </pre></div>
 </div>
 </div>
@@ -7355,8 +7502,7 @@ static PyObject *__pyx_pf_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_lapla
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The timing didn't improve. It turns, if you click on the yellow lines, that Cython is not able to optimize the broadcasting operation (and its fancy bracketing) that we usually perform with NumPy. To allow Cython to optimize, let's write an explicit loop over the pixels in the image.</p>
 </div>
@@ -7367,7 +7513,7 @@ static PyObject *__pyx_pf_46_cython_magic_53222c7a36e00268207d0fde8ad0c365_lapla
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
 <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span>
 
@@ -7411,7 +7557,7 @@ In file included from /Users/kappamaki/anaconda/lib/python3.6/site-packages/nump
 <!-- Generated by Cython 0.27.3 -->
 <html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 <title>Cython: _cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0.pyx</title>
 <style type="text/css">
     
@@ -7776,11 +7922,11 @@ body.cython { font-family: courier; font-size: 12; }
 <body class="cython">
 <p><span style="border-bottom: solid 1px grey;">Generated by Cython 0.27.3</span></p>
 <p>
-<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br/>
+<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br>
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <div class="cython"><pre class="cython line score-16" onclick="toggleDiv(this)">+<span class="">01</span>: <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span></pre>
-<pre class="cython code score-16 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
+<pre class="cython code score-16">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class="py_c_api">PyDict_SetItem</span>(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) <span class="error_goto">__PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="pyx_macro_api">__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
@@ -7792,7 +7938,7 @@ body.cython { font-family: courier; font-size: 12; }
 </pre><pre class="cython line score-0"> <span class="">02</span>: <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span></pre>
 <pre class="cython line score-0"> <span class="">03</span>: </pre>
 <pre class="cython line score-22" onclick="toggleDiv(this)">+<span class="">04</span>: <span class="k">def</span> <span class="nf">laplace_cython</span><span class="p">(</span><span class="n">cnp</span><span class="o">.</span><span class="n">ndarray</span> <span class="n">image</span><span class="p">):</span></pre>
-<pre class="cython code score-22 ">/* Python wrapper */
+<pre class="cython code score-22">/* Python wrapper */
 static PyObject *__pyx_pw_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_1laplace_cython(PyObject *__pyx_self, PyObject *__pyx_v_image); /*proto*/
 static char __pyx_doc_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_laplace_cython[] = "Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.\n    Cython implementation.";
 static PyMethodDef __pyx_mdef_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_1laplace_cython = {"laplace_cython", (PyCFunction)__pyx_pw_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_1laplace_cython, METH_O, __pyx_doc_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_laplace_cython};
@@ -7851,11 +7997,11 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
 </pre><pre class="cython line score-0"> <span class="">05</span>:     <span class="sd">"""Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.</span></pre>
 <pre class="cython line score-0"> <span class="">06</span>: <span class="sd">    Cython implementation."""</span></pre>
 <pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">07</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">  __pyx_v_h = (__pyx_v_image->dimensions[0]);
+<pre class="cython code score-0">  __pyx_v_h = (__pyx_v_image->dimensions[0]);
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">08</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">w</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">  __pyx_v_w = (__pyx_v_image->dimensions[1]);
+<pre class="cython code score-0">  __pyx_v_w = (__pyx_v_image->dimensions[1]);
 </pre><pre class="cython line score-55" onclick="toggleDiv(this)">+<span class="">09</span>:     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="mf">2</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mf">2</span><span class="p">))</span></pre>
-<pre class="cython code score-55 ">  __pyx_t_2 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)</span>
+<pre class="cython code score-55">  __pyx_t_2 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_t_3 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_empty);<span class="error_goto"> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 9, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_3);
@@ -7922,15 +8068,15 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
   __pyx_t_1 = 0;
 </pre><pre class="cython line score-0"> <span class="">10</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">i</span><span class="p">,</span> <span class="nf">j</span></pre>
 <pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">11</span>:     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mf">1</span><span class="p">):</span></pre>
-<pre class="cython code score-0 ">  __pyx_t_6 = (__pyx_v_h - 1);
+<pre class="cython code score-0">  __pyx_t_6 = (__pyx_v_h - 1);
   for (__pyx_t_7 = 1; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">12</span>:         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">w</span><span class="o">-</span><span class="mf">1</span><span class="p">):</span></pre>
-<pre class="cython code score-0 ">    __pyx_t_8 = (__pyx_v_w - 1);
+<pre class="cython code score-0">    __pyx_t_8 = (__pyx_v_w - 1);
     for (__pyx_t_9 = 1; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_j = __pyx_t_9;
 </pre><pre class="cython line score-137" onclick="toggleDiv(this)">+<span class="">13</span>:             <span class="n">laplacian</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mf">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span></pre>
-<pre class="cython code score-137 ">      __pyx_t_1 = <span class="pyx_c_api">__Pyx_PyInt_From_long</span>((__pyx_v_i - 1));<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)</span>
+<pre class="cython code score-137">      __pyx_t_1 = <span class="pyx_c_api">__Pyx_PyInt_From_long</span>((__pyx_v_i - 1));<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)</span>
       <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
       __pyx_t_3 = <span class="pyx_c_api">__Pyx_PyInt_From_int</span>(__pyx_v_j);<span class="error_goto"> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 13, __pyx_L1_error)</span>
       <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_3);
@@ -8042,7 +8188,7 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
     }
   }
 </pre><pre class="cython line score-48" onclick="toggleDiv(this)">+<span class="">14</span>:     <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">laplacian</span><span class="p">)</span> <span class="o">></span> <span class="mf">0.05</span></pre>
-<pre class="cython code score-48 ">  __pyx_t_5 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 14, __pyx_L1_error)</span>
+<pre class="cython code score-48">  __pyx_t_5 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 14, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_5);
   __pyx_t_1 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_5, __pyx_n_s_abs);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
@@ -8095,7 +8241,7 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
   __pyx_v_thresh = __pyx_t_1;
   __pyx_t_1 = 0;
 </pre><pre class="cython line score-2" onclick="toggleDiv(this)">+<span class="">15</span>:     <span class="k">return</span> <span class="n">thresh</span></pre>
-<pre class="cython code score-2 ">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
+<pre class="cython code score-2">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
   <span class="pyx_macro_api">__Pyx_INCREF</span>(__pyx_v_thresh);
   __pyx_r = __pyx_v_thresh;
   goto __pyx_L0;
@@ -8110,7 +8256,7 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
 </pre></div>
 </div>
 </div>
@@ -8128,8 +8274,7 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Woops! The function we just wrote is 100x times slower than our NumPy implementation! The reason can be traced to the core of our function: the sum of the five pixel bound terms should be free from any Python object conversions. However, that line is all yellow and if you click it, you'll see it's full of Python object conversions.</p>
 <p>How do we solve this problem? The answer is: we need to pass the array as a buffer that can be accessed at C speeds. Let's see:</p>
@@ -8141,7 +8286,7 @@ static PyObject *__pyx_pf_46_cython_magic_6d19cbef7cff92c3c6b985a9b7119dc0_lapla
 <div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
 <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span>
 
@@ -8185,7 +8330,7 @@ In file included from /Users/kappamaki/anaconda/lib/python3.6/site-packages/nump
 <!-- Generated by Cython 0.27.3 -->
 <html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 <title>Cython: _cython_magic_bd5177082c943517a15103961a130b2a.pyx</title>
 <style type="text/css">
     
@@ -8550,11 +8695,11 @@ body.cython { font-family: courier; font-size: 12; }
 <body class="cython">
 <p><span style="border-bottom: solid 1px grey;">Generated by Cython 0.27.3</span></p>
 <p>
-<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br/>
+<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br>
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <div class="cython"><pre class="cython line score-16" onclick="toggleDiv(this)">+<span class="">01</span>: <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span></pre>
-<pre class="cython code score-16 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
+<pre class="cython code score-16">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class="py_c_api">PyDict_SetItem</span>(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) <span class="error_goto">__PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="pyx_macro_api">__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
@@ -8566,7 +8711,7 @@ body.cython { font-family: courier; font-size: 12; }
 </pre><pre class="cython line score-0"> <span class="">02</span>: <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span></pre>
 <pre class="cython line score-0"> <span class="">03</span>: </pre>
 <pre class="cython line score-36" onclick="toggleDiv(this)">+<span class="">04</span>: <span class="k">def</span> <span class="nf">laplace_cython</span><span class="p">(</span><span class="n">cnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">double</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mf">2</span><span class="p">]</span> <span class="n">image</span><span class="p">):</span></pre>
-<pre class="cython code score-36 ">/* Python wrapper */
+<pre class="cython code score-36">/* Python wrapper */
 static PyObject *__pyx_pw_46_cython_magic_bd5177082c943517a15103961a130b2a_1laplace_cython(PyObject *__pyx_self, PyObject *__pyx_v_image); /*proto*/
 static char __pyx_doc_46_cython_magic_bd5177082c943517a15103961a130b2a_laplace_cython[] = "Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.\n    Cython implementation.";
 static PyMethodDef __pyx_mdef_46_cython_magic_bd5177082c943517a15103961a130b2a_1laplace_cython = {"laplace_cython", (PyCFunction)__pyx_pw_46_cython_magic_bd5177082c943517a15103961a130b2a_1laplace_cython, METH_O, __pyx_doc_46_cython_magic_bd5177082c943517a15103961a130b2a_laplace_cython};
@@ -8653,11 +8798,11 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
 </pre><pre class="cython line score-0"> <span class="">05</span>:     <span class="sd">"""Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.</span></pre>
 <pre class="cython line score-0"> <span class="">06</span>: <span class="sd">    Cython implementation."""</span></pre>
 <pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">07</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">  __pyx_v_h = (__pyx_v_image->dimensions[0]);
+<pre class="cython code score-0">  __pyx_v_h = (__pyx_v_image->dimensions[0]);
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">08</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">w</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">  __pyx_v_w = (__pyx_v_image->dimensions[1]);
+<pre class="cython code score-0">  __pyx_v_w = (__pyx_v_image->dimensions[1]);
 </pre><pre class="cython line score-45" onclick="toggleDiv(this)">+<span class="">09</span>:     <span class="k">cdef</span> <span class="kt">cnp</span>.<span class="kt">ndarray</span>[<span class="nf">double</span><span class="p">,</span> <span class="nf">ndim</span><span class="o">=</span><span class="mf">2</span><span class="p">]</span> <span class="n">laplacian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="mf">2</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mf">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span></pre>
-<pre class="cython code score-45 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)</span>
+<pre class="cython code score-45">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_empty);<span class="error_goto"> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_2);
@@ -8708,15 +8853,15 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
   __pyx_t_5 = 0;
 </pre><pre class="cython line score-0"> <span class="">10</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">i</span><span class="p">,</span> <span class="nf">j</span></pre>
 <pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">11</span>:     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mf">1</span><span class="p">):</span></pre>
-<pre class="cython code score-0 ">  __pyx_t_7 = (__pyx_v_h - 1);
+<pre class="cython code score-0">  __pyx_t_7 = (__pyx_v_h - 1);
   for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">12</span>:         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">w</span><span class="o">-</span><span class="mf">1</span><span class="p">):</span></pre>
-<pre class="cython code score-0 ">    __pyx_t_9 = (__pyx_v_w - 1);
+<pre class="cython code score-0">    __pyx_t_9 = (__pyx_v_w - 1);
     for (__pyx_t_10 = 1; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_j = __pyx_t_10;
 </pre><pre class="cython line score-12" onclick="toggleDiv(this)">+<span class="">13</span>:             <span class="n">laplacian</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mf">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span></pre>
-<pre class="cython code score-12 ">      __pyx_t_11 = (__pyx_v_i - 1);
+<pre class="cython code score-12">      __pyx_t_11 = (__pyx_v_i - 1);
       __pyx_t_12 = __pyx_v_j;
       __pyx_t_13 = -1;
       if (__pyx_t_11 < 0) {
@@ -8810,7 +8955,7 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
     }
   }
 </pre><pre class="cython line score-48" onclick="toggleDiv(this)">+<span class="">14</span>:     <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">laplacian</span><span class="p">)</span> <span class="o">></span> <span class="mf">0.05</span></pre>
-<pre class="cython code score-48 ">  __pyx_t_4 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)</span>
+<pre class="cython code score-48">  __pyx_t_4 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_4);
   __pyx_t_3 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_abs);<span class="error_goto"> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_3);
@@ -8863,7 +9008,7 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
   __pyx_v_thresh = __pyx_t_3;
   __pyx_t_3 = 0;
 </pre><pre class="cython line score-2" onclick="toggleDiv(this)">+<span class="">15</span>:     <span class="k">return</span> <span class="n">thresh</span></pre>
-<pre class="cython code score-2 ">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
+<pre class="cython code score-2">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
   <span class="pyx_macro_api">__Pyx_INCREF</span>(__pyx_v_thresh);
   __pyx_r = __pyx_v_thresh;
   goto __pyx_L0;
@@ -8878,7 +9023,7 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
 </pre></div>
 </div>
 </div>
@@ -8896,16 +9041,14 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally! We have made our function faster by a factor of 2.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>But can we go further? Yes, by observing that on the summation line, Cython still performs some bounds checks.</p>
 </div>
@@ -8916,7 +9059,7 @@ static PyObject *__pyx_pf_46_cython_magic_bd5177082c943517a15103961a130b2a_lapla
 <div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">cython</span> <span class="o">-</span><span class="n">a</span>
 <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">cimport</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">cnp</span>
 <span class="k">import</span> <span class="nn">cython</span>
@@ -8963,7 +9106,7 @@ In file included from /Users/kappamaki/anaconda/lib/python3.6/site-packages/nump
 <!-- Generated by Cython 0.27.3 -->
 <html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 <title>Cython: _cython_magic_416c56f791dd3ffab3f99fad86fc10b5.pyx</title>
 <style type="text/css">
     
@@ -9328,11 +9471,11 @@ body.cython { font-family: courier; font-size: 12; }
 <body class="cython">
 <p><span style="border-bottom: solid 1px grey;">Generated by Cython 0.27.3</span></p>
 <p>
-<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br/>
+<span style="background-color: #FFFF00">Yellow lines</span> hint at Python interaction.<br>
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <div class="cython"><pre class="cython line score-16" onclick="toggleDiv(this)">+<span class="">01</span>: <span class="k">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span></pre>
-<pre class="cython code score-16 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
+<pre class="cython code score-16">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_Import</span>(__pyx_n_s_numpy, 0, 0);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class="py_c_api">PyDict_SetItem</span>(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) <span class="error_goto">__PYX_ERR(0, 1, __pyx_L1_error)</span>
   <span class="pyx_macro_api">__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
@@ -9347,7 +9490,7 @@ body.cython { font-family: courier; font-size: 12; }
 <pre class="cython line score-0"> <span class="">05</span>: <span class="nd">@cython</span><span class="o">.</span><span class="n">boundscheck</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span> <span class="c"># turn off bounds-checking for entire function</span></pre>
 <pre class="cython line score-0"> <span class="">06</span>: <span class="nd">@cython</span><span class="o">.</span><span class="n">wraparound</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>  <span class="c"># turn off negative index wrapping for entire function</span></pre>
 <pre class="cython line score-36" onclick="toggleDiv(this)">+<span class="">07</span>: <span class="k">def</span> <span class="nf">laplace_cython</span><span class="p">(</span><span class="n">cnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">double</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mf">2</span><span class="p">]</span> <span class="n">image</span><span class="p">):</span></pre>
-<pre class="cython code score-36 ">/* Python wrapper */
+<pre class="cython code score-36">/* Python wrapper */
 static PyObject *__pyx_pw_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_1laplace_cython(PyObject *__pyx_self, PyObject *__pyx_v_image); /*proto*/
 static char __pyx_doc_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_laplace_cython[] = "Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.\n    Cython implementation.";
 static PyMethodDef __pyx_mdef_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_1laplace_cython = {"laplace_cython", (PyCFunction)__pyx_pw_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_1laplace_cython, METH_O, __pyx_doc_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_laplace_cython};
@@ -9434,11 +9577,11 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
 </pre><pre class="cython line score-0"> <span class="">08</span>:     <span class="sd">"""Applies Laplace operator to 2D image, then tresholds the result and returns boolean image.</span></pre>
 <pre class="cython line score-0"> <span class="">09</span>: <span class="sd">    Cython implementation."""</span></pre>
 <pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">10</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">  __pyx_v_h = (__pyx_v_image->dimensions[0]);
+<pre class="cython code score-0">  __pyx_v_h = (__pyx_v_image->dimensions[0]);
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">11</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">w</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">  __pyx_v_w = (__pyx_v_image->dimensions[1]);
+<pre class="cython code score-0">  __pyx_v_w = (__pyx_v_image->dimensions[1]);
 </pre><pre class="cython line score-45" onclick="toggleDiv(this)">+<span class="">12</span>:     <span class="k">cdef</span> <span class="kt">cnp</span>.<span class="kt">ndarray</span>[<span class="nf">double</span><span class="p">,</span> <span class="nf">ndim</span><span class="o">=</span><span class="mf">2</span><span class="p">]</span> <span class="n">laplacian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="mf">2</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mf">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span></pre>
-<pre class="cython code score-45 ">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)</span>
+<pre class="cython code score-45">  __pyx_t_1 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_empty);<span class="error_goto"> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_2);
@@ -9489,15 +9632,15 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
   __pyx_t_5 = 0;
 </pre><pre class="cython line score-0"> <span class="">13</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">i</span><span class="p">,</span> <span class="nf">j</span></pre>
 <pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">14</span>:     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mf">1</span><span class="p">):</span></pre>
-<pre class="cython code score-0 ">  __pyx_t_7 = (__pyx_v_h - 1);
+<pre class="cython code score-0">  __pyx_t_7 = (__pyx_v_h - 1);
   for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">15</span>:         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">w</span><span class="o">-</span><span class="mf">1</span><span class="p">):</span></pre>
-<pre class="cython code score-0 ">    __pyx_t_9 = (__pyx_v_w - 1);
+<pre class="cython code score-0">    __pyx_t_9 = (__pyx_v_w - 1);
     for (__pyx_t_10 = 1; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_j = __pyx_t_10;
 </pre><pre class="cython line score-0" onclick="toggleDiv(this)">+<span class="">16</span>:             <span class="n">laplacian</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mf">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mf">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span></pre>
-<pre class="cython code score-0 ">      __pyx_t_11 = (__pyx_v_i - 1);
+<pre class="cython code score-0">      __pyx_t_11 = (__pyx_v_i - 1);
       __pyx_t_12 = __pyx_v_j;
       __pyx_t_13 = (__pyx_v_i + 1);
       __pyx_t_14 = __pyx_v_j;
@@ -9513,7 +9656,7 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
     }
   }
 </pre><pre class="cython line score-48" onclick="toggleDiv(this)">+<span class="">17</span>:     <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">laplacian</span><span class="p">)</span> <span class="o">></span> <span class="mf">0.05</span></pre>
-<pre class="cython code score-48 ">  __pyx_t_4 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)</span>
+<pre class="cython code score-48">  __pyx_t_4 = <span class="pyx_c_api">__Pyx_GetModuleGlobalName</span>(__pyx_n_s_np);<span class="error_goto"> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_4);
   __pyx_t_3 = <span class="pyx_c_api">__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_abs);<span class="error_goto"> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 17, __pyx_L1_error)</span>
   <span class="refnanny">__Pyx_GOTREF</span>(__pyx_t_3);
@@ -9566,7 +9709,7 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
   __pyx_v_thresh = __pyx_t_3;
   __pyx_t_3 = 0;
 </pre><pre class="cython line score-2" onclick="toggleDiv(this)">+<span class="">18</span>:     <span class="k">return</span> <span class="n">thresh</span></pre>
-<pre class="cython code score-2 ">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
+<pre class="cython code score-2">  <span class="pyx_macro_api">__Pyx_XDECREF</span>(__pyx_r);
   <span class="pyx_macro_api">__Pyx_INCREF</span>(__pyx_v_thresh);
   __pyx_r = __pyx_v_thresh;
   goto __pyx_L0;
@@ -9581,7 +9724,7 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_cython(image)
 </pre></div>
 </div>
 </div>
@@ -9603,7 +9746,7 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_cython</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_cython</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -9620,32 +9763,28 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we can notice in the above function is that we have gotten rid completely of interaction in the for loop, which leads to a 4x increase in performance over our NumPy implementation.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now turn to pythran.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Pythran">Pythran<a class="anchor-link" href="#Pythran">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One of the advantages of pythran is that it can optimize higher level numpy code than Cython. Luckily for us again, it features a line magic, so we keep working in the notebook.</p>
 </div>
@@ -9656,15 +9795,14 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
 <div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> pythran.magic
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> pythran.magic
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To use pythran, all you have to do is to annotate the function you want to export and give it a signature. This is done in a comment line starting the pythran file. One of the promises of pythran is that it can often handle high level broadcasting with NumPy and still optimize our function.</p>
 <p>Annotating our NumPy function, we obtain this:</p>
@@ -9676,7 +9814,7 @@ static PyObject *__pyx_pf_46_cython_magic_416c56f791dd3ffab3f99fad86fc10b5_lapla
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span>
 #pythran export laplace_pythran_highlevel(float[][])
 import numpy as np
 def laplace_pythran_highlevel(image):
@@ -9694,7 +9832,7 @@ def laplace_pythran_highlevel(image):
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_pythran_highlevel</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_pythran_highlevel</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -9715,7 +9853,7 @@ def laplace_pythran_highlevel(image):
 <div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_pythran_highlevel(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_pythran_highlevel(image)
 </pre></div>
 </div>
 </div>
@@ -9733,16 +9871,14 @@ def laplace_pythran_highlevel(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Wow! Pythran translated that to the fastest version so far!</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>But pythran can also translate "low level style" code, just like Cython. Let's try again in a low-level style.</p>
 </div>
@@ -9753,7 +9889,7 @@ def laplace_pythran_highlevel(image):
 <div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span> 
 #pythran export laplace_pythran_lowlevel(float[][])
 import numpy as np
 def laplace_pythran_lowlevel(image):
@@ -9776,7 +9912,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_pythran_lowlevel</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_pythran_lowlevel</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -9797,7 +9933,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_pythran_lowlevel(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_pythran_lowlevel(image)
 </pre></div>
 </div>
 </div>
@@ -9815,8 +9951,7 @@ def laplace_pythran_lowlevel(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Less fast than before. What if we move the thresholding operation inside the main loop?</p>
 </div>
@@ -9827,7 +9962,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span> 
 #pythran export laplace_pythran_lowlevel(float[][])
 import numpy as np
 def laplace_pythran_lowlevel(image):
@@ -9849,7 +9984,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_pythran_lowlevel</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplace_pythran_lowlevel</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -9870,7 +10005,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_pythran_lowlevel(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_pythran_lowlevel(image)
 </pre></div>
 </div>
 </div>
@@ -9888,40 +10023,35 @@ def laplace_pythran_lowlevel(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So in this case, pythran with a low level approach outperforms Cython, with the best result being when it's given high-level Numpy code.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another interesting point here, concerning debugging pythran compilation, is that pythran annotated code is still perfectly valid Python. This helps during the debugging phase, compared to the previously explained Cython approach.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's turn to our last tool, <code>numba</code>.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Numba">Numba<a class="anchor-link" href="#Numba">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Numba is very similar to pythran, except that it does just-in-time compilation (JIT). We have several options to for use. Let's try the standard <code>jit</code> approach with a decorator.</p>
 </div>
@@ -9932,7 +10062,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
 </pre></div>
 </div>
 </div>
@@ -9943,7 +10073,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [47]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@jit</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">"""Laplace operator in NumPy for 2D images. Accelerated using numba."""</span>
     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -9955,8 +10085,7 @@ def laplace_pythran_lowlevel(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We call it once to avoid timing issues due to JIT compilation.</p>
 </div>
@@ -9967,7 +10096,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -9978,7 +10107,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [49]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba(image)
 </pre></div>
 </div>
 </div>
@@ -9996,16 +10125,14 @@ def laplace_pythran_lowlevel(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is rightaway faster than NumPy.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also tell numba to avoid using Python at all in its computation. This is called with <code>@jit(nopython=True)</code>.</p>
 </div>
@@ -10016,7 +10143,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [50]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">"""Laplace operator in NumPy for 2D images. Accelerated using numba."""</span>
     <span class="n">laplacian</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -10032,7 +10159,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [51]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -10043,7 +10170,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [52]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba(image)
 </pre></div>
 </div>
 </div>
@@ -10061,8 +10188,7 @@ def laplace_pythran_lowlevel(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>No big effect. In fact, we can infer from this that numba managed to generate pure C code from our function and that it did it already previously.</p>
 <p>To confirm that, we can either use the <code>inspect_types()</code> method of our jitted function or use the annotation tool provided with numba.</p>
@@ -10074,7 +10200,7 @@ def laplace_pythran_lowlevel(image):
 <div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="o">.</span><span class="n">inspect_types</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="o">.</span><span class="n">inspect_types</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -10241,8 +10367,7 @@ def laplace_numba(image):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Admittedly, not very helpful. Let's try the annotation tool.</p>
 </div>
@@ -10253,22 +10378,22 @@ def laplace_numba(image):
 <div class="prompt input_prompt">In [54]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">file</span> numba_annotation_demo.py
-import numpy as np
-import skimage.data
-import skimage.color
-from numba import jit
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%file</span> numba_annotation_demo.py
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">skimage.data</span>
+<span class="kn">import</span> <span class="nn">skimage.color</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
 
-@jit(nopython=True)
-def laplace_numba(image):
-    """Laplace operator in NumPy for 2D images. Accelerated using numba."""
-    laplacian = image[:-2, 1:-1] + image[2:, 1:-1] + image[1:-1, :-2] + image[1:-1, 2:] - 4*image[1:-1, 1:-1]
-    thresh = np.abs(laplacian) > 0.05
-    return thresh
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">"""Laplace operator in NumPy for 2D images. Accelerated using numba."""</span>
+    <span class="n">laplacian</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">image</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">laplacian</span><span class="p">)</span> <span class="o">></span> <span class="mf">0.05</span>
+    <span class="k">return</span> <span class="n">thresh</span>
 
-image = skimage.data.astronaut()
-image = skimage.color.rgb2gray(image)
-laplace_numba(image)
+<span class="n">image</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astronaut</span><span class="p">()</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">rgb2gray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -10286,8 +10411,7 @@ laplace_numba(image)
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We have to run the annotation tool from the command line:</p>
 </div>
@@ -10298,7 +10422,7 @@ laplace_numba(image)
 <div class="prompt input_prompt">In [55]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>numba --annotate-html annotation.html numba_annotation_demo.py
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>numba --annotate-html annotation.html numba_annotation_demo.py
 </pre></div>
 </div>
 </div>
@@ -10309,7 +10433,7 @@ laplace_numba(image)
 <div class="prompt input_prompt">In [56]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 </pre></div>
 </div>
 </div>
@@ -10320,7 +10444,7 @@ laplace_numba(image)
 <div class="prompt input_prompt">In [57]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">'annotation.html'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">'annotation.html'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -10469,8 +10593,8 @@ window.onload = function() {
 </head>
 <body>
 <div class="metadata">
-        Function name: laplace_numba<br/>
-        in file: numba_annotation_demo.py<br/>
+        Function name: laplace_numba<br>
+        in file: numba_annotation_demo.py<br>
         with signature: (array(float64, 2d, C),) -> array(bool, 2d, C)
         </div>
 <div class="annotations">
@@ -11574,10 +11698,10 @@ window.onload = function() {
 </tr>
 </table>
 </div>
-<br/><br/><br/>
+<br><br><br>
 <div class="metadata">
-        Function name: __numba_array_expr_0x115caebe<br/>
-        in file: numba_annotation_demo.py<br/>
+        Function name: __numba_array_expr_0x115caebe<br>
+        in file: numba_annotation_demo.py<br>
         with signature: (float64, float64, float64, float64, float64) -> float64
         </div>
 <div class="annotations">
@@ -11872,10 +11996,10 @@ window.onload = function() {
 </tr>
 </table>
 </div>
-<br/><br/><br/>
+<br><br><br>
 <div class="metadata">
-        Function name: _broadcast_onto<br/>
-        in file: /Users/kappamaki/anaconda/lib/python3.6/site-packages/numba/targets/npyimpl.py<br/>
+        Function name: _broadcast_onto<br>
+        in file: /Users/kappamaki/anaconda/lib/python3.6/site-packages/numba/targets/npyimpl.py<br>
         with signature: (int64, int64*, int64, int64*) -> int64
         </div>
 <div class="annotations">
@@ -13074,10 +13198,10 @@ window.onload = function() {
 </tr>
 </table>
 </div>
-<br/><br/><br/>
+<br><br><br>
 <div class="metadata">
-        Function name: __numba_array_expr__0x7fffffffeea3510e<br/>
-        in file: numba_annotation_demo.py<br/>
+        Function name: __numba_array_expr__0x7fffffffeea3510e<br>
+        in file: numba_annotation_demo.py<br>
         with signature: (float64,) -> bool
         </div>
 <div class="annotations">
@@ -13276,7 +13400,7 @@ window.onload = function() {
 </tr>
 </table>
 </div>
-<br/><br/><br/>
+<br><br><br>
 </body>
 </html>
 </div>
@@ -13285,16 +13409,14 @@ window.onload = function() {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What this shows is that <code>numba</code> managed to correctly optimize the broadcasting (if it hadn't we would have seen colored source code lines).</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see also investigate how numba optimizes the low-level approach with explicit for loops.</p>
 </div>
@@ -13305,7 +13427,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [58]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">"""Laplace operator for 2D images. Numba accelerated."""</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -13325,7 +13447,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [59]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -13336,7 +13458,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [60]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba(image)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba(image)
 </pre></div>
 </div>
 </div>
@@ -13354,16 +13476,14 @@ window.onload = function() {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This approach improves the performance!</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another way of approaching optimization with numba is to thing in terms of NumPy ufuncs. You can write generalized ufuncs with numba using another decorator, <code>@guvectorize</code>. However, this comes at the cost that we have to think in terms of an ufunc and thus we have to provide an array that gets filled by our computation routine.</p>
 </div>
@@ -13374,7 +13494,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [61]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">guvectorize</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">guvectorize</span>
 </pre></div>
 </div>
 </div>
@@ -13385,7 +13505,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [62]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@guvectorize</span><span class="p">(</span><span class="s1">'void(float64[:, :], float64[:, :])'</span><span class="p">,</span> <span class="s2">"(m, n)->(m, n)"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@guvectorize</span><span class="p">(</span><span class="s1">'void(float64[:, :], float64[:, :])'</span><span class="p">,</span> <span class="s2">"(m, n)->(m, n)"</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">laplace_numba_guvectorize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">laplacian</span><span class="p">):</span>
     <span class="sd">"""Laplace operator in NumPy for 2D images. Numba accelerated."""</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -13403,7 +13523,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [63]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplacian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplacian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -13414,7 +13534,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [64]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba_guvectorize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">laplacian</span><span class="p">);</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">laplace_numba_guvectorize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">laplacian</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -13425,7 +13545,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [65]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplacian</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">laplace_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">laplacian</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -13446,7 +13566,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [66]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba_guvectorize(image, laplacian);
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> laplace_numba_guvectorize(image, laplacian);
 </pre></div>
 </div>
 </div>
@@ -13464,24 +13584,21 @@ window.onload = function() {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This approach is even faster. However, it has some limitations: the signature for array sizes forces us to use the same shapes in the input and output. I could'nt use the  "(m, n)->(m-1, n-1)" signature. Note that we also could have target parallel execution by using the <code>target=parallel</code> option in the decorator.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Wrap-up-and-plots">Wrap-up and plots<a class="anchor-link" href="#Wrap-up-and-plots">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Time for a wrap-up and some plots.</p>
 </div>
@@ -13492,7 +13609,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [67]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timings</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">timings</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">[</span><span class="n">laplace_skimage</span><span class="p">,</span> <span class="n">laplace_numpy</span><span class="p">,</span> <span class="n">laplace_cython</span><span class="p">,</span> <span class="n">laplace_pythran_highlevel</span><span class="p">,</span> <span class="n">laplace_pythran_lowlevel</span><span class="p">,</span> <span class="n">laplace_numba</span><span class="p">]:</span>
     <span class="n">t</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -o func(image)
     <span class="n">timings</span><span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
@@ -13522,7 +13639,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [68]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -o laplace_numba_guvectorize(image, laplacian);
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -o laplace_numba_guvectorize(image, laplacian);
 <span class="n">timings</span><span class="p">[</span><span class="s1">'laplace_numba_guvectorize'</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
 </pre></div>
 </div>
@@ -13541,8 +13658,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here are the table and the plots.</p>
 </div>
@@ -13553,7 +13669,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [69]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -13564,7 +13680,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [70]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">timings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">average</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">timings</span><span class="p">})</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'timings (μs)'</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'timings (μs)'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">timings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">average</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">timings</span><span class="p">})</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'timings (μs)'</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'timings (μs)'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -13637,7 +13753,7 @@ window.onload = function() {
 <div class="prompt input_prompt">In [71]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">timings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">average</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">timings</span><span class="p">})</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'timings (μs)'</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'timings (μs)'</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">'barh'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -13653,7 +13769,7 @@ window.onload = function() {
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtEAAAJCCAYAAAAGO5vqAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzs3Xu0XlV97//3hwQISIwWIiNAZVMK
@@ -13897,15 +14013,14 @@ MMtNYcu/d5H+nySXq+pp2gX4WuCNJGc2+LS0SlW9A9wH3FRVS7SVGV4BFqrqSeB74GDv/gGwlzap
 mujbt6rqHO2p5SGAJGeqagE4S1u95akkV9b5u2i85zDLmecvFkqSJEkDOZxDkiRJGsgiWpIkSRrI
 IlqSJEkayCJakiRJGsgiWpIkSRrIIlqSJEkayCJakiRJGsgiWpIkSRroL3mPta7e6BKiAAAAAElF
 TkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>conclusions</strong></p>
 <p>So, what have I learned during these last three days? Here are some thoughts:</p>
@@ -13922,8 +14037,7 @@ TkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>further reading</strong></p>
 <ul>
@@ -13934,8 +14048,7 @@ TkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170706_OptimizingYourPythonCode.ipynb">20170706_OptimizingYourPythonCode.ipynb</a>.</em></p>
 </div>
@@ -13946,7 +14059,7 @@ TkSuQmCC
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -13963,6 +14076,7 @@ TkSuQmCC
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

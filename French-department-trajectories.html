@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's load a list of the French departments.</p>
 </div>
@@ -1423,7 +1599,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">"""01	Ain	Bourg-en-Bresse	Rhône-Alpes</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">"""01	Ain	Bourg-en-Bresse	Rhône-Alpes</span>
 <span class="s2">02	Aisne	Laon	Picardie</span>
 <span class="s2">03	Allier	Moulins	Auvergne</span>
 <span class="s2">04	Alpes de Hautes-Provence	Digne	Provence-Alpes-Côte d'Azur</span>
@@ -1529,7 +1705,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">depts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">depts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -1540,7 +1716,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'01'</span><span class="p">,</span> <span class="s1">'06'</span><span class="p">,</span> <span class="s1">'23'</span><span class="p">,</span> <span class="s1">'56'</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'01'</span><span class="p">,</span> <span class="s1">'06'</span><span class="p">,</span> <span class="s1">'23'</span><span class="p">,</span> <span class="s1">'56'</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">]:</span>
     <span class="nb">print</span> <span class="n">depts</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1563,8 +1739,7 @@ Val-d'Oise
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, on to some parsing of phone numbers.</p>
 </div>
@@ -1575,7 +1750,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">phone_number</span> <span class="o">=</span> <span class="s1">'0676237181'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">phone_number</span> <span class="o">=</span> <span class="s1">'0676237181'</span>
 </pre></div>
 </div>
 </div>
@@ -1586,7 +1761,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">number_to_depts</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">number_to_depts</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
     <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1604,7 +1779,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">number_to_depts</span><span class="p">(</span><span class="n">phone_number</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">number_to_depts</span><span class="p">(</span><span class="n">phone_number</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1625,8 +1800,7 @@ Val-d'Oise
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can represent this on a map, using coordinates of the prefectures of each department. The first step for this is to generate all coordinates for the prefecture towns of France.</p>
 </div>
@@ -1637,7 +1811,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">geopy</span> <span class="k">import</span> <span class="n">geocoders</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">geopy</span> <span class="k">import</span> <span class="n">geocoders</span>
 </pre></div>
 </div>
 </div>
@@ -1648,7 +1822,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">geocoders</span><span class="o">.</span><span class="n">GoogleV3</span><span class="p">()</span>
 <span class="n">adr</span> <span class="o">=</span> <span class="s1">'Bourg-en-Bresse, France'</span>
 <span class="n">place</span><span class="p">,</span> <span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lng</span><span class="p">)</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">adr</span><span class="p">)</span>
 </pre></div>
@@ -1661,7 +1835,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">place</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lng</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">place</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lng</span>
 </pre></div>
 </div>
 </div>
@@ -1678,8 +1852,7 @@ Val-d'Oise
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As this seems to work, I'm gonna generate a table of coordinates for all prefectures:</p>
 </div>
@@ -1690,7 +1863,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prefectures</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'France'</span><span class="p">)))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">prefectures</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'France'</span><span class="p">)))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -1701,7 +1874,7 @@ Val-d'Oise
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'01'</span><span class="p">,</span> <span class="s1">'06'</span><span class="p">,</span> <span class="s1">'23'</span><span class="p">,</span> <span class="s1">'56'</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'01'</span><span class="p">,</span> <span class="s1">'06'</span><span class="p">,</span> <span class="s1">'23'</span><span class="p">,</span> <span class="s1">'56'</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">]:</span>
     <span class="nb">print</span> <span class="n">prefectures</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1728,7 +1901,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="p">{}</span>
 </pre></div>
 </div>
 </div>
@@ -1739,7 +1912,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">prefectures</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">:</span>
         <span class="n">adr</span> <span class="o">=</span> <span class="n">prefectures</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
@@ -1756,7 +1929,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'01'</span><span class="p">,</span> <span class="s1">'06'</span><span class="p">,</span> <span class="s1">'23'</span><span class="p">,</span> <span class="s1">'56'</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'01'</span><span class="p">,</span> <span class="s1">'06'</span><span class="p">,</span> <span class="s1">'23'</span><span class="p">,</span> <span class="s1">'56'</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">]:</span>
     <span class="nb">print</span> <span class="n">coords</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1779,8 +1952,7 @@ Pontoise, Val-d'Oise, France
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Actually, we're going to save the data about geolocation to disk, so that we don't need to query Google Maps every time we want to execute this notebook. We'll do this with in a plain text file.</p>
 </div>
@@ -1791,7 +1963,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="n">filename</span> <span class="o">=</span> <span class="s2">"files/pref_geolocalization.txt"</span> 
 
@@ -1805,8 +1977,7 @@ Pontoise, Val-d'Oise, France
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now plot the trajectories on the map. First, let's setup the basic map we're going to use to plot the trajectories.</p>
 </div>
@@ -1817,7 +1988,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="k">import</span> <span class="n">Basemap</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="k">import</span> <span class="n">Basemap</span>
 </pre></div>
 </div>
 </div>
@@ -1828,7 +1999,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 </pre></div>
 </div>
 </div>
@@ -1858,7 +2029,7 @@ Pontoise, Val-d'Oise, France
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_French_map</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_French_map</span><span class="p">():</span>
     <span class="c1"># setup Lambert Conformal basemap.</span>
     <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'lcc'</span><span class="p">,</span>
@@ -1889,7 +2060,7 @@ Pontoise, Val-d'Oise, France
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjwAAAI8CAYAAAD1D3GaAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd4lFX2wPHv1GQy6b0Q0kgIIdRQpQuiKB2sq2tfO/aG
 uvay6yqg/iwgK4iuDXtBOoiAUkILJb2S3sv0mff3RxRFICRkJjOT3M/z5BGnvO+ZwMyc995zz5VJ
@@ -2675,15 +2846,14 @@ p0thiE/Q6uDOSVH4P/+c2mUIIXpAAo8QooPUEaFsK23o0TXFTSZGBfn2U0Xu54zEKDzLSiA7W+1S
 hBDddNy5lenRYwaiDiGEm/AJi+fLXXsI7MG//VxzBfqJkaRHR3T7msLyWsbGhvemRLdw8cImXtu2
 FfuUKWqXIoToBo3SxTrxixYtYtOmTQNZjxBCCCFEr5x88sls3LjxmMe6DDxCCCGEEEOBjOERQggh
 xJAngUcIIYQQQ54EHiGEEEIMeRJ4hBBCCDHkSeARQgghxJD3/6AJwLqgmBQCAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Looks good enough for our purpose, now on to the real plotting with arrows.</p>
 </div>
@@ -2694,7 +2864,7 @@ xJAngUcIIYQQQ54EHiGEEEIMeRJ4hBBCCDHkSeARQgghxJD3/6AJwLqgmBQCAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_number_on_map</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_number_on_map</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
     <span class="n">double_digits</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
         <span class="n">double_digits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">number</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
@@ -2729,7 +2899,7 @@ xJAngUcIIYQQQ54EHiGEEEIMeRJ4hBBCCDHkSeARQgghxJD3/6AJwLqgmBQCAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAJLCAYAAAC1/qGVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd4U2X7wPFvmqRtmq50D7ppKVD2li0IoiBDwK24B4p7
 4R6Ir74KqD8cyMsSfV2ACiLIqoAge6+2dO+dtkkzz++PvlZrCxRIm6R9PtfVizYn55z7hDa5zzPu
@@ -3898,15 +4068,14 @@ HhSO33vvuDoMIUQHI0mbEKKGCV1D2J5VekbnpJcb6B7o3UwRtT4X9gnHPTsT9u1zdShCiA6kwbr1
 +IieLRGHEKKV8OoUzW+7DxFwBv/3Dxhz0Q7sTHxEWKPPSc0pondU6NmE2CrMmVzOJ9u3YR0yxNWh
 CCE6CJVSz540U6dOZdOmTS0ZjxBCCCHEWZkyZQobN250dRjNpt6kTQghhBBCtA6ypk0IIYQQog2Q
 pE0IIYQQog2QpE0IIYQQog2QpE0IIYQQog2QpE0IIYQQog34f1LqnXIfLxPgAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now test some other phone numbers...</p>
 </div>
@@ -3917,7 +4086,7 @@ pE0IIYQQog2QpE0IIYQQog2QpE0IIYQQog2QpE0IIYQQog34f1LqnXIfLxPgAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_number_on_map</span><span class="p">(</span><span class="s2">"0641677342"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_number_on_map</span><span class="p">(</span><span class="s2">"0641677342"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3926,7 +4095,7 @@ pE0IIYQQog2QpE0IIYQQog2QpE0IIYQQog2QpE0IIYQQog34f1LqnXIfLxPgAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAJLCAYAAAC1/qGVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8U/X6wPFPmqRtmu496KalQNlb9hQBke0W97goruvC
 BXpRr14F9P4cjCtDnAiiKIIgW/Yos9C990rbpJnn90e1WinQQtsk7ff9evVFm5NzznNCmzznO56v
@@ -5092,7 +5261,7 @@ UedzwaBwXAvzYfdutaMIIXqQ0/atJ0f074gcQohOwiM4mlU79+J3Bv/39zQVox8WRnJEaKsfk11U
 wcBeIW2J2CnMnVrLx1u3YElIUDuKEKKH0Cin2JNm2rRpbNy4sSPzCCGEEEK0yTnnnMOGDRvUjuE0
 pyzahBBCCCFE5yBz2oQQQgghugAp2oQQQgghugAp2oQQQgghugAp2oQQQgghugAp2oQQQgghuoD/
 B6NBosfB72jNAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
@@ -5103,7 +5272,7 @@ B6NBosfB72jNAAAAAElFTkSuQmCC
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -5120,6 +5289,7 @@ B6NBosfB72jNAAAAAElFTkSuQmCC
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Since last week, I'm looking for a new appartment in Paris. Also, I'm on sick-leave from work this work. So let's use this as an excuse to get some data from the internet and make some nice looking maps and plots that analyse the renting market in Paris!
 The outline of this notebook will be:</p>
@@ -1434,16 +1610,14 @@ The outline of this notebook will be:</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Getting-the-data:-prototyping">Getting the data: prototyping<a class="anchor-link" href="#Getting-the-data:-prototyping">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will get our data from the French website <a href="http://www.seloger.com">seloger.com</a>. I'm not sure this is a feature or a bug, but the website search pages ship with an array of JSON data which is exactly what we want if we would like to do some maps. So, to get the data, we download the search page using requests and then we parse it with BeautifulSoup.</p>
 <p>Let's see how this works with an example. I just made a query for all two-room appartments available inside Paris.</p>
@@ -1455,15 +1629,14 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">'http://www.seloger.com/list.htm?org=advanced_search&idtt=1&idtypebien=1&cp=75&tri=initial&nb_pieces=2&naturebien=1,2,4'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">'http://www.seloger.com/list.htm?org=advanced_search&idtt=1&idtypebien=1&cp=75&tri=initial&nb_pieces=2&naturebien=1,2,4'</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's download the webpage. Side note: we have to pretend we're a browser, not a robot <a href="https://stackoverflow.com/questions/27652543/how-to-use-python-requests-to-fake-a-browser-visit">using custom headers</a>.</p>
 </div>
@@ -1474,7 +1647,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'User-Agent'</span><span class="p">:</span> <span class="s1">'*'</span><span class="p">,</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'User-Agent'</span><span class="p">:</span> <span class="s1">'*'</span><span class="p">,</span>
 <span class="s1">'Accept'</span><span class="p">:</span> <span class="s1">'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'</span><span class="p">,</span>
 <span class="s1">'Accept-Language'</span><span class="p">:</span> <span class="s1">'en-US,en;q=0.5'</span><span class="p">,</span>
 <span class="s1">'Accept-Encoding'</span><span class="p">:</span> <span class="s1">'gzip, deflate'</span><span class="p">,</span>
@@ -1490,7 +1663,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
 </div>
 </div>
@@ -1501,7 +1674,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
 <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
 <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'http://www.seloger.com/'</span><span class="p">)</span>
 </pre></div>
@@ -1524,7 +1697,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 <span class="n">r</span>
 </pre></div>
 </div>
@@ -1542,8 +1715,7 @@ The outline of this notebook will be:</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And parse it:</p>
 </div>
@@ -1554,7 +1726,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 </pre></div>
 </div>
 </div>
@@ -1565,15 +1737,14 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I can find a tag which contains raw JSON:</p>
 </div>
@@ -1584,7 +1755,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">script_item</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'script'</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">script_item</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'script'</span><span class="p">):</span>
     <span class="k">if</span> <span class="s1">'var ava_data'</span> <span class="ow">in</span> <span class="n">script_item</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
         <span class="n">raw_json</span> <span class="o">=</span> <span class="n">script_item</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">)[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">25</span><span class="p">]</span>
 </pre></div>
@@ -1597,7 +1768,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">raw_json</span><span class="p">[:</span><span class="mi">400</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">raw_json</span><span class="p">[:</span><span class="mi">400</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1614,8 +1785,7 @@ The outline of this notebook will be:</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Which I can transform into a dictionary, since it's JSON:</p>
 </div>
@@ -1626,7 +1796,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
 </pre></div>
 </div>
 </div>
@@ -1637,15 +1807,14 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw_json</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw_json</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And feed into a dataframe:</p>
 </div>
@@ -1656,7 +1825,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -1667,7 +1836,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1688,7 +1857,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'products'</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'products'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1699,7 +1868,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2001,8 +2170,7 @@ The outline of this notebook will be:</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There we go! We have some data. We can then plot this after a little bit of formatting:</p>
 </div>
@@ -2013,7 +2181,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -2027,7 +2195,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -2038,7 +2206,7 @@ The outline of this notebook will be:</p>
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">formatted</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">formatted</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">numeric_series</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'surface'</span><span class="p">,</span> <span class="s1">'prix'</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">numeric_series</span><span class="p">:</span>
     <span class="n">formatted</span><span class="p">[</span><span class="n">series</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">formatted</span><span class="p">[</span><span class="n">series</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">'.'</span><span class="p">))</span>
@@ -2057,7 +2225,7 @@ The outline of this notebook will be:</p>
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfsAAAFXCAYAAAClVedHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHe1JREFUeJzt3X9QVXX+x/HX5V4phGtX1pvmuJa0WinDzhgLOoP003Cb
 LOtrmhTtBO0kmi7tWigJ6uBGyC6zFf4ox93ZXB0nxTW37YcNZayl6LizOlCONaPslpK46Fe4CCj3
@@ -2195,31 +2363,28 @@ lT0wgGVkZOg3v/mNtm/fLrvdruLiYtlsNhUWFqqsrKxbT9rfeuutuu222/Tzn/9cNptNKSkpvnv/
 JSUlWr58uUpKSjR06FCtWrVK119/vY4cOaJZs2apvb1dU6ZM0cMPPxzoVoEBjafxAQAwHMv4AAAY
 jrAHAMBwhD0AAIYj7AEAMBxhDwCA4Qh7AAAMR9gDAGA4wh4AAMP9Hx9AllVuia1aAAAAAElFTkSu
 QmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Getting-the-data:-for-looping">Getting the data: for-looping<a class="anchor-link" href="#Getting-the-data:-for-looping">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, we're just scratching the edge here since we only have twenty data points. Let's write a for loop that allows us to extract all information for the 2000+ available appartments.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can find the url of the next page button with this code:</p>
 </div>
@@ -2230,7 +2395,7 @@ QmCC
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">next_page</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'pagination-number'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">next_page</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'pagination-number'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span>
 <span class="n">next_page</span>
 </pre></div>
 </div>
@@ -2248,8 +2413,7 @@ QmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>All it takes for us to generate the links to all pages is to replace that <code>2</code> by another number and to know what the last one is.</p>
 <p>The number of appartments is easy to find:</p>
@@ -2261,7 +2425,7 @@ QmCC
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">appartment_number</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'pagination-title'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'u-500'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'</span><span class="se">\xa0</span><span class="s1">'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">appartment_number</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'pagination-title'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'u-500'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'</span><span class="se">\xa0</span><span class="s1">'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
 <span class="n">appartment_number</span>
 </pre></div>
 </div>
@@ -2279,8 +2443,7 @@ QmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So the last page will be:</p>
 </div>
@@ -2291,7 +2454,7 @@ QmCC
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">int</span><span class="p">(</span><span class="n">appartment_number</span><span class="p">)</span><span class="o">//</span><span class="mi">20</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">int</span><span class="p">(</span><span class="n">appartment_number</span><span class="p">)</span><span class="o">//</span><span class="mi">20</span>
 </pre></div>
 </div>
 </div>
@@ -2308,8 +2471,7 @@ QmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now do that loop.</p>
 </div>
@@ -2320,7 +2482,7 @@ QmCC
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 </pre></div>
 </div>
 </div>
@@ -2331,7 +2493,7 @@ QmCC
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
 </pre></div>
 </div>
 </div>
@@ -2342,7 +2504,7 @@ QmCC
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">appartment_data</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">appartment_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm_notebook</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">appartment_number</span><span class="p">)</span><span class="o">//</span><span class="mi">20</span><span class="p">)):</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">next_page</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
@@ -2362,10 +2524,10 @@ QmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div id="95416a01-e693-402d-b2b4-aac38405da03"></div>
-<div class="output_subarea output_widget_view ">
+<div id="1a0e1f71-d63c-4264-939f-23f18bf970fc"></div>
+<div class="output_subarea output_widget_view">
 <script type="text/javascript">
-var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
+var element = $('#1a0e1f71-d63c-4264-939f-23f18bf970fc');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "7b2374f630e0402ebc3fc0808d35a6ee"}
@@ -2383,8 +2545,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have all the data, we can create a big dataframe with it. We have to think of a couple of things here:</p>
 <ul>
@@ -2401,7 +2562,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_df</span><span class="p">(</span><span class="n">appartment_data</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_df</span><span class="p">(</span><span class="n">appartment_data</span><span class="p">):</span>
     <span class="sd">"""Creates a nicely formatted dataframe from our raw data."""</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">appartment_data</span><span class="p">])</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
@@ -2423,7 +2584,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">create_df</span><span class="p">(</span><span class="n">appartment_data</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">create_df</span><span class="p">(</span><span class="n">appartment_data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2434,7 +2595,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -2455,7 +2616,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 <div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2576,16 +2737,14 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="It's-plotting-time">It's plotting time<a class="anchor-link" href="#It's-plotting-time">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Good, let's now do some exploratory plots. Let's import seaborn to do a pairplot with all these variables.</p>
 </div>
@@ -2596,7 +2755,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 </pre></div>
 </div>
 </div>
@@ -2607,7 +2766,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 <div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2622,7 +2781,7 @@ var element = $('#95416a01-e693-402d-b2b4-aac38405da03');
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB7wAAAe2CAYAAACPTszAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmMJFl97/vNfc+q3LP2vWvt6mV6mWGYxstl0fg1jPVG
 PAYxXA/L9Vgj28iyBRgMRhrJwrb44yKsh42Nr+E95Pvwu2AM3IevwZ4ZZunuqd5q3zNry33f1/dH
@@ -20820,15 +20979,14 @@ SStWrNCJEydkmqbsdrvi8TjJbgAAYInFYlYpx8lCoVAeegMAAPJt6dKl1tZlEzZs2PDda/x+v7VF
 1GSzZs1Sd3d3zmsmJ6nj8fhXx9esWaNr16591T55MkhJSQnJbqDAsMIbAAAAAAAAAAAA0+7hw4dq
 a2vLeezSpUvyeDzT3CMAhYiENwAAAAAAAAAAAACgIFF3EgAAAAAAAAAAAABQkEh4AwAAAAAAAAAA
 AAAKEglvAAAAAAAAAAAAAEBBIuENAAAAAAAAAAAAAChInwG1wBJ4QU9cXQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is quite interesting to look at. Let's see if we can uncover some relationships in the data. I can think of a few:</p>
 <ul>
@@ -20842,8 +21000,7 @@ AAAKEglvAAAAAAAAAAAAAEBBIuENAAAAAAAAAAAAAChInwG1wBJ4QU9cXQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Neighboorhoods">Neighboorhoods<a class="anchor-link" href="#Neighboorhoods">¶</a></h2>
 </div>
@@ -20854,7 +21011,7 @@ AAAKEglvAAAAAAAAAAAAAEBBIuENAAAAAAAAAAAAAChInwG1wBJ4QU9cXQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'surface_group'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'surface_group'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -20865,7 +21022,7 @@ AAAKEglvAAAAAAAAAAAAAEBBIuENAAAAAAAAAAAAAChInwG1wBJ4QU9cXQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"codeinsee"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"prix"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'surface_group'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -20875,7 +21032,7 @@ AAAKEglvAAAAAAAAAAAAAEBBIuENAAAAAAAAAAAAAChInwG1wBJ4QU9cXQAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA34AAAFyCAYAAACqdAhGAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8leX9//HXWdkJSciBEEZYAWQvCSDiQMRSR6UFR+uv
 X7VatKB2fUEqYIuISqutIMtq+9UOq2JdtbaUyoawR8IeCSMhZI+T5OzfH8jBmAEEwn2SvJ+Ph49H
@@ -22160,15 +22317,14 @@ T3x8PH379nVdrWvcuDHbt2+/4mvXrFmTmJgYBg0aRLVq1QgPD2fgwIH4+Phw8OBBBgwYQFlZGdHR
 0XTp0gWAPXv2MHjwYBwOB927d2fAgAHX/T0SEZHKS8s5iIiIiIiIVHLq6ikiIiIiIlLJqfATERER
 ERGp5FT4iYiIiIiIVHIq/ERERERERCo5FX4iIiIiIiKVnAo/ERERERGRSk6Fn4iIiIiISCWnwk9E
 RERERKSS+/81+Xwia4cwrgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It seems that some neighboorhoods are indeed better than others, since same size appartments are more expensive there. Let's plot the distribution to see that in more detail.</p>
 </div>
@@ -22179,7 +22335,7 @@ RERERKSS+/81+Xwia4cwrgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"codeinsee"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"prix"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'surface_group'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -22189,7 +22345,7 @@ RERERKSS+/81+Xwia4cwrgAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA34AAAFyCAYAAACqdAhGAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XtgVPWd///XzCSRZJKQBNJaqtyUAuHilkWiXURXBSxb
 itUSVGR/FauLl1jWisEIgRaRSyoqRG5a2wpuXVysWGv707IqihqotmoCQa1IteIWkgGSCeQyM98/
@@ -22612,15 +22768,14 @@ Kgqn08kzzzxD7969sdvtLFq0CH9/fxYtWkRAQABz5sxh+vTprFq1iq5duxIYGAjA5MmTsdvtDB8+
 hw8zduxYHA4H/fv3Z9SoUTX+GYmIiPfS7RxERERERES8nKZ6ioiIiIiIeDkVfiIiIiIiIl5OhZ+I
 iIiIiIiXU+EnIiIiIiLi5VT4iYiIiIiIeDkVfiIiIiIiIl5OhZ+IiIiIiIiXU+EnIiIiIiLi5f4f
 cVEeZ2vzkYQAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We could rank neighboorhoods according to one category of appartment sizes.</p>
 </div>
@@ -22631,7 +22786,7 @@ cVEeZ2vzkYQAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"codeinsee"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"prix"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">surface_group</span> <span class="o">==</span> <span class="n">df</span><span class="o">.</span><span class="n">surface_group</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -22641,7 +22796,7 @@ cVEeZ2vzkYQAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA34AAAFyCAYAAACqdAhGAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt0VOW9//HPZHKfJECA2vLzBpYWAwdbigEr0oqmqKUU
 I4LES1V6QSkIKgYDgUi4CEhq5eKF42qPXEQosWK1oqUiS0Rj4VhOEnHVVctSQUoyYMgkMyQz+/dH
@@ -22899,23 +23054,21 @@ zZkzR88995yGDBkil8slSfr1r3+toqIijRs3rqW17vzzz9ff/va3dvedmZmpyZMna+LEiUpJSVH/
 /v11ww03KCEhQYcPH9b111+vxsZG5ebmasSIEZKkQ4cOadKkSfL7/briiit0/fXXh/0YAQDsi+kc
 AAAAAMDm6OoJAAAAADZH8AMAAAAAmyP4AQAAAIDNEfwAAAAAwOYIfgAAAABgcwQ/AAAAALA5gh8A
 AAAA2BzBDwAAAABs7v8DQI1bgZlO83IAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, it seems the 1st, 3rd, 4th and 8th arrondissement are the most coveted.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's plot this as a pivot table.</p>
 </div>
@@ -22926,7 +23079,7 @@ AAAA2BzBDwAAAABs7v8DQI1bgZlO83IAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pivot_table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">'codeinsee'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'surface_group'</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pivot_table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">'codeinsee'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'surface_group'</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">)</span>
 <span class="n">pivot_table</span>
 </pre></div>
 </div>
@@ -23122,7 +23275,7 @@ AAAA2BzBDwAAAABs7v8DQI1bgZlO83IAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">pivot_table</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">pivot_table</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -23137,7 +23290,7 @@ AAAA2BzBDwAAAABs7v8DQI1bgZlO83IAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAewAAAFXCAYAAABgJ33WAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVOX+B/DPDAgCsmhmWSq5i5oVmtYVKQ0v5c+tgcC4
 jpr2c8kgCRVD1gBFFM1c0583DSFExDVv4gpu5BapiHZdglJUFBQBZZmZ3x9c5oobw8CZ5czn3Wte
@@ -23409,7 +23562,7 @@ J6Nly5bo3bs3ioqK1OedOnUKKSkpsLKyQkxMTH27kIi0wFXiRCJUVFSE+Ph4fP7555BKpYiKioKj
 oyPkcnmDrz1o0CD1ingi0h3OsImM1IMHD+Dt7f3E3/n6+qK4uBhDhw6FmZkZevTooV4oRkTGiTNs
 IiIiI8BFZ0REREaAAzYREZER4IBNRERkBDhgExERGQEO2EREREaAAzYREZER+H+zKWxMlx57cAAA
 AABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
@@ -23420,7 +23573,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'id'</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)],</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'id'</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)],</span> 
                        <span class="s1">'prix'</span><span class="p">:</span> <span class="n">pivot_table</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">})</span>
 <span class="n">geo_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -23493,7 +23646,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
 </pre></div>
 </div>
 </div>
@@ -23504,7 +23657,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.87</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.87</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">choropleth</span><span class="p">(</span>
     <span class="n">geo_data</span><span class="o">=</span><span class="s1">'https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/paris.geojson'</span><span class="p">,</span>
     <span class="n">key_on</span><span class="o">=</span><span class="s1">'feature.properties.cartodb_id'</span><span class="p">,</span>
@@ -23530,16 +23683,14 @@ AABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Appartment-sizes">Appartment sizes<a class="anchor-link" href="#Appartment-sizes">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see if we can make out a relationship trend between appartment surface and price.</p>
 </div>
@@ -23550,7 +23701,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'surface'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'surface'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -23565,7 +23716,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsQAAAFcCAYAAADPiKgwAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmQnHd5L/rvu/TePdMzo9GGrC3YIFkRwchyDEIGn2sL
 rp3DjeFiUHDg2Kk6IZS5pnITOQbJcB3KRblQkYPLOPaFgmA7xL4mZccOhHMUZFu2kYS8KJJ3Iska
@@ -23957,15 +24108,14 @@ mThxItu2bWvQ8xQRsZN2iEVEGrExY8Ywffp0Nm7ciNvtJjs7G8uyyMjIICcn57+6g8Qdd9xB165d
 6d+/P5ZlER8fH5hFXrJkCenp6SxZsoQWLVqwePFiYmNjOXjwIMnJyfh8PhISEhgyZEhDn6qIiG10
 lwkRERERCWkamRARERGRkKaGWERERERCmhpiEREREQlpaohFREREJKSpIRYRERGRkKaGWERERERC
 mhpiEREREQlpaohFREREJKT9G1x/QHopOsdQAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As expected, the trend goes up.
 How does this look like among neighboorhoods?</p>
@@ -23977,7 +24127,7 @@ How does this look like among neighboorhoods?</p>
 <div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'surface'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'codeinsee'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'surface'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'codeinsee'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -23992,7 +24142,7 @@ How does this look like among neighboorhoods?</p>
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwsAAAFcCAYAAACHsiLcAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xt01NW5+P/3ZCYhkExuEK4JIKnIzciJERACriPY9FAL
 bZIGpGKP4nLpgXjEgigtBDRgDoieLvBwENvfsUobpIElbT3K92tBKqZCwzcKSUCRSLgkQJiQuSUz
@@ -25074,23 +25224,21 @@ J06cIBAI8E//9E/8/Oc/B8DtdmMYxqV6RCGEEF2cTEMSQoguatWqVbz55pv86Ec/YvHixezfv5/Y
 MHnyZH70ox9d6kcVQgjRRcluSEIIIYQQQoiwZBqSEEIIIYQQIixJFoQQQgghhBBhSbIghBBCCCGE
 CEuSBSGEEEIIIURYkiwIIYQQQgghwpJkQQghhBBCCBGWJAtCCCGEEEKIsCRZEEIIIYQQQoT1/4Io
 hct6d3afAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is a surprising curve: the regression coefficient clearly depends on the neighboorhood location! Let's do a choropleth map of the regression coefficient.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's compute the regression lines by hand using scikit-learn.</p>
 </div>
@@ -25101,7 +25249,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
 </pre></div>
 </div>
 </div>
@@ -25112,7 +25260,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coefs</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coefs</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">codeinsee</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">codeinsee</span> <span class="o">==</span> <span class="n">code</span><span class="p">][</span><span class="s1">'surface'</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">codeinsee</span> <span class="o">==</span> <span class="n">code</span><span class="p">][</span><span class="s1">'prix'</span><span class="p">]</span>
@@ -25129,7 +25277,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">geo_df</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">geo_df</span><span class="p">[</span><span class="s1">'prix'</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'coef'</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">geo_df</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">geo_df</span><span class="p">[</span><span class="s1">'prix'</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'coef'</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -25140,7 +25288,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [47]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -25217,7 +25365,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">geo_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -25308,8 +25456,7 @@ hct6d3afAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's plot the coefficient:</p>
 </div>
@@ -25320,7 +25467,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [49]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.87</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.87</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">choropleth</span><span class="p">(</span>
     <span class="n">geo_data</span><span class="o">=</span><span class="s1">'https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/paris.geojson'</span><span class="p">,</span>
     <span class="n">key_on</span><span class="o">=</span><span class="s1">'feature.properties.cartodb_id'</span><span class="p">,</span>
@@ -25347,16 +25494,14 @@ hct6d3afAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Floors">Floors<a class="anchor-link" href="#Floors">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see where the floors are distributed in the city.</p>
 </div>
@@ -25367,7 +25512,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [50]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"codeinsee"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"etage"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'surface_group'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -25377,7 +25522,7 @@ hct6d3afAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3MAAAFyCAYAAABfioP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlgVOWh/vFn9uwhGwlbAoGw7yqgIqIWRaxaN6y22CuK
 gqWU0qtYxO2iolBtKwgCVVu1Vr1VEdHWH7UoKIJ6LVvYdwIkZF8myazn9wclGrIQApOTge/nL845
@@ -26184,15 +26329,14 @@ FJfLxYABA7jkkkvQdZ3a2louvvhiDMNgzpw5TJ48GYAdO3Zw2WWXYZom06dP5+KLLz7t20iSJEn6
 1yVLE0iSJEmSJEmSJPVBcpilJEmSJEmSJElSHyQ7c5IkSZIkSZIkSX2Q7MxJkiRJkiRJkiT1QbIz
 J0mSJEmSJEmS1AfJzpwkSZIkSZIkSVIfJDtzkiRJkiRJkiRJfZDszEmSJEmSJEmSJPVBsjMnSZIk
 SZIkSZLUB/0/kCH5BxNuOW8AAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What's the distribution of floor size and price?</p>
 </div>
@@ -26203,7 +26347,7 @@ SZIkSZLUB/0/kCH5BxNuOW8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [51]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'etage'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'etage'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -26218,7 +26362,7 @@ SZIkSZLUB/0/kCH5BxNuOW8AAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsQAAAFcCAYAAADPiKgwAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt4VPWB//HPmZncZ+KEOCKIQlCs0JRWRFpapJZfLd1K
 t9W6WmntBXefp9bq0u0FpIL6oIsuynZ/utbqtntBrZXSqgvbbR9RwAgL/hClwWsVsgIBQ0gkM7nN
@@ -26486,15 +26630,14 @@ rLffflvFxcX6h3/4By1btkwul0s1NTUqLS2VJK1du1a33367/uVf/kVFRUX6x3/8RxmGkedXCgC5
 Y5imaea7EgCA7IrFYrr33nv1ve99T+Xl5frXf/1XHTt2TMuXL8931QAg7+ghBgAHcLlc8vv9uuqq
 q1RUVKSzzjpLd911V76rBQAFgR5iAAAAOBqT6gAAAOBoBGIAAAA4GoEYAAAAjkYgBgAAgKMRiAEA
 AOBoBGIAAAA42v8HixPsei2LCiQAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Almost no dependence on floors. However, a linear model is probably not the best way to represent the data, so I'm not sure this is a good conclusion.</p>
 <p>Let's see how this varies with the neighboorhoods.</p>
@@ -26506,7 +26649,7 @@ AOBoBGIAAAA42v8HixPsei2LCiQAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [52]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'etage'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'codeinsee'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'etage'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'codeinsee'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -26521,7 +26664,7 @@ AOBoBGIAAAA42v8HixPsei2LCiQAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwsAAAFcCAYAAACHsiLcAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvX94VdWZ9/1Ze++ThPzih4AkBAGxiBUpQ1GpRjtTtHQc
 i72AAvrU/hidXu0lmad2RFpn/NWmTAarc81bfXipz7wzndYW6oBTO1qlY+s4OowwsVSIiIOAIEkQ
@@ -27411,23 +27554,21 @@ sYKCggIsFgsjRozA6XQC8Mwzz1BYWMh//ud/YrfbefbZZzEMI8JPKiIikWSYpmlGehAiInJx+P1+
 fvGLXzB37lzi4uL4zW9+w/Hjx3n00UcjPTQREYlCWlkQEelHLBYLAwYMICcnB7vdzhVXXMFTTz0V
 6WGJiEiU0sqCiIiIiIgEpQ3OIiIiIiISlIIFEREREREJSsGCiIiIiIgEpWBBRERERESCUrAgIiIi
 IiJBKVgQEREREZGg/j8yPHTqqNAH6QAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Interesting: the model is really bad when extrapolated to non existing floor sizes (most buildings in Paris have a height of four stories).</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Balconies">Balconies<a class="anchor-link" href="#Balconies">¶</a></h2>
 </div>
@@ -27438,7 +27579,7 @@ IiJBKVgQEREREZGg/j8yPHTqqNAH6QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'si_balcon'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'si_balcon'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'prix'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -27453,7 +27594,7 @@ IiJBKVgQEREREZGg/j8yPHTqqNAH6QAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAf0AAAFXCAYAAACoS5cAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl0VeX9L/73Hs6QM2SeCBAgJGFSihBRK+Bwv5QOapde
 K8iStkvbVf32p4vWrovSL1hbLbVe8euFfmtlfW1vcagDXqXV2ioVEJDBKKBhSgIEMpDkZDzzsPf+
@@ -27720,31 +27861,28 @@ nnrqKfzyl7+84OvKy8uxcuVKtLe349prr8Wdd94Jn8+HV199Fd/85jehaRquvvpq1NbWDnnd0qVL
 8cQTT+C2224DAKxatQp2ux3PPvssfvWrX8Hr9SIrKwvPPvtsTN4vkd5xa10iIiKdYE+fiIb59NNP
 8atf/WrE51544QUUFRXFuSIiigb29ImIiHSCE/mIiIh0gqFPRESkEwx9IiIinWDoExER6QRDn4iI
 SCf+fy2fybndwwvkAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Apparently, balconies are worth a little extra money.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, we scraped a website for its data to create a dataset that we analyzed with plots, choropleths and linear regressions. With this data, you could do lots of things. For instance train a machine learning model so that you can price your appartment easily, or do more detailed choropleths to analyze the influence of points of interest. You could even build a system that stores this data daily so that you can have a historical point of view on the development of the market.</p>
 <p>I'll conclude with a tweet that I read some time ago and that fits with the spirit of this exploration.</p>
@@ -27753,8 +27891,7 @@ SCf+fy2fybndwwvkAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170919_ParisAppartmentChoropleth.ipynb">20170919_ParisAppartmentChoropleth.ipynb</a>.</em></p>
 </div>
@@ -27765,7 +27902,7 @@ SCf+fy2fybndwwvkAAAAAElFTkSuQmCC
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -27782,6 +27919,7 @@ SCf+fy2fybndwwvkAAAAAElFTkSuQmCC
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

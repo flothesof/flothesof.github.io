@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Goal-of-this-study">Goal of this study<a class="anchor-link" href="#Goal-of-this-study">¶</a></h1><p>According to Tae Kim's guide to Japanese grammar and <a href="http://www.guidetojapanese.org/learn/grammar/verbs">its introduction to Japanese verbs</a>, the following holds true:</p>
 <blockquote><p>All ru-verbs end in 「る」 while u-verbs can end in a number of u-vowel sounds including 「る」. Therefore, if a verb does not end in 「る」, it will always be an u-verb. For verbs ending in 「る」, if the vowel sound preceding the 「る」 is an /a/, /u/ or /o/ vowel sound, it will always be an u-verb. Otherwise, if the preceding sound is an /i/ or /e/ vowel sound, it will be a ru-verb in most cases. A list of common exceptions are at the end of this section.</p>
@@ -1432,7 +1608,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 </pre></div>
 </div>
 </div>
@@ -1443,7 +1619,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">'./JMdict_example.xml'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">'./JMdict_example.xml'</span><span class="p">)</span>
 <span class="n">tree</span>
 </pre></div>
 </div>
@@ -1465,7 +1641,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
 <span class="n">root</span>
 </pre></div>
 </div>
@@ -1487,7 +1663,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
     <span class="nb">print</span> <span class="n">elem</span>
 </pre></div>
 </div>
@@ -1510,8 +1686,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From the evaluation above, we see that an element of the XML structure contains a pronunciation that we can extract from the <em>r_ele/reb</em> tag:</p>
 </div>
@@ -1522,7 +1697,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'r_ele/reb'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'r_ele/reb'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
 </div>
 </div>
@@ -1540,8 +1715,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The grammatical function comes from the <em>sense/pos</em> tag. It should be noted that a word can have more than one grammatical function in Japanese. In the case below, the word uyoku can be an adjective-noun and a noun.</p>
 </div>
@@ -1552,7 +1726,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="p">[</span><span class="n">elem</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">'sense/pos'</span><span class="p">)]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="p">[</span><span class="n">elem</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">'sense/pos'</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -1570,8 +1744,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now define a function that acts as a shortcut for the two operations done above (pronunciation and grammatical function):</p>
 </div>
@@ -1582,7 +1755,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_information</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_information</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'r_ele/reb'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
             <span class="p">[</span><span class="n">sense</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">sense</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">'sense/pos'</span><span class="p">)])</span>
 </pre></div>
@@ -1595,7 +1768,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">extract_information</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">extract_information</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1612,8 +1785,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Where-are-the-verbs?">Where are the verbs?<a class="anchor-link" href="#Where-are-the-verbs?">¶</a></h1><p>If we take a look at the DTD of the JMdict XML file we find the following entities corresponding to verbs:</p>
 </div>
@@ -1677,8 +1849,7 @@ h6:hover .anchor-link {
 <!--ENTITY v2r-s "Nidan verb (lower class) with `ru' ending (archaic)"-->
 <!--ENTITY v2w-s "Nidan verb (lower class) with `u' ending and `we' conjugation (archaic)"-->
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we can see, this is quite complex. Instead of parsing every single verb type and differentiating between it, we will focus on four verb types only:</p>
 <ul>
@@ -1697,7 +1868,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">'../JMdict.xml'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">'../JMdict.xml'</span><span class="p">)</span>
 <span class="n">tree</span>
 </pre></div>
 </div>
@@ -1719,7 +1890,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">verb_list</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">verb_list</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">verb_types</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s1">'Ichidan'</span><span class="p">,</span> <span class="sa">u</span><span class="s1">'Nidan'</span><span class="p">,</span> <span class="sa">u</span><span class="s1">'Yodan'</span><span class="p">,</span> <span class="sa">u</span><span class="s1">'Godan'</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">'entry'</span><span class="p">):</span>
     <span class="n">item_info</span> <span class="o">=</span> <span class="n">extract_information</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
@@ -1738,7 +1909,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">verb_list</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">verb_list</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1759,7 +1930,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">verb_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">verb_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1785,8 +1956,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As the unicode is a bit hard to read, we can format the previous output to the following effect:</p>
 </div>
@@ -1797,7 +1967,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">verb_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">]):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">verb_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">]):</span>
     <span class="nb">print</span> <span class="n">elem</span>
 </pre></div>
 </div>
@@ -1825,16 +1995,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="First-statistical-breakdown">First statistical breakdown<a class="anchor-link" href="#First-statistical-breakdown">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we now have a list of verb types, we can calculate their relative frequency:</p>
 </div>
@@ -1845,7 +2013,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">verb_type</span> <span class="ow">in</span> <span class="n">verb_types</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">verb_type</span> <span class="ow">in</span> <span class="n">verb_types</span><span class="p">:</span>
     <span class="nb">print</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">: </span><span class="si">%i</span><span class="s2"> out of </span><span class="si">%i</span><span class="s2"> verbs"</span> <span class="o">%</span> <span class="p">(</span><span class="n">verb_type</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">verb_type</span><span class="p">,</span> <span class="n">verb_list</span><span class="p">)),</span> <span class="nb">len</span><span class="p">(</span><span class="n">verb_list</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1871,7 +2039,7 @@ Godan: 6788 out of 10266 verbs
 <div class="prompt input_prompt">In [257]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">verb_type</span> <span class="ow">in</span> <span class="n">verb_types</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">verb_type</span> <span class="ow">in</span> <span class="n">verb_types</span><span class="p">:</span>
     <span class="nb">print</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.1f</span><span class="s2"> percent"</span> <span class="o">%</span> <span class="p">(</span><span class="n">verb_type</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">verb_type</span><span class="p">,</span> <span class="n">verb_list</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">verb_list</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1893,24 +2061,21 @@ Godan: 66.1 percent
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>According to this output, there's a majority of <em>u</em> verbs in the Japanese language.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Verb-types-by-last-character">Verb types by last character<a class="anchor-link" href="#Verb-types-by-last-character">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Following Tae Kim's data,we're going to count number of verbs of a given type by classifying them according to their last character:</p>
 </div>
@@ -1921,7 +2086,7 @@ Godan: 66.1 percent
 <div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">last_char_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">last_char_dict</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">verb</span> <span class="ow">in</span> <span class="n">verb_list</span><span class="p">:</span>
     <span class="n">last_char</span> <span class="o">=</span> <span class="n">verb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
     <span class="k">if</span> <span class="n">last_char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">last_char_dict</span><span class="p">:</span>
@@ -1942,7 +2107,7 @@ Godan: 66.1 percent
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">last_char_dict</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">last_char_dict</span>
 </pre></div>
 </div>
 </div>
@@ -1974,7 +2139,7 @@ Godan: 66.1 percent
 <div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span> <span class="n">last_char_dict</span><span class="p">[</span><span class="n">last_char_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span> <span class="n">last_char_dict</span><span class="p">[</span><span class="n">last_char_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
@@ -1995,7 +2160,7 @@ Godan: 66.1 percent
 <div class="prompt input_prompt">In [54]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">last_char_dict</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">last_char_dict</span><span class="p">:</span>
     <span class="nb">print</span> <span class="s2">"verbs ending in </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span> <span class="n">last_char_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 </pre></div>
 </div>
@@ -2025,8 +2190,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we can see from the output the first idea given by Tae Kim seems correct: if it doesn't end in <em>ru</em> it's a Godan verb (except for one ず Ichidan verb). Let's check the second idea:</p>
 <blockquote><p>if it ends in <em>ru</em>, the second before last hiragana mostly determines the verb type</p>
@@ -2039,7 +2203,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 <div class="prompt input_prompt">In [57]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">second_last_char_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">second_last_char_dict</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">verb</span> <span class="ow">in</span> <span class="n">verb_list</span><span class="p">:</span>
     <span class="n">last_char</span> <span class="o">=</span> <span class="n">verb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
     <span class="k">if</span> <span class="n">last_char</span> <span class="o">==</span> <span class="sa">u</span><span class="s1">'る'</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">verb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">>=</span> <span class="mi">2</span><span class="p">:</span>
@@ -2061,7 +2225,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 <div class="prompt input_prompt">In [58]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">second_last_char_dict</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">second_last_char_dict</span><span class="p">:</span>
     <span class="nb">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">second_last_char_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -2175,8 +2339,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This still needs a little sorting!</p>
 </div>
@@ -2187,7 +2350,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 <div class="prompt input_prompt">In [248]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">vowel_type</span><span class="p">(</span><span class="n">character</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">vowel_type</span><span class="p">(</span><span class="n">character</span><span class="p">):</span>
     <span class="n">vowels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'i'</span><span class="p">,</span> <span class="s1">'u'</span><span class="p">,</span> <span class="s1">'e'</span><span class="p">,</span> <span class="s1">'o'</span><span class="p">]</span>
     <span class="n">chars</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s1">'あかさたなはまやらわゃカがだャばバパざナぱ'</span><span class="p">,</span> 
              <span class="sa">u</span><span class="s1">'シいニビじミジピしにびみキチぎひりきち'</span><span class="p">,</span>
@@ -2209,7 +2372,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 <div class="prompt input_prompt">In [250]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_classification</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">final_classification</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">second_last_char_dict</span><span class="p">:</span>
     <span class="n">vowel</span> <span class="o">=</span> <span class="n">vowel_type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">vowel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">final_classification</span><span class="p">:</span>
@@ -2230,7 +2393,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 <div class="prompt input_prompt">In [251]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_classification</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">final_classification</span>
 </pre></div>
 </div>
 </div>
@@ -2255,7 +2418,7 @@ verbs ending in ず Nidan: 2, Ichidan: 1
 <div class="prompt input_prompt">In [255]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">final_classification</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">final_classification</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
     <span class="nb">print</span> <span class="s1">'vowel sound ending in </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">key</span>
     <span class="nb">print</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span> <span class="n">final_classification</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>    
 </pre></div>
@@ -2288,7 +2451,7 @@ Nidan: 2, Godan: 456
 <div class="prompt input_prompt">In [263]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">final_classification</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">final_classification</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
     <span class="nb">print</span> <span class="s1">'vowel sound ending in </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">key</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">final_classification</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
     <span class="nb">print</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">".2f"</span><span class="p">))),</span> <span class="n">final_classification</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
@@ -2318,8 +2481,7 @@ Nidan: 0.44, Godan: 99.56
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Concluding-remarks">Concluding remarks<a class="anchor-link" href="#Concluding-remarks">¶</a></h1><h2 id="High-certainty">High certainty<a class="anchor-link" href="#High-certainty">¶</a></h2><ul>
 <li>if vowel sound is o, it's a <em>u</em> verb in 100% of cases</li>
@@ -2334,16 +2496,14 @@ Nidan: 0.44, Godan: 99.56
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Side-note">Side note<a class="anchor-link" href="#Side-note">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The more I'm computing this sort of thing, the more I'm thinking I could do this in an easier way with Pandas.</p>
 </div>
@@ -2354,7 +2514,7 @@ Nidan: 0.44, Godan: 99.56
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -2371,6 +2531,7 @@ Nidan: 0.44, Godan: 99.56
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

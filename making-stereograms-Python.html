@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we'll have a look at stereograms, in particular <a href="https://en.wikipedia.org/wiki/Autostereogram">autostereograms</a>.</p>
 <p>This post will introduce two methods of creating illusions of depth. The first one consists of using a pattern and shifting it repeatedly along the horizontal axis. The second one uses a depth map and a pattern and shifts the individual pixels of the pattern according to a depth map. In this case, the pattern used is often a random pattern, hence the term "random dot stereogram".</p>
@@ -1421,24 +1597,21 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Horizontally-shifted-patterns">Horizontally shifted patterns<a class="anchor-link" href="#Horizontally-shifted-patterns">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="First,-some-tools">First, some tools<a class="anchor-link" href="#First,-some-tools">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Before getting started, we will build some tools to work with images:</p>
 <ul>
@@ -1454,7 +1627,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">skimage</span><span class="o">,</span> <span class="nn">skimage.io</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -1468,7 +1641,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.dpi'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">150</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.dpi'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">150</span>
 </pre></div>
 </div>
 </div>
@@ -1479,7 +1652,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">blank_image</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">blank_image</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
                <span class="n">rgba</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
     <span class="s2">"Returns a blank image, of size defined by shape and background color rgb."</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.</span>
@@ -1493,15 +1666,14 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">blank_image</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">blank_image</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have an image, let's write a function that displays it.</p>
 </div>
@@ -1512,7 +1684,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="s2">"Displays an image."</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -1532,7 +1704,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1549,7 +1721,7 @@ h6:hover .anchor-link {
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAHyCAYAAAD2ojggAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X20ZXV5J/jvg0raV0SN0AELMRURXLbGTipmTI83wSDY
 M+BKZhlMd9qXMcMapU13ZrqBzPRYzuo1aFa60/YQV2RC26Q7aUJeKWcMlgxWemlEywhKSxWUIiUU
@@ -1724,23 +1896,21 @@ SW6Pv7UltYd0PV5vyORfYh9h3pb35SSvqKq/UVWVyd/bHZnneVuPOwMzSanuzKSp+/L1vlNxI70y
 9pLpXN2W5HNJ/pfpcfO2uvl7Vf56FQtztvxcnTn4/+ftj/xz37ytOG8vzSRUui3JH2SyioU5W3ne
 npLkL5I8fXDMvK08b++czsHnMrkh70nzPG8eFAIAAANu0gMAgAEFMgAADCiQAQBgQIEMAAADCmQA
 ABhQIAMAwIACGQAABv5/3ZRFwby/gUcAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Tiling">Tiling<a class="anchor-link" href="#Tiling">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's address the tiling of patterns. First, we load the pattern that we will work with througout this post: a coin.</p>
 </div>
@@ -1751,15 +1921,14 @@ ABhQIAMAwIACGQAABv5/3ZRFwby/gUcAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coin</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">'files/coin-icon.png'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coin</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">'files/coin-icon.png'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What does this coin look like?</p>
 </div>
@@ -1770,7 +1939,7 @@ ABhQIAMAwIACGQAABv5/3ZRFwby/gUcAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">coin</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">coin</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1779,7 +1948,7 @@ ABhQIAMAwIACGQAABv5/3ZRFwby/gUcAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAALCCAYAAADDMCUQAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xm4XPdd5/nvqb3urbtf6d6rXdZiyfIeO/GSYCXO4gTI
 NgTIJOw0zTQ0DPQS4OnpdujpZ0iGnm4mAwxLJkAICRBIgNhOTBLLJN73XZKtXbqLdPf91nbmD5n0
@@ -2537,15 +2706,14 @@ f8eA9bZ/aavOKCTdDjxne1DS5SSjTpG0krKR8jxgHHiMsiksOXWEpG2UL5rTwOfAk8AlJKNWSXoH
 uAO4ApgCtgEfAO8xRy6StgBPUHIcsn2whbLPOj1y2grMA36spx22/VQ9vy9yyk9NR0REREQ0ZJNe
 RERERERDGuSIiIiIiIY0yBERERERDWmQIyIiIiIa0iBHRERERDSkQY6IiIiIaEiDHBERERHRkAY5
 IiIiIqLhL9yzwvTZdN2HAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now write a function that inserts a pattern onto an existing image.</p>
 </div>
@@ -2556,7 +2724,7 @@ IiIiIqLhL9yzwvTZdN2HAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">insert_pattern</span><span class="p">(</span><span class="n">background_img</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">insert_pattern</span><span class="p">(</span><span class="n">background_img</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
     <span class="sd">"""Inserts a pattern onto a background, at given location. Returns new image."""</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">background_img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">r0</span><span class="p">,</span> <span class="n">c0</span> <span class="o">=</span> <span class="n">location</span>
@@ -2570,8 +2738,7 @@ IiIiIqLhL9yzwvTZdN2HAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this:</p>
 </div>
@@ -2582,7 +2749,7 @@ IiIiIqLhL9yzwvTZdN2HAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_img</span> <span class="o">=</span> <span class="n">insert_pattern</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_img</span> <span class="o">=</span> <span class="n">insert_pattern</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">test_img</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2592,7 +2759,7 @@ IiIiIqLhL9yzwvTZdN2HAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAAIbCAYAAADGjXnWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmcHNd12Pvfrarel+nZNwz2HQQBQiRFipIIkhINydRi
 yYlNRYljK/HLx46dl89zvD2/hIr9ko+zPNvxkjhe5MiRRVmyRFGmqIWSQIoCSZEUCYAASGIdzIbZ
@@ -3045,15 +3212,14 @@ C0zVfzg+C/QC99fH8z6gZ9b+d1C74vR54JbzffwX2he1M34VaivHPAk8Uf/Z7HNMs8bzmvoYPgU8
 A/zv9e2O59mP7Qd4ZdUOxzN/HNfM+vd907H//3FMz2pM30btBNlTwLeordrheJ7dmLYBB4HOWdsc
 0/zx/HJ9bJ6hdmFh43yOZ9QfJEmSJOk18GJDSZIkKYMhLUmSJGUwpCVJkqQMhrQkSZKUwZCWJEmS
 MhjSkiRJUgZDWpIkScpgSEuSJEkZ/n8NSq0WwPM9twAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From there, we can write a horizontal tile function that maps a pattern a repeated number of times on an image.</p>
 </div>
@@ -3064,7 +3230,7 @@ MhjSkiRJUgZDWpIkScpgSEuSJEkZ/n8NSq0WwPM9twAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">tile_horizontally</span><span class="p">(</span><span class="n">background_img</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">start_location</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">tile_horizontally</span><span class="p">(</span><span class="n">background_img</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">start_location</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
     <span class="s2">"Tiles a pattern on a background image, repeatedly with a given shift."</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">background_img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">repetitions</span><span class="p">):</span>
@@ -3078,8 +3244,7 @@ MhjSkiRJUgZDWpIkScpgSEuSJEkZ/n8NSq0WwPM9twAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this:</p>
 </div>
@@ -3090,7 +3255,7 @@ MhjSkiRJUgZDWpIkScpgSEuSJEkZ/n8NSq0WwPM9twAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_img</span> <span class="o">=</span> <span class="n">tile_horizontally</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_img</span> <span class="o">=</span> <span class="n">tile_horizontally</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">test_img</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3100,7 +3265,7 @@ MhjSkiRJUgZDWpIkScpgSEuSJEkZ/n8NSq0WwPM9twAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAAIbCAYAAADGjXnWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XmcHOVh5/9PVfV9zUzPfekaCYTEfRgwPjDYDiaOnXPX
 V5Kfnd8rm1fyi/fKsclmE+fY/e1mk1+SdS7Hmzgv5zBeO4APDCTGYAwIEBiQhBAIHaORZjR39/R9
@@ -3827,15 +3992,14 @@ c5IdSW5Z5nlTkudv2P7qrK44vTvJZUf79R9rf7I64vfdrO4cc3uSTy/fm2ea6WieP7rMcHeSO5L8
 02W9eR7+bH8if3HXDvOcz/GCDe/3O/f//4+ZHtZMfyyrA2S7k/xuVnftMM/Dm+kpSR5KctqGdWY6
 n+e7ltnckdWFhc/dynnW8iAAAOBpcLEhAAAMCGkAABgQ0gAAMCCkAQBgQEgDAMCAkAYAgAEhDQAA
 A0IaAAAG/j8ISuK8ZWQcaAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have the basics going, let's imitate the examples found on the wikipedia page for autostereograms: three rows of coins, each with its own shift.</p>
 </div>
@@ -3846,7 +4010,7 @@ A0IaAAAG/j8ISuK8ZWQcaAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">blank_image</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">blank_image</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">tile_horizontally</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">6</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">130</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">tile_horizontally</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">tile_horizontally</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coin</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="mi">150</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">140</span><span class="p">)</span>
@@ -3859,7 +4023,7 @@ A0IaAAAG/j8ISuK8ZWQcaAAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAAGcCAYAAAD00EcrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmUHNd9mPvdqup9mZ59x74DJMCdohaKpEhBCrVYiy3J
 sh1beY5jv/g5L479no8TkYkTJ/Zz4kSWE6/ykW0tkUTRlGiStiiRFASQBDcQC0Hsg8HMYPbe16p7
@@ -5469,15 +5633,14 @@ flmMK8fsA97KvzYbpaZl1XNzvob7gYPAH+bbpZ6Lr+1dzFy1Q+pZfh37LHl/u/D+IzVdVE2vxThA
 th/4J4yrdkg9F1dTDzAG+C1tUtPy6/mlfG0OYkwsrKlkPVX+SYIgCIIgCIIgXAIy2VAQBEEQBEEQ
 ykA60oIgCIIgCIJQBtKRFgRBEARBEIQykI60IAiCIAiCIJSBdKQFQRAEQRAEoQykIy0IgiAIgiAI
 ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you look at this image with the so called wall-eyed look, I expect you to see the middle row to be pushed back inside the picture while the top and bottom row stand out. <strong>Can you see it?</strong></p>
 <p>The conclusion from this experiment is that we can say that closely packed objects look more close to us than wider spaced ones.</p>
@@ -5485,8 +5648,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, the question is: does it work vertically as well? We can actually answer that question: try to visualize the 3d pattern and then rotate your screen. To me, the illusion of depth goes away quite quickly, a slight tilt is sufficient to break the impression of depth.</p>
 <p>This result is already interesting. But what about depth map based stereograms?</p>
@@ -5494,16 +5656,14 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Depth-map-based-stereograms">Depth map based stereograms<a class="anchor-link" href="#Depth-map-based-stereograms">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The wikipedia article on autostereograms describes the algorithm for creating depth map based stereograms like this:</p>
 <blockquote><p>A computer program can take a depth map and an accompanying pattern image to produce an autostereogram. The program tiles the pattern image horizontally to cover an area whose size is identical to the depth map. Conceptually, at every pixel in the output image, the program looks up the grayscale value of the equivalent pixel in the depth map image, and uses this value to determine the amount of horizontal shift required for the pixel.</p>
@@ -5513,8 +5673,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is, to say the least, not a very clear explanation. Let's try to deconstruct this. We need two things:</p>
 <ul>
@@ -5530,7 +5689,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_pattern</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">levels</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_pattern</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">levels</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
     <span class="s2">"Creates a pattern from gray values."</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span> <span class="o">/</span> <span class="n">levels</span>
 </pre></div>
@@ -5539,8 +5698,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this:</p>
 </div>
@@ -5551,7 +5709,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="n">make_pattern</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="n">make_pattern</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -5562,7 +5720,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -5571,7 +5729,7 @@ ZSAdaUEQBEEQBEEog/8PHEqsgxQ9SmYAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAALJCAYAAAC6FujWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvX/sllWa5nmdRtpi1bFstZBFqsogiywyaiuDNho1FIsO
 0miQBtYi6IhRFllhlQiLBokai0YCLhJlKVZZZIVGV210KQppJUCQAad0gEYaHcsCBr8NlD1BogTN
@@ -6130,15 +6288,14 @@ Io6VdKGkLeriOZVSPl9KeU8p5Q/U+w59r5RypaR16tI5SVJEvL31/yYVEYMlfUjSZnX3s9olaWdE
 7zcoEXGupH9R78tVWn8+L+lHkr6pLpxXRPyJpFXqXW/HSLq7lLIwIn5PXTqnvkTEn0u6vpTykW6f
 U0ScKuk+9a67t0i6s5TyNw2Y1xmSbpc0UNKzkqZLGqAjPCdbIBhjTMOxGGuMMQ3HG70xxjQcb/TG
 GNNwvNEbY0zD8UZvjDENxxu9McY0HG/0xhjTcLzRG2NMw/k/JhoZtm862boAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, we would like to have a depth map. Let's create a depth map using a simple circle.</p>
 </div>
@@ -6149,7 +6306,7 @@ GNNwvNEbY0zD8UZvjDENxxu9McY0HG/0xhjTcLzRG2NMw/k/JhoZtm862boAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_circular_depthmap</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_circular_depthmap</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="s2">"Creates a circular depthmap, centered on the image."</span>
     <span class="n">depthmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">depthmap</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -6170,7 +6327,7 @@ GNNwvNEbY0zD8UZvjDENxxu9McY0HG/0xhjTcLzRG2NMw/k/JhoZtm862boAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">depthmap</span> <span class="o">=</span> <span class="n">create_circular_depthmap</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">depthmap</span> <span class="o">=</span> <span class="n">create_circular_depthmap</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6181,7 +6338,7 @@ GNNwvNEbY0zD8UZvjDENxxu9McY0HG/0xhjTcLzRG2NMw/k/JhoZtm862boAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6190,7 +6347,7 @@ GNNwvNEbY0zD8UZvjDENxxu9McY0HG/0xhjTcLzRG2NMw/k/JhoZtm862boAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApgAAAG2CAYAAADbf/YSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X+wXGd93/H3R3aUAiaOKUVQybYIDgKHEAcahZakJDEl
 tkNtJm2J3Azxj0njGXBCm2lqnLZDM9MOSSdtmoxhils3cVKI4pAfUqgDwnVIhvLDMraxQZIlfljY
@@ -6374,15 +6531,14 @@ R/cz8azW9gfwnd323wXcDfzrbn1z+2KRffMqvnEWeZP7g8m8w8d/T+55fLxseH98F5MixV3A7zM5
 i7zJfdFt39OBPweeObWuyf0BvLXbrruZnNDzTa3ui5Vy80LrkiRJ6pUn+UiSJKlXBkxJkiT1yoAp
 SZKkXhkwJUmS1CsDpiRJknplwJQkSVKvDJiSJEnqlQFTkiRJvfr/1xe9q9BszhwAAAAASUVORK5C
 YII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we're here, we will also create a function that normalizes a depthmap into the [0, 1] range:</p>
 </div>
@@ -6393,7 +6549,7 @@ YII=
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">depthmap</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">depthmap</span><span class="p">):</span>
     <span class="s2">"Normalizes values of depthmap to [0, 1] range."</span>
     <span class="k">if</span> <span class="n">depthmap</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">></span> <span class="n">depthmap</span><span class="o">.</span><span class="n">min</span><span class="p">():</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">depthmap</span> <span class="o">-</span> <span class="n">depthmap</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">depthmap</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">depthmap</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
@@ -6405,8 +6561,7 @@ YII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's apply the algorithm.</p>
 </div>
@@ -6417,7 +6572,7 @@ YII=
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">shift_amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">shift_amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="s2">"Creates an autostereogram from depthmap and pattern."</span>
     <span class="n">depthmap</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">depthmap</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">invert</span><span class="p">:</span>
@@ -6437,8 +6592,7 @@ YII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this!</p>
 </div>
@@ -6449,7 +6603,7 @@ YII=
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">autostereogram</span> <span class="o">=</span> <span class="n">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">autostereogram</span> <span class="o">=</span> <span class="n">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6460,7 +6614,7 @@ YII=
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">autostereogram</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">autostereogram</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6469,7 +6623,7 @@ YII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAAIbCAYAAADGjXnWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XGYUmX+P/y3SklKLftd1rCwh5IUN7Yo0dCocJeUdOaK
 klZMTFzRKNndqSgpsaVmvkmFya6zNRW11JCRsUbNpHwTN3QmQ0Mvfs6kpOSSwxpr5FKOLil6nj++
@@ -11415,15 +11569,14 @@ rFzPFwFoKn7+EZRGnP4ewHcv9fP/e/tC6YzfX1GaOeYNAK+X9806UdMZ1XN1uYZJAG8C2FreLuo5
 2ryJ0sDCOReznqT8SyIiIiIiIiIiIiIiXyJisKGIiIiIiIiIiIjIDCIOpEVERERERERERERmEHEg
 LSIiIiIiIiIiIjKDiANpERERERERERERkRlEHEiLiIiIiIiIiIiIzCDiQFpERERERERERERkBhEH
 0iIiIiIiIiIiIiIziDiQFhEREREREREREZlB/i+SzPfqnV1ASwAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What about an inverted one?</p>
 </div>
@@ -11434,7 +11587,7 @@ LSIiIiIiIiIiIjKDiANpERERERERERERkRlEHEiLiIiIiIiIiIiIzCDiQFpERERERERERERkBhEH
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">autostereogram</span> <span class="o">=</span> <span class="n">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">autostereogram</span> <span class="o">=</span> <span class="n">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -11445,7 +11598,7 @@ LSIiIiIiIiIiIjKDiANpERERERERERERkRlEHEiLiIiIiIiIiIiIzCDiQFpERERERERERERkBhEH
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">autostereogram</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">autostereogram</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -11454,7 +11607,7 @@ LSIiIiIiIiIiIjKDiANpERERERERERERkRlEHEiLiIiIiIiIiIiIzCDiQFpERERERERERERkBhEH
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAAIbCAYAAADGjXnWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XF4U/W9P/A3EjBCcNld1HB3dJlGCDNqNgPE3TjDzCRq
 eYwjbmUEzB6iN7vk2SKWESW6AJlGDdCNDjsNWzYqRoyY2UyyGa6RVqwSXWarRAgsl2aQaWTHtUCA
@@ -16080,15 +16233,14 @@ kT9AlgDwz8jP2iHqObWazgJwFsC/GrdN1LT8ej5fqM2HyA8svG4668kKvyQiIiIiIiIiIiIi8hdE
 DDYUERERERERERERKSOikRYREREREREREREpI6KRFhERERERERERESkjopEWERERERERERERKSOi
 kRYREREREREREREpI6KRFhERERERERERESkjopEWERERERERERERKSOikRYREREREREREREpI/8H
 ojkZKoxf0XcAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This also works! Let's have a look at more elaborate patterns. For instance, we can combine different depthmaps.</p>
 </div>
@@ -16099,7 +16251,7 @@ ojkZKoxf0XcAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">depthmap</span> <span class="o">=</span> <span class="n">create_circular_depthmap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> \
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">depthmap</span> <span class="o">=</span> <span class="n">create_circular_depthmap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> \
            <span class="n">create_circular_depthmap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> \
            <span class="n">create_circular_depthmap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 <span class="n">depthmap</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">depthmap</span><span class="p">)</span>
@@ -16113,7 +16265,7 @@ ojkZKoxf0XcAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -16122,7 +16274,7 @@ ojkZKoxf0XcAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApgAAAG2CAYAAADbf/YSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X2wJHd93/v3R8LrAMKyCGEhKyRhZJYngwzx2rnYF9si
 IGEiUU6CpbgwD+VYVSCbG9d1hHzvLa6rfAvb5RvHLkEFJYotO+C1jB+0JhgWroxdhActSAKBdqXl
@@ -16323,7 +16475,7 @@ G7b6TKc5LfPbmZzl93UmG8OrgTOA93XrYi/wnVPTX8nkzLb9wIu2ev57XhfPBx5kcgWBm4Gbus/E
 Y1tbH8D3dMt/C/AJ4P/oxje3LlZZNy/gW2eRN7k+mPQ7PLad3HqsvWx4fTyHSZHiFuCPmZxF3uS6
 6JbvUcBfA4+ZGtfk+gDe2C3XJ5ic0PNtra6LRbl5oXVJkiT1ypN8JEmS1CsDpiRJknplwJQkSVKv
 DJiSJEnqlQFTkiRJvTJgSpIkqVcGTEmSJPXKgClJkqRe/f9xGAOgumeETgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
@@ -16334,7 +16486,7 @@ DJiSJEnqlQFTkiRJvTJgSpIkqVcGTEmSJPXKgClJkqRe/f9xGAOgumeETgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">autostereogram</span> <span class="o">=</span> <span class="n">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">autostereogram</span> <span class="o">=</span> <span class="n">make_autostereogram</span><span class="p">(</span><span class="n">depthmap</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -16345,7 +16497,7 @@ DJiSJEnqlQFTkiRJvTJgSpIkqVcGTEmSJPXKgClJkqRe/f9xGAOgumeETgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">autostereogram</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">autostereogram</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -16354,7 +16506,7 @@ DJiSJEnqlQFTkiRJvTJgSpIkqVcGTEmSJPXKgClJkqRe/f9xGAOgumeETgAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAAIbCAYAAADGjXnWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XGYUmX+P/y3SklKLftd1rCwh5IUN7Yo0dCocJeUdOaK
 klZMTFzRKNndqSgpsaVmvkmFya6zNRW11JCRsUbNpHwTN3QmQ0Mvfs6kpOSSwxpr5FKOLil6nj++
@@ -21559,23 +21711,21 @@ G3FMh5ePABgYhpEyDMNg8Bj9E77K8bxIsyjNGFwhoRtA/cX4Hv4Z/2DwXqm/Ajg9dHDcC+ByAJGh
 jBgxw4j4QlqMGDFixIgRI0aMmGFEfCEtRowYMWLEiBEjRswwIr6QFiNGjBgxYsSIESNmGBFfSIsR
 I0aMGDFixIgRM4yIL6TFiBEjRowYMWLEiBlGxBfSYsSIESNGjBgxYsQMI/8Pwi3tLX58qEgAAAAA
 SUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blog post, I have demonstrated how to create your own autostereograms. Even though the result is not perfect, it is nonetheless interesting to see that the illusion of depth is mainly created by a horizontal shifts of patterns. I plan to write a follow-up to this post to explore what makes an autostereogram great (pattern choice, depth factor, number of gray levels...) and demonstrate some of the more interesting applications of this technique. For instance: maps, data, mathematical functions... 
 Another interesting topic, <a href="http://www.kscottz.com/solving-autostereograms-aka-magic-eyes/">which has already been explored on other blogs</a>, involves how to produce the inverse transform from autostereogram to depthmap. Let's keep that in mind for some other time!</p>
@@ -21583,8 +21733,7 @@ Another interesting topic, <a href="http://www.kscottz.com/solving-autostereogra
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20160803_Autostereograms.ipynb">20160803_Autostereograms.ipynb</a>.</p>
 </div>
@@ -21595,7 +21744,7 @@ Another interesting topic, <a href="http://www.kscottz.com/solving-autostereogra
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -21612,6 +21761,7 @@ Another interesting topic, <a href="http://www.kscottz.com/solving-autostereogra
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

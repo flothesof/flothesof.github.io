@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As every year since 2015, I'm signed up to participate in the qualifications round of <a href="https://hashcode.withgoogle.com">Google Hashcode</a>, a programming competition for students and professionals from Europe, the Middle-East and Africa. While trying to prepare for the competition, I tackled the suggested training problem that aims at cutting pizza slices out of a large pizza.</p>
 <p>In this post, I'll try to outline a solution to the problem based on one of the input files, the <code>medium.in</code> input. Along the way, I plan to report on the following topics:</p>
@@ -1428,16 +1604,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Visualizing-your-data">Visualizing your data<a class="anchor-link" href="#Visualizing-your-data">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The large pizza we will use as input consists of Tomatoes as well as Mushrooms, which is encode in a grid like the following:</p>
 <pre><code>TTTTT
@@ -1447,8 +1621,7 @@ TTTTT</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's load the data for our example grid:</p>
 </div>
@@ -1459,7 +1632,7 @@ TTTTT</code></pre>
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -1470,7 +1643,7 @@ TTTTT</code></pre>
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_input_pizza</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_input_pizza</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">"""Reads the input of a Pizza problem.</span>
 
 <span class="sd">    returns:</span>
@@ -1495,15 +1668,14 @@ TTTTT</code></pre>
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">read_input_pizza</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">read_input_pizza</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's also plot the pizza:</p>
 </div>
@@ -1514,7 +1686,7 @@ TTTTT</code></pre>
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -1527,7 +1699,7 @@ TTTTT</code></pre>
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pizza</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'medium.in shape is </span><span class="si">{pizza.shape}</span><span class="s1">, max. score </span><span class="si">{pizza.size}</span><span class="se">\n</span><span class="s1">min. ingredients is </span><span class="si">{L}</span><span class="s1">, max. pizza slice is </span><span class="si">{H}</span><span class="s1">'</span><span class="p">);</span>
 </pre></div>
@@ -1538,7 +1710,7 @@ TTTTT</code></pre>
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUYAAAEXCAYAAADRBe2iAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsvXncdmdVHnotCBDCIGGQJiEQsQQL
@@ -2033,15 +2205,14 @@ zL2144S8QfA2YmZrzKyf8KDicdH6WsHMDLgKzEo63/RRZfPWNSQlHcAw8Bb4AIyn1tOml53Aizhe
 N/wAmwhPA9/FeWNqrS14uUVoKX8RrixO5vkgtGQXYw5fAgdS61+BtxtR+wyhYGxtWj8evb0BjqbW
 v4yvQ4RWeAZ4HsdwVfJW5PC/BDqO42RI3Uo7juP0HF4YHcdxMnhhdBzHyeCF0XEcJ4MXRsdxnAxe
 GB3HcTJ4YXQcx8nwD0MQXLk5MOHsAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can read in the above plot, the pizza has a 200 by 250 shape, will need slices that have each at least 4 tomatoes and 4 mushrooms on it and a maximum size of 12 cells. Also, as far as I can tell from that plot, the pizza is made of evenly distributed ingredients.</p>
 <p>Let's now try to come up with an algorithm.</p>
@@ -2049,16 +2220,14 @@ GB3HcTJ4YXQcx8nwD0MQXLk5MOHsAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="A-greedy-optimization-approach">A greedy optimization approach<a class="anchor-link" href="#A-greedy-optimization-approach">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>While brainstorming  this problem with a friend, we came up with a greedy approach for solving the problem. It can be described by the following Python pseudo-code:</p>
 <div class="highlight"><pre><span></span><span class="n">slices</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2083,8 +2252,7 @@ GB3HcTJ4YXQcx8nwD0MQXLk5MOHsAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The way the problem is described above has two properties:</p>
 <ul>
@@ -2096,16 +2264,14 @@ GB3HcTJ4YXQcx8nwD0MQXLk5MOHsAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="A-first-version">A first version<a class="anchor-link" href="#A-first-version">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With that being said, we can transform the pseudo-code into real code. Below is my first version.</p>
 <p>Note that:</p>
@@ -2121,7 +2287,7 @@ GB3HcTJ4YXQcx8nwD0MQXLk5MOHsAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
 
 <span class="k">def</span> <span class="nf">get_random_available_location</span><span class="p">(</span><span class="n">slice_mask</span><span class="p">):</span>
@@ -2192,7 +2358,7 @@ GB3HcTJ4YXQcx8nwD0MQXLk5MOHsAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy1</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy1</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2225,8 +2391,7 @@ score: 28923
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's take a look at the output from the algorithm.</p>
 </div>
@@ -2237,7 +2402,7 @@ score: 28923
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> 
 </pre></div>
 </div>
 </div>
@@ -2259,7 +2424,7 @@ score: 28923
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_output</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_output</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
     <span class="sd">"""Reads an output file, assuming it's valid and plots the result."""</span>
     <span class="n">input_fname</span> <span class="o">=</span> <span class="n">fname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'.in'</span>
     <span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">read_input_pizza</span><span class="p">(</span><span class="n">input_fname</span><span class="p">)</span>
@@ -2295,7 +2460,7 @@ score: 28923
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2304,7 +2469,7 @@ score: 28923
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsnXeYFEX6x7/v7iIgOacFlrREEcRA
@@ -3271,15 +3436,14 @@ vc77mLzbGtKPu6FU6u9C/YP5T1MfoNTSNztjtxnA7LzbH7Ffdzjt3gT1wx+v7b/c6ddWAPPzbr+h
 T/OgzACbADznvBaUYbzK8CrD3FaWec1pc+nmNpnXijNWab2kjJUgCIIgCEIByNs8KgiCIAiCIFgg
 QpsgCIIgCEIBEKFNEARBEAShAIjQJgiCIAiCUABEaBMEQRAEQSgAIrQJgiAIgiAUABHaBEEQBEEQ
 CsA/AUUEnw9A/txdAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we can see in the plot on the left, a random colored pattern emerges from our algorithm, since we try to slice at random patterns every time.</p>
 <p>But how can we improve our existing solution? One possibility is to improve its performance. Although the algorithm runs in a couple of seconds for this grid size, it will be slow on the largest grid. So let's profile it to see what takes the most time.</p>
@@ -3291,7 +3455,7 @@ CsA/AUUEnw9A/txdAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> line_profiler
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> line_profiler
 </pre></div>
 </div>
 </div>
@@ -3302,7 +3466,7 @@ CsA/AUUEnw9A/txdAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f greedy1 greedy1('files/medium.in')
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f greedy1 greedy1('files/medium.in')
 <span class="n">r</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -3354,8 +3518,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I was very surprised at this point: the function that takes the most time is the one selecting one random empty locaiton on the grid! Why is that? Well, it turns out at each iteration we are going over 200x250 = 50000 points to check whether they are zero or one. This takes a lot of time. We could do better with different data structures:</p>
 <ul>
@@ -3372,8 +3535,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="An-upgraded-version">An upgraded version<a class="anchor-link" href="#An-upgraded-version">¶</a></h1>
 </div>
@@ -3384,7 +3546,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">shuffle</span>
 
 <span class="k">def</span> <span class="nf">generate_all_shapes</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
@@ -3465,7 +3627,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3498,8 +3660,7 @@ score: 39850
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our score is greatly improved by the new algorithm, especially since we now try every possible solution. What does the pizza tiling now look like?</p>
 </div>
@@ -3510,7 +3671,7 @@ score: 39850
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3519,7 +3680,7 @@ score: 39850
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsnWd4FFXbgO8nCQIiIB0CCaEkgKD0
@@ -4592,15 +4753,14 @@ a0A1/F9xn2uRc61MQSkN6QdAPwCFALYDeDrU87FwHMkA1gufTd5jAdAYLNKlSPjbKNRz1TmOeWAq
 dbhe1eFTHZ5t1eW5Jsy52j3b3Oda5Fwruz5uGSsXFxcXFxcXlwgg1OZRFxcXFxcXFxcXDlyhzcXF
 xcXFxcUlAnCFNhcXFxcXFxeXCMAV2lxcXFxcXFxcIgBXaHNxcXFxcXFxiQBcoc3FxcXFxcXFJQJw
 hTYXFxcXFxcXlwjg/wFIn1z7HAdHIAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This looks a lot more compact although it's not completely yellow. Also, it runs much faster now. How much faster?</p>
 </div>
@@ -4611,7 +4771,7 @@ hTYXFxcXFxcXlwjg/wFIn1z7HAdHIAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f greedy5 greedy5('files/medium.in')
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f greedy5 greedy5('files/medium.in')
 <span class="n">r</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -4681,16 +4841,14 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Optimization-using-Pythran">Optimization using Pythran<a class="anchor-link" href="#Optimization-using-Pythran">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can see in the above timing, the two most intensive functions are the <code>score</code> function and the <code>satisfy_constraints</code> function.</p>
 <p>It turns out that with a little Pythran-fu, we can optimize these to run faster. <a href="http://serge-sans-paille.github.io/pythran-stories/pythran-tutorial.html">Pythran</a> is a cool C++ compiler that knows how to handle Python and a lot of Numpy array stuff. By annotating the types we want, it can compile an optimized module from our functions.</p>
@@ -4703,7 +4861,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pizza_slices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">305</span><span class="p">,</span> <span class="mi">223</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">172</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">538</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">861</span><span class="p">,</span> <span class="mi">247</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">634</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">518</span><span class="p">,</span> <span class="mi">828</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pizza_slices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">305</span><span class="p">,</span> <span class="mi">223</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">172</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">538</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">861</span><span class="p">,</span> <span class="mi">247</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">634</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">518</span><span class="p">,</span> <span class="mi">828</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -4714,7 +4872,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> pythran.magic
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> pythran.magic
 </pre></div>
 </div>
 </div>
@@ -4737,7 +4895,7 @@ WARNING: Pythran support disabled for module: omp
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span>
 #pythran export score_pythran((int, int, int, int) list)
 def score_pythran(pizza_slices):
     """Computes score of given pizza_slices list."""
@@ -4755,7 +4913,7 @@ def score_pythran(pizza_slices):
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> score(pizza_slices)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> score(pizza_slices)
 </pre></div>
 </div>
 </div>
@@ -4777,7 +4935,7 @@ def score_pythran(pizza_slices):
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> score_pythran(pizza_slices)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> score_pythran(pizza_slices)
 </pre></div>
 </div>
 </div>
@@ -4795,8 +4953,7 @@ def score_pythran(pizza_slices):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can do the same for the constraints call:</p>
 </div>
@@ -4807,7 +4964,7 @@ def score_pythran(pizza_slices):
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">pythran</span>
 #pythran export satisfy_constraints_pythran((int, int), (int, int), int[][], int[][], int, int)
 def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
     """Validates whether the given location and slice shape can be applied to the pizza."""
@@ -4831,7 +4988,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> satisfy_constraints((3, 4), (4, 1), np.ones((R, C), dtype=np.int), np.ones((R, C), dtype=np.int), L, H)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> satisfy_constraints((3, 4), (4, 1), np.ones((R, C), dtype=np.int), np.ones((R, C), dtype=np.int), L, H)
 </pre></div>
 </div>
 </div>
@@ -4853,7 +5010,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> satisfy_constraints_pythran((3, 4), (4, 1), np.ones((R, C), dtype=np.int), np.ones((R, C), dtype=np.int), L, H)
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> satisfy_constraints_pythran((3, 4), (4, 1), np.ones((R, C), dtype=np.int), np.ones((R, C), dtype=np.int), L, H)
 </pre></div>
 </div>
 </div>
@@ -4871,8 +5028,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Equipped with this, we can now rewrite our algorithm like so:</p>
 </div>
@@ -4883,7 +5039,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">greedy5_pythran</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">disable_progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">greedy5_pythran</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">disable_progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">"""Greedy approach to pizza slicing.</span>
 <span class="sd">    Fifth iteration: randomize the locations in which we try to add stuff."""</span>
     <span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">read_input_pizza</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -4918,7 +5074,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4942,8 +5098,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This now runs almost instantly. Let's check the profiling again:</p>
 </div>
@@ -4954,7 +5109,7 @@ def satisfy_constraints_pythran(location, shape, slice_mask, pizza, L, H):
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f greedy5_pythran greedy5_pythran('files/medium.in', disable_progress_bar=True)
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">%</span><span class="k">lprun</span> -r -f greedy5_pythran greedy5_pythran('files/medium.in', disable_progress_bar=True)
 <span class="n">r</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -5006,24 +5161,21 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have such a fast function, we can run further improve our algorithm.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Studying-different-ways-of-iterating-through-the-pizza">Studying different ways of iterating through the pizza<a class="anchor-link" href="#Studying-different-ways-of-iterating-through-the-pizza">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The next idea here is to vary the way we sort the pizza locations before trying to slice the pizza. Instead of doing a random search as we did so far, let's explore more straightforward sortings: by row or column, decreasing as well as increasing.</p>
 </div>
@@ -5034,7 +5186,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">greedy5_pythran</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">disable_progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">greedy5_pythran</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">disable_progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">"""Greedy approach to pizza slicing.</span>
 <span class="sd">    Fifth iteration: randomize the locations in which we try to add stuff."""</span>
     <span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">read_input_pizza</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -5070,7 +5222,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -5087,7 +5239,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsfXfYHkXV/n2SQBJKgFDTe6gCEiBS
@@ -5667,7 +5819,7 @@ XxNERAC+CWA7M3+x8FUv6ysyevFu6/l7Dejhs5Lea/HUlQhm9voPwPUAHgfwMwCf8q1PCzvOBvBI
 +z+V2bUDwHW+9VfY9E6MhwEeBbA5+3d9H+qrD//68G7ry3st07l377b0Xounrmz9S8dYJRKJRCKR
 SESA7+HRRCKRSCQSiYQGyWlLJBKJRCKRiIDktCUSiUQikUhEQHLaEolEIpFIJCIgOW2JRCKRSCQS
 EZCctkSrsM3uAAAAGElEQVQikUgkEokISE5bIpFIJBKJRAT8P8VyH1KPKXr4AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
@@ -5678,7 +5830,7 @@ EZCctkSrsM3uAAAAGElEQVQikUgkEokISE5bIpFIJBKJRAT8P8VyH1KPKXr4AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -5695,7 +5847,7 @@ EZCctkSrsM3uAAAAGElEQVQikUgkEokISE5bIpFIJBKJRAT8P8VyH1KPKXr4AAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsnXm45FSZ/7/vrbp7rXfrvWmguxlA
@@ -6220,7 +6372,7 @@ XeD6VLPt84OICMBdAHYz83csm3LZXhkjF+e2nJ/XgBweK3Jey05bRYKZU/0AuBTACwD2AfhS2vbE
 tQN/kSX9lwy/9gC4JG37XXzagNo0wE4AO4zPpXlorzx88nBuy8t5zbA5d+c2Oa9lp61UfeQ1VoIg
 CIIgCBkg7elRQRAEQRAEIQAi2gRBEARBEDKAiDZBEARBEIQMIKJNEARBEAQhA4hoEwRBEARByAAi
 2gRBEARBEDKAiDZBEARBEIQM8P/70nURAVutMwAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
@@ -6231,7 +6383,7 @@ CIIgCBkg7elRQRAEQRAEIQAi2gRBEARBEDKAiDZBEARBEIQMIKJNEARBEAQhA4hoEwRBEARByAAi
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -6248,7 +6400,7 @@ CIIgCBkg7elRQRAEQRAEIQAi2gRBEARBEDKAiDZBEARBEIQMIKJNEARBEAQhA4hoEwRBEARByAAi
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsnXd4FVX6x79vErqgNEESkhBIqFKM
@@ -7047,7 +7199,7 @@ ulQnf3fze6425/EqEi71vUh8g5lsdg5IuKUfT967bwCM9nv+nOf1cnLey5D4x++rGH9D8rxWAzje
 7/mbnNNhSIQBlgFYkvw5IRvuVzb8ZMNnW7Z8riXnnHWfbeHnWubcK1k/YRurkJCQkJCQkJAMwO/w
 aEhISEhISEhICAOh0RYSEhISEhISkgGERltISEhISEhISAYQGm0hISEhISEhIRlAaLSFhISEhISE
 hGQAodEWEhISEhISEpIBhEZbSEhISEhISEgG8P8VYK0K894hTgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
@@ -7058,7 +7210,7 @@ hGQAodEWEhISEhISEpIBhEZbSEhISEhISEgG8P8VYK0K894hTgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7075,7 +7227,7 @@ hGQAodEWEhISEhISEpIBhEZbSEhISEhISEgG8P8VYK0K894hTgAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsnXecJGWd/z/fjjPdk3Y2wM7shF0W
@@ -7761,15 +7913,14 @@ f6zX+xpyHDegGlIvofoL5jLqGFANS3++du7uAXBGr/efeVxfqe333ah+8VcG1v9g7bh+C+Blvd5/
 4pjOQ3Ua4G4Av6z9u6gfzlc//OuHa1u/XNdq+9x31zZ3XYvPuerUP2dj5XA4HA6HwxEDej096nA4
 HA6Hw+EwwIk2h8PhcDgcjhjgRJvD4XA4HA5HDHCizeFwOBwOhyMGONHmcDgcDofDEQOcaHM4HA6H
 w+GIAU60ORwOh8PhcMSA/w9WOxKKooCBFgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is really interesting: the best scores are obtained when cutting the pizza from left to right as well as from top to bottom. Does it also work with oblique directions?</p>
 </div>
@@ -7780,7 +7931,7 @@ w+GIAU60ORwOh8PhcMSA/w9WOxKKooCBFgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">greedy5_pythran</span><span class="p">(</span><span class="s1">'files/medium.in'</span><span class="p">,</span> <span class="n">sorting_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7797,7 +7948,7 @@ w+GIAU60ORwOh8PhcMSA/w9WOxKKooCBFgAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsvXe8JFWZ//95KnSqvszMDTMwpJEc
@@ -8354,15 +8505,14 @@ ZukfqNfuKQCrom6/w379o9rubVC++Cdo1r9G7dd2ABdF3X6DPp0PZRhgG4Ct6nRxGq5XGqY0PNvS
 8lxT25y6Zxt/riXnWvk18TJWHA6Hw+FwOAkg6uFRDofD4XA4HI4NuGjjcDgcDofDSQBctHE4HA6H
 w+EkAC7aOBwOh8PhcBIAF20cDofD4XA4CYCLNg6Hw+FwOJwEwEUbh8PhcDgcTgL4/xhRMPCNUPKJ
 AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is our best score so far! Can we get even better? We should, since we see that the bottom part of the pizza is not well filled, with some border artifacts appearing.</p>
 <p>At this point, an idea that often comes up for this sort of optimization problems is to try to improve an existing sliced pizza with some local changes, an idea known as "hill climbing" (see this Norvig Pytude about <a href="https://github.com/norvig/pytudes/blob/master/ipynb/Gesture%20Typing.ipynb">gesture typing</a> for a good example).</p>
@@ -8370,16 +8520,14 @@ AAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Improving-an-existing-solution">Improving an existing solution<a class="anchor-link" href="#Improving-an-existing-solution">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's say we have an existing solution and we want to improve it. One possible way is to remove a set number of slices from the pizza, for example the 3 closest parts to a hole in the pizza, and try to fill it again while trying out every possible combination.</p>
 </div>
@@ -8390,7 +8538,7 @@ AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
 
 <span class="k">def</span> <span class="nf">remove_slice</span><span class="p">(</span><span class="n">this_slice</span><span class="p">,</span> <span class="n">empty_cells</span><span class="p">,</span> <span class="n">pizza_slices</span><span class="p">,</span> <span class="n">slice_mask</span><span class="p">):</span>
     <span class="sd">"""Removes a slice that was sliced from the pizza."""</span>
@@ -8465,7 +8613,7 @@ AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">improve_pizza</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">,</span> <span class="n">slices_to_remove</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">improve_pizza</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">,</span> <span class="n">slices_to_remove</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8502,7 +8650,7 @@ improved score: 48496
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_output</span><span class="p">(</span><span class="s1">'files/medium.out'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8511,7 +8659,7 @@ improved score: 48496
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEdCAYAAABewVDiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzsnXfcJFWV93+nQqfqZ8ITBhhyGKLC
@@ -9074,31 +9222,28 @@ lcrrlTBS0belvF8DUvhd4f1acq6VKxhjkRYAFwDYBmAngC9GXR8P7VgM4Gm1PNNuC4AalEiX7er/
 G8owwFYAW9RyQRquVxpKGvq2tPRrap1T17fxfi0518qvwtNYcTgcDofD4SSAqIdHORwOh8PhcDg2
 4EYbh8PhcDgcTgLgRhuHw+FwOBxOAuBGG4fD4XA4HE4C4EYbh8PhcDgcTgLgRhuHw+FwOBxOAuBG
 G4fD4XA4HE4C+P/ys+HNyW/EjQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can observe the result of our hill-climbing algorithm here: it added a few optimisations to some of the pizza slices at the bottom of the field, shown in the left plot as patches of yellow color (slices added last). If we let it run for a long time, maybe it would add some more of these patches.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blog post, we went from an idea to the implementation of a fast greedy solution to the training problem of the 2018 Google Hashcode. We then improved it using an iterative hill-climbing algorithm. I think this nicely shows how all the moving parts of a Hashcode problem fit together.</p>
 <p>To conclude, here's a high level summary of the tools that I found useful while tackling the pizza cutting problem:</p>
@@ -9114,8 +9259,7 @@ G4fD4XA4HE4C+P/ys+HNyW/EjQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20180207_PreparingHashcode2018.ipynb">20180207_PreparingHashcode2018.ipynb</a>.</em></p>
 </div>
@@ -9126,7 +9270,7 @@ G4fD4XA4HE4C+P/ys+HNyW/EjQAAAABJRU5ErkJggg==
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -9143,6 +9287,7 @@ G4fD4XA4HE4C+P/ys+HNyW/EjQAAAABJRU5ErkJggg==
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

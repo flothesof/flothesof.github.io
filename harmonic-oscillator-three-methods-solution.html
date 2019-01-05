@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,43 +1588,37 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, we'll be working on a classic problem: solving the harmonic oscillator equations.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Introduction:-the-harmonic-oscillator">Introduction: the harmonic oscillator<a class="anchor-link" href="#Introduction:-the-harmonic-oscillator">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What's an <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscillator</a>? It's a relatively simple model for natural systems that finds wide applications.</p>
 <p>A classical example of such a system is a mass that is connected to a spring. If the mass $m$ is located according to the coordinates $x(t)$, and the spring stiffness is $k$, then Newton's equations of momentum read:</p>
-<p>$$
+$$
 m \ddot{x} + k x = 0
-$$</p>
-<p>Let's simplify the notation in the following way:</p>
-<p>$$
+$$<p>Let's simplify the notation in the following way:</p>
+$$
 \ddot{x} + \omega_0^2 x = 0
-$$</p>
-<p>where $\omega_0^2 = \frac{k}{m}$. The above equation is the harmonic oscillator model equation. This equation alone does not allow numerical computing unless we also specify initial conditions, which define the oscillators state at the time origin.</p>
+$$<p>where $\omega_0^2 = \frac{k}{m}$. The above equation is the harmonic oscillator model equation. This equation alone does not allow numerical computing unless we also specify initial conditions, which define the oscillators state at the time origin.</p>
 <p>Here, since we have a second derivative in time of the position $x$, we need to specify two things: the initial position and the initial speed of the oscillator. These are denoted as:</p>
-<p>$$
+$$
 \begin{align}
 x(t = 0) = x_0 \\
 \dot{x}(t=0) = \dot{x}_0
 \end{align}
-$$</p>
-<p>In this notebook, we will explore three options for solving the evolution problem of this harmonic oscillator:</p>
+$$<p>In this notebook, we will explore three options for solving the evolution problem of this harmonic oscillator:</p>
 <ul>
 <li>solve it analytically</li>
 <li>solve it numerically with our own numerical scheme</li>
@@ -1457,16 +1628,14 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Analytical-solution-with-sympy">Analytical solution with sympy<a class="anchor-link" href="#Analytical-solution-with-sympy">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To solve this equation analytically, we will use sympy. Sympy provides an ordinary differential equation (ODE) module for these problems: <a href="http://docs.sympy.org/dev/modules/solvers/ode.html">http://docs.sympy.org/dev/modules/solvers/ode.html</a>.</p>
 </div>
@@ -1477,7 +1646,7 @@ $$</p>
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
 </pre></div>
 </div>
 </div>
@@ -1488,15 +1657,14 @@ $$</p>
 <div class="prompt input_prompt">In [97]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, we define our symbols and function:</p>
 </div>
@@ -1507,7 +1675,7 @@ $$</p>
 <div class="prompt input_prompt">In [98]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">omega_0</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, k, x_0, v_0, omega_0, t'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">omega_0</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, k, x_0, v_0, omega_0, t'</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'x'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1515,8 +1683,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can then use <code>dsolve</code>, which deals with differential equations:</p>
 </div>
@@ -1527,7 +1694,7 @@ $$</p>
 <div class="prompt input_prompt">In [99]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">omega_0</span> <span class="o">*</span> <span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">omega_0</span> <span class="o">*</span> <span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 <span class="n">sol</span>
 </pre></div>
 </div>
@@ -1545,8 +1712,7 @@ $$x{\left (t \right )} = C_{1} e^{- t \sqrt{- \omega_{0}}} + C_{2} e^{t \sqrt{- 
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And define our initial conditions and solve for them:</p>
 </div>
@@ -1557,7 +1723,7 @@ $$x{\left (t \right )} = C_{1} e^{- t \sqrt{- \omega_{0}}} + C_{2} e^{t \sqrt{- 
 <div class="prompt input_prompt">In [100]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ics</span> <span class="o">=</span> <span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">x_0</span><span class="p">),</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">v_0</span><span class="p">)]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ics</span> <span class="o">=</span> <span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">x_0</span><span class="p">),</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">v_0</span><span class="p">)]</span>
 <span class="n">ics</span>
 </pre></div>
 </div>
@@ -1579,7 +1745,7 @@ $$\left [ C_{1} + C_{2} = x_{0}, \quad - C_{1} \sqrt{- \omega_{0}} + C_{2} \sqrt
 <div class="prompt input_prompt">In [101]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solved_ics</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">ics</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">solved_ics</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">ics</span><span class="p">)</span>
 <span class="n">solved_ics</span>
 </pre></div>
 </div>
@@ -1601,7 +1767,7 @@ $$\left [ \left \{ C_{1} : - \frac{v_{0}}{2 \sqrt{- \omega_{0}}} + \frac{x_{0}}{
 <div class="prompt input_prompt">In [102]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_sol</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">solved_ics</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">full_sol</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">solved_ics</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">full_sol</span>
 </pre></div>
 </div>
@@ -1619,8 +1785,7 @@ $$x{\left (t \right )} = \left(- \frac{v_{0}}{2 \sqrt{- \omega_{0}}} + \frac{x_{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The above equation was obtained by sympy and contains the solution to our problem. One might wonder why it contains square roots of negative quantities. This is perfectly normal: using appropriate input, the function values will turn out to be real, as expected in the case of a mass and spring.</p>
 <p>Let's plot the solution.</p>
@@ -1637,7 +1802,7 @@ $$x{\left (t \right )} = \left(- \frac{v_{0}}{2 \sqrt{- \omega_{0}}} + \frac{x_{
 <div class="prompt input_prompt">In [103]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -1648,7 +1813,7 @@ $$x{\left (t \right )} = \left(- \frac{v_{0}}{2 \sqrt{- \omega_{0}}} + \frac{x_{
 <div class="prompt input_prompt">In [104]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">case1</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">full_sol</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x_0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">v_0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">omega_0</span><span class="p">:</span><span class="mi">1</span><span class="p">}))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">case1</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">full_sol</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x_0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">v_0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">omega_0</span><span class="p">:</span><span class="mi">1</span><span class="p">}))</span>
 <span class="n">case1</span>
 </pre></div>
 </div>
@@ -1670,7 +1835,7 @@ $$x{\left (t \right )} = \cos{\left (t \right )}$$
 <div class="prompt input_prompt">In [105]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">case1</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">case1</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1679,7 +1844,7 @@ $$x{\left (t \right )} = \cos{\left (t \right )}$$
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAADyCAYAAAC2yoUhAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXl4W+WV/79XkuVNkndJ3h1btrzHcZSFEMKShIRAA4FC
 Q2kbflBSIM90hjLQTPvrdIMhU6ZTZoBCU0obmP6SKS1gliSQpEnIQuLYiZN4d2I7tmVL3iVZtiVL
@@ -2033,7 +2198,7 @@ HMvLy4yNjRGNRgGIRqMkk0kAkslkUZ8ERN5lCncpq/HxcXw+H+l0mu7ubiKRCAC5XI6uri4AbDYb
 IyMjRCIRgsEgvb29tLa2AhCPx5mcnCQQCJBKpYjH42X7LyKVpOSzZUREZE1FGYBU5S4iYkEKdxER
 C1K4i4hYkMJdRMSC3vYkc3UmiYiUgSp3ERELUriLiFiQwl1ExIIU7iIiFqRwFxGxIIW7iIgFKdxF
 RCxI4S4iYkEKdxERC1K4i4hY0D/lvGOZgYi1AQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 <div class="output_area">
@@ -2046,8 +2211,7 @@ RCxI4S4iYkEKdxERC1K4i4hY0D/lvGOZgYi1AQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's look at our second solution.</p>
 </div>
@@ -2058,7 +2222,7 @@ RCxI4S4iYkEKdxERC1K4i4hY0D/lvGOZgYi1AQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [107]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">case2</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">full_sol</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x_0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">omega_0</span><span class="p">:</span><span class="mi">1</span><span class="p">}))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">case2</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">full_sol</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x_0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">omega_0</span><span class="p">:</span><span class="mi">1</span><span class="p">}))</span>
 <span class="n">case2</span>
 </pre></div>
 </div>
@@ -2076,8 +2240,7 @@ $$x{\left (t \right )} = - \frac{i}{2} e^{i t} + \frac{i}{2} e^{- i t}$$
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can recognize that the solution is nothing other than $sin(x)$.</p>
 </div>
@@ -2088,7 +2251,7 @@ $$x{\left (t \right )} = - \frac{i}{2} e^{i t} + \frac{i}{2} e^{- i t}$$
 <div class="prompt input_prompt">In [108]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">case2</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">case2</span><span class="o">.</span><span class="n">rhs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2097,7 +2260,7 @@ $$x{\left (t \right )} = - \frac{i}{2} e^{i t} + \frac{i}{2} e^{- i t}$$
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAADyCAYAAAC2yoUhAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXl8G9W5//8ZSd4tybsky6tiW97jJE4IWygkIQs0NNBS
 KG1DoaQptP1+W74svff23tt+y4+0/fV2AS65uaW3kNtL2lIgEJJAEkIIkOA4ibPY8ZLYjm1Zklct
@@ -2455,7 +2618,7 @@ HkzTZGlpiUKhwMzMDKFQCIBQKEQsFgMgFosRDoer+VNFdg2Fu1TV7OwsLpeLRCJBMBgkEAgAkMlk
 GBgYAMButzM5OUkgEMDr9TI4OIjP5wMgGo2ysLCA2+0mHo8TjUarti8iu4ll2zIiInuU2jIiInJ7
 CncREQtSuIuIWJDCXUTEgna6566BEyIiVaAzdxERC1K4i4hYkMJdRMSCFO4iIhakcBcRsSCFu4iI
 BSncRUQsSOEuImJBCncREQtSuIuIWNBflPWYpUw2wBcAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 <div class="output_area">
@@ -2468,27 +2631,24 @@ BSncRUQsSOEuImJBCncREQtSuIuIWNBflPWYpUw2wBcAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Okay, now on to numerical solving with our own solution.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Numerical-solution-using-finite-differences">Numerical solution using finite differences<a class="anchor-link" href="#Numerical-solution-using-finite-differences">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's discretize our problem as an explicite <a href="https://en.wikipedia.org/wiki/Finite_difference_method">finite difference scheme</a>. The problem becomes:</p>
-<p>$$
+$$
 \left\{
 \begin{align}
 x^{n+1} = && (2 - \omega_0^2dt^2)x^n - x^{n-1} \\
@@ -2496,8 +2656,7 @@ x^0 = && x_0 \\
 x^1 = && x_0 + \dot{x}_0 dt
 \end{align}
 \right.
-$$</p>
-<p>As we can see from the equation above, we need to keep track of the two previous positions $x^n$ and $x^{n-1}$ to compute the solution for the next time step. Also, the value $x^1$ is computed from the knowledge of the initial speed by a first order Taylor approximation.</p>
+$$<p>As we can see from the equation above, we need to keep track of the two previous positions $x^n$ and $x^{n-1}$ to compute the solution for the next time step. Also, the value $x^1$ is computed from the knowledge of the initial speed by a first order Taylor approximation.</p>
 <p>To solve this, I wrote a class in the next cell called <code>HarmonicOdeSolver</code>. It provides two methods, apart from <code>__init__</code>:</p>
 <ul>
 <li><code>step</code> that iterates the numerical system one single step in time</li>
@@ -2511,7 +2670,7 @@ $$</p>
 <div class="prompt input_prompt">In [109]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">class</span> <span class="nc">HarmonicOdeSolver</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">xd0</span><span class="p">,</span> <span class="n">omega_squared</span><span class="p">):</span>
@@ -2548,8 +2707,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this implementation.</p>
 </div>
@@ -2560,7 +2718,7 @@ $$</p>
 <div class="prompt input_prompt">In [110]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">HarmonicOdeSolver</span><span class="p">(</span><span class="mf">2e-1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">HarmonicOdeSolver</span><span class="p">(</span><span class="mf">2e-1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2571,7 +2729,7 @@ $$</p>
 <div class="prompt input_prompt">In [111]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">snapshot_dt</span> <span class="o">=</span> <span class="mf">0.3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">snapshot_dt</span> <span class="o">=</span> <span class="mf">0.3</span>
 </pre></div>
 </div>
 </div>
@@ -2582,7 +2740,7 @@ $$</p>
 <div class="prompt input_prompt">In [112]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">step_until</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">snapshot_dt</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">step_until</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">snapshot_dt</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2593,7 +2751,7 @@ $$</p>
 <div class="prompt input_prompt">In [113]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -2604,7 +2762,7 @@ $$</p>
 <div class="prompt input_prompt">In [114]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2619,7 +2777,7 @@ $$</p>
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8VPd56P/PM6MN7fuCJBBaWMQOAoNYbWMbbDfYSZza
 t3Wc3CTUjZOmbdpcp7lN8+rvNlvb9DatG8dO0+RmseM4sU1sYmy8sG/CgFiFJARIQruQEBJa5/v7
@@ -2884,15 +3042,14 @@ QaBARKaJSBiDDWqbLY5pzEREGKzHPmWM+Z7V8XjCGPNVY0yWMSaHwf+Pd40xtrw7NcbUA9UiMsO9
 AHuBGSJSIyKfAb4N3CMi5QyWiL5tZYyjdZPP8u9ADPC2+7v/rM/i0ZHPSimlhgvIEoNSSqnx08Sg
 lFLqOpoYlFJKXUcTg1JKqetoYlBKKXUdTQxKKaWuo4lBKaXUdTQxKKWUus7/D12WcidBnW20AAAA
 AElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's compare this to sympy.</p>
 </div>
@@ -2903,7 +3060,7 @@ AElFTkSuQmCC
 <div class="prompt input_prompt">In [115]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'my own ode solver'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'my own ode solver'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">case1</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="s1">'numpy'</span><span class="p">)(</span><span class="n">ts</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'sympy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
 </pre></div>
@@ -2920,7 +3077,7 @@ AElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlYlNfZ+PHvzSaCiAqIC6KAiCuI4ob7Go2JJhqzma2p
 Sewbu+XXvjVv0yZpm7d5m61JTWOTNEsTo1k1Jhr3KBrccMNdVhHcABUFRbbz++MZCCjKNswzy/lc
@@ -3241,15 +3398,14 @@ tpg5U9ckiTSP/d72ldx5qrB9wfaI7VHS9/HEdi3/ndpeA5YljRebpoB3GSP1agnYJ2lrcaxNUcOL
 LNCS9BrYA1zKnKdrxYhnHngJvCGdD2rz1LCkO8BTYFxSW9JpYA44JOkDaUQ0lzPj//rHZ7kGbAce
 F7/9GwPLE08+hxBC6NTIEUMIIYTeRTGEEEIoiWIIIYRQEsUQQgihJIohhBBCSRRDCCGEkiiGEEII
 JVEMIYQQSn4BM4gAB5Xj9L8AAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Okay, that's pretty good, except the ode solver lags a bit behind the sympy solution (this is due to the computation of $x^1$ that is a pretty bad approximation). Let's try again with a smaller <code>dt</code>.</p>
 </div>
@@ -3260,7 +3416,7 @@ JVEMIYQQSn4BM4gAB5Xj9L8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [117]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">HarmonicOdeSolver</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">HarmonicOdeSolver</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ts</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">step_until</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">snapshot_dt</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3272,7 +3428,7 @@ JVEMIYQQSn4BM4gAB5Xj9L8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [118]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'my own ode solver'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'my own ode solver'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">case1</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="s1">'numpy'</span><span class="p">)(</span><span class="n">ts</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'sympy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
 </pre></div>
@@ -3289,7 +3445,7 @@ JVEMIYQQSn4BM4gAB5Xj9L8AAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd8VHW6+PHPkwKht4QaQkIInUAgUiJFRARFRXRZpVjW
 ttwre3d11/bbdS27e9d7171bBGVduzRdG6isgEg10gMBKZJJI9SEHgglyfP748yEBAIpM5kz5ft+
@@ -3594,15 +3750,14 @@ fomAGEdeRMZiNbXepqpnvL3+oCkMzgM504HFWIn/oap+b29UNXYtcA/WL+wtzr+b7Q4qyP0MmCMi
 6UA/4L9tjqdGnHs7HwGbgW1Y3wl+cfWwiMwDvgO6iUieiDwIvASMFpE9WHtDL9kZY3Vc4XXMAJoA
 S53b+SyvxmSufDYMwzDKC5o9BsMwDKN6TGEwDMMwKjCFwTAMw6jAFAbDMAyjAlMYDMMwjApMYTAM
 wzAqMIXBMAzDqMAUBsMwDKOC/w8dvoQ017dcvAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Okay, looks good. What about the second case?</p>
 </div>
@@ -3613,7 +3768,7 @@ wzAqMIXBMAzDqMAUBsMwDKOC/w8dvoQ017dcvAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [119]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">HarmonicOdeSolver</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">HarmonicOdeSolver</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ts</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">step_until</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">snapshot_dt</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3625,7 +3780,7 @@ wzAqMIXBMAzDqMAUBsMwDKOC/w8dvoQ017dcvAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [120]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'my own ode solver'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'my own ode solver'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">case2</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="s1">'numpy'</span><span class="p">)(</span><span class="n">ts</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'sympy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
 </pre></div>
@@ -3642,7 +3797,7 @@ wzAqMIXBMAzDqMAUBsMwDKOC/w8dvoQ017dcvAAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd4FNfV+PHvUQFRRZGoQqggRBVNNNGEcQMXbBwSG3Dc
 HZKQX3qC3xQ7cfLGie3XTkxiYifuuPfEuAC2aTJFFIPoEipIFEkUAQKhdn5/zK6QRFHZ1c6W+3me
@@ -3948,15 +4103,14 @@ bR35NQ0f60Cv50PgDsfjO4APbIyl2UTkWqym1htV9YynPz9gCoOjI2cB8ClW4r+pqjvsjarJJgC3
 Y+1hb3XcZtgdVID7AbBERLYBw4H/tTmeJnEc7bwNbAa2Y/1N8Imrh0XkNeArIFFE8kXkHuAR4CoR
 2Yd1NPSInTE2xiW+xyKgA7DM8Ttf7NGYzJXPhmEYRm0Bc8RgGIZhNI4pDIZhGEYdpjAYhmEYdZjC
 YBiGYdRhCoNhGIZRhykMhmEYRh2mMBiGYRh1mMJgGIZh1PH/AWUJRn+igxetAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Okay, good again!
 Let's move on to the last part of this exploration.</p>
@@ -3964,29 +4118,26 @@ Let's move on to the last part of this exploration.</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Numerical-solution-using-Scipy">Numerical solution using Scipy<a class="anchor-link" href="#Numerical-solution-using-Scipy">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Scipy offers a number of tools for dealing with ordinary differential equations: <a href="https://docs.scipy.org/doc/scipy-0.18.1/reference/integrate.html">https://docs.scipy.org/doc/scipy-0.18.1/reference/integrate.html</a>. 
 Here, we'll use the <a href="https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint"><code>odeint</code></a> routine.</p>
 <p>The documentation says that this routine solves first order differential equations. This means that we need to recast our problem as a first order system. To do this, we write out a vector of unknowns:</p>
-<p>$$
+$$
 u = 
 \begin{pmatrix}
 \dot{x} \\
 x
 \end{pmatrix}
-$$</p>
-<p>Hence we can write:</p>
-<p>$$
+$$<p>Hence we can write:</p>
+$$
 \frac{d}{dt}
 \begin{pmatrix}
 \dot{x} \\ x
@@ -3994,13 +4145,12 @@ $$</p>
 \begin{pmatrix}
 -\omega_0^2 x \\ \dot{x}
 \end{pmatrix}
-$$</p>
+$$
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now write out the derivative, or the right hand side of the previous equation assuming we give our vector $u$ as input:</p>
 </div>
@@ -4011,7 +4161,7 @@ $$</p>
 <div class="prompt input_prompt">In [121]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">deriv</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">omega_squared</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">deriv</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">omega_squared</span><span class="p">):</span>
     <span class="s2">"Provides derivative of vector u."</span>
     <span class="n">xdot</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">u</span>
     <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">omega_squared</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">xdot</span><span class="p">]</span>
@@ -4021,8 +4171,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's solve case 1 using this. We define a time vector:</p>
 </div>
@@ -4033,15 +4182,14 @@ $$</p>
 <div class="prompt input_prompt">In [127]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">snapshot_dt</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">snapshot_dt</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And initial conditions.</p>
 </div>
@@ -4052,15 +4200,14 @@ $$</p>
 <div class="prompt input_prompt">In [128]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we integrate and look at the result.</p>
 </div>
@@ -4071,7 +4218,7 @@ $$</p>
 <div class="prompt input_prompt">In [129]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="k">import</span> <span class="n">odeint</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="k">import</span> <span class="n">odeint</span>
 <span class="n">scipysol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">deriv</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
@@ -4083,7 +4230,7 @@ $$</p>
 <div class="prompt input_prompt">In [130]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">scipysol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">scipysol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -4098,7 +4245,7 @@ $$</p>
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8XHd56P/PM9plS9Yuy5K8SnYs77bsxLtDnBAnAQcI
 kFAgKXBdCnTvbdPSW0r7o+XS9lK4hYQQAgFyk4YAJcQmiR0S704sO4kX2dbmVdZuS9a+zfP7QyMj
@@ -4355,15 +4502,14 @@ pVFVrQXOisgs36Y7gFIHQ/LXGeA2EUn0/e3dgYsvpg8RVuvOi8jdDDTJflBVO272fSImMYyw9rQb
 rQQ+xUDp+h3f7R6ngzJX+CPgGRE5BCwE/tnheG6ar+bzAnAQOMzAb4erRg2LyLPAXmCWiJwTkc/i
 4nXnr/F5/hNIArb6fhMev6n3tpHPxhhjhoqYGoMxxpjRscRgjDHmCpYYjDHGXMESgzHGmCtYYjDG
 GHMFSwzGGGOuYInBGGPMFSwxGGOMucL/DwgeWj9wTMQzAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's compare it again with our reference solution:</p>
 </div>
@@ -4374,7 +4520,7 @@ GHMFSwzGGGOuYInBGGPMFSwxGGOMucL/DwgeWj9wTMQzAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [131]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">scipysol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'scipy'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">scipysol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'scipy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">case1</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="s1">'numpy'</span><span class="p">)(</span><span class="n">ts</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'sympy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
@@ -4391,7 +4537,7 @@ GHMFSwzGGGOuYInBGGPMFSwxGGOMucL/DwgeWj9wTMQzAAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8VNXZwPHfk42ELRAS1gBJJpE9EAnboBIEBERFtC4s
 LrXWUovV1tfqW9tqt7e21rfWYqXW/QW0roCCIFsiErZAMOyQSVjClgUTdshy3j/uJCQhkGUmc+fO
@@ -4687,15 +4833,14 @@ dG57Y7DwwfRqFgEPOO8/ACw0MRaXicgEjC7Z25RSZ5v6Pn6TGJwHZGYByzA26A+VUjvMjcolI4H7
 MKrrrc6/m80OSqvhMWCeiGQBg4D/MTmeJnO2fD4GtgDbMH47LHXVsIi8D6wDeolInoj8AHgBGCci
 +zBaRS+YGWNjXOH7zAbaAMudvwlzmvTe+spnTdM0rTq/aTFomqZpDaMTg6ZpmlaDTgyapmlaDTox
 aJqmaTXoxKBpmqbVoBODpmmaVoNODJqmaVoNOjFomqZpNfw/gN9Hi52ImGMAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This works nicely. What about the second test case?</p>
 </div>
@@ -4706,7 +4851,7 @@ aJqmaTXoxKBpmqbVoBODpmmaVoNODJqmaVoNOjFomqZpNfw/gN9Hi52ImGMAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [132]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -4717,7 +4862,7 @@ aJqmaTXoxKBpmqbVoBODpmmaVoNODJqmaVoNOjFomqZpNfw/gN9Hi52ImGMAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [133]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scipysol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">deriv</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">scipysol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">deriv</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -4728,7 +4873,7 @@ aJqmaTXoxKBpmqbVoBODpmmaVoNODJqmaVoNOjFomqZpNfw/gN9Hi52ImGMAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [134]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">scipysol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'scipy'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">scipysol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'scipy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">case2</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="s1">'numpy'</span><span class="p">)(</span><span class="n">ts</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'sympy'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
@@ -4745,7 +4890,7 @@ aJqmaTXoxKBpmqbVoBODpmmaVoNODJqmaVoNOjFomqZpNfw/gN9Hi52ImGMAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8VNX5+PHPExJI2AIkYQ1bhrATtrAFlR1RkcWtbC51
 obRiq7V+tb9a9duvbf3a+m21tOJSRQuK4oqKsklAjCxhMeyQhC1hS1jDGkjO7487CQkkEGa7szzv
@@ -5035,23 +5180,21 @@ CKwh2VHGmNOuvk/IJAbnCZmpwHysH/SHxphN9kbllv7A3Vit6/XOfzfbHZQq5xFglohkAN2AP9kc
 j8ucPZ+PgLXABqy/HQF11bCIvA/8ALQTkRwReQB4ARgmIjuwekUv2Bnjtajk+0wD6gALnX8Tprv0
 3nrls1JKqbJCpseglFKqajQxKKWUKkcTg1JKqXI0MSillCpHE4NSSqlyNDEopZQqRxODUkqpcjQx
 KKWUKuf/A0AX1Q5xiaj8AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this article, we've solved an ordinary differential equation in three different ways. First, we solved it exactly using an analytical approach (for which sympy did all the heavy lifting). Then, we implemented our own finite difference scheme. Finally, we used one of the builtin solvers of scipy to solve the equation. What we can say is:</p>
 <ul>
@@ -5067,7 +5210,7 @@ KKWUKuf/A0AX1Q5xiaj8AAAAAElFTkSuQmCC
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -5084,6 +5227,7 @@ KKWUKuf/A0AX1Q5xiaj8AAAAAElFTkSuQmCC
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

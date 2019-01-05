@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blog post, we're going to take a look at vocal folds. There are a lot of good videos of vocal folds in action. However, they only show one part of the story. I want to take the opportunity and add an extra element of visualization to a video found on the internet: a spectrogram.</p>
 <p>If you're only interested in the result, here is what we will end up with:</p>
@@ -1424,7 +1600,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'VSgafsbA6Wg'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'VSgafsbA6Wg'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1441,16 +1617,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Finding-a-good-vocal-folds-video">Finding a good vocal folds video<a class="anchor-link" href="#Finding-a-good-vocal-folds-video">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The first step is to find a good vocal folds video. I've been searching a little bit and it turns out there is one that got my attention:</p>
 </div>
@@ -1461,7 +1635,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
 </pre></div>
 </div>
 </div>
@@ -1472,7 +1646,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'vUF6kvh5GJQ'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'vUF6kvh5GJQ'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1489,8 +1663,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's use <code>youtube-dl</code> and fetch this video to disk:</p>
 </div>
@@ -1501,7 +1674,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>youtube-dl vUF6kvh5GJQ
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>youtube-dl vUF6kvh5GJQ
 </pre></div>
 </div>
 </div>
@@ -1524,16 +1697,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Extracting-the-audio">Extracting the audio<a class="anchor-link" href="#Extracting-the-audio">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now extract some audio information from the video. We'll use the <code>moviepy</code> library to do this.</p>
 </div>
@@ -1544,7 +1715,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mpy</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mpy</span>
 </pre></div>
 </div>
 </div>
@@ -1555,15 +1726,14 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clip</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">'Opera singer Vocal Folds-vUF6kvh5GJQ.mkv'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clip</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">'Opera singer Vocal Folds-vUF6kvh5GJQ.mkv'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Once the clip is loaded, we can access its audio via its <code>clip.audio</code> attribute, which is documented here: <a href="https://zulko.github.io/moviepy/ref/AudioClip.html">https://zulko.github.io/moviepy/ref/AudioClip.html</a>. What we want is to extract the audio, plot it and superimpose it on the existing video. By accessing the audio clip object, we can the sound data in array format.</p>
 </div>
@@ -1574,7 +1744,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sample_rate</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">fps</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sample_rate</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">fps</span>
 <span class="n">audio_data</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">to_soundarray</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1586,7 +1756,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">audio_data</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">audio_data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -1603,8 +1773,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The audio data is made of two columns, which makes sense since the audio is stereo. Let's see what the sampling rate is:</p>
 </div>
@@ -1615,7 +1784,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sample_rate</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sample_rate</span>
 </pre></div>
 </div>
 </div>
@@ -1632,24 +1801,21 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is the classically used 44100 Hz.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Visualizing-the-sound">Visualizing the sound<a class="anchor-link" href="#Visualizing-the-sound">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see what the sound data looks when it's plotted using <code>matplotlib</code>.</p>
 </div>
@@ -1660,7 +1826,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -1673,7 +1839,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">audio_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">sample_rate</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">audio_data</span><span class="p">)</span>
 </pre></div>
@@ -1691,7 +1857,7 @@ h6:hover .anchor-link {
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAz4AAAD8CAYAAAC2A3H6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd8VFX6P/DPk4QkhDKUhE4IJfROSLH3/kXXde3Cuiqr
 a19dxYYj6upa1rKyKupadl27K/wUC/ZdTEJC7xA6BEgCYagh7fz+mElImcm0e++Z3Pm8Xy9fzNw5
@@ -1987,15 +2153,14 @@ fN1rzve5/fl6X88BMNlT3S0bgKtuShxFD25g6oeInAf32eBYAP9QSj2uOSQymIicAOC/AJbj2JqP
 4Fq4T/7xPW5TIvIIgMvgrty5GMD1cK/p4PvcJkTkPQCnAEgGsBvAwwA+g5f3tScBfgnuKnCHAVyr
 lCrUETfpw8SHiIiIiIhsj1PdiIiIiIjI9pj4EBERERGR7THxISIiIiIi22PiQ0REREREtsfEh4iI
 iIiIbI+JDxERERER2R4THyIiIiIisj0mPkREREREZHv/HwEQmTGKK4m+AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's not easy to make out what this actually means. Therefore, let's move on to a spectrogram vizualisation.</p>
 </div>
@@ -2006,7 +2171,7 @@ iIiIbI+JDxERERER2R4THyIiIiIisj0mPkREREREZHv/HwEQmTGKK4m+AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">NFFT</span> <span class="o">=</span> <span class="n">sample_rate</span> <span class="o">/</span> <span class="mi">25</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">NFFT</span> <span class="o">=</span> <span class="n">sample_rate</span> <span class="o">/</span> <span class="mi">25</span>
 </pre></div>
 </div>
 </div>
@@ -2017,7 +2182,7 @@ iIiIbI+JDxERERER2R4THyIiIiIisj0mPkREREREZHv/HwEQmTGKK4m+AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">specgram</span><span class="p">(</span><span class="n">audio_data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">NFFT</span><span class="o">=</span><span class="n">NFFT</span><span class="p">,</span> <span class="n">pad_to</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">Fs</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span> 
                                         <span class="n">noverlap</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'magnitude'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'plasma'</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
@@ -2035,7 +2200,7 @@ iIiIbI+JDxERERER2R4THyIiIiIisj0mPkREREREZHv/HwEQmTGKK4m+AAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvoAAAD8CAYAAAAG2QDhAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvdmOJcl2JbbczM3n6Uwx5VQDq2+RlEQCagmCIEAvgtDQ
 H+g39AH6Av2PoIcGhNaDBAFiUwJ5eW8Va8iszIiME2fweTZ3PWxziyyhH0pks3nr4mwgUJkVkSd8
@@ -7103,15 +7268,14 @@ ryCNnHKtnWMopf5T4N9AXMq+Cvw1hM9drrdzBKXULwPfC3SBI+A/Af4P3mV9FZu2/wFx6VkAf0Vr
 xLchykK/RIkSJUqUKFGiRIlvQ5SFfokSJUqUKFGiRIkS34YoC/0SJUqUKFGiRIkSJb4NURb6JUqU
 KFGiRIkSJUp8G6Is9EuUKFGiRIkSJUqU+DZEWeiXKFGiRIkSJUqUKPFtiP8PFn7ktVrkqeoAAAAA
 SUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is quite interesting. I guess that the upper frequencies show up as noice. This makes me wonder whether the original sound was recorded at a sample rate of 20 kHz rather than 44.1 kHz.</p>
 <p>Can we use that data and render it on top of the original videoclip?</p>
@@ -7119,16 +7283,14 @@ SUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Rendering-the-sound-on-top-of-the-original-video">Rendering the sound on top of the original video<a class="anchor-link" href="#Rendering-the-sound-on-top-of-the-original-video">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we need to do is to layout a matplotlib figure, extract as an image and fuse it with the original video frames. 
 Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/working_with_matplotlib.html">standard moviepy matplotlib example</a> and adjust it to our needs.</p>
@@ -7136,8 +7298,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, I define my dpi values (this depends on my screen, I used <a href="https://www.sven.de/dpi/">https://www.sven.de/dpi/</a> to determine this value).</p>
 </div>
@@ -7148,15 +7309,14 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_dpi</span> <span class="o">=</span> <span class="mf">226.98</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_dpi</span> <span class="o">=</span> <span class="mf">226.98</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's use the same pixel sizes as those of the original clip:</p>
 </div>
@@ -7167,7 +7327,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
 <span class="n">width</span><span class="p">,</span> <span class="n">height</span>
 </pre></div>
 </div>
@@ -7185,8 +7345,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now generate a short animation, that we will try to superpose with the existing movie:</p>
 </div>
@@ -7197,7 +7356,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="k">import</span> <span class="n">VideoClip</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="k">import</span> <span class="n">VideoClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.io.bindings</span> <span class="k">import</span> <span class="n">mplfig_to_npimage</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
@@ -7237,8 +7396,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check the sizes of the generated images:</p>
 </div>
@@ -7249,7 +7407,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -7270,7 +7428,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -7285,7 +7443,7 @@ Let's start with the <a href="http://zulko.github.io/moviepy/getting_started/wor
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAAD8CAYAAADzEfagAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8FeW9x/HPLyGBEHYSEFlkFURBNgOyuNcFtaita6so
 VrAutdf29qq9tnS3vbdudStWCyiKu2JFr+JGcQECUgh7QGSVBGSHQJbn/pGJjZCcM5OcZZJ8369X
@@ -7441,7 +7599,7 @@ s8PXdcXf4LvAe87rFYqJRPeEVdEzNpryXrw1wM+TXU81NXanvBfxX8DSijopP07yLrDae2wTglqf
 pXwXq5jy/3Gvr65OyndjHvbW/RJgSIhqfsqrabH3JehQqf3PvZpXAuclqeaRlO/yLQYWeT+jw7yu
 I9Qc9nXdH/jMqy8P+IU3vTvlIZ4PvAA09qY38X7P917vHst6dEaQiEgAyd49FxGpUxSaIiIBKDRF
 RAJQaIqIBKDQFBEJQKEpIhKAQlNEJACFpohIAP8P4Zo+o9LxorEAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
@@ -7452,7 +7610,7 @@ RAJQaIqIBKDQFBEJQKEpIhKAQlNEJACFpohIAP8P4Zo+o9LxorEAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -7473,7 +7631,7 @@ RAJQaIqIBKDQFBEJQKEpIhKAQlNEJACFpohIAP8P4Zo+o9LxorEAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -7488,7 +7646,7 @@ RAJQaIqIBKDQFBEJQKEpIhKAQlNEJACFpohIAP8P4Zo+o9LxorEAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAAD8CAYAAADzEfagAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmcHlWd7/8+Vc/Wa7o7a2cPJCFAIIEAMQQUcWEVYeAK
 jCDj1cHxetG5c73KS3/3jvN66Yw6LqPOnbnCdQF5OddxhQEdBBwVZRXZIezZyNJJp5f09jxVdc7v
@@ -8250,15 +8408,14 @@ CGkXcQY4XvckrZN8DJzw47oCXN8iTbF+J/3FfbCVJ2ka85Ln/hhwS0HOb7jTrH8JhhrG73LnBWB7
 JufbSVO+WWDaP2Ml57qNc+m5vgn4xv3mgKc9PkIq4jXgHWDA46v9vOb9I530iV8EBUEQVCD39DwI
 gqCniKIZBEFQgSiaQRAEFYiiGQRBUIEomkEQBBWIohkEQVCBKJpBEAQViKIZBEFQgb8BpMEuI2uc
 cNsAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Okay, everything matches, let's try to merge the two clips together.</p>
 </div>
@@ -8269,7 +8426,7 @@ cNsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">0.6</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mask_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">0.6</span>
 </pre></div>
 </div>
 </div>
@@ -8280,7 +8437,7 @@ cNsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">ImageClip</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">mask_array</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">ImageClip</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">mask_array</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8291,7 +8448,7 @@ cNsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stack</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">t_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">animation</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">)],</span> <span class="n">use_bgclip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">stack</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">t_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">animation</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">)],</span> <span class="n">use_bgclip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8302,7 +8459,7 @@ cNsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpy</span><span class="o">.</span><span class="n">ipython_display</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoplay</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mpy</span><span class="o">.</span><span class="n">ipython_display</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoplay</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8326,8 +8483,7 @@ cNsAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that this works, let's do the final video:</p>
 </div>
@@ -8338,7 +8494,7 @@ cNsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="n">my_dpi</span><span class="p">,</span> <span class="n">height</span><span class="o">/</span><span class="n">my_dpi</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="n">my_dpi</span><span class="p">,</span> <span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="n">my_dpi</span><span class="p">,</span> <span class="n">height</span><span class="o">/</span><span class="n">my_dpi</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="n">my_dpi</span><span class="p">,</span> <span class="p">)</span>
 <span class="n">selection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">time</span><span class="p">)</span> <span class="o"><</span> <span class="mf">1.</span>
 <span class="n">freq_selection</span> <span class="o">=</span> <span class="n">freqs</span> <span class="o"><</span> <span class="mi">10000</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">selection</span><span class="p">],</span> <span class="n">freqs</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[:,</span> <span class="n">selection</span><span class="p">]))</span>
@@ -8410,8 +8566,7 @@ cNsAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I've uploaded the output to YouTube, which you can see below:</p>
 </div>
@@ -8422,7 +8577,7 @@ cNsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'VSgafsbA6Wg'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'VSgafsbA6Wg'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8439,16 +8594,14 @@ cNsAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blog post, we managed to plot a spectrogram on top of an existing clip of vocal folds. This opens interesting perspectives for trying to understand this complex part of the singing process. To achieve that, we leveraged the power of the matplotlib and moviepy libraries in a relatively straightforward fashion and finally used YouTube to broadcast the result.
 It could be fun to program a YouTube bot that could do this automatically and annotate existing vocal folds videos like these.</p>
@@ -8460,7 +8613,7 @@ It could be fun to program a YouTube bot that could do this automatically and an
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -8477,6 +8630,7 @@ It could be fun to program a YouTube bot that could do this automatically and an
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,24 +1588,21 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we've seen in my <a href="http://flothesof.github.io/rice-cooker-temperature.html">previous post on rice cooker temperature measurements</a>, sometimes it's easier to perform an experiment than to explain it, as the post ended on many open questions. In this post, I'll propose a simple model of what's going on during the cooking process that I measured previously.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Recap-about-what's-happening-in-the-rice-cooker">Recap about what's happening in the rice cooker<a class="anchor-link" href="#Recap-about-what's-happening-in-the-rice-cooker">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Essentially, the rice cooker does what other cooking instruments in your kitchen do: it uses electric energy and converts it to heat to break molecular links in food, making it easier to digest for humans. This is what's called cooking.</p>
 <p>When we look into the details of this heat transfer to food, this is what seems to happen: an electric heater transfers heat to the metal pot. The pot transfers the heat to the water. The water transfers the heat to the rice, which gets cooked. While transfering heat to the rice, water boils and evaporates. Once it has evaporated entirely, the cooking is finished and the rice cooker turns itself off.</p>
@@ -1437,27 +1611,23 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Heat-balance-for-the-rice-cooker">Heat balance for the rice cooker<a class="anchor-link" href="#Heat-balance-for-the-rice-cooker">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's denote by $Q_h$ the heat produced by the thermal heater of the rice cooker. Assuming it has the fixed power of 500 W as described on the seller's website, the quantity of heat generated after a time $t$ is written as:</p>
-<p>$$
+$$
 Q_h = P \Delta t
-$$</p>
-<p>Here, $P$ are the 500 W from the thermal resistance.</p>
+$$<p>Here, $P$ are the 500 W from the thermal resistance.</p>
 <p>We'll assume that the metal pot instantly transfers the heat to the water. Thus the heat absorbed by the water will elevate its temperature. We will assume that the temperature is uniform in the water. Thus the temperature, while the water is not boiling, is written as:</p>
-<p>$$
+$$
 T_w = T_0 + Q_h / c_p / m
-$$</p>
-<p>Above, we've made use of the <a href="https://en.wikipedia.org/wiki/Heat_capacity">specific heat capacity</a> of water, which we will assume to be $c_p = 4.2 \, kJ/(kg⋅K)$. This means that if we want to raise the temperature of a kilogram of water by 1 degree, we need to transfer it 4200 joules.</p>
+$$<p>Above, we've made use of the <a href="https://en.wikipedia.org/wiki/Heat_capacity">specific heat capacity</a> of water, which we will assume to be $c_p = 4.2 \, kJ/(kg⋅K)$. This means that if we want to raise the temperature of a kilogram of water by 1 degree, we need to transfer it 4200 joules.</p>
 <p>When the water reaches 100°C at atmospheric pressure, it begins to boil. The boiling process is an indication of the transformation that is taking place: water turns from a liquid to a gas. This process costs a lot more energy than the heating process. We'll assume <a href="https://en.wikipedia.org/wiki/Enthalpy_of_vaporization">vaporization</a> to take $\Delta H _{vap} = 2257 \, kJ / kg$.</p>
 <p>Once it becomes gas, the water mixes with the air in the rice cooker atmosphere. At the same time, a flux of outgoing hot air and water gas appears. This is where our measurement is carried out. In a first step, we'll simplify our problem and just assume we measure the temperature of the water.</p>
 <p>Let's now turn to some numerical computation based on these numbers.</p>
@@ -1465,16 +1635,14 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Numerical-solution">Numerical solution<a class="anchor-link" href="#Numerical-solution">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We'll try to compute the solution of the previous problem description using simple time stepping. At each time step, we can compute the heat produced by the heater, the remaining mass of water and the temperature of the water (and thus the temperature of the air, which is our measured value).</p>
 </div>
@@ -1485,7 +1653,7 @@ $$</p>
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">m_0</span><span class="p">,</span> <span class="n">T_0</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">m_0</span><span class="p">,</span> <span class="n">T_0</span><span class="p">):</span>
     <span class="s2">"Returns the heat produced, remaining water mass and water temperature at time t (in seconds)."</span>
     <span class="n">CP</span> <span class="o">=</span> <span class="mf">4.2e3</span>
     <span class="n">DeltaHV</span> <span class="o">=</span> <span class="mf">2257e3</span>
@@ -1506,8 +1674,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I've introduced all of the starting parameters to our solving function. Let's now evaluate it at different times:</p>
 </div>
@@ -1518,7 +1685,7 @@ $$</p>
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"time </span><span class="si">{}</span><span class="s2"> s: Q_h=</span><span class="si">{:.2f}</span><span class="s2"> J, m=</span><span class="si">{:.2}</span><span class="s2"> kg, T=</span><span class="si">{:.2f}</span><span class="s2"> °C"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">solve</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1541,8 +1708,7 @@ time 3600 s: Q_h=1800000.00 J, m=0.35 kg, T=100.00 °C
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can plot this:</p>
 </div>
@@ -1553,7 +1719,7 @@ time 3600 s: Q_h=1800000.00 J, m=0.35 kg, T=100.00 °C
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1567,7 +1733,7 @@ time 3600 s: Q_h=1800000.00 J, m=0.35 kg, T=100.00 °C
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">t</span><span class="p">,)</span> <span class="o">+</span> <span class="n">solve</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">35</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">t</span><span class="p">,)</span> <span class="o">+</span> <span class="n">solve</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">35</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -1578,7 +1744,7 @@ time 3600 s: Q_h=1800000.00 J, m=0.35 kg, T=100.00 °C
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'time (minutes)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'remaining water (kg)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'remaining water in the rice cooker'</span><span class="p">)</span>
@@ -1597,7 +1763,7 @@ time 3600 s: Q_h=1800000.00 J, m=0.35 kg, T=100.00 °C
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAAEhCAYAAACDefxEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xtcjvf/B/DX57pvnUvdKToKRQmhnA8p2Zy1scaXIWxm
 GsNsc5wctpmNMWO2oXwdMybmMDkTJof4Sr4qclwqSUh0d31+f/R1/9w6uEp1ddX7+Xh8H9/7Or+u
@@ -1889,15 +2055,14 @@ LCzQr18/nDlzRje9Z8+e+Omnn7B371507twZw4cPL3Zfjhw5glWrVkEURdjb22PcuHG6dR07dgzd
 unUrVU5SvdBLmAgpof379+PWrVsYNmyY3FHKxI0bN/Drr79izpw5ckchCkBFgxBCiGR0TYMQQohk
 VF1nqrYAAAAySURBVDQIIYRIRkWDEEKIZFQ0CCGESEZFgxBCiGRUNAghhEhGRYMQQohkVDQIIYRI
 9n9643qPW+l8eQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also plot the temperature above the rice cooker as a function of time:</p>
 </div>
@@ -1908,7 +2073,7 @@ VF1nqrYAAAAySURBVDQIIYRIRkWDEEKIZFQ0CCGESEZFgxBCiGRUNAghhEhGRYMQQohkVDQIIYRI
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'time (minutes)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'temperature (°C)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'temperature above the rice cooker'</span><span class="p">)</span>
@@ -1927,7 +2092,7 @@ VF1nqrYAAAAySURBVDQIIYRIRkWDEEKIZFQ0CCGESEZFgxBCiGRUNAghhEhGRYMQQohkVDQIIYRI
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAEhCAYAAABRKfYcAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlYVPX+B/D3DPsIMrKZiERuqbihuKWyuORz1auUhqnX
 NLvdsvxZ1C3zmpWZdv1ZLrm1XZX0elMr0PrVbVMSLRPEhdWQRCOSVQgFZJnP7w8fJkcGHEaG2d6v
@@ -2156,23 +2321,21 @@ eucfPHgwYmNjUVZWZvChvMZ+Y+rfvz/uuecePPfcc2jfvj2mTp2KEydOaO+fOHEiNm/ejK+++gph
 YWGYN29es8/l8OHD2LZtGzQaDfz9/bFo0SLtYx05cgTjx483KifZF15Qiug2fPvtt8jLy8PcuXPN
 HaVVXLx4Ee+99x5WrFhh7ihkBVhAiIjIKBwDISIio7CAEBGRUVhAiIjIKCwgRERkFBYQIiIyCgsI
 EREZhQWEiIiMwgJCRERG+X8cRthf1VSW2gAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now compare this simple model to our previous measurement.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Comparison-with-experiment">Comparison with experiment<a class="anchor-link" href="#Comparison-with-experiment">¶</a></h1>
 </div>
@@ -2183,7 +2346,7 @@ EREZhQWEiIiMwgJCRERG+X8cRthf1VSW2gAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'log_20160327_v2.txt'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'time'</span><span class="p">])</span>
 <span class="n">ind</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'time'</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">((</span><span class="n">ind</span> <span class="o">-</span> <span class="n">ind</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'timedelta64[s]'</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span>
@@ -2197,7 +2360,7 @@ EREZhQWEiIiMwgJCRERG+X8cRthf1VSW2gAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'experiment'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'simulation'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
@@ -2219,7 +2382,7 @@ EREZhQWEiIiMwgJCRERG+X8cRthf1VSW2gAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm8AAAGBCAYAAAAwkFbnAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8FdX9//HXmSRAQkJCwk7YEZHIJoiIC6vWFXAD92rd
 Km5g617rVq3UBVGLVaxotf1WrYJotWpYBBd+goIiiErYCUsAcxPIfuf8/pgQiIRwyTa5ue/n4+Ej
@@ -2635,15 +2798,14 @@ oijCzc0Nb7/9tsH2I0eORFJSEsrKyqBQKFBWVobPPvsMpaWlkMlkGDt2LPz9/QEAN2/ehFwuh7u7
 e6vjI6IXkyB21GPHiYheAMeOHUNeXh5mzJjxzHZxcXEICgrC8OHDOygyIrIWLN6IiIiILAiveSMi
 IiKyICzeiIiIiCwIizciIiIiC8LijYiIiMiCsHgjIiIisiAs3oiIiIgsCIs3IiIiIgvC4o2IiIjI
 gvw/uyPIGjpsQz4AAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This graph allows us to pinpoint a lot of things.</p>
 <p>First, we see that our model has the same shape but does not yield good predictions. For instance:</p>
@@ -2658,16 +2820,14 @@ gvw/uyPIGjpsQz4AAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The model described in this blog post is really simple. Although it allows to qualitatively understand the heating process, which is basically just making water boil, it's pretty bad at enabling finer understanding of the cooking process. Improvements that would be needed to make it more accurate (in my opinion, but I'm no expert) would be:</p>
 <ul>
@@ -2684,7 +2844,7 @@ gvw/uyPIGjpsQz4AAAAASUVORK5CYII=
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -2701,6 +2861,7 @@ gvw/uyPIGjpsQz4AAAAASUVORK5CYII=
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

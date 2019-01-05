@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,16 +1588,14 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Being in Las Vegas, it's difficult to think about poker and not ask yourself "How does it really work? What are the odds of winning with a given hand?". Therefore, this post is devoted to an attempt at implementing a poker simulation.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below, I collected a set of references that I have used while writing this post:</p>
 <ul>
@@ -1433,16 +1608,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-card-game-model">The card game model<a class="anchor-link" href="#The-card-game-model">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To start off, we're going to need to model a card game. A deck of cards is modelled as a sequence of cards. I chose to model an individual card using a tuple containing the suite of the card and its value. There are four suits: clubs, diamonds, hearts and spades. The suite is coded using initials <code>c</code>, <code>d</code>, <code>h</code> and <code>s</code>. Then there are 13 ranks, which are coded by their number for cards 2-10 and 11-14 for jacks, queens, kings and the ace.</p>
 <p>Based on this, we can write the following function, which generates a new game:</p>
@@ -1454,7 +1627,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">new_card_game</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">new_card_game</span><span class="p">():</span>
     <span class="n">game</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">suite</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">,</span> <span class="s1">'h'</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
@@ -1470,7 +1643,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">game</span> <span class="o">=</span> <span class="n">new_card_game</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">game</span> <span class="o">=</span> <span class="n">new_card_game</span><span class="p">()</span>
 <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1488,8 +1661,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To shuffle a card game, we simply use the built-in <code>shuffle</code> function.</p>
 </div>
@@ -1500,7 +1672,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">shuffle</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">shuffle</span>
 </pre></div>
 </div>
 </div>
@@ -1511,7 +1683,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
 <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1529,8 +1701,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can thus define a new shuffled deck method:</p>
 </div>
@@ -1541,7 +1712,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">new_shuffled_card_game</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">new_shuffled_card_game</span><span class="p">():</span>
     <span class="n">game</span> <span class="o">=</span> <span class="n">new_card_game</span><span class="p">()</span>
     <span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">game</span>
@@ -1551,16 +1722,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Detecting-poker-hands">Detecting poker hands<a class="anchor-link" href="#Detecting-poker-hands">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we now need is a way to compare strenghts of different poker hands. To code this, I am following the advice found <a href="http://stackoverflow.com/questions/5874228/picking-the-best-hand-out-of-7-cardspoker-texas-holdem">here</a>: I will code a comparator that checks whether a given combination is present or not. To start, I'm going to code the elementary functions will detect the standard hands found in poker:</p>
 <ul>
@@ -1587,8 +1756,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's start by inplementing how to check for a four of a kind. To do this, we count the number of occurences of a given card in the hand, using the built-in Python <code>Counter</code>.</p>
 </div>
@@ -1599,7 +1767,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 </pre></div>
 </div>
 </div>
@@ -1610,7 +1778,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_four_of_a_kind</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_four_of_a_kind</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">4</span><span class="p">:</span> 
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">])</span>
@@ -1629,7 +1797,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_four_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_four_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_four_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_four_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
                                <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">11</span><span class="p">)])</span>
@@ -1652,8 +1820,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To check for a full house, we proceed as with the previous function and count the occurences of cards in the hand, but verify that the two most common cards are present 3 and 2 times.</p>
 </div>
@@ -1664,7 +1831,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_full_house</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_full_house</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">5</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">])</span>
@@ -1685,7 +1852,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_full_house</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_full_house</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_full_house</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> 
                            <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
 </pre></div>
@@ -1706,8 +1873,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The flush is detected by counting the number of cards by suites and then making sure there are at least five of the most common suite.</p>
 </div>
@@ -1718,7 +1884,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_flush</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_flush</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">5</span><span class="p">:</span> 
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">])</span>
@@ -1738,7 +1904,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_flush</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_flush</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_flush</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
 </pre></div>
 </div>
@@ -1758,8 +1924,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The straight is detected by sorting the cards on hand, then taking only unique cards using the Python built-in <code>set</code> (meaning only one 3, even if there are five of them) and finally checking whether there are five increasing numbers in a row, using the <code>range</code> function.</p>
 </div>
@@ -1770,7 +1935,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_straight</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_straight</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="n">sorted_hand</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">]))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">5</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -1790,7 +1955,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_straight</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_straight</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_straight</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_straight</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_straight</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span> <span class="c1"># a hand with an ace</span>
@@ -1819,8 +1984,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For three of a kind, we proceed in a similar fashion than for four of a kind.</p>
 </div>
@@ -1831,7 +1995,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_three_of_a_kind</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_three_of_a_kind</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">3</span><span class="p">:</span> 
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">])</span>
@@ -1850,7 +2014,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_three_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_three_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_three_of_a_kind</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
 </pre></div>
 </div>
@@ -1870,8 +2034,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's move on to two pairs, which is inspired from the code for full house.</p>
 </div>
@@ -1882,7 +2045,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_two_pairs</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_two_pairs</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">4</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">])</span>
@@ -1901,7 +2064,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_two_pairs</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_two_pairs</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_two_pairs</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_two_pairs</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
 </pre></div>
@@ -1923,8 +2086,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One pair draws on a similar logic:</p>
 </div>
@@ -1935,7 +2097,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_one_pair</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_one_pair</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span> <span class="o"><</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">])</span>
@@ -1954,7 +2116,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_one_pair</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_one_pair</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_one_pair</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">7</span><span class="p">)])</span>
 </pre></div>
 </div>
@@ -1974,8 +2136,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We also implement a function that returns a high card. Obviously, that function should always be true and return as a rank the highest observed card.</p>
 </div>
@@ -1986,7 +2147,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_high_card</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_high_card</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="nb">max</span><span class="p">([</span><span class="n">card</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">hand</span><span class="p">]))</span>
 </pre></div>
 </div>
@@ -1998,7 +2159,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_high_card</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_high_card</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_high_card</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
 </pre></div>
 </div>
@@ -2018,8 +2179,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can finish this off by implementing the straight flush using the previously defined functions (even though this is not computationally optimal):</p>
 </div>
@@ -2030,7 +2190,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_straight_flush</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contains_straight_flush</span><span class="p">(</span><span class="n">hand</span><span class="p">):</span>
     <span class="n">straight</span> <span class="o">=</span> <span class="n">contains_straight</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span>
     <span class="n">flush</span> <span class="o">=</span> <span class="n">contains_flush</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">straight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">flush</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
@@ -2047,7 +2207,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_straight_flush</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">contains_straight_flush</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
 <span class="nb">print</span> <span class="n">contains_straight_flush</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
 </pre></div>
 </div>
@@ -2067,16 +2227,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Writing-the-comparison-function">Writing the comparison function<a class="anchor-link" href="#Writing-the-comparison-function">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have done this base work, we can move on to write the full hand comparison function. It works by assuming that you give at least two different hands as input and then checks in the right order whether a given hand is found among all hands. If not, it moves on to the next lower ranked hand, until</p>
 </div>
@@ -2087,7 +2245,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compare_hands</span><span class="p">(</span><span class="n">hands</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compare_hands</span><span class="p">(</span><span class="n">hands</span><span class="p">):</span>
     <span class="sd">""" Determines highest hand from given hands. </span>
 <span class="sd">        Returns winning hand or tied hands</span>
 <span class="sd">    """</span>
@@ -2120,8 +2278,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's sample the output from the previous function in a random two five card hands drawn against each other from a shuffled game.</p>
 </div>
@@ -2132,7 +2289,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
 <span class="n">hand1</span> <span class="o">=</span> <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 <span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
 <span class="n">hand2</span> <span class="o">=</span> <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
@@ -2155,8 +2312,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's also time the previous function to see how quick the process is.</p>
 </div>
@@ -2167,12 +2323,12 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">timeit</span>
-shuffle(game)
-hand1 = game[:5]
-shuffle(game)
-hand2 = game[:5]
-compare_hands([hand1, hand2])
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>it
+<span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+<span class="n">hand1</span> <span class="o">=</span> <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+<span class="n">hand2</span> <span class="o">=</span> <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">compare_hands</span><span class="p">([</span><span class="n">hand1</span><span class="p">,</span> <span class="n">hand2</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -2190,16 +2346,14 @@ compare_hands([hand1, hand2])
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="A-first-statistical-simulation">A first statistical simulation<a class="anchor-link" href="#A-first-statistical-simulation">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Based on the previous work, we can already do a little bit of statistics. In the next example, we'll reuse the scenario we were considering: two players are playing against each other, each drawing five cards from a shuffled deck. They then compare their hands and thus determine the output. We will count the number of occurences of ties and wins, and also keep track of what the most common winning hand is.</p>
 </div>
@@ -2210,7 +2364,7 @@ compare_hands([hand1, hand2])
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
 </pre></div>
 </div>
@@ -2222,23 +2376,23 @@ compare_hands([hand1, hand2])
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-winners = Counter()
-combinations = Counter()
-for i in range(100000):
-    game = new_card_game()
-    shuffle(game)
-    hand1 = game[:5]
-    hand2 = game[5:10]
-    outcome = compare_hands([hand1, hand2])
-    if outcome[0] != 'tie':
-        if outcome[1] == hand1:
-            winners['player 1'] += 1
-        else:
-            winners['player 2'] += 1
-    else:
-        winners['tie'] += 1
-    combinations[outcome[2]] += 1
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">winners</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="n">combinations</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+    <span class="n">game</span> <span class="o">=</span> <span class="n">new_card_game</span><span class="p">()</span>
+    <span class="n">shuffle</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+    <span class="n">hand1</span> <span class="o">=</span> <span class="n">game</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">hand2</span> <span class="o">=</span> <span class="n">game</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">outcome</span> <span class="o">=</span> <span class="n">compare_hands</span><span class="p">([</span><span class="n">hand1</span><span class="p">,</span> <span class="n">hand2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">outcome</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'tie'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">outcome</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">hand1</span><span class="p">:</span>
+            <span class="n">winners</span><span class="p">[</span><span class="s1">'player 1'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">winners</span><span class="p">[</span><span class="s1">'player 2'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">winners</span><span class="p">[</span><span class="s1">'tie'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">combinations</span><span class="p">[</span><span class="n">outcome</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
@@ -2256,8 +2410,7 @@ for i in range(100000):
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This can be plotted in the following way:</p>
 </div>
@@ -2268,7 +2421,7 @@ for i in range(100000):
 <div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">combinations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">combinations</span>
 </pre></div>
 </div>
 </div>
@@ -2289,7 +2442,7 @@ for i in range(100000):
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
 <span class="n">sorted_combinations</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">combinations</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_combinations</span><span class="p">)),</span>
@@ -2315,7 +2468,7 @@ for i in range(100000):
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAskAAAEYCAYAAACuv2v6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcHFW5//HPJEDCkgBBQNYMyI7KElFUhAFlcQMEZIcE
 uHgBkSB6L4u/K3HjAioKIqhsAQQuIGERkZ0BZIuGJER2IkFBEnYSwhoyvz++p+iaTs9MTc/Uqeru
@@ -2624,15 +2777,14 @@ UcR2ay0k4cUlzMzMzKylTUejx4lRwIyCzsXy55J/ZmZmZhkcCDwO/Aj4cbh/YKFnZHlyyT8zMzOz
 jIpK9bD4XPLPzMzMzKxKkas7mpmZmZmVUpGrO5qZmZmZlVKRqzuamZmZmZWSS/6ZmZmVkJelNitW
 srpjIubqjmZmZtYDr7hnVqwiV3c0MzOzHrQVfQJmxsbAdkAXqnbxSLGnY2ZmZmZmZmZmZmZmZmZm
 ZmZmZmZmZmZmZmZmZmZmZjaI/j8h2qguxSEfuwAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As expected, the sequence of winning combinations appears as in the rules, which is indeed, after that test, its probability (from rare to frequent): straight flush, four of a kind, full house, flush, straight, three of a kind, two pairs, high card, one pair.</p>
 <p>Actually, I'm surprised by one thing: why is the high card appearing less frequently than the two pairs?</p>
@@ -2640,16 +2792,14 @@ ZmZmZmZmZmZmZmZmZmZmZjaI/j8h2qguxSEfuwAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Calculating-the-odds-of-winning-with-a-given-hand:-convergence-plots">Calculating the odds of winning with a given hand: convergence plots<a class="anchor-link" href="#Calculating-the-odds-of-winning-with-a-given-hand:-convergence-plots">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have the backbone of our simulation tool coded, we can try to ask more elaborate questions. Suppose we have a given pair of cards dealt to us. How do the odds of winning change between the following situations:</p>
 <ul>
@@ -2674,7 +2824,7 @@ ZmZmZmZmZmZmZmZmZmZmZjaI/j8h2qguxSEfuwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">winning_odds</span><span class="p">(</span><span class="n">starting_hand</span><span class="p">,</span> <span class="n">opponent_number</span><span class="p">,</span> <span class="n">number_of_games</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">winning_odds</span><span class="p">(</span><span class="n">starting_hand</span><span class="p">,</span> <span class="n">opponent_number</span><span class="p">,</span> <span class="n">number_of_games</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">wins</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_games</span><span class="p">):</span>
@@ -2721,7 +2871,7 @@ ZmZmZmZmZmZmZmZmZmZmZjaI/j8h2qguxSEfuwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">winning_odds</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">winning_odds</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
              <span class="mi">3</span><span class="p">,</span>
              <span class="n">number_of_games</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
@@ -2744,14 +2894,14 @@ ZmZmZmZmZmZmZmZmZmZmZjaI/j8h2qguxSEfuwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-number_of_games = pl.linspace(10, 1000, num=20).astype(pl.int32)
-results = [winning_odds([('c', 14), ('d', 10)],
-                         4, n) for n in number_of_games]
-pre_flop = [result['pre-flop'] / float(n) for (result, n) in zip(results, number_of_games)]
-post_flop = [result['post-flop'] / float(n) for (result, n) in zip(results, number_of_games)]
-post_turn = [result['post-turn'] / float(n) for (result, n) in zip(results, number_of_games)]
-post_river = [result['post-river'] / float(n) for (result, n) in zip(results, number_of_games)]
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">number_of_games</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">winning_odds</span><span class="p">([(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+                         <span class="mi">4</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">number_of_games</span><span class="p">]</span>
+<span class="n">pre_flop</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">'pre-flop'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">number_of_games</span><span class="p">)]</span>
+<span class="n">post_flop</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">'post-flop'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">number_of_games</span><span class="p">)]</span>
+<span class="n">post_turn</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">'post-turn'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">number_of_games</span><span class="p">)]</span>
+<span class="n">post_river</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">'post-river'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">number_of_games</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -2773,7 +2923,7 @@ post_river = [result['post-river'] / float(n) for (result, n) in zip(results, nu
 <div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_games</span><span class="p">,</span> <span class="n">pre_flop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'pre-flop'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_games</span><span class="p">,</span> <span class="n">pre_flop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'pre-flop'</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_games</span><span class="p">,</span> <span class="n">post_flop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'post-flop'</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_games</span><span class="p">,</span> <span class="n">post_turn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'post-turn'</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number_of_games</span><span class="p">,</span> <span class="n">post_river</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'post-river'</span><span class="p">)</span>
@@ -2798,7 +2948,7 @@ post_river = [result['post-river'] / float(n) for (result, n) in zip(results, nu
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAAEZCAYAAACJjGL9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXd4VNXWh98kpADpCS0JXboggihIC2KXoigqAhJEAa+g
 6PViQS94LSiiotcGikSQoqhXmgiK5KOjSFHpvSShpAdIn/39sWdyJskkmSSTySSs93nOM3POnDl7
@@ -3164,15 +3314,14 @@ Q89OFNAebJWvjcD3ULAWFJxN3E7VzlmB0llvRemat6IRxI5wvW0oJlLNRVStn2uRq+fhsP0sCtpP
 Bb5CHIksqnLdSpqkP2sZij88BfwCeFXq3NVoBHRzqm4x8E2kRxvwS+BTwJeQm2seWjToL1XaY4wx
 peUAFP8ALcW5k5F/yEpPENgfTkCGwJghGekvuzGtQDt6Ih+D3EiLqP3djGZkCfBJojvJGGOMMcYY
 Y4wxxhhjjDHGGGOMMcYYY4wxxhhjysL/AO63VcnLspxUAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have tested this on a small scale, we can write a more general function that automates the previous computation for a given starting hand:</p>
 </div>
@@ -3183,7 +3332,7 @@ Y4wxxhhjjDHGGGOMMcYYY4wxxhhjysL/AO63VcnLspxUAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_convergence</span><span class="p">(</span><span class="n">starting_hand</span><span class="p">,</span> <span class="n">opponent_number</span><span class="p">,</span> <span class="n">number_of_games</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_convergence</span><span class="p">(</span><span class="n">starting_hand</span><span class="p">,</span> <span class="n">opponent_number</span><span class="p">,</span> <span class="n">number_of_games</span><span class="p">):</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">winning_odds</span><span class="p">(</span><span class="n">starting_hand</span><span class="p">,</span>
                          <span class="n">opponent_number</span><span class="p">,</span> 
                          <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">number_of_games</span><span class="p">]</span>
@@ -3208,8 +3357,7 @@ Y4wxxhhjjDHGGGOMMcYYY4wxxhhjysL/AO63VcnLspxUAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For instance, in the plot below, we check that the odds are symmetric with respect to interchanging the two cards from the hand used in the previous plot.</p>
 </div>
@@ -3220,8 +3368,8 @@ Y4wxxhhjjDHGGGOMMcYYY4wxxhhjysL/AO63VcnLspxUAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-plot_convergence([('d', 10), ('c', 14)], 4, pl.linspace(10, 1000, num=20).astype(pl.int32))
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">plot_convergence</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">int32</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -3237,7 +3385,7 @@ plot_convergence([('d', 10), ('c', 14)], 4, pl.linspace(10, 1000, num=20).astype
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAAEZCAYAAACJjGL9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXlYVdXawH+HGQUBcVYUJYec08ycEDPBxNS0vGpqqKV2
 C23wlqFetDS1bFCbtNvNm1N9mppBKQ6AWpo5Zc6Js+CQiCICMqzvj3XgDOwDBzhMsn7Ps59z9t5r
@@ -3649,15 +3797,14 @@ K3PP8xmYE9IYTJK2xvF6jY/3e79WgzlxrsT8zo6y9j+I6RJag7no2Y5JaNe3ytc3wAJMshZMctbT
 k384CHwA/MTx2SWYFtCzjn3jgP/CxCMO+Aj4PTAF0811LWbRoJ1+yiMi4lqnYPIfYJbi3E7zX2Q5
 BwiciHxMRSDSoOb+ZReJBEmYK/J4TDfSrTT+3oxwNAm4Bbs7SURERERERERERERERERERERERERE
 RMQt/gWBRvAypW/scgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the next plot, we examine the convergence plot of the odds for two different hands whose only difference is that one is of the same suite, the other is not.</p>
 </div>
@@ -3668,13 +3815,13 @@ RMQt/gWBRvAypW/scgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pl.figure(figsize=(10, 6))
-pl.subplot(121)
-plot_convergence([('d', 14), ('c', 10)], 4, pl.array([10, 100, 1000, 2000, 5000]))
-pl.subplot(122)
-plot_convergence([('d', 14), ('d', 10)], 4, pl.array([10, 100, 1000, 2000, 5000]))
-pl.tight_layout()
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">plot_convergence</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]))</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">plot_convergence</span><span class="p">([(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]))</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -3690,7 +3837,7 @@ pl.tight_layout()
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAscAAAGrCAYAAAAsKDqSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xt8VNW5//HPEHIBEkggAgYI0dhiUZDqoUVRCFoBBfH2
 84j3oG21lYBtPVW5lLSWg62eniqtVavHS6Xaq7aFqigStVZtacUbeOMO4aKAkEACIVm/P9ZMMpNM
@@ -4218,23 +4365,21 @@ MX1sjcCjwMSU770fM8JyZ8qypcDPMe9HIfAY8AXgu5hDhx8H/gq81cf2iEjuKQ9npjwsIuKhAkwf
 HcBkTPLP9QfC1JNrBuN4TNIVEfED5WHxnVzvoCLZVIb5xF+EOTT3eQZ+zc589A3gcyQP0YmI5Dvl
 YREREREREREREREREREREREREREREREREREREREREREREQmw/wVyBlu/HI9uGgAAAABJRU5ErkJg
 gg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Well, it seems that the difference is subtle: pre-flop it should absolutely be the same, as there are only pairs that can be played. However we notice that the previous plot shows a little higher odds after the flop for the same As/10 of same suit.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A question that came up during my stay in Las Vegas was: how likely is it to lose with Ace/King (different suites)? During the tournament, this hand lost to a pair of Queens.</p>
 </div>
@@ -4245,8 +4390,8 @@ gg==
 <div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-plot_convergence([('h', 14), ('s', 13)], 6, pl.array([10, 100, 500, 1000, 5000]))
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">plot_convergence</span><span class="p">([(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">13</span><span class="p">)],</span> <span class="mi">6</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -4262,7 +4407,7 @@ plot_convergence([('h', 14), ('s', 13)], 6, pl.array([10, 100, 500, 1000, 5000])
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAAEZCAYAAACJjGL9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXl4FFXWuN9sJEACBBhAIBCIouIGMq4gCS4JyiqOI5sa
 cEaZGRPUz1EEHfBTRPgcfwo64zqigOjoiAhRCAIBRdFBwZ0tLEICuIAYlgSS3N8ft7qru9PdqSTV
@@ -4541,15 +4686,14 @@ uJ18XfMP4GW022mz8XkYPbf/RiNtD75dRL6ecwXa1fOxcVyGDtqfCvwfZk/kTz7K9aYT13tNQ8cf
 DgGrgK4u1y5B94BecknLB55G6yMeWAP8GXgQ7eYaBXwE7PYhjyAIQtQSi45/AGSgDVKoG1muAwTq
 w2/RhkAQaiXUP3ZBiASao1vkCWg30p+w/m5GODIJmIDpThIEQRAEQRAEQRAEQRAEQRAEQRAEQRAE
 QRAEQRAEQRAEQYgW/j8CEJAW4y9r5QAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another interesting plot is below: the odds for winning with a pair of aces. In fact, if you have that pair, you should do everything you can to beat people out from the flop, because that's where you're most likely to win.</p>
 </div>
@@ -4560,8 +4704,8 @@ QRAEQRAEQRAEQYgW/j8CEJAW4y9r5QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-plot_convergence([('h', 14), ('s', 14)], 6, pl.array([10, 100, 500, 1000, 5000]))
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">plot_convergence</span><span class="p">([(</span><span class="s1">'h'</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">'s'</span><span class="p">,</span> <span class="mi">14</span><span class="p">)],</span> <span class="mi">6</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -4577,7 +4721,7 @@ plot_convergence([('h', 14), ('s', 14)], 6, pl.array([10, 100, 500, 1000, 5000])
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAAEZCAYAAACJjGL9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl4FFW6wOFfEyARCCSAoGE3elUQBBxGFIUgQlAQEcYZ
 NiWoo4ySoI7boAgzyIAO18uiozgoKCC44gLKIhBxQZQRlFUkQICETUAISAJJzv3jVKe6O92dSlK9
@@ -4849,23 +4993,21 @@ mkLvOL9H/8/eZcyfgK4S+hF90LML3aDtb4SvDcAcdGMt6MZZZ7WTr/f8G3gdXe203fh7At23/wZj
 R3Xgc+B+4O/oaq7BwNdAto/yCCFE1KqGbv8ASEYnpFAfZLleIFARv0MnAiHKFOp/diEiQW30EXkN
 dDXSX7B+b0Y4egIYiVmdJIQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEENHi/wFg30BaC5VBlwAA
 AABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="A-big-table-comparing-stuff">A big table comparing stuff<a class="anchor-link" href="#A-big-table-comparing-stuff">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have developed some tools to assess given hands, I want to move on to produce a table allowing to easily compare different hand behaviours between them. One thing I would like to know is whether a given hand is better pre-flop or better post-flop. To assess this, I'm going to compute a big table with all sorts of odds.</p>
 </div>
@@ -4876,24 +5018,24 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-OPPONENT_NUMBER = 6
-NUMBER_OF_GAMES = 1000
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">OPPONENT_NUMBER</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">NUMBER_OF_GAMES</span> <span class="o">=</span> <span class="mi">1000</span>
 
-data = {}
-first_cards = new_card_game()[:13]
-second_cards = new_card_game()[13:26]
-for first_card in first_cards:
-    for second_card in second_cards:
-        starting_hand = [first_card, second_card]
-        result = winning_odds(starting_hand,
-                         OPPONENT_NUMBER, 
-                         NUMBER_OF_GAMES) 
-        pre_flop = result['pre-flop'] / float(NUMBER_OF_GAMES)
-        post_flop = result['post-flop'] / float(NUMBER_OF_GAMES)
-        post_turn = result['post-turn'] / float(NUMBER_OF_GAMES)
-        post_river = result['post-river'] / float(NUMBER_OF_GAMES)
-        data[(first_card, second_card)] = [pre_flop, post_flop, post_turn, post_river]
+<span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">first_cards</span> <span class="o">=</span> <span class="n">new_card_game</span><span class="p">()[:</span><span class="mi">13</span><span class="p">]</span>
+<span class="n">second_cards</span> <span class="o">=</span> <span class="n">new_card_game</span><span class="p">()[</span><span class="mi">13</span><span class="p">:</span><span class="mi">26</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">first_card</span> <span class="ow">in</span> <span class="n">first_cards</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">second_card</span> <span class="ow">in</span> <span class="n">second_cards</span><span class="p">:</span>
+        <span class="n">starting_hand</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_card</span><span class="p">,</span> <span class="n">second_card</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">winning_odds</span><span class="p">(</span><span class="n">starting_hand</span><span class="p">,</span>
+                         <span class="n">OPPONENT_NUMBER</span><span class="p">,</span> 
+                         <span class="n">NUMBER_OF_GAMES</span><span class="p">)</span> 
+        <span class="n">pre_flop</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'pre-flop'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">NUMBER_OF_GAMES</span><span class="p">)</span>
+        <span class="n">post_flop</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'post-flop'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">NUMBER_OF_GAMES</span><span class="p">)</span>
+        <span class="n">post_turn</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'post-turn'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">NUMBER_OF_GAMES</span><span class="p">)</span>
+        <span class="n">post_river</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'post-river'</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">NUMBER_OF_GAMES</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[(</span><span class="n">first_card</span><span class="p">,</span> <span class="n">second_card</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pre_flop</span><span class="p">,</span> <span class="n">post_flop</span><span class="p">,</span> <span class="n">post_turn</span><span class="p">,</span> <span class="n">post_river</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -4911,8 +5053,7 @@ for first_card in first_cards:
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's try to represent the previous data using an HTML table.</p>
 </div>
@@ -4923,7 +5064,7 @@ for first_card in first_cards:
 <div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 
@@ -5829,8 +5970,7 @@ for first_card in first_cards:
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The previous data was sorted by pre-flop chance of winning. But what about post-flop?</p>
 </div>
@@ -5841,7 +5981,7 @@ for first_card in first_cards:
 <div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
 <span class="s2"> <tr></span>
 <span class="s2">   <th>Hand</th></span>
 <span class="s2">   <th>Chance of winning pre-flop</th></span>
@@ -6730,8 +6870,7 @@ for first_card in first_cards:
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And post-turn?</p>
 </div>
@@ -6742,7 +6881,7 @@ for first_card in first_cards:
 <div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
 <span class="s2"> <tr></span>
 <span class="s2">   <th>Hand</th></span>
 <span class="s2">   <th>Chance of winning pre-flop</th></span>
@@ -7631,8 +7770,7 @@ for first_card in first_cards:
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And post-river?</p>
 </div>
@@ -7643,7 +7781,7 @@ for first_card in first_cards:
 <div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
 <span class="s2"> <tr></span>
 <span class="s2">   <th>Hand</th></span>
 <span class="s2">   <th>Chance of winning pre-flop</th></span>
@@ -8532,8 +8670,7 @@ for first_card in first_cards:
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A last table is obtained by filtering by mean chance of winning, for all three columns:</p>
 </div>
@@ -8544,7 +8681,7 @@ for first_card in first_cards:
 <div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="s2">"""<table></span>
 <span class="s2"> <tr></span>
 <span class="s2">   <th>Hand</th></span>
 <span class="s2">   <th>Chance of winning pre-flop</th></span>
@@ -9433,16 +9570,14 @@ for first_card in first_cards:
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I hope this post has given you a little bit of new knowledge about poker. What I have learned while writing it is that poker is extremely dynamic: a given hand can be good at various stages and does not have an absolute strenght. If you take into account the human factor, this gives a good idea of why the game can be so difficult and at the same time, exhilarating</p>
 </div>
@@ -9453,7 +9588,7 @@ for first_card in first_cards:
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -9470,6 +9605,7 @@ for first_card in first_cards:
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

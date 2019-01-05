@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,16 +1588,14 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>Ce billet a été écrit à l'aide d'un notebook Jupyter. Son contenu est sous licence BSD. Une vue statique de ce notebook peut être consultée et téléchargée ici : <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170502_ElectionsTour1.ipynb">20170502_ElectionsTour1.ipynb</a>.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A l'occasion du premier tour des élections présidentielles 2017, je vous propose dans ce billet de produire des cartes qui permettent de visualiser les résultats des 11 candidats sur le territoire français.</p>
 <p>Il existe de nombreuses manières différentes de visualiser les données issues du vote. Afin de commencer cette exploration, nous allons tout d'abord essayer de reproduire une visualisation publiée sur le <a href="http://www.lemonde.fr/data/france/presidentielle-2017/">site du monde</a>, qui affiche les résultats par département.</p>
@@ -1428,16 +1603,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Par-département">Par département<a class="anchor-link" href="#Par-département">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans <a href="http://flothesof.github.io/bus-departure-map-Paris.html">un billet précédent</a>, j'avais utilisé des fichiers au <a href="https://en.wikipedia.org/wiki/Shapefile">format shapefile</a> pour dessiner des départements français sur une carte. Nous allons réutiliser la procédure pour faire une carte de ce découpage administratif. Cette fois-ci le fichier shapefile provient du <a href="https://wxs-telechargement.ign.fr/oikr5jryiph0iwhw36053ptm/telechargement/inspire/GEOFLA_THEME-DEPARTEMENTS_2016$GEOFLA_2-2_DEPARTEMENT_SHP_LAMB93_FXX_2016-06-28/file/GEOFLA_2-2_DEPARTEMENT_SHP_LAMB93_FXX_2016-06-28.7z">site de l'IGN</a>.</p>
 <p>Nous allons tout d'abord lire les données contenues dans le fichier shapefile pour la France.</p>
@@ -1449,7 +1622,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">shapefile</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">shapefile</span>
 </pre></div>
 </div>
 </div>
@@ -1460,7 +1633,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="sa">r</span><span class="s2">"files/departement_shapes/DEPARTEMENT.shp"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="sa">r</span><span class="s2">"files/departement_shapes/DEPARTEMENT.shp"</span><span class="p">)</span>
 <span class="n">shapes</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">shapes</span><span class="p">()</span>
 <span class="n">records</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
 <span class="n">fields</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">fields</span>
@@ -1470,8 +1643,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On va construire une dataframe pandas avec ces objets.</p>
 </div>
@@ -1482,7 +1654,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -1493,7 +1665,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
 </pre></div>
 </div>
 </div>
@@ -1504,7 +1676,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1612,8 +1784,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On va maintenant dessiner les départements dont les informations sont contenues dans ce fichier shapefile.</p>
 </div>
@@ -1624,7 +1795,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'bmh'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1639,7 +1810,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">draw_departements</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">draw_departements</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="s2">"Draws a map of the départements."</span>
     <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
         <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
@@ -1669,7 +1840,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="n">draw_departements</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
         
@@ -1692,7 +1863,7 @@ h6:hover .anchor-link {
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmsAAAI7CAYAAACzwtwTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXm4rWP5xz9fnGOeQubMQ4iMKTJUokEOpcwhUyH8EKUk
 Q5GxkClDkYwRyVwRkTkyR4aQmcwOvr8/7mefVsse1vCuYR/357pczl7rfZ/n3nuv/b73ew/fW7ZJ
@@ -2838,15 +3009,14 @@ IhoswVpEREREgyVYi4iIiGiwBGsRERERDZZgLSIiIqLBEqxFRERENFiCtYiIiIgGS7AWERER0WAJ
 1iIiIiIaLMFaRERERIMlWIuIiIhosARrEREREQ2WYC0iIiKiwRKsRURERDRYgrWIiIiIBkuwFhER
 EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 /xUwFF6CQRE1AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A partir de ce graphique, on va maintenant colorier les départements avec la couleur du candidat dominant. Pour faire ceci, il faut aller chercher les résultats sur le site du ministère de l'intérieur: <a href="http://elections.interieur.gouv.fr/presidentielle-2017/index.html">http://elections.interieur.gouv.fr/presidentielle-2017/index.html</a>. De manière assez intéressante, le site du ministère affiche directement les coordonnées des départements dans le code source de sa page et y associe les liens vers les pages de résultats, que l'on peut en extraire.</p>
 </div>
@@ -2857,7 +3027,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
 </div>
@@ -2869,7 +3039,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/index.html"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/index.html"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2880,7 +3050,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">map_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'map'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">map_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'map'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2891,7 +3061,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">area_tags</span> <span class="o">=</span> <span class="n">map_tag</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'area'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">area_tags</span> <span class="o">=</span> <span class="n">map_tag</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'area'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2902,7 +3072,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">area_tags</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">area_tags</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2913,15 +3083,14 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">unique_links</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">unique_links</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant aller extraire les données pour chaque candidat à partir de ces liens individuels.</p>
 </div>
@@ -2932,7 +3101,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/024/018/index.html"</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/024/018/index.html"</span>
 </pre></div>
 </div>
 </div>
@@ -2943,7 +3112,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
     <span class="s2">"Extracts votes for all candidates from a given url."</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
@@ -2959,8 +3128,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Testons cette fonction :</p>
 </div>
@@ -2971,7 +3139,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2999,8 +3167,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous pouvons maintenant écrire une boucle pour extraire l'information pour tous les départements.</p>
 </div>
@@ -3011,7 +3178,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">depts</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">depts</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">unique_links</span><span class="p">:</span>
     <span class="n">dept</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">extract_candidate_votes</span><span class="p">(</span><span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/"</span> <span class="o">+</span> <span class="n">link</span><span class="p">)</span> 
@@ -3023,8 +3190,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A l'aide de cette information, nous pouvons réconcilier les données géographique et les résultats du vote.</p>
 </div>
@@ -3035,7 +3201,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">depts</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">depts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3046,7 +3212,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -3154,8 +3320,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut trier ce tableau par nombre de votants total dans le département.</p>
 </div>
@@ -3166,7 +3331,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vote_sum</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">vote_sum</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3177,7 +3342,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 <span class="n">vote_sum</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
@@ -3188,7 +3353,7 @@ EdFgCdYiIiIiGizBWkRERESDJViLiIiIaLAEaxERERENlmAtIiIiosESrEVEREQ0WIK1iIiIiAb7
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfEAAANYCAYAAADUvtRyAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXeYXVXZvu8HEjqGLoJI+cEHqHSkl8GA9CqIImBQFIFP
 QaSDGJH+fYjSPqUZCEhRREKREpIJBAJBSgREikCAIAgGAkgNeX5/rLUze86cmUySmT3nTN77uuaa
@@ -4632,7 +4797,7 @@ ojvfBu6LSNN+wG3mZW47rW1uBZvZsWa2hZltCTxnZqdQ+BxrfbZz09YJmp8EPo7PeF3gD/WuGR9h
 /TQ07wVcVK+aJS0kL4S0Fl7HYKGu1jq3+muswcFFAAAAaklEQVRoPpHcb1FS/87+7c3t77GG5lsL
 v8WLuvtzTmlXE4lEIpGoKGkknkgkEolERUmdeCKRSCQSFSV14olEIpFIVJTUiScSiUQiUVFSJ55I
 JBKJREVJnXgikUgkEhUldeKJRCKRSFSU/w+Uv0J0vzXpAwAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
@@ -4643,7 +4808,7 @@ JBKJREVJnXgikUgkEhUldeKJRCKRSFSU/w+Uv0J0vzXpAwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vote_sum</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vote_sum</span>
 
 <span class="n">df_votes</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'total'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -4654,8 +4819,7 @@ JBKJREVJnXgikUgkEhUldeKJRCKRSFSU/w+Uv0J0vzXpAwAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ceci nous permet par exemple de faire le tableau suivant :</p>
 </div>
@@ -4666,7 +4830,7 @@ JBKJREVJnXgikUgkEhUldeKJRCKRSFSU/w+Uv0J0vzXpAwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 <span class="n">df_votes</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
@@ -4677,7 +4841,7 @@ JBKJREVJnXgikUgkEhUldeKJRCKRSFSU/w+Uv0J0vzXpAwAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAskAAANYCAYAAAA2eHC/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXl4XVW5/z/fphNtaUsZ7WALP3gAgTJapgrBghSZEctF
 gVuQq8K9KiqgDFcRGVUEmVQmC4VbQQUpg0ChBChTkZmqIEMLtJTB0gEpnfL+/lhrJzsnJ8neyUnO
@@ -6819,15 +6983,14 @@ rYAnRGQx8Dcg057gbQ58qKq/lmfZMb6/ckVVh6nqJap6KbBeVccQ8OwEe57+TNlxutVyQVXXAFn2
 6QHv+xOP9/Pl0lI7HA6Hw+FwOBwBuJ1kh8PhcDgcDocjAOckOxwOh8PhcDgcATgn2eFwOBwOh8Ph
 CMA5yQ6Hw+FwOBwORwDOSXY4HA6Hw+FwOAJwTrLD4XA4HA6HwxGAc5IdDofD4XA4HI4A/j+4/YHI
 zY1gFQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Enfin, on peut combiner les informations géographiques et aboutir à la représentation de la carte colorée obtenue par Le Monde :</p>
 </div>
@@ -6838,7 +7001,7 @@ zY1gFQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidate_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidate_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6849,7 +7012,7 @@ zY1gFQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">'Vega20_r'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">'Vega20_r'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6860,7 +7023,7 @@ zY1gFQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 </pre></div>
 </div>
 </div>
@@ -6871,7 +7034,7 @@ zY1gFQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="n">idxs</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">code_dpt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CODE_DEPT'</span><span class="p">]):</span>
@@ -6924,7 +7087,7 @@ zY1gFQAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnIAAAI7CAYAAABoeXYxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeAVNd1MPBz33vzpve6M7M723unFwEC1IUaWF225dhy
 ieOWfLYcO05iJXEcR3GiuEcucbcjy1bvQkISRYBgge29z87s7PT+yvcHAiNE2fJmdxbO7z923rv3
@@ -8913,15 +9076,14 @@ RKybN/8Z4x/AT0RhwhY5IiIiojjFFjkiIiKiOMVAjoiIiChOMZAjIiIiilMM5IiIiIjiFAM5IiIi
 ojjFQI6IiIgoTjGQIyIiIopTDOSIiIiI4hQDOSIiIqI4xUCOiIiIKE4xkCMiIiKKUwzkiIiIiOIU
 AzkiIiKiOMVAjoiIiChOMZAjIiIiilMM5IiIiIjiFAM5IiIiojjFQI6IiIgoTjGQIyIiIopTDOSI
 iIiI4hQDOSIiIqI4xUCOiIiIKE79L2RA1HynUwukAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut reprendre la carte ci-dessus et introduire de la transparence pour marquer l'écart au candidat arrivé en premier pour se rendre compte des autres forces politiques en présence :</p>
 </div>
@@ -8932,7 +9094,7 @@ iIiI4hQDOSIiIqI4xUCOiIiIKE79L2RA1HynUwukAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mapping_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mapping_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
 </div>
 </div>
@@ -8943,7 +9105,7 @@ iIiI4hQDOSIiIqI4xUCOiIiIKE79L2RA1HynUwukAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="n">idxs</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">code_dpt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CODE_DEPT'</span><span class="p">]):</span>
@@ -8997,7 +9159,7 @@ iIiI4hQDOSIiIqI4xUCOiIiIKE79L2RA1HynUwukAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnIAAAI7CAYAAABoeXYxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3WdgXNW1KOC9T5/eZ6TRqMvqXZblhi3c6KYYbAKhE0pI
 QknP46bfJDflkgqEAAkhBAIBQjMGG4NxkW3ZspplS7J6H0nT+5zyfiTiGuOiMpJG9vr+SXPOOmuM
@@ -11110,31 +11272,28 @@ McYYY6yL4ho5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhj
 jLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEu
 ihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5
 xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEu6v8B5KcORQAYyIAAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Sur la carte ci-dessus, les départements plutôt blancs ont été gagnés avec moins d'avance relative que que ceux qui sont foncés. On peut noter ici l'influence locale de François Fillon dans la Sarthe, celle d'Emmanuel Macron en Bretagne ou encore de Marine Le Pen dans l'Est.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Par-candidat">Par candidat<a class="anchor-link" href="#Par-candidat">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Un deuxième axe d'affichage consiste à dessiner le nombre d'électeur obtenu pour chaque candidat en fonction du département. On utilise la valeur de transparence pour indiquer si le nombre d'électeurs par département est proche du nombre d'électeur maximum par département.</p>
 </div>
@@ -11145,7 +11304,7 @@ xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEu6v8B5KcORQAYyIAAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">candidate_idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">candidate_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
@@ -11201,7 +11360,7 @@ xhhjjLEuihM5xhhjjLEuihM5xhhjjLEuihM5xhhjjLEu6v8B5KcORQAYyIAAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBsAAAMlCAYAAAAylfuXAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8FMX7OPBndvd6v8tdeu8VAoQQQiiBUAKhI10QRECK
 AkqXKiIgXRBEkKJUEZGmIkiv0kvohPR2l1yut93fHwpfSC6kyEd/kHn/RXZmd2d43d7uPTvzDGIY
@@ -18072,15 +18231,14 @@ o/79owGYlFKf6g0N46AFuFIB3K2UKvFNs+hvolD19wgM/Qv5H8f6tC8AvKRC86gZEYUIgw1E9URE
 hgN4HdqzuqkhTg4FwH2kEW3QunsBXK70AeHqsO4XYLChXhzLfiINgzVEwcdgAxF5MdhAREREDQ6D
 NURERMcXgw1EREREREREFFSheBsFEREREREREf2HMdhAREREREREREHFYAMRERERERERBRWDDURE
 REREREQUVAw2EBEREREREVFQMdhAREREREREREH1//kV+fnL1dy8AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Sur le graphique ci-dessus, on peut voir apparaître certains phénomènes locaux, comme par exemple le succès de Jean Lassalle dans les Pyrénées, mais il est difficile de distinguer les grandes tendances.</p>
 <p>Si l'on reprend le graphique précédent mais que l'on normalise cette fois-ci en termes de données d'électeur maximum dans tout le département, on obtient :</p>
@@ -18092,7 +18250,7 @@ REREREQUVAw2EBEREREREVFQMdhAREREREREREH1//kV+fnL1dy8AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">candidate_idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">candidate_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
@@ -18148,7 +18306,7 @@ REREREQUVAw2EBEREREREVFQMdhAREREREREREH1//kV+fnL1dy8AAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBsAAAMlCAYAAAAylfuXAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Wd8FcX3MPAz224vuTe9BwLpQCiB0HvvSBeQDtK7NEGk
 9yoKKIiCiiggVZEqSJUSAqFDQnpPbi+787zQ8CfJDSny0wcz3zeYndnZGT+37D07cwZhjIEgCIIg
@@ -24762,31 +24920,28 @@ yn3H+PnDJVW4+61xoOEahQDXLEnnufuqZJ4t/hKFt94tMNgE5R/HMW2spN94aW41A1AiBBuAVmJm
 gyVdpXCv7qwSZwcFsI8CCw+tO1/SKR4fCNeC944VwYZWsSH7CQHBGiB9BBsA5BBsAAAAbQ7BGgAA
 Ni6CDQAAAAAAIFWl+DUKAAAAAACwBSPYAAAAAAAAUkWwAQAAAAAApIpgAwAAAAAASBXBBgAAAAAA
 kCqCDQAAAAAAIFX/HwepYL5lYVs6AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>La carte ci-dessus met en valeur une chose assez intéressante : la France est partagée de manière homogène à l'échelle des départements entre quatre ou cinq "grands" candidats.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce billet, nous avons vu comment l'on pouvait combiner les informations géographiques liées aux départements et les résultats du premier tour de l'élection présidentielle afin de dessiner quelques cartes. Il en ressort qu'il est assez difficile d'en tirer des interprétations pertinents. Si vous avez des suggestions d'autres cartes à dessiner, n'hésitez pas à m'en faire part dans les commentaires.</p>
 </div>
@@ -24797,7 +24952,7 @@ kCqCDQAAAAAAIFX/HwepYL5lYVs6AAAAAElFTkSuQmCC
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -24814,6 +24969,7 @@ kCqCDQAAAAAAIFX/HwepYL5lYVs6AAAAAElFTkSuQmCC
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

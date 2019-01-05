@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,24 +1588,21 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="http://exploringdata.github.io/vis/evolution-internet-users/">This post by Ramiro Gomez</a> is nice: it shows the number of internet users by country and gdp and allows to evolve this graph in time. Given that this animation looks a lot like this <a href="https://notebooks.anaconda.org/bokeh/gapminder">gapminder animation</a>, I would like to try and replicate this plot using <a href="http://bokeh.pydata.org/en/latest/">Bokeh</a>. One of my incentives for doing so is also to add a slider instead of the implicit bottom-right interaction.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Getting-the-data-and-cleaning-it">Getting the data and cleaning it<a class="anchor-link" href="#Getting-the-data-and-cleaning-it">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ramiro Gomez has <a href="https://github.com/yaph/evolution-internet-users">created a repository for the data he is using</a>, but the data points themselves are not directly downloadable in text form. Therefore I decided to get it in raw form from the <a href="http://data.worldbank.org/data-catalog/world-development-indicators">world bank website</a> and export it as an Excel file. Let's load the data and look at it:</p>
 </div>
@@ -1439,7 +1613,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -1450,7 +1624,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -1461,15 +1635,14 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">'files/InternetUsers_GDP.xlsx'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">'files/InternetUsers_GDP.xlsx'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's have a quick look at head of the data:</p>
 </div>
@@ -1480,7 +1653,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1649,8 +1822,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The columns feature the years, while the countries represented are in the rows.</p>
 </div>
@@ -1661,7 +1833,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
 </div>
 </div>
@@ -1686,8 +1858,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We're now going to build three dataframes with this data:</p>
 <ul>
@@ -1704,7 +1875,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_internet</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Series Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Internet users (per 100 people)'</span><span class="p">][[</span><span class="s1">'Country Name'</span><span class="p">,</span> <span class="s1">'1991 [YR1991]'</span><span class="p">,</span> <span class="s1">'1992 [YR1992]'</span><span class="p">,</span> <span class="s1">'1993 [YR1993]'</span><span class="p">,</span> <span class="s1">'1994 [YR1994]'</span><span class="p">,</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_internet</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Series Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Internet users (per 100 people)'</span><span class="p">][[</span><span class="s1">'Country Name'</span><span class="p">,</span> <span class="s1">'1991 [YR1991]'</span><span class="p">,</span> <span class="s1">'1992 [YR1992]'</span><span class="p">,</span> <span class="s1">'1993 [YR1993]'</span><span class="p">,</span> <span class="s1">'1994 [YR1994]'</span><span class="p">,</span>
        <span class="s1">'1995 [YR1995]'</span><span class="p">,</span> <span class="s1">'1996 [YR1996]'</span><span class="p">,</span> <span class="s1">'1997 [YR1997]'</span><span class="p">,</span> <span class="s1">'1998 [YR1998]'</span><span class="p">,</span>
        <span class="s1">'1999 [YR1999]'</span><span class="p">,</span> <span class="s1">'2000 [YR2000]'</span><span class="p">,</span> <span class="s1">'2001 [YR2001]'</span><span class="p">,</span> <span class="s1">'2002 [YR2002]'</span><span class="p">,</span>
        <span class="s1">'2003 [YR2003]'</span><span class="p">,</span> <span class="s1">'2004 [YR2004]'</span><span class="p">,</span> <span class="s1">'2005 [YR2005]'</span><span class="p">,</span> <span class="s1">'2006 [YR2006]'</span><span class="p">,</span>
@@ -1721,7 +1892,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_internet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s1">'..'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_internet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s1">'..'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1732,7 +1903,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df_internet</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Country Name'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df_internet</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Country Name'</span><span class="p">)</span>
 <span class="n">df_internet</span> <span class="o">=</span> <span class="n">df_internet</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="n">df_internet</span>
 </pre></div>
@@ -3271,8 +3442,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now build the dataframe for GDP.</p>
 </div>
@@ -3283,7 +3453,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_gdp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Series Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'GDP per capita (constant 2005 US$)'</span><span class="p">][[</span><span class="s1">'Country Name'</span><span class="p">,</span> <span class="s1">'1991 [YR1991]'</span><span class="p">,</span> <span class="s1">'1992 [YR1992]'</span><span class="p">,</span> <span class="s1">'1993 [YR1993]'</span><span class="p">,</span> <span class="s1">'1994 [YR1994]'</span><span class="p">,</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_gdp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Series Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'GDP per capita (constant 2005 US$)'</span><span class="p">][[</span><span class="s1">'Country Name'</span><span class="p">,</span> <span class="s1">'1991 [YR1991]'</span><span class="p">,</span> <span class="s1">'1992 [YR1992]'</span><span class="p">,</span> <span class="s1">'1993 [YR1993]'</span><span class="p">,</span> <span class="s1">'1994 [YR1994]'</span><span class="p">,</span>
        <span class="s1">'1995 [YR1995]'</span><span class="p">,</span> <span class="s1">'1996 [YR1996]'</span><span class="p">,</span> <span class="s1">'1997 [YR1997]'</span><span class="p">,</span> <span class="s1">'1998 [YR1998]'</span><span class="p">,</span>
        <span class="s1">'1999 [YR1999]'</span><span class="p">,</span> <span class="s1">'2000 [YR2000]'</span><span class="p">,</span> <span class="s1">'2001 [YR2001]'</span><span class="p">,</span> <span class="s1">'2002 [YR2002]'</span><span class="p">,</span>
        <span class="s1">'2003 [YR2003]'</span><span class="p">,</span> <span class="s1">'2004 [YR2004]'</span><span class="p">,</span> <span class="s1">'2005 [YR2005]'</span><span class="p">,</span> <span class="s1">'2006 [YR2006]'</span><span class="p">,</span>
@@ -3300,7 +3470,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_gdp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s1">'..'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_gdp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s1">'..'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3311,7 +3481,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df_gdp</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Country Name'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df_gdp</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Country Name'</span><span class="p">)</span>
 <span class="n">df_gdp</span> <span class="o">=</span> <span class="n">df_gdp</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="n">df_gdp</span>
 </pre></div>
@@ -4850,8 +5020,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's build the dataframe for population:</p>
 </div>
@@ -4862,7 +5031,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Series Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Population, total'</span><span class="p">][[</span><span class="s1">'Country Name'</span><span class="p">,</span> <span class="s1">'1991 [YR1991]'</span><span class="p">,</span> <span class="s1">'1992 [YR1992]'</span><span class="p">,</span> <span class="s1">'1993 [YR1993]'</span><span class="p">,</span> <span class="s1">'1994 [YR1994]'</span><span class="p">,</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Series Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Population, total'</span><span class="p">][[</span><span class="s1">'Country Name'</span><span class="p">,</span> <span class="s1">'1991 [YR1991]'</span><span class="p">,</span> <span class="s1">'1992 [YR1992]'</span><span class="p">,</span> <span class="s1">'1993 [YR1993]'</span><span class="p">,</span> <span class="s1">'1994 [YR1994]'</span><span class="p">,</span>
        <span class="s1">'1995 [YR1995]'</span><span class="p">,</span> <span class="s1">'1996 [YR1996]'</span><span class="p">,</span> <span class="s1">'1997 [YR1997]'</span><span class="p">,</span> <span class="s1">'1998 [YR1998]'</span><span class="p">,</span>
        <span class="s1">'1999 [YR1999]'</span><span class="p">,</span> <span class="s1">'2000 [YR2000]'</span><span class="p">,</span> <span class="s1">'2001 [YR2001]'</span><span class="p">,</span> <span class="s1">'2002 [YR2002]'</span><span class="p">,</span>
        <span class="s1">'2003 [YR2003]'</span><span class="p">,</span> <span class="s1">'2004 [YR2004]'</span><span class="p">,</span> <span class="s1">'2005 [YR2005]'</span><span class="p">,</span> <span class="s1">'2006 [YR2006]'</span><span class="p">,</span>
@@ -4879,7 +5048,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s1">'..'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s1">'..'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4890,7 +5059,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Country Name'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'Country Name'</span><span class="p">)</span>
 <span class="n">df_pop</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="n">df_pop</span>
 </pre></div>
@@ -6429,8 +6598,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As a final step, we only keep a selection of countries from all these dataframes:</p>
 </div>
@@ -6441,7 +6609,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span>
 </pre></div>
 </div>
 </div>
@@ -7982,7 +8150,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">selection</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">index</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">selection</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">index</span>
 
 <span class="n">df_pop</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">selection</span><span class="p">]</span>
 <span class="n">df_gdp</span> <span class="o">=</span> <span class="n">df_gdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">selection</span><span class="p">]</span>
@@ -7997,7 +8165,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span>
 </pre></div>
 </div>
 </div>
@@ -9538,7 +9706,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_gdp</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_gdp</span>
 </pre></div>
 </div>
 </div>
@@ -11079,7 +11247,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_internet</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_internet</span>
 </pre></div>
 </div>
 </div>
@@ -12616,24 +12784,21 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Plotting-this-with-Bokeh">Plotting this with Bokeh<a class="anchor-link" href="#Plotting-this-with-Bokeh">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We follow the <a href="https://anaconda.org/bokeh/gapminder/notebook">gapminder</a> example. We need to setup the data sources for the Bokeh plot and then draw it.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Setting-up-the-data-sources">Setting up the data sources<a class="anchor-link" href="#Setting-up-the-data-sources">¶</a></h2>
 </div>
@@ -12644,7 +12809,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">ColumnDataSource</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">ColumnDataSource</span>
 </pre></div>
 </div>
 </div>
@@ -12655,7 +12820,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">POP_SCALING</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">200</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">POP_SCALING</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">200</span>
 
 <span class="n">years</span> <span class="o">=</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">columns</span>
 
@@ -12686,7 +12851,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sources</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sources</span>
 </pre></div>
 </div>
 </div>
@@ -12727,8 +12892,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's inspect one of these sources:</p>
 </div>
@@ -12739,7 +12903,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="n">sources</span><span class="p">[</span><span class="s1">'_1991'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="n">sources</span><span class="p">[</span><span class="s1">'_1991'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -12750,7 +12914,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src</span><span class="o">.</span><span class="n">column_names</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">src</span><span class="o">.</span><span class="n">column_names</span>
 </pre></div>
 </div>
 </div>
@@ -12767,8 +12931,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's build the dict that references the datasources:</p>
 </div>
@@ -12779,7 +12942,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">year_int</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">year_int</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">dictionary_of_sources</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">year_int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">],</span> <span class="p">[</span><span class="n">year_label</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]))</span>
 <span class="n">js_source_array</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dictionary_of_sources</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 </pre></div>
@@ -12792,7 +12955,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">js_source_array</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">js_source_array</span>
 </pre></div>
 </div>
 </div>
@@ -12809,8 +12972,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Setting-up-the-plot">Setting up the plot<a class="anchor-link" href="#Setting-up-the-plot">¶</a></h2>
 </div>
@@ -12821,7 +12983,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.plotting</span> <span class="k">as</span> <span class="nn">bp</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.plotting</span> <span class="k">as</span> <span class="nn">bp</span>
 <span class="n">bp</span><span class="o">.</span><span class="n">output_notebook</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -12831,7 +12993,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
+<div class="output_html rendered_html output_subarea">
 <div class="bk-banner">
 <a class="bk-logo bk-logo-small bk-logo-notebook" href="http://bokeh.pydata.org" target="_blank"></a>
 <span id="f4cf7f78-9f43-4702-b7a1-6f60fb33b783">Loading BokehJS ...</span>
@@ -12840,10 +13002,10 @@ h6:hover .anchor-link {
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div id="6fab5717-4db5-4bdc-b4b2-b120b1416cf4"></div>
-<div class="output_subarea output_javascript ">
+<div id="d50671e5-ac27-46e1-9d91-00a029c6d55a"></div>
+<div class="output_subarea output_javascript">
 <script type="text/javascript">
-var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
+var element = $('#d50671e5-ac27-46e1-9d91-00a029c6d55a');
 
 (function(global) {
   function now() {
@@ -12933,16 +13095,14 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Axes">Axes<a class="anchor-link" href="#Axes">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, we setup the axes.</p>
 </div>
@@ -12953,7 +13113,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">Range1d</span><span class="p">,</span> <span class="n">Plot</span><span class="p">,</span> <span class="n">LinearAxis</span><span class="p">,</span> <span class="n">SingleIntervalTicker</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">Range1d</span><span class="p">,</span> <span class="n">Plot</span><span class="p">,</span> <span class="n">LinearAxis</span><span class="p">,</span> <span class="n">SingleIntervalTicker</span>
 </pre></div>
 </div>
 </div>
@@ -12964,7 +13124,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up the plot</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Set up the plot</span>
 <span class="n">xdr</span> <span class="o">=</span> <span class="n">Range1d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">60000</span><span class="p">)</span>
 <span class="n">ydr</span> <span class="o">=</span> <span class="n">Range1d</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
 <span class="n">plot</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span>
@@ -13004,8 +13164,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's have a look at the current format of the plot we are building:</p>
 </div>
@@ -13016,7 +13175,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -13025,7 +13184,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
+<div class="output_html rendered_html output_subarea">
 <div class="plotdiv" id="201f599e-595d-46ce-8973-848e09c0d3fe"></div>
 <script type="text/javascript">
   
@@ -13124,16 +13283,14 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Background-text-with-the-year">Background text with the year<a class="anchor-link" href="#Background-text-with-the-year">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now add the background text:</p>
 </div>
@@ -13144,7 +13301,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">Text</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">Text</span>
 </pre></div>
 </div>
 </div>
@@ -13155,7 +13312,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add the year in background (add before circle)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Add the year in background (add before circle)</span>
 <span class="n">text_source</span> <span class="o">=</span> <span class="n">ColumnDataSource</span><span class="p">({</span><span class="s1">'year'</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year_int</span><span class="p">(</span><span class="n">year</span><span class="p">))</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">[:</span><span class="mi">1</span><span class="p">]]})</span>
 <span class="n">text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="n">xdr</span><span class="o">.</span><span class="n">end</span> <span class="o">+</span> <span class="n">xdr</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">'year'</span><span class="p">,</span> <span class="n">text_font_size</span><span class="o">=</span><span class="s1">'150pt'</span><span class="p">,</span> <span class="n">text_color</span><span class="o">=</span><span class="s1">'#EEEEEE'</span><span class="p">)</span>
 <span class="n">plot</span><span class="o">.</span><span class="n">add_glyph</span><span class="p">(</span><span class="n">text_source</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
@@ -13175,8 +13332,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's look at our plot in its current form:</p>
 </div>
@@ -13187,7 +13343,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [49]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -13196,7 +13352,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
+<div class="output_html rendered_html output_subarea">
 <div class="plotdiv" id="183be112-5e12-43aa-8cff-d84cab6867d1"></div>
 <script type="text/javascript">
   
@@ -13295,16 +13451,14 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Bubbles-and-hover">Bubbles and hover<a class="anchor-link" href="#Bubbles-and-hover">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our plot is now missing two things: the renderer for the bubbles representing the country size as well as the hover tool that allows to identify the country when the mouse is hovering over a bubble.</p>
 </div>
@@ -13315,7 +13469,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [61]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">HoverTool</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">HoverTool</span>
 </pre></div>
 </div>
 </div>
@@ -13326,7 +13480,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [62]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add the circle glyphs</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Add the circle glyphs</span>
 <span class="n">renderer_source</span> <span class="o">=</span> <span class="n">sources</span><span class="p">[</span><span class="n">year_label</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
 <span class="n">circle_glyph</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="s1">'gdp (2005 $)'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'internet users'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">'population'</span><span class="p">,</span>
@@ -13343,8 +13497,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's inspect some properties of this:</p>
 </div>
@@ -13355,7 +13508,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [52]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">renderer_source</span><span class="o">.</span><span class="n">column_names</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">renderer_source</span><span class="o">.</span><span class="n">column_names</span>
 </pre></div>
 </div>
 </div>
@@ -13372,8 +13525,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, let's check our plot:</p>
 </div>
@@ -13384,7 +13536,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -13393,7 +13545,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
+<div class="output_html rendered_html output_subarea">
 <div class="plotdiv" id="1bf14313-af3b-4d1d-a270-f778f1b0ed8f"></div>
 <script type="text/javascript">
   
@@ -13492,16 +13644,14 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Making-it-interactive-using-a-slider-and-final-plot">Making it interactive using a slider and final plot<a class="anchor-link" href="#Making-it-interactive-using-a-slider-and-final-plot">¶</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is the tricky part of this plot: it uses Javascript to change the data source of the plot dynamically.</p>
 </div>
@@ -13512,7 +13662,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [54]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">CustomJS</span><span class="p">,</span> <span class="n">Slider</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="k">import</span> <span class="n">CustomJS</span><span class="p">,</span> <span class="n">Slider</span>
 </pre></div>
 </div>
 </div>
@@ -13523,7 +13673,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [55]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">years_label</span> <span class="o">=</span> <span class="p">[</span><span class="n">year_int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">years_label</span> <span class="o">=</span> <span class="p">[</span><span class="n">year_int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -13534,7 +13684,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [56]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add the slider</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Add the slider</span>
 <span class="n">code</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2">    var year = slider.get('value'),</span>
 <span class="s2">        sources = </span><span class="si">%s</span><span class="s2">,</span>
@@ -13554,8 +13704,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally let's plot the result by putting the slider on the bottom of the plot.</p>
 </div>
@@ -13566,7 +13715,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [57]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="k">import</span> <span class="n">vplot</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="k">import</span> <span class="n">vplot</span>
 <span class="kn">from</span> <span class="nn">bokeh.resources</span> <span class="k">import</span> <span class="n">JSResources</span>
 </pre></div>
 </div>
@@ -13578,7 +13727,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="prompt input_prompt">In [60]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Stick the plot and the slider together</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Stick the plot and the slider together</span>
 <span class="n">layout</span> <span class="o">=</span> <span class="n">vplot</span><span class="p">(</span><span class="n">plot</span><span class="p">,</span> <span class="n">slider</span><span class="p">,</span> <span class="p">)</span>
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
 </pre></div>
@@ -13589,7 +13738,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
+<div class="output_html rendered_html output_subarea">
 <div class="plotdiv" id="158e874d-a521-4db7-b516-26abd5e0ac0c"></div>
 <script type="text/javascript">
   
@@ -13688,24 +13837,21 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the end, I've managed to replicate the interactive plot that can be found on Ramiro's website. I've succeeded to integrate a slider that, in my opionion, allows better visualization of the passing of time. However, I'm not sure to what insight this plot leads. I guess it allows to visualize the dramatic deployment of internet usage since the 1990's.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20160526_InternetUsersBokeh.ipynb">20160526_InternetUsersBokeh.ipynb</a>.</p>
 </div>
@@ -13716,7 +13862,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -13733,6 +13879,7 @@ var element = $('#6fab5717-4db5-4bdc-b4b2-b120b1416cf4');
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

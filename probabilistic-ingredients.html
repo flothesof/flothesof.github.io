@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, we'll try to solve to a problem that arose when I was working on the Kaggle What's Cooking challenge (see my previous posts on the subject <a href="http://flothesof.github.io/kaggle-whats-cooking-machine-learning.html">here</a> and <a href="http://flothesof.github.io/kaggle-whatscooking-bokeh-plots.html">here</a>).</p>
 <p>In this challenge, the data, which consists of recipes, contains a few quirks. For example, the data may contain names of brands  such as <em>knorr garlic minicub</em>, or mention weights and quantities that should have been cleaned up beforehand <em>(10 oz.) frozen chopped spinach, thawed and squeezed dry</em>.</p>
@@ -1422,16 +1598,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Statistics-about-the-data,-at-ingredient-and-word-level">Statistics about the data, at ingredient and word level<a class="anchor-link" href="#Statistics-about-the-data,-at-ingredient-and-word-level">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this section, we'll do some basic data exploration. In particular, let's try to answer the following questions:</p>
 <ul>
@@ -1442,8 +1616,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's load the data. We read it using codecs because pandas hasn't support for specifying encoding in the json loading routine (see <a href="http://blog.nexusger.de/2015/11/python-pandas-and-json_read-with-utf-8-encoding/">http://blog.nexusger.de/2015/11/python-pandas-and-json_read-with-utf-8-encoding/</a>).</p>
 </div>
@@ -1454,7 +1627,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -1465,7 +1638,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">codecs</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">codecs</span>
 <span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'train.json'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="s1">'utf-8'</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1473,8 +1646,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The head of the dataframe looks like this:</p>
 </div>
@@ -1485,7 +1657,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1545,8 +1717,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's build a single list with all the ingredients found in the dataset.</p>
 </div>
@@ -1557,7 +1728,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_ingredients_text</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_ingredients_text</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ingredient_list</span> <span class="ow">in</span> <span class="n">df_train</span><span class="o">.</span><span class="n">ingredients</span><span class="p">:</span>
     <span class="n">all_ingredients_text</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ing</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">ing</span> <span class="ow">in</span> <span class="n">ingredient_list</span><span class="p">]</span>
 </pre></div>
@@ -1566,8 +1737,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's have a look at the stats. We have the following number of ingredients in our recipes:</p>
 </div>
@@ -1578,7 +1748,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1595,8 +1765,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Among those, the number of unique ingredients is:</p>
 </div>
@@ -1607,7 +1776,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1624,8 +1793,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How about looking at these ingredients in terms of words? We can split each ingredient at a word boundary using a regexp and then count them:</p>
 </div>
@@ -1636,7 +1804,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
 <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">'[,. ]+'</span><span class="p">),</span> <span class="s1">'KRAFT Shredded Pepper Jack Cheese with a TOUCH OF PHILADELPHIA'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1663,8 +1831,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's do that and compute the number of words and then the unique words:</p>
 </div>
@@ -1675,7 +1842,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">splitter</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">'[,. ]+'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">splitter</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">'[,. ]+'</span><span class="p">)</span>
 <span class="n">all_words</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ingredient</span> <span class="ow">in</span> <span class="n">all_ingredients_text</span><span class="p">:</span>
     <span class="n">all_words</span> <span class="o">+=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">splitter</span><span class="p">,</span> <span class="n">ingredient</span><span class="p">)</span>
@@ -1689,7 +1856,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_words</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_words</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1706,8 +1873,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How about unique ones?</p>
 </div>
@@ -1718,7 +1884,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_words</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_words</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1735,8 +1901,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So to conclude, our dataset consists of:</p>
 <ul>
@@ -1750,16 +1915,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Why-some-ingredients-found-in-the-data-are-strange">Why some ingredients found in the data are strange<a class="anchor-link" href="#Why-some-ingredients-found-in-the-data-are-strange">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The longest ingredient names found in the dataset are:</p>
 </div>
@@ -1770,7 +1933,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1836,8 +1999,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What's going on here? Several observations can be made from this ingredient list:</p>
 <ul>
@@ -1874,41 +2036,35 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Building-a-simple-model">Building a simple model<a class="anchor-link" href="#Building-a-simple-model">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Theory">Theory<a class="anchor-link" href="#Theory">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Given an ingredient, we have a choice to throw out some of its components (i.e. words). Judging if a component of an ingredient is useful or not is difficult. However, by following <a href="http://norvig.com/spell-correct.html">Peter Norvig's approach on spell correcting</a> (or see these slides at Cornell University <a href="https://courses.cit.cornell.edu/info4300_2011fa/slides/25.pdf">https://courses.cit.cornell.edu/info4300_2011fa/slides/25.pdf</a> that explain Peter's approach in detail), we can formulate the problem of throwing out ingredient components in a probabilistic way. Although not stated in Norvig's writeup, this approach is close to something called a <a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier">Naive Bayes classifier</a>.</p>
 <p>Let's take a closer look at what we want to do. We want our improved ingredient to maximize its probability given our input ingredient:</p>
-<p>$$
+$$
 \DeclareMathOperator*{\argmax}{arg\,max}
 \argmax_{b}P\left({b \mid i}\right)
-$$</p>
-<p>Here, I denoted by $b$ the better ingredient and by $i$ the original ingredient.</p>
+$$<p>Here, I denoted by $b$ the better ingredient and by $i$ the original ingredient.</p>
 <p>The previous expression can be transformed according to Bayes Rule (following Peter Norvig) to yield:</p>
-<p>$$
+$$
 \argmax_{b} {P\left({i \mid b}\right) P(b) \over P(i)}
-$$</p>
-<p>Given that the ingredient $i$ is fixed, we neglect the denominator (as Peter does) and end up with:</p>
-<p>$$
+$$<p>Given that the ingredient $i$ is fixed, we neglect the denominator (as Peter does) and end up with:</p>
+$$
 \argmax_{b} P\left({i \mid b}\right) P(b)
-$$</p>
-<p>This leaves us with three terms that balance out:</p>
+$$<p>This leaves us with three terms that balance out:</p>
 <ul>
 <li>the probability of occurence of ingredient in our data $P(b)$ (this will favor commonly used ingredients)</li>
 <li>the error model, which says how likely it is that the input ingredient $i$ is a modified version of the better ingredient $b$</li>
@@ -1918,32 +2074,28 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our error model will be that we can only delete words from our ingredient. So what we need is to generate a list of possible ingredients based on our original ingredient by substracting words. Also, we will assume that word order doesn't matter, so we can represent an ingredient by a set.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Modelling-ingredients-using-sets">Modelling ingredients using sets<a class="anchor-link" href="#Modelling-ingredients-using-sets">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Ingredients</strong> contain a fixed number of words. We will therefore model them as <strong>frozensets</strong> of <strong>words</strong>. This will allow us to manipulate them more easily in the remaining document.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's define a function that creates an ingredient from a text string:</p>
 </div>
@@ -1954,7 +2106,7 @@ $$</p>
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
 
 <span class="k">def</span> <span class="nf">to_ingredient</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="s2">"Transforms text into an ingredient."</span>
@@ -1965,8 +2117,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's build a list of all our ingredients using this function:</p>
 </div>
@@ -1977,7 +2128,7 @@ $$</p>
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_ingredients</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_ingredient</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">all_ingredients_text</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_ingredients</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_ingredient</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">all_ingredients_text</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1988,7 +2139,7 @@ $$</p>
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_ingredients</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_ingredients</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2014,24 +2165,21 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now implement our algorithm given our model of an ingredient.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Implementation">Implementation<a class="anchor-link" href="#Implementation">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now write a function that generates all possible candidate ingredients that can be built from a starting ingredient, using combinations found in the Python standard library.</p>
 </div>
@@ -2042,7 +2190,7 @@ $$</p>
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
 
 <span class="k">def</span> <span class="nf">candidates</span><span class="p">(</span><span class="n">ingredient</span><span class="p">):</span>
     <span class="s2">"Returns a list of candidate ingredients obtained from the original ingredient by keeping at least one of them."</span>
@@ -2057,8 +2205,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see how this works on examples:</p>
 </div>
@@ -2069,7 +2216,7 @@ $$</p>
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"tomato and herb pasta sauce"</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"tomato and herb pasta sauce"</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -2120,7 +2267,7 @@ $$</p>
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'knorr chicken flavor bouillon cube'</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'knorr chicken flavor bouillon cube'</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -2167,8 +2314,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The final step is to compute probabilities of candidate words. This is done using a counter of ingredients: the higher the count, the higher its probability (we don't bother normalizing here).</p>
 </div>
@@ -2179,7 +2325,7 @@ $$</p>
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_ingredients</span><span class="p">)</span>
 
@@ -2219,8 +2365,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we're all set to compute the best candidate for a given input.</p>
 <p>First, let's build the probability evaluation for a possible ingredient using a default dict (so that we don't end up asking for an ingredient that doesn't exist):</p>
@@ -2232,7 +2377,7 @@ $$</p>
 <div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 <span class="n">probability</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">most_common</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -2240,8 +2385,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test the probability:</p>
 </div>
@@ -2252,7 +2396,7 @@ $$</p>
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">probability</span><span class="p">[</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'pasta and herb'</span><span class="p">)]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">probability</span><span class="p">[</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'pasta and herb'</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -2273,7 +2417,7 @@ $$</p>
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">probability</span><span class="p">[</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'tomato sauce'</span><span class="p">)]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">probability</span><span class="p">[</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'tomato sauce'</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -2290,16 +2434,14 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Seems like what we expect: tomato sauce has a higher probability than pasta and herb, which doesn't appear in our initial words.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now write the function that yields the most probable replacement ingredient among all possible candidates.</p>
 </div>
@@ -2310,7 +2452,7 @@ $$</p>
 <div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">best_replacement</span><span class="p">(</span><span class="n">ingredient</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">best_replacement</span><span class="p">(</span><span class="n">ingredient</span><span class="p">):</span>
     <span class="s2">"Computes best replacement ingredient for a given input."</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidates</span><span class="p">(</span><span class="n">ingredient</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">probability</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
 </pre></div>
@@ -2319,8 +2461,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now look at some examples:</p>
 </div>
@@ -2331,7 +2472,7 @@ $$</p>
 <div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"tomato sauce"</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"tomato sauce"</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -2352,7 +2493,7 @@ $$</p>
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"pasta and herb"</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"pasta and herb"</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -2373,7 +2514,7 @@ $$</p>
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"kraft mexican style shredded four cheese with a touch of philadelphia"</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"kraft mexican style shredded four cheese with a touch of philadelphia"</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -2390,8 +2531,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These examples all look good. What about the less frequent ingredients we had in our data?</p>
 </div>
@@ -2402,7 +2542,7 @@ $$</p>
 <div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">text</span><span class="p">,</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">text</span><span class="p">,</span> 
                <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best_replacement</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="n">text</span><span class="p">))))</span> 
               <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]],</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'original ingredient'</span><span class="p">,</span> <span class="s1">'improved ingredient'</span><span class="p">])</span>
@@ -2684,8 +2824,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is interesting: a lot of the ingredients get well simplified, which is exactly what we want. Two comments:</p>
 <ul>
@@ -2696,8 +2835,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This model fails to take into account one thing: if we leave out too many ingredients in our replacement ingredient, the distance to the original ingredient increases. This observation is analogous to Peter Norvig's spell checker, where he considers the possible candidates by increasing edit distance: first words that have only one modification compared to the original word, then two modifications, then three...</p>
 <p>To compensate for this oversimplifcation, let's modify our procedure to keep a new ingredient that is as close as possible to the original.</p>
@@ -2705,16 +2843,14 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Building-a-slightly-more-elaborate-model">Building a slightly more elaborate model<a class="anchor-link" href="#Building-a-slightly-more-elaborate-model">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The only thing we have to change is the way our candidates function works. Instead of generating all possibilites it should return only the ones that exist in our vocabulary of recipes with the least possible number of modifications. Here the modifications can be thought of leaving out a given number of words, by increasing the number of words left out.</p>
 </div>
@@ -2725,7 +2861,7 @@ $$</p>
 <div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">candidates_increasing_distance</span><span class="p">(</span><span class="n">ingredient</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">candidates_increasing_distance</span><span class="p">(</span><span class="n">ingredient</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">):</span>
     <span class="s2">"Returns candidate ingredients obtained from the original ingredient by substraction, largest number of ingredients first."</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ingredient</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
@@ -2740,8 +2876,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will define our vocabulary by the already existing counted ingredients:</p>
 </div>
@@ -2752,7 +2887,7 @@ $$</p>
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vocabulary</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">most_common</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">vocabulary</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">most_common</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -2763,7 +2898,7 @@ $$</p>
 <div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2796,8 +2931,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test our function on a few examples:</p>
 </div>
@@ -2808,7 +2942,7 @@ $$</p>
 <div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"bottled clam juice"</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"bottled clam juice"</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2829,7 +2963,7 @@ $$</p>
 <div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'hidden valley original ranch spicy ranch dressing'</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s1">'hidden valley original ranch spicy ranch dressing'</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2850,7 +2984,7 @@ $$</p>
 <div class="prompt input_prompt">In [47]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"skinless and boneless chicken breast fillet"</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"skinless and boneless chicken breast fillet"</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2871,7 +3005,7 @@ $$</p>
 <div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"reduced sodium italian style stewed tomatoes"</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="s2">"reduced sodium italian style stewed tomatoes"</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2888,16 +3022,14 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we see, this works better on the examples that got simplified too much using the previous model.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now write a new function for computing the best replacement, that takes into account the probabilities:</p>
 </div>
@@ -2908,7 +3040,7 @@ $$</p>
 <div class="prompt input_prompt">In [49]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">best_replacement_increasing_distance</span><span class="p">(</span><span class="n">ingredient</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">best_replacement_increasing_distance</span><span class="p">(</span><span class="n">ingredient</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">):</span>
     <span class="s2">"Computes best replacement ingredient for a given input."</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidates_increasing_distance</span><span class="p">(</span><span class="n">ingredient</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">vocabulary</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
 </pre></div>
@@ -2917,8 +3049,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And let's apply this to our lesser used ingredients:</p>
 </div>
@@ -2929,7 +3060,7 @@ $$</p>
 <div class="prompt input_prompt">In [54]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">text</span><span class="p">,</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">text</span><span class="p">,</span> 
                <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best_replacement_increasing_distance</span><span class="p">(</span><span class="n">to_ingredient</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">vocabulary</span><span class="p">)))</span> 
               <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_ingredients_text</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]],</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'original ingredient'</span><span class="p">,</span> <span class="s1">'improved ingredient'</span><span class="p">])</span>
@@ -3211,8 +3342,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This result is interesting: the refined labels given here seem much better than the originals. However, there are still problems with the new ingredients. In particular, special symbols pollute the data. Therefore it's a good idea to first clean the data before employing our method.</p>
 <p>Hopefully, this leads us to a better ingredient names, leading to better classification. To assert this, we'll train again on the dataset and see if we can expect some improvement compared to our previous model.</p>
@@ -3220,16 +3350,14 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Training-a-machine-learning-model">Training a machine learning model<a class="anchor-link" href="#Training-a-machine-learning-model">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's train the <a href="http://flothesof.github.io/kaggle-whats-cooking-machine-learning.html">previous model</a>:</p>
 </div>
@@ -3240,7 +3368,7 @@ $$</p>
 <div class="prompt input_prompt">In [55]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="p">[</span><span class="s1">'all_ingredients'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">'ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="p">[</span><span class="s1">'all_ingredients'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">'ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span>
 <span class="n">cv</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">'all_ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -3255,8 +3383,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's evaluate the accuracy of our model by doing a K-fold cross validation (training the model several times and check the error each time).</p>
 </div>
@@ -3267,7 +3394,7 @@ $$</p>
 <div class="prompt input_prompt">In [56]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="k">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">KFold</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="k">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">KFold</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">sem</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">def</span> <span class="nf">evaluate_cross_validation</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
@@ -3288,7 +3415,7 @@ $$</p>
 <div class="prompt input_prompt">In [57]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
 <span class="n">logistic</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
 <span class="n">evaluate_cross_validation</span><span class="p">(</span><span class="n">logistic</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
@@ -3309,8 +3436,7 @@ Mean score: 0.787 (+/-0.002)
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have an initial evaluation of our algorithm, let's feed it our better vectors. All we have to do is rebuild the X matrix using our new feature ingredients. We also perform some string substitution to take into account the special characters.</p>
 </div>
@@ -3321,7 +3447,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [63]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">clean_string</span><span class="p">(</span><span class="n">ingredient_text</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">clean_string</span><span class="p">(</span><span class="n">ingredient_text</span><span class="p">):</span>
     <span class="s2">"Cleans the ingredient from special characters and returns it as lowercase."</span>
     <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">char</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">ingredient_text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">isalnum</span><span class="p">()</span> <span class="ow">or</span> <span class="n">char</span><span class="o">.</span><span class="n">isspace</span><span class="p">()])</span>
 </pre></div>
@@ -3330,8 +3456,7 @@ Mean score: 0.787 (+/-0.002)
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this:</p>
 </div>
@@ -3342,7 +3467,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [64]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"frank's® redhot® original cayenne pepper sauce"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"frank's® redhot® original cayenne pepper sauce"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3363,7 +3488,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [65]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"2 1/2 to 3 lb. chicken, cut into serving pieces"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"2 1/2 to 3 lb. chicken, cut into serving pieces"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3384,7 +3509,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [66]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"i can't believe it's not butter!® all purpose sticks"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"i can't believe it's not butter!® all purpose sticks"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3405,7 +3530,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [93]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"extra-virgin olive oil"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clean_string</span><span class="p">(</span><span class="s2">"extra-virgin olive oil"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3422,8 +3547,7 @@ Mean score: 0.787 (+/-0.002)
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can put together our function for improving a list of ingredients from the dataframe. We'll use a treshold for improving ingredients because very popular ingredients should just stay the same and not get cleaned. To do this, let's plot a graph for the value counts of the different ingredients found:</p>
 </div>
@@ -3434,7 +3558,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [78]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'bmh'</span><span class="p">)</span>
 </pre></div>
@@ -3447,7 +3571,7 @@ Mean score: 0.787 (+/-0.002)
 <div class="prompt input_prompt">In [81]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3463,7 +3587,7 @@ Mean score: 0.787 (+/-0.002)
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlYAAAFyCAYAAAA3cJSiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmYXFWd//H3tzvp7DtJSAJJIA0JCYEmIqK2RowaGARG
 UDSoIFHHZUYZB5U44g8ddWyXzAzK6KhgBEZEDTICggQBwQaBhKSTQBJCJ0B2sqez9X5+f9xT3dVL
@@ -3763,15 +3887,14 @@ tk6/FKTxsYv8zqIgDu3pRrv/Ed+BiMs/oqOhZwbc3j/7/dWLRMN2A/vgOYwjqjXJeJ49aHvsX7e+
 nf2JOrVj+ujxLgb+KQ1Z/znkdtvbF6Uhizv6Kvc++tv2OLMenYRZJJuY2ceIPhT69MVuZsVEBZZP
 xqE9kllmdi5Q65xbk+m29IRet30ndNap9kWSWm8yU8dKREREJBCdT0lEREQkEHWsRERERAJRx0pE
 REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This gives us a criterion: let's only improved ingredients whose counts are lower 100. The others are assumed to be already well defined.</p>
 </div>
@@ -3782,7 +3905,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [94]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">improve_ingredients</span><span class="p">(</span><span class="n">ingredient_list</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">improve_ingredients</span><span class="p">(</span><span class="n">ingredient_list</span><span class="p">):</span>
     <span class="s2">"Improves the list of ingredients given as input."</span>
     <span class="n">better_ingredients</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">ingredient</span> <span class="ow">in</span> <span class="n">ingredient_list</span><span class="p">:</span>
@@ -3799,8 +3922,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Before using our function, we also need to rebuild our vocabulary using our new string cleaning function:</p>
 </div>
@@ -3811,7 +3933,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [95]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'test.json'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="s1">'utf-8'</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'test.json'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="s1">'utf-8'</span><span class="p">))</span>
 <span class="n">all_ingredients_text</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="p">[</span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span><span class="p">]:</span>
     <span class="k">for</span> <span class="n">ingredient_list</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">ingredients</span><span class="p">:</span>
@@ -3829,7 +3951,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [96]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">'ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">improve_ingredients</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">'ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">improve_ingredients</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3840,7 +3962,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [97]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3952,8 +4074,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now see the performance of this new version of the ingredients.</p>
 </div>
@@ -3964,7 +4085,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [98]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3975,7 +4096,7 @@ REQkEHWsRERERAJRx0pEREQkkP8PGPox6H5psBYAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [99]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">evaluate_cross_validation</span><span class="p">(</span><span class="n">logistic</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">evaluate_cross_validation</span><span class="p">(</span><span class="n">logistic</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3994,8 +4115,7 @@ Mean score: 0.785 (+/-0.002)
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Well that's too bad... Our "clever" ingredients don't improve our score on the test set. Still let's try to submit a solution given that the test data might have some other issues (unknown ingredients that our method can simplify...).</p>
 </div>
@@ -4006,15 +4126,14 @@ Mean score: 0.785 (+/-0.002)
 <div class="prompt input_prompt">In [100]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_test</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">'ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">improve_ingredients</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_test</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">'ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">improve_ingredients</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And now, let's build our feature matrix:</p>
 </div>
@@ -4025,7 +4144,7 @@ Mean score: 0.785 (+/-0.002)
 <div class="prompt input_prompt">In [101]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_submit</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">X_submit</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">'better_ingredients'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4036,7 +4155,7 @@ Mean score: 0.785 (+/-0.002)
 <div class="prompt input_prompt">In [102]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logistic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">logistic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4060,7 +4179,7 @@ Mean score: 0.785 (+/-0.002)
 <div class="prompt input_prompt">In [103]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_submit</span> <span class="o">=</span> <span class="n">logistic</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_submit</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">y_submit</span> <span class="o">=</span> <span class="n">logistic</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_submit</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4071,7 +4190,7 @@ Mean score: 0.785 (+/-0.002)
 <div class="prompt input_prompt">In [104]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"submission_better_words.csv"</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"submission_better_words.csv"</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"id,cuisine</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cuisine</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df_test</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">enc</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">y_submit</span><span class="p">)):</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="si">{}</span><span class="s2">,</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">cuisine</span><span class="p">))</span>
@@ -4081,16 +4200,14 @@ Mean score: 0.785 (+/-0.002)
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>My submission (to the already closed contest) achieves a ranking of 576th, nothing to frill about. That's too bad. I would have hoped it would somehow improve my score, even though the K-fold had shown worse performance. Nevertheless, I think what is valuable here is that we have devised a way to improve a given text feature vector by using simple probability. This technique might be useful in other machine learning settings, when one can't trust the absolute reliability of the data. As demonstrated on the most exotic ingredients found in the dataset, this method can perform very well and transform an ingredient that is quite exotic into something that still makes sense.</p>
 </div>
@@ -4101,7 +4218,7 @@ Mean score: 0.785 (+/-0.002)
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -4118,6 +4235,7 @@ Mean score: 0.785 (+/-0.002)
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

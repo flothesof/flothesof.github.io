@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,16 +1588,14 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20161029_ReplicatingStatisticsForHackers.ipynb">20161029_ReplicatingStatisticsForHackers.ipynb</a>.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we will use the framework for statistical testing presented in ThinkStats to replicate the contents of the talk given at Scipy 2016 by Jake Vanderplas: <a href="https://speakerdeck.com/jakevdp/statistics-for-hackers">"Statistics for Hackers"</a>.</p>
 </div>
@@ -1431,7 +1606,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
 <span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'Iq9DzN6mvYA'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1449,26 +1624,23 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="What-framework?-What's-ThinkStats?">What framework? What's ThinkStats?<a class="anchor-link" href="#What-framework?-What's-ThinkStats?">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="http://greenteapress.com/thinkstats2/">Think Stats (Second Edition)</a> is an effort by <a href="http://allendowney.blogspot.com">Allen Downey</a> to write a statistics textbook from scratch. It uses Python for practical calculations. One of the ideas that is worth taking in is the explanation that Allen Downey gives of statistical testing and the practical implementation he provides. His idea focuses on simulating statistical test distributions under the null hypothesis instead of the classical analytical approach.</p>
 <p>His ideas are, I think, best summed up by the following image from his <a href="http://allendowney.blogspot.com/2016/06/there-is-still-only-one-test.html">blog</a>:</p>
-<p><img alt="there is just one test" src="https://lh4.googleusercontent.com/Bud31guq0w0FvylY57VMR0zHkYqxIpYAfOqgZietyvv1n2ToNEHwHKZWYix8pwct8kDKsZKiwvOWm6PIFEL3gBIQmbakQYHwVT02nn9_H8Fht_zaSBlrRNcqwZa950Vb5nt-5B84"/></p>
+<p><img alt="there is just one test" src="https://lh4.googleusercontent.com/Bud31guq0w0FvylY57VMR0zHkYqxIpYAfOqgZietyvv1n2ToNEHwHKZWYix8pwct8kDKsZKiwvOWm6PIFEL3gBIQmbakQYHwVT02nn9_H8Fht_zaSBlrRNcqwZa950Vb5nt-5B84"></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The framework used in the Think Stats approach mainly consists of this class (taken from the free online version of the book <a href="http://greenteapress.com/thinkstats2/html/thinkstats2010.html">here</a>):</p>
 </div>
@@ -1479,7 +1651,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">HypothesisTest</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">HypothesisTest</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">MakeModel</span><span class="p">()</span>
@@ -1510,8 +1682,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It mirrors the thinking in the illustration:</p>
 <ul>
@@ -1525,16 +1696,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="First-test:-coin-toss">First test: coin toss<a class="anchor-link" href="#First-test:-coin-toss">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For the coin toss problem, the statement is as follows:</p>
 <blockquote><p>You toss a coin 30 times and see 22 heads. Is it a fair coin?</p>
@@ -1554,7 +1723,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 
 <span class="k">class</span> <span class="nc">CoinTossTest</span><span class="p">(</span><span class="n">HypothesisTest</span><span class="p">):</span>
     <span class="sd">"""Class for testing if a coin is fair.</span>
@@ -1580,8 +1749,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test our test!</p>
 </div>
@@ -1592,15 +1760,14 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span> <span class="o">=</span> <span class="n">CoinTossTest</span><span class="p">([</span><span class="mi">22</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span> <span class="o">=</span> <span class="n">CoinTossTest</span><span class="p">([</span><span class="mi">22</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can compute the test statistic with our real data: it should return 22.</p>
 </div>
@@ -1611,7 +1778,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span><span class="o">.</span><span class="n">actual</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span><span class="o">.</span><span class="n">actual</span>
 </pre></div>
 </div>
 </div>
@@ -1628,8 +1795,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Also, we can generate a new random sample of 30 coin tosses under the null hypothesis:</p>
 </div>
@@ -1640,7 +1806,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span><span class="o">.</span><span class="n">RunModel</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span><span class="o">.</span><span class="n">RunModel</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1657,8 +1823,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's sample the distribution of our test statistic and compute the p-value for our particular data:</p>
 </div>
@@ -1669,7 +1834,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span><span class="o">.</span><span class="n">PValue</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coin_test</span><span class="o">.</span><span class="n">PValue</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1686,8 +1851,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We see our p-value is low. But it is not, given that we simulated only 1000 experiments, the exact p-value, which should be 0.008. Let's compare the obtained distribution and the exact distribution of the test statistic under the null hypothesis.</p>
 </div>
@@ -1698,7 +1862,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-darkgrid'</span><span class="p">)</span>
 </pre></div>
@@ -1725,7 +1889,7 @@ for style in styles:
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_simulated_distribution</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_simulated_distribution</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="s2">"Plots the simulated test statistic distribution."</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">test_stats</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="nb">range</span><span class="p">,</span> 
              <span class="n">cumulative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1745,7 +1909,7 @@ for style in styles:
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">coin_test</span><span class="p">,</span> <span class="s2">"Coin test"</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">coin_test</span><span class="p">,</span> <span class="s2">"Coin test"</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1754,7 +1918,7 @@ for style in styles:
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEVCAYAAADuAi4fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVGX///EXMyzGqiVoi2kuWG4kaOaCqUWRmrmHG5lk
 Yr87NXFFFPdxI5fSbs2FxBK0tO3Ou7IvobilKBqaZHKbuKQsmsygDDDn9wd3Iwg6jA4C5/48H48e
@@ -2003,15 +2167,14 @@ n58fb731FpGRkYwfP57k5GQcHBxo0KABly9fpmnTpqxevZpmzZqZvxBt2bIl06ZN44EHHkCr1TJ7
 ehW4+WXsgAEDCA8P5+uvvzY/7/TBBx9k+PDhDBkyBJPJxGOPPUb37t0rbsMIVZLqlUIIoXJy6kYI
 IVROgl4IIVROgl4IIVROgl4IIVROgl4IIVROgl4IIVROgl4IIVROgl4IIVTu/wNTdmuYSbkNjgAA
 AABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's also plot the analytical distribution:</p>
 </div>
@@ -2022,7 +2185,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">accumulate</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">accumulate</span>
 
 <span class="k">def</span> <span class="nf">ncr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
     <span class="sd">"""Returns from n choose r possibilities.</span>
@@ -2049,7 +2212,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_coin</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_coin</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2065,7 +2228,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAD/CAYAAAD/qh1PAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XtcVHXCP/DPXMFhuNQryG11QdPxsgUFmnnBwGKl26Zl
 NVJYLvaIta4mJl4oUMPRlMIKy/JCYQmUv8q1fCr2IQzS8mFDlwysyEK0FIR0BuQAc35/8DgOMjAM
@@ -2234,15 +2397,14 @@ x/D000+jqakJ1157LZ599lkoFM6nb3An+/xHjhzBqlWroNVq4e/vj1WrVsHLy8vdER1KTU3F3r17
 MXToUIiiCIVCgRUrVuDZZ5+VxPg7yv/kk09i3bp1khj/hoYGLFu2DNXV1WhubsbcuXMxdOhQJCUl
 9fvxd5R94MCBtm8OdXXsecEUEZHMSefkOBERdQuLnohI5lj0REQyx6InIpI5Fj0Rkcyx6ImIZI5F
 T0Qkcyx6IiKZ+/9+Vao3yBTb+wAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now put the two together:</p>
 </div>
@@ -2253,7 +2415,7 @@ T0Qkcyx6IiKZ+/9+Vao3yBTb+wAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_coin</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_coin</span><span class="p">()</span>
 <span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">coin_test</span><span class="p">,</span> <span class="s2">"Coin test"</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2263,7 +2425,7 @@ T0Qkcyx6IiKZ+/9+Vao3yBTb+wAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEVCAYAAADuAi4fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlYVGX7wPHvzLDJrilpZe5opmLgkgvmEu9LZeVG4pqK
 JvZmmpoLYoLbaIpbuW/kkqjlkpZvZT9ScUsx8UUFt8o1FZB0QBlgzu8PcoRYBpDFGe/PdXXFzPOc
@@ -2563,15 +2725,14 @@ N2/epH79+ixbtoyGDRsavxBt3LgxEydOpEKFCmg0GqZMmcJTTz1FRkYGYWFh2NraAllXyhw8eJDe
 vXvn2GZ277zzDkOGDEGr1QLg6+vLrFmzWL58OW5ubiQnJwMPv4z18/MjKCiInTt3Gp8HWqlSJQYM
 GECfPn0wGAw899xzvP7666X3wQiLJNUrhRDCwsnUjRBCWDhJ9EIIYeEk0QshhIWTRC+EEBZOEr0Q
 Qlg4SfRCCGHhJNELIYSFk0QvhBAW7v8Bl9tYv9Sc8XQAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The sampled hypothesis is quite close to the exact one. Can we do better?</p>
 </div>
@@ -2582,7 +2743,7 @@ Qlg4SfRCCGHhJNELIYSFk0QvhBAW7v8Bl9tYv9Sc8XQAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">iters</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">]):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">coin_test</span> <span class="o">=</span> <span class="n">CoinTossTest</span><span class="p">([</span><span class="mi">22</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
@@ -2600,7 +2761,7 @@ Qlg4SfRCCGHhJNELIYSFk0QvhBAW7v8Bl9tYv9Sc8XQAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAHwCAYAAAC7apkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd0FNXfx/H37qaRRkAIoCLV0ITQSyBIEQ1FpRt6CU0U
 QUEQiBBqAKVKh0Ck964owhMCCYoQKT9KQhMJNZDQUjfJzvNHZNk1gU1I33xf53AOu3Pnzr2zsx8u
@@ -3398,39 +3559,35 @@ nHPOOVitVqZMmULr1q0pLS0lJSWFgIAAoPzbzp9//jnDhg2r8J7O7rjjDkaOHElycjIAAwcOZObM
 mSxatIjw8HDy8vKAU18MiY2NZeLEibz77rtEREQAcN555xEfH89dd92F3W7noosu4sYbb6y/DSMi
 zYqyWFksteNjTv5pJSIiIiIiusRCRERERMSZCmQREREREScqkEVEREREnKhAFhERERFxogJZRERE
 RMSJCmQREREREScqkEVEREREnKhAFhERERFx8v/AgvPseJfUFgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we see here, is that the sampled distribution, even with as low as 1000 samples, gives an estimate close to the correct answer, which is 0.8 %.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now move on to the next study case.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Second-test:-difference-in-means">Second test: difference in means<a class="anchor-link" href="#Second-test:-difference-in-means">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The second problem is as follows:</p>
 <blockquote><p>A group of start sneeches got the following scores 84, 72, 57, 46, 63, 76, 99, 91 while a group of cross sneeches got these scores 81, 69, 74, 61, 56, 87, 69, 65, 66, 44, 62, 69. There's a difference in means between the two groups (73.5 for the stars, 66.9 for the crosses) but it is significant?</p>
@@ -3439,8 +3596,7 @@ RMSJCmQREREREScqkEVEREREnKhAFhERERFx8v/AgvPseJfUFgAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, let's describe our test setting:</p>
 <ul>
@@ -3460,7 +3616,7 @@ $$</li>
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -3471,7 +3627,7 @@ $$</li>
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MeanTest</span><span class="p">(</span><span class="n">HypothesisTest</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MeanTest</span><span class="p">(</span><span class="n">HypothesisTest</span><span class="p">):</span>
     <span class="sd">"""Test for checking if the difference in means of samples is significant."""</span>
     
     <span class="k">def</span> <span class="nf">TestStatistic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -3498,7 +3654,7 @@ $$</li>
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span> <span class="o">=</span> <span class="n">MeanTest</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span> <span class="o">=</span> <span class="n">MeanTest</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
                       <span class="p">[</span><span class="mi">81</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">69</span><span class="p">]])</span>
 </pre></div>
 </div>
@@ -3506,8 +3662,7 @@ $$</li>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check that we implemented the right test statistic: we expect a value of 0.932 (taken from Jake's slides).</p>
 </div>
@@ -3518,7 +3673,7 @@ $$</li>
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span><span class="o">.</span><span class="n">actual</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span><span class="o">.</span><span class="n">actual</span>
 </pre></div>
 </div>
 </div>
@@ -3535,8 +3690,7 @@ $$</li>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's see if we generate random samples correctly:</p>
 </div>
@@ -3547,7 +3701,7 @@ $$</li>
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span><span class="o">.</span><span class="n">RunModel</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span><span class="o">.</span><span class="n">RunModel</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -3565,8 +3719,7 @@ $$</li>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's compute a p-value:</p>
 </div>
@@ -3577,7 +3730,7 @@ $$</li>
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span><span class="o">.</span><span class="n">PValue</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test</span><span class="o">.</span><span class="n">PValue</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -3594,8 +3747,7 @@ $$</li>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What does the sampled test statistic distribution under the $\mathcal{H_0}$ hypothesis look like?</p>
 </div>
@@ -3606,7 +3758,7 @@ $$</li>
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test</span><span class="p">,</span> <span class="s2">"Difference in means test"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test</span><span class="p">,</span> <span class="s2">"Difference in means test"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3615,7 +3767,7 @@ $$</li>
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAEVCAYAAAAb/KWvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVFX/wPHPzLApoJhCpRk+pWhuKNLiAmlGYeZWLiiK
 u2iLmmSuhUs2au4LprkbicvjUj71q3wiVCxTFAxTM5dUNFk0FVS2Ob8/eBghlhkUZJi+79eLl87c
@@ -3894,20 +4046,19 @@ Nc5w9cILL7B//3769OmTb5t59ezZk6FDhxpHlvT392fWrFmsWLECNzc3/vrrL+DuBdUePXowceJE
 vvzyS+rUqQPAQw89xIABAwgMDMRgMPDYY4/xyiuvlN0bI6yGjAophBBWSE7LCCGEFZLkLoQQVkiS
 uxBCWCFJ7kIIYYUkuQshhBWS5C6EEFZIkrsQQlghSe5CCGGF/h/Hma6VlJGOWwAAAABJRU5ErkJg
 gg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we will compare the real distribution with the sampled one. Let's write a function that does just that. It turns out that Jake has already put all the information regarding this in his slides. The test statistic has the following probability density:</p>
-<p>$$
+$$
 p(t; \nu) = \frac{\Gamma(\frac{\nu + 1}{2})}{\sqrt{\nu \pi} \Gamma(\frac{\nu}{2}) } \left( 1 + \frac{t^2}{\nu}\right)^{-\frac{\nu + 1}{2}}
-$$</p>
+$$
 </div>
 </div>
 </div>
@@ -3916,7 +4067,7 @@ $$</p>
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gamma</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gamma</span>
 
 <span class="k">def</span> <span class="nf">plot_analytical_mean</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
                                <span class="p">[</span><span class="mi">81</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">69</span><span class="p">]]):</span>
@@ -3942,7 +4093,7 @@ $$</p>
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_mean</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_mean</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -3958,7 +4109,7 @@ $$</p>
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAD/CAYAAAAKVJb/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVNX/x/HXnQ1kcSmX0hSzQnOJBHcFRUPxp6WmJm6U
 3yyXyhYzs+WrLUZW2upWlmT6Fa00yzRLpVHQXEgsKszSkqzcMnWGZZiZ+/tjklCRQZ1hZi6f5+PR
@@ -4220,15 +4371,14 @@ Y8iQIQA89dRTviqK1ymKEvBdM2ebNWsWNpuN6dOno6oq1atXZ/bs2b4u1iVLSEggMzOTpKQkwNX9
 pBXz58/n5MmTzJkzh9mzZ6MoCgsWLCi5dqIligbXwe7WrRs7d+5k0KBBJaO6yqunTGISQggNCvyr
 REIIIc4h4S6EEBok4S6EEBok4S6EEBok4S6EEBok4S6EEBok4S6EEBok4S6EEBr0/wQtBuEGHUK9
 AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What if we put both plots together, the simulated one and the analytical one?</p>
 </div>
@@ -4239,7 +4389,7 @@ AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_mean</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_analytical_mean</span><span class="p">()</span>
 <span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test</span><span class="p">,</span> <span class="s2">"Difference in means test"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -4249,7 +4399,7 @@ AAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAEVCAYAAAAb/KWvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdY09cawPFvEpYs0SpaR1GLOBFF3IJaS4vXurXiwoVS
 R9XW4u4VbBW3deGoUqRScdRVR7UqgqN6lSotVqizIigIThAZye/+EY0gIEMgEM/neXyS/OZ7Qnxz
@@ -4652,15 +4802,14 @@ mn/+85+ZMmUKNWrUwGAwMGPGDHx8fCgqKiI+Pt654pS/vz979+5l6NChJd7z1wYPHszo0aOdM0v2
 7t2buLg4li9fTp06dbh69SrwywXVoKAgoqKi+Pzzz/Hz8wMci9qMHDmSYcOGYbfbadCgAX369Cm/
 D0a4DZkVUggh3JA0ywghhBuS5C6EEG5IkrsQQrghSe5CCOGGJLkLIYQbkuQuhBBuSJK7EEK4IUnu
 Qgjhhv4f/8ok8xBlkX0AAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Both distribution look quite similar. Let's check the impact of the number of simulations on the resulting simulated distributions:</p>
 </div>
@@ -4671,7 +4820,7 @@ Qgjhhv4f/8ok8xBlkX0AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">iters</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">]):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">mean_test</span> <span class="o">=</span> <span class="n">MeanTest</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
@@ -4688,7 +4837,7 @@ Qgjhhv4f/8ok8xBlkX0AAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAHwCAYAAAC7apkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdYFMf/wPH3FYoURSPYYwk/QY1dLCjYI5ZYUbBhw941
 dr+KFXtBUWxYiS2JGls0WLBFowQ7GHtBpVkp0m5/f1w8OUEpUs95PY8P3u3slN3147A7OyOTJElC
@@ -5769,23 +5918,21 @@ li306NGjwL+ZX/fu3enXrx8xMTEAdOjQgYkTJzJr1ixCQkI4f/48cPnEkPDwcEaOHMmaNWuoWbMm
 AOXLl+eZZ56hZ8+eOBwOqlWrxiOPPFJy3xghhFeRWiy1WBSdQV36s0oIIYQQQgghUyyEEEIIIYTI
 TxpkIYQQQggh8pEGWQghhBBCiHykQRZCCCGEECIfaZCFEEIIIYTIRxpkIYQQQggh8pEGWQghhBBC
 iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we see the approximation by simulated sampling is quite good compared with the analytical test statistic. And even if in this case a thousand samples is not very close to the exact density, it seems enough for a good idea of the p-value.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An interesting side note here is that Jake VanderPlas does not actually use the test statistic of the analytical test, but seems instead to have reverted to a different, simpler statistic, the difference in means between the two samples. Let's see if we can reproduce his result:</p>
 </div>
@@ -5796,7 +5943,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MeanTest2</span><span class="p">(</span><span class="n">MeanTest</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MeanTest2</span><span class="p">(</span><span class="n">MeanTest</span><span class="p">):</span>
     <span class="s2">"Changes the test statistic to a difference in means."</span>
     <span class="k">def</span> <span class="nf">TestStatistic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="s2">"Computes the difference in means between the two samples."</span>
@@ -5813,7 +5960,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test2</span> <span class="o">=</span> <span class="n">MeanTest2</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test2</span> <span class="o">=</span> <span class="n">MeanTest2</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
                       <span class="p">[</span><span class="mi">81</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">69</span><span class="p">]])</span>
 </pre></div>
 </div>
@@ -5821,8 +5968,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The observed effect is:</p>
 </div>
@@ -5833,7 +5979,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test2</span><span class="o">.</span><span class="n">actual</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test2</span><span class="o">.</span><span class="n">actual</span>
 </pre></div>
 </div>
 </div>
@@ -5850,8 +5996,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This value is similar to the one Jake shows on one of his slides. What is the p-value?</p>
 </div>
@@ -5862,7 +6007,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test2</span><span class="o">.</span><span class="n">PValue</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test2</span><span class="o">.</span><span class="n">PValue</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -5879,8 +6024,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we find something close to what Jake has. What does the sampled distribution look like?</p>
 </div>
@@ -5891,7 +6035,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test2</span><span class="p">,</span> <span class="s2">"Difference in means test using a simpler test statistic"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test2</span><span class="p">,</span> <span class="s2">"Difference in means test using a simpler test statistic"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -5900,7 +6044,7 @@ iHykQRZCCCGEECKf/wdifeOtDKvSkAAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEVCAYAAADuAi4fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd4FNX6wPFvdtNIQghCEBWESxMQCE1pCQYw1yCgIKCh
 B0IJivQWQDqEFnrvVZpS1Hv9CSiEJkjHUCKCEAhIEmp2CWl7fn/ksmRJj2m7vJ/n8ZHdOXPmnZnd
@@ -6191,15 +6335,14 @@ ZYmIiOCtt95i2bJlVK1a1XhBtHr16owePZpChQqh1WqZOHEixYoVIyEhgaCgIOzs7ICkkTJHjx6l
 Y8eOJttM7tNPP6VXr17GGTC9vb2ZPn06y5cvp0SJEjx8+BB4fjG2ffv2jBo1iu+//9743NJXXnkF
 X19fOnXqhMFgoFSpUnz44Ye5d2KERZLZK4UQwsJJ140QQlg4SfRCCGHhJNELIYSFk0QvhBAWThK9
 EOJFv84AAAAcSURBVEJYOEn0Qghh4STRCyGEhZNEL4QQFu7/AST+bkYJ05QVAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see what this looks with 10000 iterations (which is what Jake seems to use in his presentation):</p>
 </div>
@@ -6210,7 +6353,7 @@ EOJFv84AAAAcSURBVEJYOEn0Qghh4STRCyGEhZNEL4QQFu7/AST+bkYJ05QVAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pval</span> <span class="o">=</span> <span class="n">mean_test2</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pval</span> <span class="o">=</span> <span class="n">mean_test2</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 <span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test2</span><span class="p">,</span> <span class="s2">"Difference in means test using a simpler test statistic"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
@@ -6227,7 +6370,7 @@ EOJFv84AAAAcSURBVEJYOEn0Qghh4STRCyGEhZNEL4QQFu7/AST+bkYJ05QVAAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAEVCAYAAADuAi4fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlcVNX7wPEPM2yyiSlmlkluuYKK5YIYqBSmlqYW7qap
 2KLmvu9K7vu+i6ZoqW2/Sv3mluaGCuFCC7mhCbjCoAww5/cHOYksI8YyjM/79eqVd869Z567zDOH
@@ -6538,15 +6681,14 @@ dMr5fMayLPb7PY/Hg/V6zWazAcDzPNI0pWkahmEYZ+QeDgeu1yu32400Tem6jtlshuu6vF4vttst
 VVWx2+3GC1Hf98nznMViwWQyoSgKVqsVfd9zv9+Zz+fA90uZtm2JoujPmr+dTicul8v4A+bxeKQs
 S+q6xrZt3u838HMZG4YhWZbxfD7HuaXL5ZIkSYjjmGEYcByHIAj+b2PESPq9UkTEcDq6ERExnEIv
 ImI4hV5ExHAKvYiI4RR6ERHDKfQiIoZT6EVEDKfQi4gY7gNFdJ3FkuygeAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Realizing that Jake did not use the "official" test statistic for simulation yields interesting questions:</p>
 <ul>
@@ -6563,7 +6705,7 @@ ImI4hV5ExHAKvYiI4RR6ERHDKfQiIoZT6EVEDKfQi4gY7gNFdJ3FkuygeAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MeanTest3</span><span class="p">(</span><span class="n">MeanTest</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MeanTest3</span><span class="p">(</span><span class="n">MeanTest</span><span class="p">):</span>
     <span class="s2">"Changes the test statistic to a difference in means."</span>
     <span class="k">def</span> <span class="nf">TestStatistic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="s2">"Computes the difference in means between the two samples."</span>
@@ -6580,7 +6722,7 @@ ImI4hV5ExHAKvYiI4RR6ERHDKfQiIoZT6EVEDKfQi4gY7gNFdJ3FkuygeAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_test3</span> <span class="o">=</span> <span class="n">MeanTest3</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_test3</span> <span class="o">=</span> <span class="n">MeanTest3</span><span class="p">([[</span><span class="mi">84</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span> 
                       <span class="p">[</span><span class="mi">81</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">69</span><span class="p">]])</span>
 <span class="n">mean_test3</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
@@ -6603,7 +6745,7 @@ ImI4hV5ExHAKvYiI4RR6ERHDKfQiIoZT6EVEDKfQi4gY7gNFdJ3FkuygeAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test3</span><span class="p">,</span> <span class="s2">"Testing with a silly statistic"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_simulated_distribution</span><span class="p">(</span><span class="n">mean_test3</span><span class="p">,</span> <span class="s2">"Testing with a silly statistic"</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6612,7 +6754,7 @@ ImI4hV5ExHAKvYiI4RR6ERHDKfQiIoZT6EVEDKfQi4gY7gNFdJ3FkuygeAAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAEVCAYAAAD0Ps6RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XdcVfX/B/DXHQwBt5KlhoWmuRP3wEk5yCCBQAEHDigN
 o0xBxZGKI+WnCQbi1lw4Ksu+5TY3uMKVggNXMlL2uN7P7w/y6vWyZVwOr+fj8X18vWd8zvt8Lr04
@@ -6844,15 +6986,14 @@ QoHZs2ejdu3aUKlUWLx4MYyMjADk3Mly/PhxDB06VOuYL3JycsKYMWMQEBAAAOjfvz8WLFiA0NBQ
 mJub4/HjxwCef3jq6OgIPz8//Pzzz2jUqBEAoFatWhgxYgSGDRsGtVqNBg0aYODAgaX3xpBkcXZH
 IiKJ4VAMEZHEMNiJiCSGwU5EJDEMdiIiiWGwExFJDIOdiEhiGOxERBLDYCcikpj/B7XUtcm4fAWF
 AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Clearly, what we see above is nonsense: it has not the intuitive bell shape we expect from a well defined test statistic. So that would answer the first question. However, using Welch's t-test statistic and the simple difference in means of two samples is not the same thing. So where's the difference? Hopefully, someone can point me to good references about this topic.</p>
 <p>Following this line of inquiry, I'm also wondering about the result shown in Jake's slides: using two different test statistics, he obtains the same p-value. I'm guessing this is just a coincidence. Or is it not?</p>
@@ -6860,16 +7001,14 @@ AAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I won't replicate the other parts in Jake Vanderplas' slides (bootstrap resampling and cross-validation) so that this post just focuses on statistics and hypothesis testing.</p>
 <p>As we have seen, the simulation framework proposed by ThinkStats is very simple to apply to the two problems found in Jake Vanderplas' Statistics for Hackers presentation. Moreover, we found through comparison of the exact solution and the approximate simulation solution that both approaches yield the same result. While trying to pinpoint the difference in philosophy, we also saw how the simulation approch is very flexible and allows easily changing from one test statistic to another, which is one of the hard points when doing real statistics (think of all the different names for all these tests...).</p>
@@ -6882,7 +7021,7 @@ AAAAAElFTkSuQmCC
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -6899,6 +7038,7 @@ AAAAAElFTkSuQmCC
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

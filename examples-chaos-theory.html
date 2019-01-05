@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,24 +1588,21 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blog post, we explore some computationally simple systems with complex behaviours that I came across while reading James Gleick's excellent book <a href="https://en.wikipedia.org/wiki/Chaos:_Making_a_New_Science">Chaos: Making a New Science</a>.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-logistic-map:-a-simple-population-model">The logistic map: a simple population model<a class="anchor-link" href="#The-logistic-map:-a-simple-population-model">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The first system we'll compute is the <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic map</a>. As described in the book, this system comes from a 1976 paper by the biologist Robert May and can be described as a discrete-time model for how a population grows.</p>
 <p>Given a population $x_n$, you can compute its next state $x_{n+1}$ with the following function:</p>
@@ -1440,7 +1614,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">logistic_iter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">logistic_iter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
     <span class="s2">"One iteration of the logistic map."</span>
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
@@ -1449,16 +1623,14 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The above expression is made of two parts: $r x$ is analogous to a growth term as a function of previous population while $-r x^2$ can be described as a death rate when the population gets high. Critically, both are multiplied by $r$, which is a parameter of this model.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's build some understanding of this simple system by iterating it for 50 times, with a given start population between 0 and 1.</p>
 </div>
@@ -1469,7 +1641,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span><span class="p">,</span> <span class="n">fixed</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1483,7 +1655,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@interact</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@interact</span>
 <span class="k">def</span> <span class="nf">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">r</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)):</span>
     <span class="s2">"Plots 50 iterations of a population, given the r parameter."</span>
     <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">]</span>
@@ -1498,7 +1670,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAD8CAYAAABw1c+bAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAFYxJREFUeJzt3X2MXFd9xvHnmddAEgTEGwx+qV1htU1QEtCyikJSmaAg
 E1wMNKqcigqkqpYj0iYSLTX8kQokKvUfhIijWha4IPFiRYBdK3JIAwQwUhu8dhwndmJwraTxNuDF
@@ -1598,15 +1770,14 @@ t31lY1vS+1V/lP2cjzuZG7hs3656nbDxPKEvzHOX+s72tyWtVP0Jfr+W9E+Stkt6UNJSSc9L+ouI
 aP0C+JJl+2ZJuyQ9pfP138+qXudPcty2r1P9S72i6pOzByPi89kzr5Icc0NW6vn7iFid+nht/6Hq
 s3ypXnb/VkR84WKMO5ngBwDkk0qpBwCQE8EPAAOG4AeAAUPwA8CAIfgBYMAQ/AAwYAh+ABgwBD8A
 DJj/B9BwA8cNiALoAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Interestingly, different things can happen. For low $r$ values, the population will just decrease:</p>
 </div>
@@ -1617,7 +1788,7 @@ DJj/B9BwA8cNiALoAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1626,7 +1797,7 @@ DJj/B9BwA8cNiALoAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAD8CAYAAABw1c+bAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGG9JREFUeJzt3X9sXed93/H3h5eXuowsRbJFKZ5+WDKixBVa2zMoJd20
 JC5gQ0qLyVmHVm7WJE08Qai1NsCCTRuGDltWDAaGoQimRNMyNQmWVDDQKBMSNZrtBXU71zWp1LEt
@@ -1739,15 +1910,14 @@ bZlzqg/t/yfw/Yj4r7lTyfZbUk820kdSN3AP8AKJ9jki/k1ErImI9dT/t/t/I+KfkWh/GyQtlrSk
 aSvwF8CzXJ3//bfU5/mT7Lek26nf1KtQH5w9HBH/UdJNJNrnhmyq5zMR8Wup91fSrdRH+VCfdv9a
 RPzhfPQ7meA3M7NiUpnqMTOzghz8ZmYl4+A3MysZB7+ZWck4+M3MSsbBb2ZWMg5+M7OScfCbmZXM
 /wfP/O621DHWCAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For intermediate values, below 4, the population will reach equilibrium.</p>
 </div>
@@ -1758,7 +1928,7 @@ RPzhfPQ7meA3M7NiUpnqMTOzghz8ZmYl4+A3MysZB7+ZWck4+M3MSsbBb2ZWMg5+M7OScfCbmZXM
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">2.3</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">2.3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1767,7 +1937,7 @@ RPzhfPQ7meA3M7NiUpnqMTOzghz8ZmYl4+A3MysZB7+ZWck4+M3MSsbBb2ZWMg5+M7OScfCbmZXM
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAD8CAYAAAB3u9PLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGspJREFUeJzt3X+MXeV95/H3x+Nf1MBix8Y4/lGbjTdZUyXO7uBtKduS
 IFLjjWKoWNZUi5wK1TgpbJCyarz5I5uNVCnJ5pdUEK6zsfBqk1g0BGMhp+C40YZou6nHrgvY4Nrx
@@ -1890,15 +2060,14 @@ ArgNeJkp3OeI+C8RsSQillP7f/dvIuI/MoX7LGmOpKvq28DHgBe5BH1O4sE0SeuozUN2ANsj4s8n
 uUltJ+n7wC3UvhGxG/ivwC7gcWAZtW+JvTsiGheeL0uSbgaeA17g4tzy56mtI0zVPn+Q2mJiB7U/
 5h6PiC9Jeg9TtM952ZTRf46Ij0/lPku6nlpWALVp/e9FxJ9fij4nERDMzKy1FKaMzMysAAcEMzMD
 HBDMzCzjgGBmZoADgpmZZRwQzMwMcEAwM7OMA4KZmQHw/wESAqc7r+PbwQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And then for values closer but below 4, strange things happen:</p>
 </div>
@@ -1909,7 +2078,7 @@ HBDMzCzjgGBmZoADgpmZZRwQzMwMcEAwM7OMA4KZmQHw/wESAqc7r+PbwQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">plot_logistic_iterated</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">3.6</span><span class="p">)</span>
@@ -1925,7 +2094,7 @@ HBDMzCzjgGBmZoADgpmZZRwQzMwMcEAwM7OMA4KZmQHw/wESAqc7r+PbwQAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAD8CAYAAACMwORRAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXmYJUd1J/qLe/OuVdXV1YuEVlrYbGIxWAJsjBdsjw3G
 zzx7vIB3Hh6evjEe3vfmjcEzHtsfYxvbYI9nDFjIDIMx2HwYsNlkJASSwJIQtISQ1K2t1VpavXfX
@@ -2624,15 +2793,14 @@ d/zvdwP4rf2+tkkhpfyAlPKUlPJWqPf0v6WU3445uLc9wGJcHxLM07ieKc9dStkVQvwAgN8B4AP4
 sJTy0QO+rEnwtQDeBeALQoi/jj/7VwD+LYBfE0K8B6p74D89oOvbC8zzvY2FxbieCxy6e1tUqC6w
 wAILzCFmjZZZYIEFFlhgClgY9wUWWGCBOcTCuC+wwAILzCEWxn2BBRZYYA6xMO4LLLDAAnOIhXFf
 YIEFFphDLIz7AgsssMAcYmHcF1hggQXmEP8fC/OsoKhlg9IAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can visualize this in another way, by showing the iterated values on a two dimensional graph:</p>
 </div>
@@ -2643,7 +2811,7 @@ YIEFFphDLIz7AgsssMAcYmHcF1hggQXmEP8fC/OsoKhlg9IAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@interact</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@interact</span>
 <span class="k">def</span> <span class="nf">plot_logistic_iterated_2D</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">r</span><span class="o">=</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="kc">None</span><span class="p">)):</span>
     <span class="s2">"Plots logistic map for 50 iterations on 2D plot."</span>
     <span class="c1"># computes iterated values</span>
@@ -2667,7 +2835,7 @@ YIEFFphDLIz7AgsssMAcYmHcF1hggQXmEP8fC/OsoKhlg9IAAAAASUVORK5CYII=
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAD8CAYAAACMwORRAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd0VNXax/HvTkJ6SIBAAoEQeu8BpCjSpCgiNhQUETWg
 gAVFvXavImIXaQIioqiocKWIIEhv0gOEEkJNgJACgRRSZ79/nLzeyEUzwMycmcnzWStrMTMnc56T
@@ -2888,15 +3056,14 @@ Uo9Za11Lax2ltY4CfgKecOFgB+t+thcCnZVSXkopf6A9cMDBddqSNcd8EuMvFZRSYUAD4KhDq3Qs
 u+aX047cdRlcmNvKY34NqARMKR7JFmoXbrpk5TG7FWuOWWt9QCm1DNgDWICZWusrXlLnCqz8Pr8F
 zFZK7cW4guQFrbXLdotUSn0H3AyEKqWSgNeBcuCY/JI7VIUQwg0587SMEEKIayThLoQQbkjCXQgh
 3JCEuxBCuCEJdyGEcEMS7kII4YYk3IUQwg1JuAshhBv6P4Yazv/dbjO8AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can display what we observed before in this visualization:</p>
 </div>
@@ -2907,7 +3074,7 @@ zFZK7cW4guQFrbXLdotUSn0H3AyEKqWSgNeBcuCY/JI7VIUQwg0587SMEEKIayThLoQQbkjCXQgh
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">plot_logistic_iterated_2D</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span> <span class="c1"># decrease to 0</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -2924,7 +3091,7 @@ zFZK7cW4guQFrbXLdotUSn0H3AyEKqWSgNeBcuCY/JI7VIUQwg0587SMEEKIayThLoQQbkjCXQgh
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlYAAAHVCAYAAAAzabX0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdYVNfWx/HvZuhFUBQVRbD3jorGnlhjYoktsUeDJcb0
 mMR7b9prbvpNsWJNosbeYosaFVss2LuiAiIqCAjSGea8fxxjNEVRBw4D6/M8PgkwM+eHZbNmn73X
@@ -3729,15 +3896,14 @@ WQixDjgEWIB5UspbTrV1Fhtf73eARUKIw1jf5K9IKS9pFhoQQnwD9AVqCCEygDcBH3Dd96UWVBvm
 XKr9ci53bb/A+W2Y2tJGURRFURTFTlxpVqCiKIqiKIpbU4WVoiiKoiiKnajCSlEURVEUxU5UYaUo
 iqIoimInqrBSFEVRFEWxE1VYKYqiKIqi2IkqrBRFURRFUezk/wMSbBFmZGXGhwAAAABJRU5ErkJg
 gg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's make an animation of this.</p>
 </div>
@@ -3748,7 +3914,7 @@ gg==
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="k">import</span> <span class="n">VideoClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.io.bindings</span> <span class="k">import</span> <span class="n">mplfig_to_npimage</span>
@@ -3790,8 +3956,7 @@ gg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another way to plot this is to evaluate the final population after a fixed number of iterations over the two-dimensional grid in the $(r, x_0)$ space.</p>
 </div>
@@ -3802,7 +3967,7 @@ gg==
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 <span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">x0</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -3818,8 +3983,7 @@ gg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we plot this with a marker at the final value of the population, we find a map with bifurcations, regions where it decreases to 0, where it reaches an equilibrium as a function of $r$, where it can have two values, more and more and then chaos.</p>
 </div>
@@ -3830,7 +3994,7 @@ gg==
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">rr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">r</span><span class="p">],</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">rr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">r</span><span class="p">],</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">],</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'value of $r$ parameter'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3846,7 +4010,7 @@ gg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAEOCAYAAABy7Vf3AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Wd4FNXbx/HvJJvee7LphfSEkARI6L13kCJSBBVFRUXs
 DWzYC0oRpAmC0ot0hFAkAVIIJIH03nvdlE3meWF5sP1FZUXwfK7L63J3Z2fue178PJ45eyLJsowg
@@ -4341,15 +4505,14 @@ Ya3vZwJHOngtv7uesu250nVX0LJo9rXKSZJM7lLnURQljpbkk620LDqwA9AQQsTTcjPwL90EiqI0
 esr+xZWuW1GUS8DR1hvHH3WkfqTeSw6FlKQ2/s5wQ0nqjmTLXZIkqQeSLXdJkqQeSLbcJUmSeiCZ
 3CVJknogmdwlSZJ6IJncJUmSeiCZ3CVJknogmdwlSZJ6IJncJUmSeiCZ3CVJknqg/wNSt9owCFka
 pgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can also plot this as an image over the 2D sampled space.</p>
 </div>
@@ -4360,7 +4523,7 @@ pgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">vals</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">r</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">x0</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x0</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'bottom'</span><span class="p">,</span> 
            <span class="n">aspect</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'Blues'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'value of $r$ parameter'</span><span class="p">)</span>
@@ -4380,7 +4543,7 @@ pgAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkkAAAGxCAYAAAB2qSLdAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8FEUbwPHf7t3lklx6oQYSQu9VqgIi0lGaIFVQKQoo
 TVGqhaJYKIqiKL1JVXov0jtIb6EkkJDeLsm13fePzSUhIK8FQ5vv53Pe7e7c7tyE5B5nZp+RVFVF
@@ -5765,23 +5928,21 @@ MxuUiySzFouI5RQf4q9GxGvAn4CPSFpBMeh4u9s/EbGZ4rbXIuAhirFC/fteAL4DPCjp+bR/XN3x
 S4Bb0vELgZsiouGttqRZkbQKuCz1ex/gl1ViqbEjbbfTKO6IeANYkAaoX1fl52NmVsaPADCzHbYz
 X7M3M8uNrySZmZmZlfCVJDMzM7MSvpJkZmZmVsJFkpmZmVkJF0lmZmZmJVwkmZmZmZVwkWRmZmZW
 wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Convergence-of-the-Newton-method-in-the-complex-plane">Convergence of the Newton method in the complex plane<a class="anchor-link" href="#Convergence-of-the-Newton-method-in-the-complex-plane">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As a second example, we will turn to <a href="https://en.wikipedia.org/wiki/Newton%27s_method">Newton's method</a> which, to quote the book, was "already old when Newton invented it". Newton's method is an iterative method that allows one to solve equations. If works by using the value of a function and its derivative to find a way to the functions zero.</p>
 <p>One iteration of the method can be written as follows:</p>
@@ -5793,7 +5954,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">newton_iter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">newton_iter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">):</span>
     <span class="s2">"One iteration of Newton's method."</span>
     <span class="k">return</span> <span class="n">z</span> <span class="o">-</span> <span class="n">func</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">func_prime</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </pre></div>
@@ -5802,8 +5963,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will apply it to a fourth order polynomial in the complex plane $z \rightarrow z^4 - 1$. As the <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra">fundamental theorem of Algebra</a> states, this polynomial has four roots, all on the unit circle. Using Newton's method starting anywhere in the complex plane, we should be able to find these four roots.</p>
 <p>First, let's see what this polynomial looks like.</p>
@@ -5815,7 +5975,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
     <span class="s2">"Function to solve zeros for."</span>
     <span class="k">return</span> <span class="n">z</span><span class="o">**</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">1</span>
 </pre></div>
@@ -5828,7 +5988,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">func_prime</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">func_prime</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
     <span class="s2">"Derivative of the above function."</span>
     <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">z</span><span class="o">**</span><span class="mi">3</span>
 </pre></div>
@@ -5841,7 +6001,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
     <span class="s2">"Apply Newton's method to a function and its derivative from point z."</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters</span><span class="p">):</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">newton_iter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">)</span>
@@ -5856,7 +6016,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">domain_coloring</span> <span class="k">import</span> <span class="n">plot_domain</span><span class="p">,</span> <span class="n">contour_domaincol</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">domain_coloring</span> <span class="k">import</span> <span class="n">plot_domain</span><span class="p">,</span> <span class="n">contour_domaincol</span>
 </pre></div>
 </div>
 </div>
@@ -5867,7 +6027,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="s1">'ro'</span><span class="p">)</span>
 </pre></div>
@@ -5878,7 +6038,7 @@ wkWSmZmZWQkXSWZmZmYl/gdFk6JpBXeq2QAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAD8CAYAAABzTgP2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAFQxJREFUeJzt3X2sXPWd3/H3BwN/mEUJBMeYB2MiWVFZacPSkUtT1IQG
 ImM1a6i6kpFF3DbSFe0SbaJ2JVdIaaQVUppVdqVIbKKbLKpT3Q3aVWCxsk4oplvR3YjU14gYG+LY
@@ -5976,7 +6136,7 @@ W8zcZasryUbgIeCuqvrRQPt8z+ko6rq8ef5IsoX+69Fri5m7nHU19bwH+AgDx9wy76+FjPbYGva7
 G9J+WqiurwM/H9g/kws9pyOq657mcX9A/03xD58L+6tZ/1fAgzPmLdv+ov9H4Cng/9F/7frUSh5b
 fvNZktTybr6UJEmahcEgSWoxGCRJLQaDJKnFYJAktRgMkqQWg0GS1GIwSJJa/j8u2NZyMxs8IAAA
 AABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
@@ -5987,7 +6147,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">plot_domain</span><span class="p">(</span><span class="n">contour_domaincol</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="n">im</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="n">N</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">daxis</span><span class="o">=</span><span class="s1">'x'</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
@@ -6007,7 +6167,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmEAAAJTCAYAAABAR8HtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXeUL8d13/mp38yve15EJuILAAg85PTym5czAIk6FrWm
 19bq7Fq2KMur4LUthyNTlE1pfWRLtsS1j3RW8v5h+xxJDtqVCeAhx4dACgwWaYkEQUSCAQCJl2Z+
@@ -10231,15 +10391,14 @@ Md8BRiKyYNN/FPhXwG8kBOxv2/yFgBUUFPxEKCSsoKDgSsNB4N8Cfw58EsAY8zXgL4C32TT7gY9Y
 JGEFBQUFCYwxjwJL84y1Ap8tBKygoOCnQZGEFRQUFBQUFBRsAYokrKCgoKCgoKBgC1BIWEFBQUFB
 QUHBFqCQsIKCgoKCgoKCLUAhYQUFBQUFBQUFW4BCwgoKCgoKCgoKtgCFhBUUFBQUFBQUbAEKCSso
 KCgoKCgo2AL8f8++rnVuy+PlAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, what is interesting is to look at which of these four roots we end up at, depending on where we start on the complex plane. We evaluate a grid of starting configurations below:</p>
 </div>
@@ -10250,7 +10409,7 @@ KCgoKCgo2AL8f8++rnVuy+PlAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.0011</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.0011</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">real</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">real</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
 
 <span class="n">roots</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
@@ -10260,8 +10419,7 @@ KCgoKCgo2AL8f8++rnVuy+PlAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can distinguish the four roots by plotting their phase, which will be either 0, $\pi /2$, $\pi$ or $3 \pi / 2$.</p>
 </div>
@@ -10272,7 +10430,7 @@ KCgoKCgo2AL8f8++rnVuy+PlAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">'bilinear'</span><span class="p">,</span> 
            <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">real</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">real</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">real</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">real</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'lower'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'angle (rad.) of final iter in Newton method'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
@@ -10290,7 +10448,7 @@ KCgoKCgo2AL8f8++rnVuy+PlAAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAj4AAAHhCAYAAABusrTLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXeYZNdd5/0559xQOXUO092To9IoS7Zl4YwNxmuCeW1s
 wF7AsIGXfVnefXaJ64e0LGD2xdgmOGDD2mswOMlJkmXJymGkkTQ593ROlatuOOf9o3p6ZqQZaUbq
@@ -12562,15 +12720,14 @@ a+0JId4H/BiwgC9prbedx2a/1H0M+KYQ4l3AAeAtAMfuc+rzfu6Zvj7YwNe01v95ntr7knOyY1YI
 cff0458Dfgi8HtgNFIG7zld7Xy7OcL/fAbxHCOEBJeBObTLNvmhCiK8DNwJtQogB4COAA+Y4X6hM
 5mbDMAzDMBYMM9RlGIZhGMaCYQIfwzAMwzAWDBP4GIZhGIaxYJjAxzAMwzCMBcMEPoZhGIZhLBgm
 8DEMwzAMY8EwgY9hGIZhGAuGCXwMwzAMw1gw/n9vqfv5doMqjgAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What this illustrates is that when you're close to a root, indeed you'll converge to this root. But the boundaries between the "stable" regions are incredibly complex, at different scales.</p>
 <p>We can compute a zoomed version of this image:</p>
@@ -12582,7 +12739,7 @@ cff0458Dfgi8HtgNFIG7zld7Xy7OcL/fAbxHCOEBJeBObTLNvmhCiK8DNwJtQogB4COAA+Y4X6hM
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.0011</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.0011</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">real</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">real</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">roots</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">func_prime</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
 </pre></div>
@@ -12595,7 +12752,7 @@ cff0458Dfgi8HtgNFIG7zld7Xy7OcL/fAbxHCOEBJeBObTLNvmhCiK8DNwJtQogB4COAA+Y4X6hM
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">'bilinear'</span><span class="p">,</span> 
            <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">real</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">real</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">real</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">real</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'lower'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'angle (rad.) of final iter in Newton method'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
@@ -12613,7 +12770,7 @@ cff0458Dfgi8HtgNFIG7zld7Xy7OcL/fAbxHCOEBJeBObTLNvmhCiK8DNwJtQogB4COAA+Y4X6hM
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAj4AAAHhCAYAAABusrTLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Wl4XMd95/tv1dl6RXdj3whwX0RSFLVam23J8ibJTjxx
 PMn1xMlN5ma9Se6dOMskeeLM3EwS++bJJHFWJU7GmZs44y2xHcuxbMuyLdvaV4r7TgIgtgZ67z5L
@@ -14415,39 +14572,35 @@ c7qrh9Q0Pr78RXxxsjKzEvANYBfhh/gfzOytetVcRw8Bt0o6QHhl5yG4KKu9hFcvXgXeIPy9aLSn
 zFbNKXIf8ISk14GPAD9JvNL6i5tVo4uTk5/TXeL8yc3OOeecaxipueLjnHPOObfQvPFxzjnnXMPw
 xsc555xzDcMbH+ecc841DG98nHPOOdcwvPFxzjnnXMPwxsc555xzDcMbH+ecc841jP8DUQmOwPob
 lgAAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed, not a simple boundary!</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you're interested in this sort of image, you can find whole galleries on the internet. For example here: <a href="http://aleph0.clarku.edu/~djoyce/newton/examples.html">http://aleph0.clarku.edu/~djoyce/newton/examples.html</a></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Lorenz-system">Lorenz system<a class="anchor-link" href="#Lorenz-system">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The final example of a complex system we will look at is the <a href="https://en.wikipedia.org/wiki/Lorenz_system">Lorenz system</a>.
 Initially, this system appeared in what is a classic paper of Chaos theory:</p>
@@ -14463,7 +14616,7 @@ Inspired by <a href="http://ipywidgets.readthedocs.io/en/latest/examples/Lorenz%
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">integrate</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="k">import</span> <span class="n">cnames</span>
@@ -14478,7 +14631,7 @@ Inspired by <a href="http://ipywidgets.readthedocs.io/en/latest/examples/Lorenz%
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solve_lorenz</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_points</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solve_lorenz</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_points</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
@@ -14525,8 +14678,7 @@ Inspired by <a href="http://ipywidgets.readthedocs.io/en/latest/examples/Lorenz%
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's look at a couple of trajectories using this function:</p>
 </div>
@@ -14537,7 +14689,7 @@ Inspired by <a href="http://ipywidgets.readthedocs.io/en/latest/examples/Lorenz%
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">max_times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">max_times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -14548,7 +14700,7 @@ Inspired by <a href="http://ipywidgets.readthedocs.io/en/latest/examples/Lorenz%
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">max_time</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">max_times</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
     <span class="n">t</span><span class="p">,</span> <span class="n">x_t</span> <span class="o">=</span> <span class="n">solve_lorenz</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="n">max_time</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">all_points</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
@@ -14561,7 +14713,7 @@ Inspired by <a href="http://ipywidgets.readthedocs.io/en/latest/examples/Lorenz%
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkMAAAFcCAYAAADLUbpIAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8HdWd///XmZnbr7ptyZJlyZaNGwYXMB2bBAgtkISW
 EAiQBRKSkGyWX+qStpuym82WkGS/CWzKLiWhBUIJAQOB0G2wjQvuVZbV65Vum3J+f1zZwcGAZUua
@@ -15356,15 +15508,14 @@ KhlSFEVRFGVYU8mQoiiKoijDmkqGFEVRFEUZ1lQypCiKoijKsKaSIUVRFEVRhjWVDCmKoiiKMqyp
 ZEhRFEVRlGFNJUOKoiiKogxrKhlSFEVRFGVYE1LKgd4HRVEURVGUAaNahhRFURRFGdZUMqQoiqIo
 yrCmkiFFURRFUYY1lQwpiqIoijKsqWRIURRFUZRhTSVDiqIoiqIMayoZUhRFURRlWFPJkKIoiqIo
 w5pKhhRFURRFGdZUMqQoiqIoyrD2/wEQJQhL/ntXagAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What is more interesting is to show this plot as a function of time, with particles (climate states in the analogy) close together initially.</p>
 </div>
@@ -15375,7 +15526,7 @@ w5pKhhRFURRFGdZUMqQoiqIoyrD2/wEQJQhL/ntXagAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">max_time</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">max_times</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
     <span class="n">t</span><span class="p">,</span> <span class="n">x_t</span> <span class="o">=</span> <span class="n">solve_lorenz</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="n">max_time</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">all_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
@@ -15388,7 +15539,7 @@ w5pKhhRFURRFGdZUMqQoiqIoyrD2/wEQJQhL/ntXagAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkMAAAFcCAYAAADLUbpIAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd8lfXd//H39+SEbDIh7CABZQgVJ4oKFsSFe1UEgdvR
 n7Xau72tq7W2lVr1tq22tZVSrRZRVESt3FaJA2cZBRRBZMsKZJA9z/r+/gCpcZAETnKd5Pt6Ph55
@@ -15562,15 +15713,14 @@ ADiNMgQAAJxGGQIAAE6jDAEAAKdRhgAAgNMoQwAAwGmUIQAA4DTKEAAAcBplCAAAOI0yBAAAnEYZ
 AgAATqMMAQAAp1GGAACA0yhDAADAaZQhAADgNMoQAABwGmUIAAA4jTIEAACcRhkCAABOowwBAACn
 UYYAAIDTKEMAAMBpxlrrdQYAAADPsGcIAAA4jTIEAACcRhkCAABOowwBAACnUYYAAIDTKEMAAMBp
 lCEAAOA0yhAAAHAaZQgAADiNMgQAAJz2/wHSnwIHn5S7uQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The key takeaway here is: even though the particles were initially close, the difference between them quickly explodes and by time 12, they are scattered through the state space with no noticeable structure or proximity between them. To quote Edward Lorenz:</p>
 <blockquote><p>Chaos: When the present determines the future, but the approximate present does not approximately determine the future.</p>
@@ -15580,24 +15730,21 @@ lCEAAOA0yhAAAHAaZQgAADiNMgQAAJz2/wHSnwIHn5S7uQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, I tried to present three interesting problems about chaos theory or rather (to quote <a href="https://en.wikipedia.org/wiki/Chaos_theory">Wikipedia</a>), systems that are highly sensitive to initial conditions. It's quite striking to think that these behaviours can be illustrated by computationally simple systems, but that they were hidden in plain sight until the 70's. Euler and Gauss did not know this existed, Laplace thought that with enough computing  power you could solve anything. Science has gone a long way since.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170523_ChaosExamples.ipynb">20170523_ChaosExamples.ipynb</a>.</em></p>
 </div>
@@ -15608,7 +15755,7 @@ lCEAAOA0yhAAAHAaZQgAADiNMgQAAJz2/wHSnwIHn5S7uQAAAABJRU5ErkJggg==
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -15625,6 +15772,7 @@ lCEAAOA0yhAAAHAaZQgAADiNMgQAAJz2/wHSnwIHn5S7uQAAAABJRU5ErkJggg==
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

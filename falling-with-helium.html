@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I'm following the explanations from this blog post: <a href="http://blog.wolfram.com/2013/10/08/a-response-to-falling-with-helium/">http://blog.wolfram.com/2013/10/08/a-response-to-falling-with-helium/</a>.</p>
 <p>The central question to answer is:</p>
@@ -1432,14 +1608,12 @@ h6:hover .anchor-link {
 <li>the helium tank carried by the person falling from the plane</li>
 </ul>
 <p>Idea behind the calculation: we want to achieve neutral buoyancy for the falling guy.</p>
-<p>$$
+$$
 \text{ballon buoyancy force} = \text{weight of helium inside ballon} + \text{weight of ballon} + \text{weight of person}
-$$</p>
-<p>This translates to the equation used by the guy in the article:</p>
-<p>$$
+$$<p>This translates to the equation used by the guy in the article:</p>
+$$
 \rho_{air} \frac{4}{3} \pi \; r^3 = \rho_{He} \frac{4}{3} \pi \; r^3 + s_{balloon} 4 \pi  \; r^2 + m_{person}
-$$</p>
-<p>where $s_{ballon}$ is the surface density of the ballon. This makes sense because the mass of the ballon is distributed on its outer surface when fully inflated. Thus using the value of 0.00609614 grams per square centimeter calculated from a typical inflatable balloon is a good starting point.</p>
+$$<p>where $s_{ballon}$ is the surface density of the ballon. This makes sense because the mass of the ballon is distributed on its outer surface when fully inflated. Thus using the value of 0.00609614 grams per square centimeter calculated from a typical inflatable balloon is a good starting point.</p>
 <p>The next step in this article is to solve that equation in $r$ assuming a given air and helium density. He's saying that air density varies from 1.225 kg/m^3 at sea level to 1.1 kg/m^3 at 5000 feet (1.5 km) but we're taking it equal to 1.2 kg/m^3 as we want to be close to the surface. The density of Helium is taken constant at 1.785*10^-4 grams per cubic centimeter, or 0.18 kg/m^3 (ten times lighter than air).</p>
 </div>
 </div>
@@ -1449,7 +1623,7 @@ $$</p>
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 </pre></div>
 </div>
 </div>
@@ -1471,7 +1645,7 @@ $$</p>
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rho_air</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="c1">#kg/m^3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">rho_air</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="c1">#kg/m^3</span>
 <span class="n">rho_helium</span> <span class="o">=</span> <span class="mf">0.18</span> <span class="c1">#kg/m^3</span>
 <span class="n">s_ballon</span> <span class="o">=</span> <span class="mf">0.061</span> <span class="c1">#kg/m^2</span>
 <span class="n">m_person</span> <span class="o">=</span> <span class="mi">70</span> <span class="c1">#kg</span>
@@ -1481,8 +1655,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To find $r$ we can use the root finding method from the scipy.optimize package as discussed <a href="http://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html#root-finding">in this help page</a>.</p>
 </div>
@@ -1493,7 +1666,7 @@ $$</p>
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">root</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">root</span>
 <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">rho_air</span> <span class="o">-</span> <span class="n">rho_helium</span><span class="p">)</span> <span class="o">*</span> <span class="mf">4.</span><span class="o">/</span><span class="mf">3.</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">r</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">s_ballon</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">r</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">m_person</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1516,8 +1689,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The radius of the balloon will be 2.6 meters. This represents a volume of:</p>
 </div>
@@ -1528,7 +1700,7 @@ $$</p>
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">helium_volume</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mf">3.</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">r</span> <span class="o">**</span> <span class="mi">3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">helium_volume</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mf">3.</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">r</span> <span class="o">**</span> <span class="mi">3</span>
 <span class="nb">print</span> <span class="s2">"</span><span class="si">%.2f</span><span class="s2"> m^3"</span> <span class="o">%</span> <span class="n">helium_volume</span> <span class="c1"># in m^3</span>
 </pre></div>
 </div>
@@ -1547,8 +1719,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The final mass of the jumper will thus be:</p>
 </div>
@@ -1559,7 +1730,7 @@ $$</p>
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_mass</span> <span class="o">=</span> <span class="n">m_person</span> <span class="o">+</span> <span class="n">rho_helium</span> <span class="o">*</span> <span class="n">helium_volume</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">final_mass</span> <span class="o">=</span> <span class="n">m_person</span> <span class="o">+</span> <span class="n">rho_helium</span> <span class="o">*</span> <span class="n">helium_volume</span>
 <span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> kg'</span> <span class="o">%</span> <span class="n">final_mass</span>
 </pre></div>
 </div>
@@ -1578,8 +1749,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, the jumper in its initial state is carrying the helium with canisters that weigh 49 kg for a volume of 43 liters. How many canisters are needed to fit the helium inside? Given that each canister has a maximal design pressure, we can try to fit is much helium inside until it reaches that limit. The <a href="http://www.airgas.com/content/details.aspx?id=7000000000234">HP250 model</a> has a service pressure of 156 bar. Using the ideal gas law, we know that the pressure volume product is conserved between the situations where the helium is compressed in the canisters and at ground pressure in the inflated balloon. In other words:
 $$P_{landing} V_{landing} = P_{canister} V_{canister}$$
@@ -1592,7 +1762,7 @@ We take a landing pressure of 1 bar, a landing volume of 74 m^3 and a canister p
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canister_helium_volume</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">helium_volume</span> <span class="o">/</span> <span class="mf">156.</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">canister_helium_volume</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">helium_volume</span> <span class="o">/</span> <span class="mf">156.</span>
 <span class="nb">print</span> <span class="s2">"</span><span class="si">%.2f</span><span class="s2"> m^3"</span> <span class="o">%</span> <span class="p">(</span><span class="n">canister_helium_volume</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1611,8 +1781,7 @@ We take a landing pressure of 1 bar, a landing volume of 74 m^3 and a canister p
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We therefore need, to contain the volume of helium needed to inflate the balloon, approximately</p>
 </div>
@@ -1623,7 +1792,7 @@ We take a landing pressure of 1 bar, a landing volume of 74 m^3 and a canister p
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="mf">0.47</span> <span class="o">/</span> <span class="mf">43e-3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="mf">0.47</span> <span class="o">/</span> <span class="mf">43e-3</span>
 <span class="n">number_canisters</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.47</span> <span class="o">/</span> <span class="mf">43e-3</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
 <span class="nb">print</span> <span class="s2">"</span><span class="si">%i</span><span class="s2"> canisters"</span> <span class="o">%</span> <span class="p">(</span><span class="n">number_canisters</span><span class="p">)</span>
 </pre></div>
@@ -1644,8 +1813,7 @@ We take a landing pressure of 1 bar, a landing volume of 74 m^3 and a canister p
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This leads to an initial mass of:</p>
 </div>
@@ -1656,7 +1824,7 @@ We take a landing pressure of 1 bar, a landing volume of 74 m^3 and a canister p
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">initial_mass</span> <span class="o">=</span> <span class="n">final_mass</span> <span class="o">+</span> <span class="n">number_canisters</span> <span class="o">*</span> <span class="mi">49</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">initial_mass</span> <span class="o">=</span> <span class="n">final_mass</span> <span class="o">+</span> <span class="n">number_canisters</span> <span class="o">*</span> <span class="mi">49</span>
 <span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> kg'</span> <span class="o">%</span> <span class="n">initial_mass</span>
 </pre></div>
 </div>
@@ -1675,8 +1843,7 @@ We take a landing pressure of 1 bar, a landing volume of 74 m^3 and a canister p
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The next step in our problem solving is to determine the discharge time for the gas canisters. We will use the formula provided in the blog post:
 $$
@@ -1689,14 +1856,12 @@ The discharge coefficient is the ratio of the actual discharge to the theoretica
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can calculate the initial density by applying the ideal gas law:</p>
-<p>$$
+$$
 P \; V = n \; R \; T
-$$</p>
-<p>Contrary to what is done in the blog post, I'd take the initial pressure to be equal to the service pressure of the canister, 156 bar. Thus the initial density would be calculated by dividing the mass of the Helium in one canister (one tenth of the final volume for which we know the density at sea level) by the volume of the canister:</p>
+$$<p>Contrary to what is done in the blog post, I'd take the initial pressure to be equal to the service pressure of the canister, 156 bar. Thus the initial density would be calculated by dividing the mass of the Helium in one canister (one tenth of the final volume for which we know the density at sea level) by the volume of the canister:</p>
 </div>
 </div>
 </div>
@@ -1705,7 +1870,7 @@ $$</p>
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">canister_helium_density</span> <span class="o">=</span> <span class="n">helium_volume</span> <span class="o">/</span> <span class="n">number_canisters</span> <span class="o">*</span> <span class="n">rho_helium</span> <span class="o">/</span> <span class="mf">43e-3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">canister_helium_density</span> <span class="o">=</span> <span class="n">helium_volume</span> <span class="o">/</span> <span class="n">number_canisters</span> <span class="o">*</span> <span class="n">rho_helium</span> <span class="o">/</span> <span class="mf">43e-3</span>
 <span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> kg/m^3'</span> <span class="o">%</span> <span class="n">canister_helium_density</span>
 </pre></div>
 </div>
@@ -1724,8 +1889,7 @@ $$</p>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is consistent with my expectations in the sense that the density of the helium is a lot higher in the canister than in the balloon because it is compressed (which is the whole point of putting it in a canister).</p>
 <p>We can now calculate the time it takes to empty one canister (containing one tenth of the total helium volume needed) up to 90% with the formula.</p>
@@ -1737,7 +1901,7 @@ $$</p>
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="mf">0.72</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="mf">0.72</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mf">1.667</span>
 <span class="n">P_0</span> <span class="o">=</span> <span class="mf">15.6e6</span> <span class="c1"># Pa</span>
 <span class="n">rho_0</span> <span class="o">=</span> <span class="mf">28.23</span> <span class="c1"># kg / m^3</span>
@@ -1753,7 +1917,7 @@ $$</p>
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">time_to_empty</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">time_to_empty</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">F</span> <span class="o">**</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">V</span> <span class="o">/</span> <span class="n">C</span> <span class="o">/</span> <span class="n">A</span> <span class="o">*</span> <span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">((</span><span class="n">k</span> <span class="o">*</span> <span class="n">P_0</span> <span class="o">/</span> <span class="n">rho_0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1765,7 +1929,7 @@ $$</p>
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_to_empty</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">time_to_empty</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span> 
 </pre></div>
 </div>
 </div>
@@ -1786,7 +1950,7 @@ $$</p>
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fractions</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fractions</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
 <span class="n">t</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">time_to_empty</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="n">fractions</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1809,7 +1973,7 @@ $$</p>
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">fractions</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">fractions</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 <span class="n">xlabel</span><span class="p">(</span><span class="s1">'fraction of gas remaining in the container'</span><span class="p">)</span>
 <span class="n">ylabel</span><span class="p">(</span><span class="s1">'time needed to empty container'</span><span class="p">)</span>
 <span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -1821,7 +1985,7 @@ $$</p>
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYkAAAEMCAYAAAAxoErWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XtcVHX++PHXgKjlBbyBCtrgXQQZkFXSTMi7razpZktm
 4K3Wvupa7ZZWlvVrlbbMDVt33dYSzUJz17Sbq5lU3iJRshVTQ1BEUBHwSoHw+f1xYg4oOAPDXJD3
@@ -2106,15 +2270,14 @@ S0sjJCSE9evX89RTTzF//nxCQ0MpLS2t8jNW9/3p3bs3L7/8MiNGjCA4OJgRI0aQm5tbbT5EzcgE
 f8IllI8DAMTFxXHmzBmWLl3q5Kgcq6ioiNtuuw3QWhLr1q1j48aNTo5KNHQyJiFcwieffMLixYu5
 du0aRqORVatWOTskh0tJSWHWrFkopWjVqhVvv/22s0MSQloSQgghqidjEkIIIaolRUIIIUS1pEgI
 IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we increase the nozzle width as suggested by the blog post by a factor of 5, we manage to empty one canister in:</p>
 </div>
@@ -2125,7 +2288,7 @@ IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">one_canister_empty_time</span> <span class="o">=</span> <span class="n">time_to_empty</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="mi">25</span><span class="p">)</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">one_canister_empty_time</span> <span class="o">=</span> <span class="n">time_to_empty</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">P_0</span><span class="p">,</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="mi">25</span><span class="p">)</span> 
 <span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="n">one_canister_empty_time</span>
 </pre></div>
 </div>
@@ -2144,8 +2307,7 @@ IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is indeed an improvement, as the total emptying time now becomes</p>
 </div>
@@ -2156,7 +2318,7 @@ IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">number_canisters</span> <span class="o">*</span> <span class="n">one_canister_empty_time</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">number_canisters</span> <span class="o">*</span> <span class="n">one_canister_empty_time</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2174,8 +2336,7 @@ IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the blog post however, the author suggests to use an apparatus to release all canisters at once. This yields a total emptying time equal to the one it takes to empty only one canister:</p>
 </div>
@@ -2186,7 +2347,7 @@ IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="n">one_canister_empty_time</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="s1">'</span><span class="si">%.2f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="n">one_canister_empty_time</span>
 </pre></div>
 </div>
 </div>
@@ -2204,14 +2365,12 @@ IYSolhQJIYQQ1ZIiIYQQolpSJIQQQlTr/wPtfJXPCprbqQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, by emptying the gas so quickly into the balloon, a drag force will appear. This drag force is usually expressed like:</p>
-<p>$$
+$$
 F_d = C_d \; \left( 1/2 \; \rho \; u^2 \; A \right)
-$$</p>
-<p>where $F_d$ is the drag force, $C_d$ the drag coefficient, $\rho$ the density of the fluid where the drag force is created, $u$ the speed at which the object is moving and $A$ the cross section in the flow direction of the object.</p>
+$$<p>where $F_d$ is the drag force, $C_d$ the drag coefficient, $\rho$ the density of the fluid where the drag force is created, $u$ the speed at which the object is moving and $A$ the cross section in the flow direction of the object.</p>
 <p>Wikipedia has <a href="http://en.wikipedia.org/wiki/Drag_coefficient">a nice page about the drag coefficient</a>. See also <a href="http://wright.nasa.gov/airplane/drageq.html">this page</a> from NASA. 
 From Wikipedia we learn that a streamlined body has a drag coefficient of $0.04$ and that for a sphere it's $0.47$. Therefore, taking $0.1$ seems reasonable for a start.</p>
 </div>
@@ -2222,7 +2381,7 @@ From Wikipedia we learn that a streamlined body has a drag coefficient of $0.04$
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -2239,6 +2398,7 @@ From Wikipedia we learn that a streamlined body has a drag coefficient of $0.04$
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

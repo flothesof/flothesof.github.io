@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,8 +1588,7 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I recently watched this <a href="http://www.youtube.com/watch?v=qpZbu7J7UL4">Vice video on Youtube</a> which is a coverage about the Japanese sex industry. Except for the fact that it looks like it was made with a message in mind that ressembles "the Japanese are weird", it cited government surveys about the population of Japan declining. Given that I have been interested in data relating to death statistics and more generally statistics about populations, I decided to examine the Japanese age pyramid.</p>
 <p>In this endeavour, the first step was to gather the right data. I was able to find life tables for Japan at the <a href="http://www.mhlw.go.jp/english/database/db-hw/lifetb21th/dl/tables.pdf">Ministry of Health, Labor and Welfare website</a>.</p>
@@ -1429,7 +1605,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="s2">"""Age,number of survivors,number of deaths,survivors rate,death rate,force of mortality,life expectancy,stationary L,stationary T</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="s2">"""Age,number of survivors,number of deaths,survivors rate,death rate,force of mortality,life expectancy,stationary L,stationary T</span>
 <span class="s2">0,100000,246,0.99754,0.00246,0.09375,79.55,99808,7955005</span>
 <span class="s2">1,99754,37,0.99963,0.00037,0.00057,78.75,99733,7855198</span>
 <span class="s2">2,99716,26,0.99974,0.00026,0.00026,77.78,99704,7755464</span>
@@ -1547,8 +1723,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's set up our pylab environment.</p>
 </div>
@@ -1559,7 +1734,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
 <span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1578,8 +1753,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's read the data displayed above to a numpy array:</p>
 </div>
@@ -1590,7 +1764,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
 </pre></div>
 </div>
 </div>
@@ -1601,7 +1775,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">elem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">elem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1612,7 +1786,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -1629,8 +1803,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, let's plot the survivors as a function of their age.</p>
 </div>
@@ -1641,7 +1814,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">"number of survivors"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">"number of survivors"</span><span class="p">)</span>
 <span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'lower left'</span><span class="p">)</span>
 <span class="n">xlabel</span><span class="p">(</span><span class="s1">'age'</span><span class="p">)</span>
 <span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -1653,7 +1826,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEKCAYAAABAEmLBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVXX+x/EXCmmZyGJCgoYpiCjjUpJlTSSByriljuu4
 lDmlU5lttk5OTYItkzplTUZGtmA/K3UcI8ulsVLM1DKxpHIFZBoRc0ER/P7+OMNVUku2c+7lvp+P
@@ -1908,15 +2081,14 @@ TU6ULSJeTk2biHidXr16UVpaSkxMDA888ABXXnkl4eHhPPjgg8TFxXH11VfTqlUr/P39AZg1axbr
 16+nY8eOtG/fnpdeesnhPRARb6QLEURE/ufw4cM0atSI0tJSBg4cyLhx4+jfv7/TZYmIADrSJiLi
 MnXqVDp37kxsbCyXXnqpGjYRcSs60iYiIiLiAXSkTURERMQDqGkTERER8QBq2kREREQ8gJo2ERER
 EQ+gpk1ERETEA6hpExEREfEA/w8d8+XdKra8NQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's plot the death rate.</p>
 </div>
@@ -1927,7 +2099,7 @@ EQ+gpk1ERETEA6hpExEREfEA/w8d8+XdKra8NQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">"death rate for men"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">"death rate for men"</span><span class="p">)</span>
 <span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
 <span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -1938,7 +2110,7 @@ EQ+gpk1ERETEA6hpExEREfEA/w8d8+XdKra8NQAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlcAAAD9CAYAAACRI1IlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl4VOX99/F3MBEBg2FHMoGIARJQjBak4IYLxvporKA/
 g/6osQHjQgutPqWiVVoVQfQRDZbSiCKGJQqWIMKgAWLdSLQxKkI1VgZiWBQIYlhMMtzPH9MMCVlY
@@ -2155,15 +2327,14 @@ mEFeXh6nnXaa9/GTytxH68KatHLlStO3b19z9tlnm6lTp/r7cGHp3XffNREREea8884zycnJJjk5
 VSlzH0tLSzNnnnmmiYqKMg6Hw7z44ovNZvz444+bs88+2/Tr1884nU4bKw9eR2c+d+5ck5CQYHr2
 7On9d/Tuu+/27n+imUcYo/vSiIiIiPiKX6cFRURERMKNmisRERERH1JzJSIiIuJDaq5EREREfEjN
 lYiIiIgPqbkSERER8aH/D6m6Lgw9c3oxAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From there, we can build a simple model of an evolving population. The state equation we're going to use is the following (adapted from <a href="http://en.wikipedia.org/wiki/Demographic_analysis">http://en.wikipedia.org/wiki/Demographic_analysis</a>):
 $$
@@ -2183,7 +2354,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">age_data_men</span> <span class="o">=</span> <span class="s2">"""0	529000</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">age_data_men</span> <span class="o">=</span> <span class="s2">"""0	529000</span>
 <span class="s2">1	543000</span>
 <span class="s2">2	529000</span>
 <span class="s2">3	529000</span>
@@ -2216,8 +2387,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We'll use the following approach for interpolation. First, we'll build a function that returns the number of people above a given age. Second, we'll build a function that gives the number of people in an age interval by substracting two numbers from the previous function.</p>
 </div>
@@ -2228,7 +2398,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">population_above</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">age_data</span><span class="o">=</span><span class="n">age_data_men</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">population_above</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">age_data</span><span class="o">=</span><span class="n">age_data_men</span><span class="p">):</span>
     <span class="sd">"""returns population above age</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">age</span> <span class="o">>=</span> <span class="n">age_data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]:</span>
@@ -2249,7 +2419,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">population_between</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">age_data</span><span class="o">=</span><span class="n">age_data_men</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">population_between</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">age_data</span><span class="o">=</span><span class="n">age_data_men</span><span class="p">):</span>
     <span class="sd">"""returns population between start and end ages</span>
 <span class="sd">    start and end are expected to be integers"""</span>
     <span class="k">return</span> <span class="n">population_above</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">age_data</span><span class="o">=</span><span class="n">age_data</span><span class="p">)</span> <span class="o">-</span> <span class="n">population_above</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">age_data</span><span class="o">=</span><span class="n">age_data</span><span class="p">)</span>
@@ -2259,8 +2429,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now test this function.</p>
 </div>
@@ -2271,7 +2440,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">population_between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">529000</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="n">population_between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">529000</span>
 <span class="nb">print</span> <span class="n">population_between</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">543000</span>
 <span class="nb">print</span> <span class="n">population_between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">2746000</span>
 <span class="nb">print</span> <span class="n">population_between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="mi">2746000</span> <span class="o">+</span> <span class="mi">2983000</span><span class="p">)</span>
@@ -2303,8 +2472,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From there, we can construct the age pyramid for men.</p>
 </div>
@@ -2315,7 +2483,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ages</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ages</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">pyramid</span> <span class="o">=</span> <span class="p">[</span><span class="n">population_between</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">]</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">pyramid</span><span class="p">)</span>
 </pre></div>
@@ -2332,7 +2500,7 @@ For each iteration, $P_0$ gets incremented by the number of births while all oth
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnMAAAD9CAYAAADXlfGPAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X1Y1XWe//HnUchMU/IkkOdgmIKIWt4kebU7MxiBxFVk
 6eDNLmDR7Ixuk1k72bT182auBLe5pmzLnabQJZsdMHdTty1Ea2iarXAG227E8kyDCgekAjE15M7v
@@ -2529,15 +2697,14 @@ SE1NNQ4fPmx1qXIe5eXlxm233WYYhqFrF0D+7//+z7j++uuNa6+91rjjjjuM5uZmXb8AsmbNGiMx
 MdGYMGGCkZOTY7S1ten6+al58+YZV111lREeHm44nU5j/fr1571Wjz/+uDF69Ghj7NixRmlp6QXb
 txmG7nslIiIiEqiCaphVREREJNQozImIiIgEMIU5ERERkQCmMCciIiISwBTmRERERAKYwpyIiIhI
 APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Just a quick check:</p>
 </div>
@@ -2548,7 +2715,7 @@ APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyramid</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">age_data_men</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyramid</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">age_data_men</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -2566,8 +2733,7 @@ APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now iterate the simulation using the curve of death probability and the birth data. In the next cell, we're defining a function that constructs a new age pyramid from an old pyramid taking into account deaths and births.</p>
 </div>
@@ -2578,7 +2744,7 @@ APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">construct_new_pyramid</span><span class="p">(</span><span class="n">old_pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="n">birth_rate</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">construct_new_pyramid</span><span class="p">(</span><span class="n">old_pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="n">birth_rate</span><span class="p">):</span>
     <span class="n">births</span> <span class="o">=</span> <span class="n">birth_rate</span> <span class="o">/</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">old_pyramid</span><span class="p">)</span>
     <span class="n">new_pyramid</span> <span class="o">=</span> <span class="n">old_pyramid</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">death_probs</span><span class="p">)</span>
     <span class="n">new_pyramid</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">new_pyramid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -2595,7 +2761,7 @@ APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">death_probs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">][:</span><span class="n">ages</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">death_probs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">][:</span><span class="n">ages</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -2606,7 +2772,7 @@ APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">pyramid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'start population'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">pyramid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'start population'</span><span class="p">)</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">construct_new_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'population after one year'</span><span class="p">)</span>
 <span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'lower left'</span><span class="p">)</span>
 </pre></div>
@@ -2623,7 +2789,7 @@ APv/SrXuNZ6yVQAAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnMAAAD9CAYAAADXlfGPAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8VNX9//HXnWQSsi8TkpCNQBYg7FsEbWuEEgEtqGhY
 lEWxVdSvIFqxVCWgFvh9rV+lylfbIgaogvKtgCibILiDAkUWhYCQnUD2hOyZ8/tjyCSTTBCyMMnk
@@ -2992,15 +3158,14 @@ uy0dKhlDZWUli4+PZ4wxyh2PXLhwgYWHh7OgoCD28ssvs56eHsofj+Tl5TG5XM4CAwPZhg0bmF6v
 p/xZqbVr1zI3NzdmZ2fHpFIpKygoGDNXu3fvZt7e3szPz48plcpx9y9gjH73ihBCCCGEryZVNysh
 hBBCyFRDxRwhhBBCCI9RMUcIIYQQwmNUzBFCCCGE8BgVc4QQQgghPEbFHCGEEEIIj/0/5wAzfGc5
 6XAAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As one can see, the population shifts to the right, while newborn babies are added to the left of the plot. We can iterate this behavious several times to construct estimates in the future for the years 2023, 2033 and 2043.</p>
 </div>
@@ -3011,7 +3176,7 @@ hBBCyFRDxRwhhBBCCI9RMUcIIYQQwmNUzBFCCCGE8BgVc4QQQgghPEbFHCGEEEIIj/0/5wAzfGc5
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="n">birth_rate</span><span class="p">,</span> <span class="n">years</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="n">birth_rate</span><span class="p">,</span> <span class="n">years</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">years</span><span class="p">):</span>
         <span class="n">pyramid</span> <span class="o">=</span> <span class="n">construct_new_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="n">birth_rate</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pyramid</span>
@@ -3025,7 +3190,7 @@ hBBCyFRDxRwhhBBCCI9RMUcIIYQQwmNUzBFCCCGE8BgVc4QQQgghPEbFHCGEEEIIj/0/5wAzfGc5
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">pyramid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'2013'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">pyramid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'2013'</span><span class="p">)</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'2023'</span><span class="p">)</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'2033'</span><span class="p">)</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'2043'</span><span class="p">)</span>
@@ -3044,7 +3209,7 @@ hBBCyFRDxRwhhBBCCI9RMUcIIYQQwmNUzBFCCCGE8BgVc4QQQgghPEbFHCGEEEIIj/0/5wAzfGc5
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnMAAAD9CAYAAADXlfGPAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXd4VNXWh98p6T0hvRASAiEUgUBAEQ0oRbBdRRC9dK5i
 RfET1KuCKAper4oKVkSsIFfBSrFRVKRLSyEkhEB672XK+f7YSQgQSsKcTBj2+zz72WdO5uy9zySZ
@@ -3591,15 +3756,14 @@ w4cPVxRFkXvXiJw8eVLp3r270qVLF2XUqFFKVlaW3L9G5OOPP1Z8fHwUPz8/ZfLkyUphYaHcPz31
 3HPPKU5OToqxsbHi4uKirFy58r73as6cOYqHh4fSqVMnJSoq6oHlaxRF5r0SQgghhGismlQ3qxBC
 CCFEcyPBnBBCCCFEIybBnBBCCCFEIybBnBBCCCFEIybBnBBCCCFEIybBnBBCCCFEI/b/AWfvbrJz
 aTMwAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also plot population estimates according to this simulation model for one hundred years in the future:</p>
 </div>
@@ -3610,7 +3774,7 @@ aTMwAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">future_years</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">future_years</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">total_men_population</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">,</span> <span class="n">future_year</span><span class="p">))</span> <span class="k">for</span> <span class="n">future_year</span> <span class="ow">in</span> <span class="n">future_years</span><span class="p">]</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">future_years</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="n">total_men_population</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">)</span>
 <span class="n">title</span><span class="p">(</span><span class="s1">'Total men population in Japan'</span><span class="p">)</span>
@@ -3625,7 +3789,7 @@ aTMwAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmMAAAEVCAYAAACsW+I8AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVGX7x/HPgKiZIOIC7qC5ggqIW7ngngtqWmqZW6WV
 j5VpWc+vTEtzedRKbfMxc6vMpTTUNJfCLDXLvczUAnMBN0DEDcH5/XEeRkkRBIaZw3zfr9d5NTfM
@@ -3930,15 +4094,14 @@ HkFBQYwZMwaAoUOHMn/+fIKDg/njjz8yNLPfWJTs27fP1kA/bty4LK+K/fP8typwWrVqxf79+zM0
 4J80aRJdunThvvvuo3z58rd8PzDu1pwzZw7BwcEEBQXZboIQkYJLG4WLiIiIOJCujImIiIg4kIox
 EREREQdSMSYiIiLiQCrGRERERBxIxZiIiIiIA6kYExEREXGg/wfkNoIDTQUhzwAAAABJRU5ErkJg
 gg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As one can see, there is no convergence, only steady decline. This is due to the fact that the birth rate is given per 1000 people. Thus, when the total population declines, the number of births declines and so on. This is better seen on a 1000 year outlook, where the population goes to zero in the long run:</p>
 </div>
@@ -3949,7 +4112,7 @@ gg==
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">future_years</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">future_years</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <span class="n">total_men_population</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">iterate_pyramid</span><span class="p">(</span><span class="n">pyramid</span><span class="p">,</span> <span class="n">death_probs</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">,</span> <span class="n">future_year</span><span class="p">))</span> <span class="k">for</span> <span class="n">future_year</span> <span class="ow">in</span> <span class="n">future_years</span><span class="p">]</span>
 <span class="n">plot</span><span class="p">(</span><span class="n">future_years</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="n">total_men_population</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">)</span>
 <span class="n">title</span><span class="p">(</span><span class="s1">'Total men population in Japan'</span><span class="p">)</span>
@@ -3964,7 +4127,7 @@ gg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmYAAAEVCAYAAABKcil4AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlclPX6//HXgKipIKACigvuu4Jg2mLiQh5TyaxcM9zy
 V7ZZncq+ldoqdrSTLaf6liGpuWVHcS03zMrUlLSTGepXzAVwAUTcWJzfH/dhBEVAYZi54f18PO4H
@@ -4233,7 +4396,7 @@ mEB0dDSBgYH8+eef+Rrh8xYov/32m635/o033ijybNnVxy+o2OnRowd79+7N1/xf0H6tW7fmzTff
 5O6776Zjx47cfffdJCUlXfdYAA0aNGDw4MG0a9eOIUOG0KlTJ9s+48eP529/+5ut+T8yMpL+/ftz
 xx13UK9evQLfD4yrPmfPnk1gYCDt2rWzXUAhIhWDbmIuIiIi4iR0xkxERETESagwExEREXESKsxE
 REREnIQKMxEREREnocJMRERExEmoMBMRERFxEv8fGgcTiDIEF5YAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
@@ -4244,7 +4407,7 @@ REREnIQKMxEREREnocJMRERExEmoMBMRERFxEv8fGgcTiDIEF5YAAAAASUVORK5CYII=
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -4261,6 +4424,7 @@ REREnIQKMxEREREnocJMRERExEmoMBMRERFxEv8fGgcTiDIEF5YAAAAASUVORK5CYII=
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";

@@ -443,9 +443,124 @@ article .meta a.comments_btn:hover {
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -524,12 +639,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -542,27 +665,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -758,7 +893,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -768,11 +905,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -1020,6 +1170,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -1058,7 +1211,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -1180,6 +1333,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -1196,16 +1353,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -1221,6 +1386,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -1271,8 +1441,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -1411,32 +1588,28 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>Ce billet a été écrit à l'aide d'un notebook Jupyter. Son contenu est sous licence BSD. Une vue statique de ce notebook peut être consultée et téléchargée ici : <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170625_Legislatives.ipynb">20170625_Legislatives.ipynb</a>.</em></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce billet, écrit après les résultats du deuxième tour des élections législatives 2017, nous allons faire les choses suivantes. Tout d'abord, nous allons produire quelques graphiques relatifs aux résultats du deuxième tour, dans une approche descriptive. Dans un deuxième temps, nous évaluerons plusieurs modèles de report des voix pour voir si l'utilisation de modèles de comportement apporte une compréhension des résultats réels ou pas.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Téléchargement-des-données-depuis-le-site-du-ministère-de-l'intérieur">Téléchargement des données depuis le site du ministère de l'intérieur<a class="anchor-link" href="#Téléchargement-des-données-depuis-le-site-du-ministère-de-l'intérieur">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Pour commencer notre étude, nous allons nous appuyer sur les routines du <a href="http://flothesof.github.io/resultats-legislatives-2017-premier-tour.html">billet précédent</a>.</p>
 </div>
@@ -1447,7 +1620,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import des packages </span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># import des packages </span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -1463,8 +1636,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Tout d'abord, nous extrayons les liens vers les circonscriptions par département.</p>
 </div>
@@ -1475,7 +1647,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">'http://elections.interieur.gouv.fr/legislatives-2017/'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">'http://elections.interieur.gouv.fr/legislatives-2017/'</span>
 <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
 <span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'Style6'</span><span class="p">)]</span>
 <span class="n">links</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">url</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'area'</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'href'</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">]))</span>
@@ -1489,7 +1661,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1506,8 +1678,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A partir de ces liens, nous allons chercher les liens vers les pages individuelles des circonscriptions.</p>
 </div>
@@ -1518,7 +1689,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">lru_cache</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">lru_cache</span>
 </pre></div>
 </div>
 </div>
@@ -1529,7 +1700,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">fetch_page</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
     <span class="s2">"Fetches url for webpage."</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -1544,7 +1715,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">circo_links</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">circo_links</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
     <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">fetch_page</span><span class="p">(</span><span class="n">link</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
     <span class="n">circo_links</span> <span class="o">+=</span> <span class="p">[</span><span class="n">url</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'circonscription'</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
@@ -1558,7 +1729,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">circo_links</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">circo_links</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1575,8 +1746,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant extraire les informations à partir de chaque circonscription. On trouve des tables pour le premier ainsi que pour le deuxième tour sur chaque page de circonscription. Sauf pour les circonscriptions où il n'y avait pas de deuxième tour. Ceci complique légèrement les extractions.</p>
 </div>
@@ -1587,7 +1757,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="n">circo_links</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="n">circo_links</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">fetch_page</span><span class="p">(</span><span class="n">link</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1599,7 +1769,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">link</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">link</span>
 </pre></div>
 </div>
 </div>
@@ -1620,7 +1790,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'h3'</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'h3'</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1641,7 +1811,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_circo_data</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_circo_data</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
     <span class="s2">"Returns data extracted from url: name of circonscription, candidates_turn1, stats_turn1."</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">fetch_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
@@ -1694,8 +1864,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut vérifier que la fonction retourne les bons résultats pour deux circonscriptions. L'une, Wallis et Futuna, avec seulement un premier tour et l'autre, la 1ère circonscription de l'Essonne, avec deux tours.</p>
 </div>
@@ -1706,7 +1875,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">extract_circo_data</span><span class="p">(</span><span class="n">circo_links</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">extract_circo_data</span><span class="p">(</span><span class="n">circo_links</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1738,7 +1907,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">extract_circo_data</span><span class="p">(</span><span class="n">circo_links</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">extract_circo_data</span><span class="p">(</span><span class="n">circo_links</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1786,32 +1955,28 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Maintenant que ces fonctions sont en place, on peut commencer à travailler.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Le-deuxième-tour-en-graphiques">Le deuxième tour en graphiques<a class="anchor-link" href="#Le-deuxième-tour-en-graphiques">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Abstention">Abstention<a class="anchor-link" href="#Abstention">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Faisons un graphique de l'abstention entre premier et deuxième tour dans les circonscriptions qui ont voté deux fois.</p>
 </div>
@@ -1822,7 +1987,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_stats</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_stats</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">circo_links</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">extract_circo_data</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
@@ -1838,7 +2003,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_stats</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_stats</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1855,8 +2020,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Prenons un exemple pour l'analyse des données : la première circonscription dans la liste de celles trouvées.</p>
 </div>
@@ -1867,7 +2031,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span> <span class="o">=</span> <span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span> <span class="o">=</span> <span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">stats_turn1</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' - 1er tour'</span><span class="p">]</span>
 <span class="n">stats_turn2</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' - 2eme tour'</span><span class="p">]</span>
 </pre></div>
@@ -1880,7 +2044,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1943,7 +2107,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1958,7 +2122,7 @@ h6:hover .anchor-link {
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAe8AAAF1CAYAAADBdGLoAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlAVXX+//HXZUvZFAwrVBAUcyyXMXIp0nEZdSbNTA1s
 apo0yX1t3EUpdxMzSdK+U7mWa07bt2bCinEJyjSVr+m45oZpYgIq272/P/x5k1Q4t9BzDz4ff8G5
@@ -2189,15 +2353,14 @@ ihUr5O3trdzcXKWmpqpSpUpmlwYAFQYPaUG5atu2rfbs2aPZs2drxYoVql69OsENAOWMPW+Uq7/+
 9a/64IMPdOzYMfXo0cOyjx4EAHfGBWu4ITIyMrR69WqlpaWpR48e6tq1q+rVq2d2WQBQIRDeuKHO
 nTunf/7zn1q7dq3Wr19vdjkAUCEQ3gAAWAwXrAEAYDGENwAAFkN4AwBgMYQ3AAAWQ3gDAGAxhDcA
 ABbz/wARF7ho1lhEhAAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme on peut le voir sur le graphique, les électeurs se sont démobilisés pour le deuxième tour. Au lieu de regarder deux chiffres, on peut également s'intéresser à la différence du nombre de voix pour chaque catégorie.</p>
 </div>
@@ -2208,7 +2371,7 @@ ABbz/wARF7ho1lhEhAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">stats_turn1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">stats_turn1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2264,7 +2427,7 @@ ABbz/wARF7ho1lhEhAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">stats_turn1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">stats_turn1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">all_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2279,7 +2442,7 @@ ABbz/wARF7ho1lhEhAAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAe8AAAF1CAYAAADBdGLoAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XtAVGXi//HPcMvLgKJhpSVeySyVlCxX1G9q5raalRLU
 L2uzYtXMG+WtRDFFtNAsk6zf6uI1Rc2uu21RK18vaZpX1mjFNPMWpiagMsDM7w9/zkZAjISceez9
@@ -2473,15 +2636,14 @@ eteuXVqyZImys7NZKhUAqhDljSrlcDj04YcfatmyZfL391deXp7S09NVo0YNq6MBwBWDRVpQpbp3
 766srCy99NJLWrZsmRo0aEBxA0AVY88bVerRRx/VBx98oMOHD2vAgAFGLjsIAN6OE9ZwWWzZskVp
 aWnKyMjQgAED1K9fP4WFhVkdCwCuCJQ3LqszZ87o3Xff1erVq7V27Vqr4wDAFYHyBgDAMJywBgCA
 YShvAAAMQ3kDAGAYyhsAAMNQ3gAAGIbyBgDAMP8PVmutIbG18nMAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Représentons maintenant les différences en terme d'abstention pour toutes les circonscriptions ayant votées deux fois.</p>
 </div>
@@ -2492,7 +2654,7 @@ YShvAAAMQ3kDAGAYyhsAAMNQ3gAAGIbyBgDAMP8PVmutIbG18nMAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="p">:</span>
     <span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span> <span class="o">=</span> <span class="n">stats</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">stats_turn1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -2508,7 +2670,7 @@ YShvAAAMQ3kDAGAYyhsAAMNQ3gAAGIbyBgDAMP8PVmutIbG18nMAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">abstention</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"différence d'abstention entre second et premier tour"</span><span class="p">)</span>
 </pre></div>
@@ -2525,7 +2687,7 @@ YShvAAAMQ3kDAGAYyhsAAMNQ3gAAGIbyBgDAMP8PVmutIbG18nMAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA58AABZeCAYAAACgQwkEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3Xtcznf/B/DX1ZlySGLGtYp2leJKqKy4Vw1tHWxIzGrJ
 pEV1lzlEB6kca6HYZc6pkDkkUQ6/2qIt1J1ZTCilslmohkWnz++PHtf37ttBhYt7834+Hnvke/58
@@ -30889,15 +31051,14 @@ mZOTEzt79ixveUna7Kuulx2VDGNN7k8jhBBCCCGEEEKkoOPc2E0IIYQQQggh5J2h5JMQQgghhBBC
 iNRR8kkIIYQQQgghROoo+SSEEEIIIYQQInWUfBJCCCGEEEIIkTpKPgkhhBBCCCGESB0ln4QQQggh
 hBBCpI6ST0IIIYQQQgghUkfJJyGEEEIIIYQQqaPkkxBCCCGEEEKI1FHySQghhBBCCCFE6v4fCN9+
 hrU/SZIAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Au total, la somme de l'abstention supplémentaire est de 2,8 millions d'inscrits.</p>
 </div>
@@ -30908,7 +31069,7 @@ hrU/SZIAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">abstention</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">abstention</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -30925,8 +31086,7 @@ hrU/SZIAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut également tracer l'histogramme des différences d'abstentions.</p>
 </div>
@@ -30937,7 +31097,7 @@ hrU/SZIAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">abstention</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">abstention</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -30952,7 +31112,7 @@ hrU/SZIAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfIAAAFJCAYAAABgnK9mAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGv9JREFUeJzt3X1QFPcdx/HP8SQFDsWKmfqAI1bHWJtUJZhOkCY+DDHN
 o49A57T1IeqksTjGgo6C1hh1bJi02mp14jQVjTFRa9JaTaNGVAw+NGpltE3tSKtR6gO2QHxAbvtH
@@ -31076,31 +31236,28 @@ Y8YM7d69W5GRkVq4cKGio6NVUFCg8ePHy7IsDR8+XPfdd59ycnKUn5+vnJwcRUdH69VXX21yXhMN
 GTIk6LeXN0aMGKGZM2cqJydHNptNr7zyiiIiIu7qM22K/Px8zZkzR8XFxUpNTVVWVpYiIyOVlpam
 0aNHu87U93beYDV37lzNnz9f0dHRateunebPn6+EhISQ7bcpXNkNAACDcWgdAACDEeQAABiMIAcA
 wGAEOQAABiPIAQAwGEEOAIDBCHIAAAxGkAMAYLD/A5bfeH6WGzP5AAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>En moyenne, on a donc 5000 électeurs de plus par circonscription qui ont décidé de ne pas aller aux urnes pour le second tour.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Histogrammes-pour-les-votes-blancs,-nuls-et-les-inscrits">Histogrammes pour les votes blancs, nuls et les inscrits<a class="anchor-link" href="#Histogrammes-pour-les-votes-blancs,-nuls-et-les-inscrits">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>En complément, on peut également regarder les variations des votes blancs, des nuls et du nombre d'inscrit entre les deux tours.</p>
 </div>
@@ -31111,7 +31268,7 @@ wGAEOQAABiPIAQAwGEEOAIDBCHIAAAxGkAMAYLD/A5bfeH6WGzP5AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="p">:</span>
     <span class="n">stats_turn1</span><span class="p">,</span> <span class="n">stats_turn2</span> <span class="o">=</span> <span class="n">stats</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">stats_turn2</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">stats_turn1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">stats_turn1</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -31127,7 +31284,7 @@ wGAEOQAABiPIAQAwGEEOAIDBCHIAAAxGkAMAYLD/A5bfeH6WGzP5AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">delta</span><span class="p">[[</span><span class="s1">'Blancs'</span><span class="p">,</span> <span class="s1">'Nuls'</span><span class="p">,</span> <span class="s1">'Inscrits'</span><span class="p">]]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -31154,7 +31311,7 @@ wGAEOQAABiPIAQAwGEEOAIDBCHIAAAxGkAMAYLD/A5bfeH6WGzP5AAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAr4AAAHfCAYAAAC2x9sXAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt8VPWd//H3yYRbkonANt1dCqEEsRZYbDGbYB9jsCiG
 ulKQEkNwsTXIrQhGJeYiSaCJXBrB1SCKPmQf3VBKw6WW7mO7LQ1l05gYlSpK1stiucjVIKEkQyAh
@@ -31417,23 +31574,21 @@ rKxMhw8fVl5enlpaWhQXF6eioiLZbDaVlJSooqJCLpdLOTk5io+Pv+66/u6htrZWhYWF6tOnj77y
 la+osLBQUVFRAdtDUVGRfvvb3youLs697KmnnlJRUVHQ7QcAALhzGwAAACyBC2oCAADAEgi+AAAA
 sASCLwAAACyB4AsAAABLIPgCAADAEgi+AAAAsASCLwAAACyB4AsAAABL+H/u2L7/2+sRvQAAAABJ
 RU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Les-gagnants-du-premier-tour-gagnent-ils-au-second-?">Les gagnants du premier tour gagnent-ils au second ?<a class="anchor-link" href="#Les-gagnants-du-premier-tour-gagnent-ils-au-second-?">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut également poser une autre question : un candidat en tête des votes au premier tour gagne-t-il aussi au deuxième tour ? Essayons de répondre à cette question avec des graphiques.</p>
 <p>On va utiliser les tableaux des candidats pour les circonscriptions à deux tours.</p>
@@ -31445,7 +31600,7 @@ RU5ErkJggg==
 <div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_candidates</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_candidates</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">circo_links</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">extract_circo_data</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
@@ -31457,8 +31612,7 @@ RU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Prenons un exemple :</p>
 </div>
@@ -31469,7 +31623,7 @@ RU5ErkJggg==
 <div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="o">=</span> <span class="n">all_candidates</span><span class="p">[</span><span class="mi">124</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="o">=</span> <span class="n">all_candidates</span><span class="p">[</span><span class="mi">124</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -31480,7 +31634,7 @@ RU5ErkJggg==
 <div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">):</span>
     <span class="s2">"Concatenates second and first round data."</span>
     <span class="n">first_part</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="o">~</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="s1">'Elu(e)'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'Non'</span><span class="p">)][</span><span class="s1">'voix'</span><span class="p">])</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
     <span class="n">first_part</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="s1">' 1er tour'</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">first_part</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>  
@@ -31497,7 +31651,7 @@ RU5ErkJggg==
 <div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -31540,7 +31694,7 @@ RU5ErkJggg==
 <div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -31555,7 +31709,7 @@ RU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAe8AAAGCCAYAAADJ40tJAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlYlPX+//HXAGKyqbiUaBriXkc9RlontEUTM0s7LqBG
 ftOv5YLm0Y5mKsrREPNImLhUx9S0xSwtt/Jbbvw007TjRqG574ZHNDYhmPn+4c85cUwFv4x3n5nn
@@ -31715,15 +31869,14 @@ A7cYZzd0f8QbANzI559/ruTkZIWFhenHH39UbGwsJ0hyQ7zbHADcCGc39Ay82xwA3AhnN/QM7HkD
 gBvh7Iaegde8AcCNcHZDz0C8AcCNDB48WD169FCbNm34Sw83RrwBwI3s2bNHy5Yt044dO9SuXTt1
 7dpVISEhVo+FMka8AcANcXZD90a8AcCNcHZDz0C8AcCNcHZDz0C8AQAwDCdpAQDAMMQbAADDEG8A
 AAxDvAEAMAzxBgDAMP8LearIBWa/i8MAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce cas là, le candidat en tête au premier tour l'a emporté au deuxième. Faisons des statistiques pour toutes les circonscriptions.</p>
 </div>
@@ -31734,7 +31887,7 @@ AAxDvAEAMAzxBgDAMP8LearIBWa/i8MAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">won_first_and_second</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">won_first_and_second</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="ow">in</span> <span class="n">all_candidates</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">make_comparison_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span> <span class="o">==</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">():</span>
@@ -31751,7 +31904,7 @@ AAxDvAEAMAzxBgDAMP8LearIBWa/i8MAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">won_first_and_second</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">won_first_and_second</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 <span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vainqueur des deux tours'</span><span class="p">,</span> <span class="s1">'victoire du challenger'</span><span class="p">]</span>
 <span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
 </pre></div>
@@ -31768,7 +31921,7 @@ AAxDvAEAMAzxBgDAMP8LearIBWa/i8MAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkQAAAFJCAYAAAB6ljIZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAFyBJREFUeJzt3XuwVXX9//HX4RxgjLt11NRQLjmhDF4iygzoa6hkYqWI
 gh1imjKxMkQMRDBQJEmkZixIRbwQEqKQkzlqdhkS04K8pJaNeEVMLqYiKJdz9u8Pp1P8APt+Tdnm
@@ -31875,7 +32028,7 @@ OeecczJ48OAk1n9X++lPf5rLL788SbLbbrulpqYmPXv2dA12kXnz5uXHP/5x5s6dmx49emTatGnp
 d04++eQ0NTXl/PPPr/aY7wo/+tGP8vLLL2fmzJmZOXNmkuS8887LlClTrP8ucvTRR+fcc8/Nqaee
 mq1bt2b8+PHp1q2b3wNV5GfQjvnX7gGA4vnIDAAoniACAIoniACA4gkiAKB4gggAKJ4gAgCKJ4gA
 gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
@@ -31886,7 +32039,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'comptage'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'comptage'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -31922,8 +32075,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme on peut le voir, quatre fois sur cinq c'est le candidat vainqueur du premier tour qui l'emporte au second. Mais est-ce que ceci est vrai pour tous les partis de la même manière ? Voyons voir ça de plus près.</p>
 </div>
@@ -31934,7 +32086,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_comparison_party_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_comparison_party_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">):</span>
     <span class="s2">"Concatenates second and first round data."</span>
     <span class="n">first_part</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="o">~</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="s1">'Elu(e)'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'Non'</span><span class="p">)][</span><span class="s1">'voix'</span><span class="p">])</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
     <span class="n">first_part</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="s1">' 1er tour'</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">first_part</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>  
@@ -31952,7 +32104,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">make_comparison_party_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">make_comparison_party_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
@@ -32001,7 +32153,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_circos</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_circos</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">circo_links</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">extract_circo_data</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
@@ -32016,7 +32168,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">won_first_and_second</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">won_first_and_second</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">),</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">all_candidates</span><span class="p">,</span> <span class="n">all_circos</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">make_comparison_party_df</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span><span class="p">)</span>
     <span class="n">delta_voices_first_round</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmin</span><span class="p">()]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -32035,7 +32187,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [47]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">won_first_and_second</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Vainqueur premier tour'</span><span class="p">,</span> <span class="s1">'Vainqueur deux fois'</span><span class="p">,</span> <span class="s1">'Ecart premier tour'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">all_circos</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">won_first_and_second</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Vainqueur premier tour'</span><span class="p">,</span> <span class="s1">'Vainqueur deux fois'</span><span class="p">,</span> <span class="s1">'Ecart premier tour'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">all_circos</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -32046,7 +32198,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -32110,7 +32262,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [49]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'Vainqueur premier tour'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()[</span><span class="s1">'Vainqueur deux fois'</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'vainqueur au 2eme tour'</span><span class="p">),</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'Vainqueur premier tour'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()[</span><span class="s1">'Vainqueur deux fois'</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'vainqueur au 2eme tour'</span><span class="p">),</span>
            <span class="n">df_won_first_and_second</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'Vainqueur premier tour'</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s1">'Vainqueur deux fois'</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'en tête au 1er tour'</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -32118,8 +32270,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ce qui donne :</p>
 </div>
@@ -32130,7 +32281,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [50]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span>
 </pre></div>
 </div>
 </div>
@@ -32234,8 +32385,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ou graphiquement :</p>
 </div>
@@ -32246,7 +32396,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [51]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -32261,7 +32411,7 @@ gOIJIgCgeP8Phn190w2bs+8AAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeQAAAFmCAYAAAC81ukqAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVPXixvHPsLixiAtq5G6LpZnXTLPQSlMyc0dxCSvM
 1AQ1MxdE0mvuae5aluVSoYahlWamcUkz7drijbTrngoaCiqggjLn94c/5ooKmDIzB3jer9d93fHM
@@ -32509,15 +32659,14 @@ l2bKlCnX3e/r68ukSZMYOnQoVquVypUrM3369Jtefra6desSGhrK888/j9Vq5b777uPll1/Oc54K
 FSrg5+dHcHAwy5cvp3///gQHB3Pp0iXq1avH+PHjgRs/VyJFgU6dKeIk2UdYh4WFOSSvZcuWLFu2
 zKFXShKRm6dd1iIiIiagLWQRERET0BayiIiICaiQRURETECFLCIiYgIqZBERERNQIYuIiJiACllE
 RMQE/g8cSjsJ7ETGiQAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ou encore :</p>
 </div>
@@ -32528,7 +32677,7 @@ RMQE/g8cSjsJ7ETGiQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [52]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="p">[[</span><span class="s1">'vainqueur au 2eme tour'</span><span class="p">,</span> <span class="s1">'en tête au 1er tour'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="p">[[</span><span class="s1">'vainqueur au 2eme tour'</span><span class="p">,</span> <span class="s1">'en tête au 1er tour'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -32544,7 +32693,7 @@ RMQE/g8cSjsJ7ETGiQAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkUAAAFJCAYAAACVVFknAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XuAjnX+//HnPTNMMeOUmWGIcUi1td/vhrQtIkRtSSk5
 tMpShJGUTY6RSeigg4jU6ltKq5La2hzbrIocOqxKtR3XYTAyFsOMmbl+f/Rzb7M53Omee7Z6Pv5y
@@ -32743,15 +32892,14 @@ X6hfv3543ciRI8nKyrJX35KXl8fw4cPJycmhsLCQa6+9lgYNGviZOoKePXsyduxY4uLi7NMhFBQU
 MHz4cDZv3kwoFGLo0KHExcUxYcIEioqKaNGiBUOGDPH7HZg8eTKrVq0iCAKGDBlC7dq1o/KZMhRJ
 kiTh9JkkSRJgKJIkSQIMRZIkSYChSJIkCTAUSZIkAYYiSZIkwFAkSZIEGIokSZIA+H8OCbExe2Sw
 twAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut en déduire le taux de succès parmi tous les partis :</p>
 </div>
@@ -32762,7 +32910,7 @@ twAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="p">[</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'vainqueur au 2eme tour'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'en tête au 1er tour'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="p">[</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'vainqueur au 2eme tour'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'en tête au 1er tour'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -32773,7 +32921,7 @@ twAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [54]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -32897,7 +33045,7 @@ twAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [55]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">)[</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">)[</span><span class="s1">'taux de succès au second tour si en tête'</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'taux de succès si en tête au premier tour'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mi">441</span><span class="o">/</span><span class="mi">573</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'moyenne'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -32915,7 +33063,7 @@ twAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeEAAAF0CAYAAAAU4YH+AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XdYFFfbBvB7YamCiIoFDRYMakx80cQoig27WFBUiIoY
 7AaVWMEuHyrWYMHeS0Rjr7HGYNfYNVZUxIaIKALKAnu+P3jZl5VmorsH9f5dl5e7054zs+zee2Zm
@@ -33198,39 +33346,35 @@ g7OMt7GxwaRJk+Dn5we1Wo3ixYtj2rRp77z8DJUqVYKvry+8vb2hVqtRuXJl9O7dO9d5ihQpAltb
 W3h5eWH16tXo06cPvLy8kJKSgipVqmDChAkAst9WRB87XraSSM8yzoweMGCAXuq5uLhg1apVersD
 ExG9O+6OJiIikoQ9YSIiIknYEyYiIpKEIUxERCQJQ5iIiEgShjAREZEkDGEiIiJJGMJERESS/D/o
 pPQzFTDS9AAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>L'une des choses intéressantes qui ressort de ce graphique est que le FN est beaucoup moins performant que les autres partis quand il est en tête au premier tour.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous avons maintenant conclu cette partie statistique descriptive. Passons à la modélisation du second tour.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Modélisation-des-reports-de-vote">Modélisation des reports de vote<a class="anchor-link" href="#Modélisation-des-reports-de-vote">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Etant ignorant en économétrie électorale, je propose ici une approche comparative entre trois modèles de report de vote. Nous ferons l'hypothèse que les électeurs qui ont voté pour un candidat qui reste présent au second tour voteront à nouveau pour lui. De plus, nous feront également l'hypothèse que l'abstention reste identique au premier comme au deuxième tour (ce qui est faux, comme on l'a bien vu, mais plus facile à implémenter).</p>
 <ul>
@@ -33242,16 +33386,14 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Premier-modèle-:-report-hasardeux">Premier modèle : report hasardeux<a class="anchor-link" href="#Premier-modèle-:-report-hasardeux">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Pour définir ce premier modèle nous avons besoin de faire deux choses : réunir les voix disponibles et les assigner au hasard à l'un des deux candidats. Je reprends là encore les idées d'<a href="http://flothesof.github.io/resultats-legislatives-2017-premier-tour.html">il y a deux semaines</a>.</p>
 <p>La somme de $n$ variables aléatoires de Bernoulli suit une loi binomiale, qui existe dans le package <code>scipy.stats</code>. Nous allons utiliser celui-ci pour faire les tirages.</p>
@@ -33263,7 +33405,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [56]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
 </pre></div>
 </div>
 </div>
@@ -33274,7 +33416,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [57]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_winner_random</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_winner_random</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="s2">"Simulates who will win a given circonscription using data from first round. Random model."</span>
     <span class="c1"># winners</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="s1">'Elu(e)'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Ballotage*'</span><span class="p">)</span>
@@ -33299,7 +33441,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [58]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">predict_winner_random</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">predict_winner_random</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -33330,7 +33472,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [59]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_turn1</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_turn1</span>
 </pre></div>
 </div>
 </div>
@@ -33458,16 +33600,14 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme on le voit, le modèle prévoit sur cette circonscription la victoire du candidat communiste, en tête au premier tour.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut appliquer cette méthodologie à l'ensemble des circonscriptions pour obtenir des assemblées nationales simulées.</p>
 </div>
@@ -33478,7 +33618,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [61]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="k">for</span> <span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="ow">in</span> <span class="n">all_candidates</span><span class="p">:</span>
     <span class="n">simulation_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predict_winner_random</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>    
@@ -33488,8 +33628,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Il faut également rajouter à ces données les vainqueurs connus dès le premier tour pour ne pas fausser les résultats.</p>
 </div>
@@ -33500,7 +33639,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [62]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">already_elected</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">already_elected</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">circo_links</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">extract_circo_data</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
@@ -33516,7 +33655,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [63]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">already_elected</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">already_elected</span>
 </pre></div>
 </div>
 </div>
@@ -33537,7 +33676,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [64]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elected</span> <span class="ow">in</span> <span class="n">already_elected</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elected</span> <span class="ow">in</span> <span class="n">already_elected</span><span class="p">:</span>
     <span class="n">simulation_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">elected</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -33545,8 +33684,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On construit maintenant les assemblées virtuelles.</p>
 </div>
@@ -33557,7 +33695,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [65]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -33568,7 +33706,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [66]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -33741,7 +33879,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [67]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">parliaments</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">parliaments</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -33752,15 +33890,14 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [68]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model1</span> <span class="o">=</span> <span class="n">parliament_counts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)[[</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'25%'</span><span class="p">,</span> <span class="s1">'50%'</span><span class="p">,</span> <span class="s1">'75%'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model1</span> <span class="o">=</span> <span class="n">parliament_counts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)[[</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'25%'</span><span class="p">,</span> <span class="s1">'50%'</span><span class="p">,</span> <span class="s1">'75%'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Voilà donc les résultats pour ce modèle.</p>
 </div>
@@ -33771,7 +33908,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [69]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model1</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model1</span>
 </pre></div>
 </div>
 </div>
@@ -33901,7 +34038,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [71]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 </pre></div>
 </div>
 </div>
@@ -33912,7 +34049,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [72]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">parliament_stats_model1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">parliament_stats_model1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -33935,7 +34072,7 @@ pPQzFTDS9AAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeQAAAFJCAYAAABKLF7JAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X1YVHX+//HXwIDcCyiJKN7XapD6NS7djPAuhPUu20jF
 wm9pbpnp6uamolmtrmb21V1vt9qu2iw1zWpdS9Eo17xJzC0tNFPzBoVsFJLbuJk5vz/8MSubcucA
@@ -34133,31 +34270,28 @@ rbZfuvxemDFjhh599FF5eXmptLRUSUlJcnd3r/Q40BAee+wxffLJJ3W2/t27d1e4W/jKD16SNGvW
 LA0bNkz33HOPOnfufN31Bg0apL///e9q3769MjIynNPHjh0rNzc3ORwOdenSRU899VSF5915552a
 MWOGy06fV+fYU87f31+hoaEKDw+v8RnZK/GvPQEAYAI31ClrAAAaKwIZAAATIJABADABAhkAABMg
 kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On constate que ce premier modèle n'apporte finalement pas grand chose : les gagnants du premier tour maintiennent leur avance car les électeurs restants se répartissent entre eux.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Deuxième-modèle-:-avantage-au-vainqueur-du-premier-tour">Deuxième modèle : avantage au vainqueur du premier tour<a class="anchor-link" href="#Deuxième-modèle-:-avantage-au-vainqueur-du-premier-tour">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On reprend la fonction de simulation précédente. Il suffit de changer les probabilités de la loi binomiale pour simuler ce modèle.</p>
 </div>
@@ -34168,7 +34302,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [73]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_winner_follow</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_winner_follow</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="s2">"Simulates who will win a given circonscription using data from first round. Winner following model."</span>
     <span class="c1"># winners</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="s1">'Elu(e)'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Ballotage*'</span><span class="p">)</span>
@@ -34195,7 +34329,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [74]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="o">=</span> <span class="n">all_candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="o">=</span> <span class="n">all_candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -34206,7 +34340,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [75]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">predict_winner_follow</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">predict_winner_follow</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -34223,8 +34357,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut appliquer cette méthodologie à l'ensemble des circonscriptions pour obtenir des assemblées nationales simulées.</p>
 </div>
@@ -34235,7 +34368,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [76]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="k">for</span> <span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="ow">in</span> <span class="n">all_candidates</span><span class="p">:</span>
     <span class="n">simulation_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predict_winner_follow</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>    
@@ -34245,8 +34378,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Il faut également rajouter à ces données les vainqueurs connus dès le premier tour pour ne pas fausser les résultats.</p>
 </div>
@@ -34257,7 +34389,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [77]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elected</span> <span class="ow">in</span> <span class="n">already_elected</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elected</span> <span class="ow">in</span> <span class="n">already_elected</span><span class="p">:</span>
     <span class="n">simulation_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">elected</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -34265,8 +34397,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On construit maintenant les assemblées virtuelles.</p>
 </div>
@@ -34277,7 +34408,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [78]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -34288,7 +34419,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [79]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -34461,7 +34592,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [80]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">parliaments</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">parliaments</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -34472,15 +34603,14 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [81]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model2</span> <span class="o">=</span> <span class="n">parliament_counts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)[[</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'25%'</span><span class="p">,</span> <span class="s1">'50%'</span><span class="p">,</span> <span class="s1">'75%'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model2</span> <span class="o">=</span> <span class="n">parliament_counts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)[[</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'25%'</span><span class="p">,</span> <span class="s1">'50%'</span><span class="p">,</span> <span class="s1">'75%'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Voilà donc les résultats pour ce modèle.</p>
 </div>
@@ -34491,7 +34621,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [82]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model2</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model2</span>
 </pre></div>
 </div>
 </div>
@@ -34621,7 +34751,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [83]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">parliament_stats_model2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">parliament_stats_model2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -34644,7 +34774,7 @@ kAEAMAECGQAAEyCQAQAwAQIZAAAT+H9I5x1TeEQD+AAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeQAAAFJCAYAAABKLF7JAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlcVfW+//H3ho0pk4CSgKKidhsw63pJu4aaKcFx7oRj
 YaV5jmaYdiwVTS1NM7t6D06NjwaPQw6djg1mRvozh9S8p0i0Qa8pAupGMGBvY9rr94eXfSIFBDew
@@ -34841,35 +34971,32 @@ f+nie2HatGn685//rMaNG6u4uFgJCQny9PSs9HNYH8aNG6ft27fX2vF3795d7mnhX194SdKMGTM0
 cOBADRo0SDfddNNV1+vbt6/+8Y9/KCIiQunp6a7lo0ePloeHh5xOp26++WY9/fTT5fa76667NG3a
 NLdNn1/Jd08ZPz8/hYSEKDw8/KpmZPlrTwAAmECDmrIGAOBaRSADAGACBDIAACZAIAMAYAIEMgAA
 JkAgAwBgAgQyAAAmQCADAGAC/x+cKzqcuJOM3QAAAABJRU5ErkJggg==
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme on peut le voir dans le tableau ci-dessus, le modèle de report des voix libres vis à vis du vainqueur n'introduit en fait quasiment ancune variabilité. Comme le premier modèle. Intuitivement, ce n'est pas étonnant : c'est comme si on gardait les vainqueurs du premier tour et c'est tout.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Troisième-modèle-:-une-matrice-des-distances">Troisième modèle : une matrice des distances<a class="anchor-link" href="#Troisième-modèle-:-une-matrice-des-distances">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finalement, une idée plus intéressante concernant le report est celle d'une proximité idéologique vers le parti sur lequel l'électeur va se reporter vis à vis du parti qu'il a choisi au premier tour. Différentes manières de représenter cette distance idéologique existent. 
 Par exemple :
-<img alt="carte" src="http://www.gaucheliberale.org/public/ppf-11-11.jpg"/></p>
+<img alt="carte" src="http://www.gaucheliberale.org/public/ppf-11-11.jpg"></p>
 <p>Je m'inspire ici de deux articles (<a href="http://www.agoravox.fr/tribune-libre/article/partis-politiques-en-europe-gauche-21200">ici</a> et <a href="http://www.gaucheliberale.org/post/2011/11/04/Carte-2D-du-Paysage-Politique-Français-%28PPF%29-mise-à-jour-novembre-2011">ici</a>, dont est tiré la carte ci-dessus) pour positionner les partis seulement deux coordonnées :</p>
 <ul>
 <li>économique (0 : conservateur, 1 : libéral)</li>
@@ -34879,8 +35006,7 @@ Par exemple :
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Les partis auxquels il faut assigner un positionnement sont les suivants :</p>
 </div>
@@ -34891,7 +35017,7 @@ Par exemple :
 <div class="prompt input_prompt">In [84]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_nuances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">extract_circo_data</span><span class="p">(</span><span class="n">link</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">circo_links</span><span class="p">])[</span><span class="s1">'nuance'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_nuances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">extract_circo_data</span><span class="p">(</span><span class="n">link</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">circo_links</span><span class="p">])[</span><span class="s1">'nuance'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 <span class="n">all_nuances</span>
 </pre></div>
 </div>
@@ -34914,7 +35040,7 @@ Par exemple :
 <div class="prompt input_prompt">In [85]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">classifications</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'DVG'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">classifications</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'DVG'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
                    <span class="s1">'LR'</span><span class="p">:</span>  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                    <span class="s1">'FI'</span><span class="p">:</span>  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
                    <span class="s1">'FN'</span><span class="p">:</span>  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
@@ -34941,7 +35067,7 @@ Par exemple :
 <div class="prompt input_prompt">In [86]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">classifications_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">classifications</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'économique'</span><span class="p">,</span> <span class="s1">'social'</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">classifications_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">classifications</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'économique'</span><span class="p">,</span> <span class="s1">'social'</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 <span class="n">classifications_df</span>
 </pre></div>
 </div>
@@ -35060,7 +35186,7 @@ Par exemple :
 <div class="prompt input_prompt">In [87]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">classifications_df</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">classifications_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">classifications_df</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">classifications_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -35071,7 +35197,7 @@ Par exemple :
 <div class="prompt input_prompt">In [88]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">classifications_df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'économique'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'social'</span><span class="p">,</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">classifications_df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'économique'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'social'</span><span class="p">,</span> 
                                 <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">classifications_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">codes</span><span class="p">,</span>
                                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">classifications_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -35084,7 +35210,7 @@ Par exemple :
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAf4AAAFXCAYAAABDfCwDAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd4VNXa8OHflEzaJASSkAIkdAhFCEVECFUEIhxAERDF
 Alg+jx31cDwqKAioHFHQV32RNyo2FBTpHQIBBOlF6R3SCElImWTK3t8fQyYM6SQDhHnu6+Iis8va
@@ -35550,15 +35676,14 @@ Pi4hxDT0xE9ICzJo0CBcvnwZcXFx0Gg06N+/PyZPngyBQIDx48dDq9UiJiYGUVFRCA4Oxrx587B9
 bgCAqKgobNu2DcOGDUNQUBB69uxZ72caPXq0hWeIENIQ6s5HCLGpQYMG4ccff0S7du3sHQohBFTU
 TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 4kD+Dz8auvlmaNSeAAAAAElFTkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A partir de cette carte, on peut construire une matrice des distances entre partis.</p>
 </div>
@@ -35569,7 +35694,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [89]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">distances</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">distances</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">nuance1</span> <span class="ow">in</span> <span class="n">classifications_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">nuance2</span> <span class="ow">in</span> <span class="n">all_nuances</span><span class="p">:</span>
         <span class="n">distances</span><span class="p">[</span><span class="n">nuance1</span> <span class="o">+</span> <span class="s1">'-'</span> <span class="o">+</span> <span class="n">nuance2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">classifications_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nuance1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">classifications_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nuance2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
@@ -35579,8 +35704,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Enfin, on peut écrire une fonction qui va assigner les voix aux différents partis en fonction de la distance aux candidats possibles.</p>
 </div>
@@ -35591,7 +35715,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [90]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_winner_distance</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_winner_distance</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="s2">"Simulates who will win a given circonscription using data from first round. Political distance model."</span>
     <span class="c1"># winners</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">candidates_turn1</span><span class="p">[</span><span class="s1">'Elu(e)'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Ballotage*'</span><span class="p">)</span>
@@ -35619,7 +35743,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [91]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">predict_winner_distance</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">predict_winner_distance</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -35646,8 +35770,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut appliquer cette méthodologie à l'ensemble des circonscriptions pour obtenir des assemblées nationales simulées.</p>
 </div>
@@ -35658,7 +35781,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [92]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="k">for</span> <span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="ow">in</span> <span class="n">all_candidates</span><span class="p">:</span>
     <span class="n">simulation_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predict_winner_distance</span><span class="p">(</span><span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>    
@@ -35668,8 +35791,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Il faut également rajouter à ces données les vainqueurs connus dès le premier tour pour ne pas fausser les résultats.</p>
 </div>
@@ -35680,7 +35802,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [93]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elected</span> <span class="ow">in</span> <span class="n">already_elected</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">elected</span> <span class="ow">in</span> <span class="n">already_elected</span><span class="p">:</span>
     <span class="n">simulation_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">elected</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -35688,8 +35810,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On construit maintenant les assemblées virtuelles.</p>
 </div>
@@ -35700,7 +35821,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [94]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -35711,7 +35832,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [95]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliaments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -35884,7 +36005,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [96]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">parliaments</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">series</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">parliaments</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -35895,15 +36016,14 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [97]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model3</span> <span class="o">=</span> <span class="n">parliament_counts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)[[</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'25%'</span><span class="p">,</span> <span class="s1">'50%'</span><span class="p">,</span> <span class="s1">'75%'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model3</span> <span class="o">=</span> <span class="n">parliament_counts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)[[</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'25%'</span><span class="p">,</span> <span class="s1">'50%'</span><span class="p">,</span> <span class="s1">'75%'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Voilà donc les résultats pour ce modèle.</p>
 </div>
@@ -35914,7 +36034,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [98]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">parliament_stats_model3</span>
 </pre></div>
 </div>
 </div>
@@ -36050,7 +36170,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 <div class="prompt input_prompt">In [99]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">parliament_stats_model3</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">parliament_stats_model3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -36073,7 +36193,7 @@ TwghhDgUeuInhBBCHAg98RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ4kAo8RNCCCEOhBI/IYQQ
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeQAAAFJCAYAAABKLF7JAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt0FPX9//HXJpsL5EISEkkCAcOlokTkyzeFFiMICJty
 84bcJFRjsVpBoV8QCIgXKIj4kxoiSLFeSr1QwFrES6QIIiAGsYKAClqEkETYkECuZJPs/P5AtqRA
@@ -36264,31 +36384,28 @@ H/9QfHy8srOzXfNTU1Pl4+Mjp9Opq6++Wg8//HCNx11//fWaPn36RQ/puuO+++7Txo0bPb7erVu3
 1ngfPvvDnCTNnDlTw4YN080336zOnTtfdD133qPOCAkJUXR0tOLi4uo1Wnk2fu0JAAATaDJD1gAA
 XM4IZAAATIBABgDABAhkAABMgEAGAMAECGQAAEyAQAYAwAQIZAAATOD/A5Xo6G8MFzicAAAAAElF
 TkSuQmCC
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Cette fois-ci les résultats générés par le modèle sont un peu plus variés que dans les deux cas précédents. En particulier il ne donne pas une aussi grande priorité aux vainqueurs du premier tour.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Comparaison-des-modèles-aux-résultats-réels">Comparaison des modèles aux résultats réels<a class="anchor-link" href="#Comparaison-des-modèles-aux-résultats-réels">¶</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Pour finir, comparons les trois modèles aux vrais résultats des élections, disponibles <a href="http://elections.interieur.gouv.fr/legislatives-2017/FE.html">ici</a>, mais que nous allons recalculer à partir des données déjà extraites.</p>
 </div>
@@ -36299,15 +36416,14 @@ TkSuQmCC
 <div class="prompt input_prompt">In [100]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">true_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">candidates_turn2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'nuance'</span><span class="p">]</span> <span class="k">for</span> <span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="ow">in</span> <span class="n">all_candidates</span><span class="p">]</span> <span class="o">+</span> <span class="n">already_elected</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">true_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">candidates_turn2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'nuance'</span><span class="p">]</span> <span class="k">for</span> <span class="n">candidates_turn1</span><span class="p">,</span> <span class="n">candidates_turn2</span> <span class="ow">in</span> <span class="n">all_candidates</span><span class="p">]</span> <span class="o">+</span> <span class="n">already_elected</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut construire un tableau avec la prédiction moyenne de chaque modèle (vu que la répartition est assez uniforme pour chaque distribution de modèle).</p>
 </div>
@@ -36318,7 +36434,7 @@ TkSuQmCC
 <div class="prompt input_prompt">In [101]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">true_results</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'députés élus 2017'</span><span class="p">),</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">true_results</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'députés élus 2017'</span><span class="p">),</span> 
            <span class="n">parliament_stats_model1</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[</span><span class="s1">'50%'</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'modèle 1'</span><span class="p">),</span>
            <span class="n">parliament_stats_model2</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[</span><span class="s1">'50%'</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'modèle 2'</span><span class="p">),</span>
            <span class="n">parliament_stats_model3</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[</span><span class="s1">'50%'</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'modèle 3'</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'députés élus 2017'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -36465,8 +36581,7 @@ TkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Graphiquement, cela donne :</p>
 </div>
@@ -36477,7 +36592,7 @@ TkSuQmCC
 <div class="prompt input_prompt">In [102]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -36492,7 +36607,7 @@ TkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeQAAAFYCAYAAACCpo/3AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlAVOXiPvBnYFBZBXJSR8TQ7HpdyLik+RPNMLfU0kRB
 zRaoTGUMjVwQUXNFXBBQ3NJyKYQwMjO7hRFuadliUmaZK4uiYMKIgDPz+8MvczEQRM45vjM+n38c
@@ -36724,15 +36839,14 @@ Pnzb+yz9s8rPP/8cn332GXJyctC3b18MGjSoyoHwUjp58iScnJzQtGlTnD17Fr///jv69OkjW541
 UvL38Y8//sDkyZPRrVs3tGzZEjk5Odi3bx+io6MVP8G+pbPm5xFrnZu1zqsyiytka9auXTu0bt0a
 7dq1A3Dr2zKW/MqWpFNUVIT09HRcvHgRWq0WvXr1soq91YmIhSyU++EVIBERVY+FTEREJAAe40JE
 RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
-"/>
+">
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut calculer des erreurs moyennes par modèles.</p>
 </div>
@@ -36743,7 +36857,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [103]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'modèle 1'</span><span class="p">,</span> <span class="s1">'modèle 2'</span><span class="p">,</span> <span class="s1">'modèle 3'</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'modèle 1'</span><span class="p">,</span> <span class="s1">'modèle 2'</span><span class="p">,</span> <span class="s1">'modèle 3'</span><span class="p">]:</span>
     <span class="n">model_vs_reality</span><span class="p">[</span><span class="s1">'erreur '</span> <span class="o">+</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_vs_reality</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">model_vs_reality</span><span class="p">[</span><span class="s1">'députés élus 2017'</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -36755,7 +36869,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [104]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'erreur'</span><span class="p">)]]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'erreur'</span><span class="p">)]]</span>
 </pre></div>
 </div>
 </div>
@@ -36885,7 +36999,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [105]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'erreur'</span><span class="p">)]]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'erreur absolue moyenne'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">model_vs_reality</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'erreur'</span><span class="p">)]]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'erreur absolue moyenne'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -36925,8 +37039,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On constate que les modèles 1 et 2 commettent une erreur absolue moyenne plus importante que le modèle 3. Si on regarde plus précisément le modèle 3, on voit qu'il se trompe principalement sur la prédiction du vote FN, d'environ 50 sièges et également de la France Insoumise, pour laquelle il ne prédit quasiment aucun siège :</p>
 </div>
@@ -36937,7 +37050,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [107]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="p">[</span><span class="s1">'erreur modèle 3'</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'erreurs en siège'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_vs_reality</span><span class="p">[</span><span class="s1">'erreur modèle 3'</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'erreurs en siège'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -37029,24 +37142,21 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Je pense que l'on peut ici répéter ce que l'on a constaté dans la première partie lors de l'analyse des vainqueurs du premier tour : même si le FN est passé dans de nombreuses circonscriptions au premier tour, les électeurs se sont probablement mobilisés contre au second tour. Je suppose que l'effet inverse s'est produit chez les électeurs de la France Insoumise, qui se sont peut être plus mobilisés au second tour pour "sauver" des candidats.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce billet, nous sommes partis des données disponibles sur internet par le ministère de l'intérieur pour proposer une visualisation des résultats des législatives ainsi qu'une analyse basée sur des modèles de reports de votes assez simples. Je ne prétend bien évidemment pas y connaître quoi que ce soit en analyse ou modélisation politique mais il me semble que l'on peut garder en tête certaines choses : la forte abstention supplémentaire au second tour, les victoires de vainqueurs du premier tour au second, les différences entre partis (par exemple pour le FN).</p>
 <p>La partie modélisation m'a particulièrement intéressé. Cependant, le travail fait sur ce sujet est malheureusement très pauvre. D'après mes recherches, plusieurs équipes développent des modèles quantitatifs qui permettraient de commencer à parler de ce sujet, peut-être dans le futur : <a href="http://www.atlantico.fr/decryptage/vote-lrem-majoritaire-entre-interet-general-et-moindre-mal-3069376.html">ElectionScope</a> ou encore les travaux de la start-up <a href="http://www.liegeymullerpons.fr/fr/partenariat-figaro-premier-tour-legislatives/">Liegey Muller Pons</a>. Les méthodes utilisées par Liegey Muller Pons semblent particulièrement intéressante dans la mesure où elles s'appuient sur un modèle quantitatif dit d'inférence écologique et qui permet de répondre au problème de la répartition du vote en fonction de descriptions quantitatives des circonscriptions (démographie, composition sociale). Pour plus d'information, il existe un article Wikipédia sur ce sujet <a href="https://fr.wikipedia.org/wiki/Inférence_écologique">ici</a>.</p>
@@ -37058,7 +37168,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
@@ -37075,6 +37185,7 @@ RCQAFjIREZEAWMhEREQCYCETEREJgIVMREQkgP8P+N6J9Trn8+UAAAAASUVORK5CYII=
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
         "    } " +
         "}); ";
