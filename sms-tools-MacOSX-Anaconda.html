@@ -466,7 +466,7 @@ article .meta a.comments_btn:hover {
 <p>The first step is to clone (a fancy technical word for copy or download) the sms-tools software repository on your local hard drive.</p>
 <p>I choose to work in a directory called workspace where I created a specific folder for this Coursera class. </p>
 <p>The cloning is done using the following command:</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">MTG</span><span class="o">/</span><span class="n">sms</span><span class="o">-</span><span class="n">tools</span><span class="p">.</span><span class="n">git</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/MTG/sms-tools.git</span>
 </pre></div>
 
 
@@ -474,30 +474,30 @@ article .meta a.comments_btn:hover {
 <p>Once you've downloaded the software package, it's time to create a virtual environment for sms-tools.</p>
 <p>What is a virtual environment? It's a sort of sandbox within which you'll work with specific versions of Python and its packages, so as not to interfere with your system Python.</p>
 <p>Assuming you already have Anaconda setup, it's really easy to do:</p>
-<div class="highlight"><pre><span></span><span class="n">conda</span> <span class="k">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">sms</span> <span class="n">python</span><span class="o">=</span><span class="mi">2</span><span class="p">.</span><span class="mi">7</span> <span class="n">ipython</span> <span class="n">numpy</span> <span class="n">matplotlib</span> <span class="n">scipy</span> <span class="n">cython</span>
+<div class="highlight"><pre><span></span><span class="err">conda create -n sms python=2.7 ipython numpy matplotlib scipy cython</span>
 </pre></div>
 
 
 <p>The previous command tells conda to create a new environment using Python 2.7 and installing the packages that follow. The reason we install these packages is that they're needed by the sms-tools.</p>
 <h2>Compiling the Cython code parts</h2>
 <p>Now that we have a new environment with all the packages we need, let's activate it. We need to do this every time we want to work with the course tools:</p>
-<div class="highlight"><pre><span></span><span class="k">source</span> <span class="n">activate</span> <span class="n">sms</span>
+<div class="highlight"><pre><span></span><span class="err">source activate sms</span>
 </pre></div>
 
 
 <p>This command should slightly alter the prompt which now usually looks like this for me:</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">sms</span><span class="p">)</span><span class="n">kappamaki</span><span class="nv">@Florians</span><span class="o">-</span><span class="nl">MBP</span><span class="p">:</span><span class="o">~/</span><span class="n">workspace</span><span class="o">%</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="err">(sms)kappamaki@Florians-MBP:~/workspace%</span>
 </pre></div>
 
 
 <p>The (sms) part means that I have activated the right environment.</p>
 <p>Let's now switch to the directory where we put the sms-tools from earlier. In my case I type:</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">sms</span><span class="p">)</span><span class="n">kappamaki</span><span class="nv">@Florians</span><span class="o">-</span><span class="nl">MBP</span><span class="p">:</span><span class="o">~/</span><span class="n">workspace</span><span class="o">%</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">coursera</span><span class="o">-</span><span class="n">aspma</span><span class="o">/</span><span class="n">sms</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">utilFunctions_C</span><span class="o">/</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="err">(sms)kappamaki@Florians-MBP:~/workspace% cd coursera-aspma/sms-tools/software/models/utilFunctions_C/</span>
 </pre></div>
 
 
 <p>Once I'm in that directory, I need to type the following:</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">sms</span><span class="p">)</span><span class="n">kappamaki</span><span class="nv">@Florians</span><span class="o">-</span><span class="nl">MBP</span><span class="p">:</span><span class="o">~/</span><span class="n">workspace</span><span class="o">/</span><span class="n">coursera</span><span class="o">-</span><span class="n">aspma</span><span class="o">/</span><span class="n">sms</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">utilFunctions_C</span><span class="o">%</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="n">compileModule</span><span class="p">.</span><span class="n">py</span><span class="w"> </span><span class="n">build_ext</span><span class="w"> </span><span class="c1">--inplace</span>
+<div class="highlight"><pre><span></span><span class="err">(sms)kappamaki@Florians-MBP:~/workspace/coursera-aspma/sms-tools/software/models/utilFunctions_C% python compileModule.py build_ext --inplace</span>
 </pre></div>
 
 
@@ -505,16 +505,16 @@ article .meta a.comments_btn:hover {
 <p>This is it, we're done!</p>
 <h2>If you run into trouble</h2>
 <p>When I first tried to compile the Cython code, I wound up with a weird error that said:</p>
-<div class="highlight"><pre><span></span><span class="o">/</span><span class="nv">Users</span><span class="o">/</span><span class="nv">kappamaki</span><span class="o">/</span><span class="nv">workspace</span><span class="o">/</span><span class="nv">coursera</span><span class="o">-</span><span class="nv">aspma</span><span class="o">/</span><span class="nv">sms</span><span class="o">-</span><span class="nv">tools</span><span class="o">/</span><span class="nv">software</span><span class="o">/</span><span class="nv">models</span><span class="o">/</span><span class="nv">utilFunctions_C</span><span class="o">/</span><span class="nv">utilFunctions_C</span>.<span class="nv">so</span>
-<span class="nv">ld</span>: <span class="nv">library</span> <span class="nv">not</span> <span class="nv">found</span> <span class="k">for</span> <span class="o">-</span><span class="nv">lgcc_s</span>.<span class="mi">10</span>.<span class="mi">5</span>
-<span class="nv">clang</span>: <span class="nv">error</span>: <span class="nv">linker</span> <span class="nv">command</span> <span class="nv">failed</span> <span class="nv">with</span> <span class="k">exit</span> <span class="nv">code</span> <span class="mi">1</span> <span class="ss">(</span><span class="nv">use</span> <span class="o">-</span><span class="nv">v</span> <span class="nv">to</span> <span class="nv">see</span> <span class="nv">invocation</span><span class="ss">)</span>
-<span class="nv">error</span>: <span class="nv">command</span> <span class="s1">&#39;</span><span class="s">gcc</span><span class="s1">&#39;</span> <span class="nv">failed</span> <span class="nv">with</span> <span class="k">exit</span> <span class="nv">status</span> <span class="mi">1</span>
+<div class="highlight"><pre><span></span><span class="err">/Users/kappamaki/workspace/coursera-aspma/sms-tools/software/models/utilFunctions_C/utilFunctions_C.so</span>
+<span class="c">ld: library not found for -lgcc_s.10.5</span>
+<span class="c">clang: error: linker command failed with exit code 1 (use -v to see invocation)</span>
+<span class="c">error: command &#39;gcc&#39; failed with exit status 1</span>
 </pre></div>
 
 
 <p>After googling this error, in particular the line starting with "ld:", I needed to do the following before compiling again:</p>
-<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">lib</span>
-<span class="n">sudo</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">libSystem</span><span class="p">.</span><span class="n">B</span><span class="p">.</span><span class="n">dylib</span> <span class="n">libgcc_s</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">5</span><span class="p">.</span><span class="n">dylib</span>
+<div class="highlight"><pre><span></span><span class="err">cd /usr/local/lib</span>
+<span class="err">sudo ln -s ../../lib/libSystem.B.dylib libgcc_s.10.5.dylib</span>
 </pre></div>
 
 
