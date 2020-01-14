@@ -1570,49 +1570,62 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we will use the elevation API provided by Google maps to obtain some height information about a section of Paris, and then build an 3D model to be printed from the data. The end result we are trying to achieve should look much the same as the image shown below (the source of the image is <a href="http://www.thingiverse.com/thing:136312">this Thingiverse thing</a>).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">"http://thingiverse-production.s3.amazonaws.com/renders/d7/de/ac/dc/f4/sakurajima_preview_featured.jpg"</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://thingiverse-production.s3.amazonaws.com/renders/d7/de/ac/dc/f4/sakurajima_preview_featured.jpg&quot;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[1]:</div>
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <img src="http://thingiverse-production.s3.amazonaws.com/renders/d7/de/ac/dc/f4/sakurajima_preview_featured.jpg"/>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's get started.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Getting-the-source-height-data">Getting the source height data<a class="anchor-link" href="#Getting-the-source-height-data">¶</a></h1>
+<h1 id="Getting-the-source-height-data">Getting the source height data<a class="anchor-link" href="#Getting-the-source-height-data">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Sample-data">Sample data<a class="anchor-link" href="#Sample-data">¶</a></h2>
+<h2 id="Sample-data">Sample data<a class="anchor-link" href="#Sample-data">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -1627,98 +1640,122 @@ h6:hover .anchor-link {
 <li>5 requests per second.</li>
 </ul>
 <p>Below, we're executing the (sligthly modified) sample script found on the <a href="https://developers.google.com/maps/documentation/elevation/">API documentation page</a> to get some elevation data along a line defined by start and end coordinates.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">simplejson</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">simplejson</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 
-<span class="n">ELEVATION_BASE_URL</span> <span class="o">=</span> <span class="s1">'https://maps.googleapis.com/maps/api/elevation/json'</span>
-<span class="n">CHART_BASE_URL</span> <span class="o">=</span> <span class="s1">'http://chart.apis.google.com/chart'</span>
+<span class="n">ELEVATION_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://maps.googleapis.com/maps/api/elevation/json&#39;</span>
+<span class="n">CHART_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;http://chart.apis.google.com/chart&#39;</span>
 
-<span class="k">def</span> <span class="nf">getElevation</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">"36.578581,-118.291994|36.23998,-116.83171"</span><span class="p">,</span><span class="n">samples</span><span class="o">=</span><span class="s2">"100"</span><span class="p">,</span> <span class="o">**</span><span class="n">elvtn_args</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">getElevation</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;36.578581,-118.291994|36.23998,-116.83171&quot;</span><span class="p">,</span><span class="n">samples</span><span class="o">=</span><span class="s2">&quot;100&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">elvtn_args</span><span class="p">):</span>
     <span class="n">elvtn_args</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-    <span class="s1">'path'</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
-    <span class="s1">'samples'</span><span class="p">:</span> <span class="n">samples</span><span class="p">})</span>
+    <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
+    <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="n">samples</span><span class="p">})</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="n">ELEVATION_BASE_URL</span> <span class="o">+</span> <span class="s1">'?'</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">elvtn_args</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">ELEVATION_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">elvtn_args</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
 
     <span class="c1"># Create a dictionary for each results[] object</span>
     <span class="n">elevationArray</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">resultset</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]:</span>
-        <span class="n">elevationArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultset</span><span class="p">[</span><span class="s1">'elevation'</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">resultset</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]:</span>
+        <span class="n">elevationArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultset</span><span class="p">[</span><span class="s1">&#39;elevation&#39;</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">elevationArray</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Mt. Whitney</span>
-<span class="n">startStr</span> <span class="o">=</span> <span class="s2">"36.578581,-118.291994"</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Mt. Whitney</span>
+<span class="n">startStr</span> <span class="o">=</span> <span class="s2">&quot;36.578581,-118.291994&quot;</span>
 <span class="c1"># Death Valley</span>
-<span class="n">endStr</span> <span class="o">=</span> <span class="s2">"36.23998,-116.83171"</span>
+<span class="n">endStr</span> <span class="o">=</span> <span class="s2">&quot;36.23998,-116.83171&quot;</span>
 
-<span class="n">pathStr</span> <span class="o">=</span> <span class="n">startStr</span> <span class="o">+</span> <span class="s2">"|"</span> <span class="o">+</span> <span class="n">endStr</span>
+<span class="n">pathStr</span> <span class="o">=</span> <span class="n">startStr</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">endStr</span>
 
 <span class="n">elevationArray</span> <span class="o">=</span> <span class="n">getElevation</span><span class="p">(</span><span class="n">pathStr</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To visualize the data we have just downloaded, we can plot it:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">elevationArray</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">elevationArray</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>[<matplotlib.lines.Line2D at 0x583e0d0>]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x583e0d0&gt;]</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYkAAAEACAYAAABGYoqtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl4VOXZx/FvIARlNy4EBQURlGBbRRTEKsEVqRb1taC+
 8uLSxSJuta61glorai3uSxUVcMOVgiKySFQUWRQQgSggKEQ2BQQUY0ie94/7jDOEHAKZ5cyZ+X2u
@@ -1883,170 +1920,233 @@ BxiGjWC5N6Z8DNZBh3c7msx2I/YH3gabdPk20I/sOw9gH4DLgfbe/ROx0T1jyb5zUYK1q++O/a+c
 iP2vZOO5iPD7nxiD/e9EJju3I7roauidinVOLcY6X7LJr7E2+DlYU8tsbEhwPtaJm+lD/KrTnegX
 hWw9D7/CahJzsW/PTcnec3Et0SGww7Gad7aci+exvpifsC8OF7Ljn91vsrOIiIiIiIiIiIiIiIiI
 iIiIiIiIiIiIiIiIiEh2+n+9oRcv2UwPPgAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This "line data" will be used in the next section to obtain all the data we need for a 3D model. Before we move on, I'd like to explore the detailed results obtained by the API request.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">elvtn_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">elvtn_args</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">elvtn_args</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-    <span class="s1">'path'</span><span class="p">:</span> <span class="n">pathStr</span><span class="p">,</span>
-    <span class="s1">'samples'</span><span class="p">:</span> <span class="s2">"200"</span><span class="p">})</span>
-<span class="n">url</span> <span class="o">=</span> <span class="n">ELEVATION_BASE_URL</span> <span class="o">+</span> <span class="s1">'?'</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">elvtn_args</span><span class="p">)</span>
+    <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">pathStr</span><span class="p">,</span>
+    <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="s2">&quot;200&quot;</span><span class="p">})</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">ELEVATION_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">elvtn_args</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As one can see below, <code>response</code> is a dictionary containing the status and the results related to the request we just made.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">response</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[7]:</div>
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>['status', 'results']</pre>
+<pre>[&#39;status&#39;, &#39;results&#39;]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The status reports whether the request worked or not. Here, it is:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">response</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[8]:</div>
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'OK'</pre>
+<pre>&#39;OK&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The results are a list of dictionaries containing the coordinate points.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">response</span><span class="p">[</span><span class="s1">'results'</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>[{'elevation': 4350.96044921875,
-  'location': {'lat': 36.578581, 'lng': -118.291994},
-  'resolution': 305.4064636230469},
- {'elevation': 3765.516845703125,
-  'location': {'lat': 36.57692408822881, 'lng': -118.2846242328207},
-  'resolution': 305.4064636230469},
- {'elevation': 3697.862548828125,
-  'location': {'lat': 36.57526672284261, 'lng': -118.27725478197},
-  'resolution': 305.4064636230469},
- {'elevation': 3629.592529296875,
-  'location': {'lat': 36.57360890388832, 'lng': -118.2698856475017},
-  'resolution': 305.4064636230469},
- {'elevation': 3324.3681640625,
-  'location': {'lat': 36.57195063141282, 'lng': -118.2625168294698},
-  'resolution': 305.4064636230469}]</pre>
+<pre>[{&#39;elevation&#39;: 4350.96044921875,
+  &#39;location&#39;: {&#39;lat&#39;: 36.578581, &#39;lng&#39;: -118.291994},
+  &#39;resolution&#39;: 305.4064636230469},
+ {&#39;elevation&#39;: 3765.516845703125,
+  &#39;location&#39;: {&#39;lat&#39;: 36.57692408822881, &#39;lng&#39;: -118.2846242328207},
+  &#39;resolution&#39;: 305.4064636230469},
+ {&#39;elevation&#39;: 3697.862548828125,
+  &#39;location&#39;: {&#39;lat&#39;: 36.57526672284261, &#39;lng&#39;: -118.27725478197},
+  &#39;resolution&#39;: 305.4064636230469},
+ {&#39;elevation&#39;: 3629.592529296875,
+  &#39;location&#39;: {&#39;lat&#39;: 36.57360890388832, &#39;lng&#39;: -118.2698856475017},
+  &#39;resolution&#39;: 305.4064636230469},
+ {&#39;elevation&#39;: 3324.3681640625,
+  &#39;location&#39;: {&#39;lat&#39;: 36.57195063141282, &#39;lng&#39;: -118.2625168294698},
+  &#39;resolution&#39;: 305.4064636230469}]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These coordinates can be extracted to produce a sample 3D plot.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
-<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">'location'</span><span class="p">][</span><span class="s1">'lat'</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]]</span>
-<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">'location'</span><span class="p">][</span><span class="s1">'lng'</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]]</span>
-<span class="n">zs</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">'elevation'</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]]</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;lng&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]]</span>
+<span class="n">zs</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;elevation&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span>
-<span class="n">xlabel</span><span class="p">(</span><span class="s1">'latitude'</span><span class="p">)</span>
-<span class="n">ylabel</span><span class="p">(</span><span class="s1">'longitude'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">'elevation (m)'</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;elevation (m)&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Text at 0x5a53bd0></pre>
+<pre>&lt;matplotlib.text.Text at 0x5a53bd0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAADtCAYAAAAcNaZ2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsfXeYFeX1/2duL1uoS1mkCYIrKMhS7BJEECOK+qiQWB6N
 LVFEE0v097VFBWOMSozRJGhU/IItKCogYgQrIIiKInGpwtKWsnt7n98f93uG987O3Cl35u69y3ye
@@ -2616,16 +2716,20 @@ gFPv/p/87nlXAFkAqgDkvtsvQzqAPABFAP4BwHSbnInqoH8PwAkAau+2jwewTsw5S4KuBAkSOgxd
 Aai++39nANcAOAD4Gv8GuAEAntYx/tq75wHADwDTAycQACN5WAGgfbdSliBBgoT3BBfAHQB3ASQA
 WPpuuwyAQ6ieccahOuUAAL0ACDv8GAO4jepZ6TFUpygAQB3ARQApACLwb2CXIEGCBAkSJEiQIEGC
 BAkSJEiQIKEl/D84h6XiukPEQgAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Defining-a-grid-of-elevations-and-retrieving-heights">Defining a grid of elevations and retrieving heights<a class="anchor-link" href="#Defining-a-grid-of-elevations-and-retrieving-heights">¶</a></h2>
+<h2 id="Defining-a-grid-of-elevations-and-retrieving-heights">Defining a grid of elevations and retrieving heights<a class="anchor-link" href="#Defining-a-grid-of-elevations-and-retrieving-heights">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -2634,50 +2738,55 @@ BAkSJEiQIKEl/D84h6XiukPEQgAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we know how to retrieve elevation data from a given path defined by start and end points, we can extend this method to work with a grid. In the next cells, we will discretize a portion of the globe roughly corresponding to the location of Paris (although any portion of map could do) and gather its elevation data.</p>
 <p>First, we define the portion of the map we want to use by its coordinates (in fact, its "top left" and "bottom right"). We also plot it using <code>Basemap</code> to make sure that our bounding coordinates are correctly selected.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">top_left</span> <span class="o">=</span> <span class="p">(</span><span class="mf">48.960092</span><span class="p">,</span> <span class="mf">2.158060</span><span class="p">)</span> <span class="c1">#latitude, longitude</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">top_left</span> <span class="o">=</span> <span class="p">(</span><span class="mf">48.960092</span><span class="p">,</span> <span class="mf">2.158060</span><span class="p">)</span> <span class="c1">#latitude, longitude</span>
 <span class="n">bottom_right</span> <span class="o">=</span> <span class="p">(</span><span class="mf">48.802953</span><span class="p">,</span> <span class="mf">2.456751</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># setup Lambert Conformal basemap.</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># setup Lambert Conformal basemap.</span>
 <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'lcc'</span><span class="p">,</span>
-            <span class="n">resolution</span><span class="o">=</span><span class="s1">'l'</span><span class="p">,</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;lcc&#39;</span><span class="p">,</span>
+            <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;l&#39;</span><span class="p">,</span>
             <span class="n">lat_0</span><span class="o">=</span><span class="mf">47.</span><span class="p">,</span><span class="n">lon_0</span><span class="o">=</span><span class="mf">2.</span><span class="p">)</span>
 <span class="c1"># draw coastlines</span>
 <span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">()</span>
 <span class="c1"># draw a boundary around the map, fill the background.</span>
 <span class="c1"># this background will end up being the ocean color, since</span>
 <span class="c1"># the continents will be drawn on top.</span>
-<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">'aqua'</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;aqua&#39;</span><span class="p">)</span>
 <span class="c1"># fill continents, set lake color same as ocean color.</span>
-<span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'coral'</span><span class="p">,</span><span class="n">lake_color</span><span class="o">=</span><span class="s1">'aqua'</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;coral&#39;</span><span class="p">,</span><span class="n">lake_color</span><span class="o">=</span><span class="s1">&#39;aqua&#39;</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">drawcountries</span><span class="p">()</span>
 <span class="c1"># meridians on bottom and left</span>
 <span class="n">parallels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mf">5.</span><span class="p">)</span>
@@ -2695,32 +2804,48 @@ BAkSJEiQIKEl/D84h6XiukPEQgAAAABJRU5ErkJggg==
                       <span class="p">[</span><span class="n">top_right</span><span class="p">,</span> <span class="n">bottom_right</span><span class="p">,</span> <span class="n">bottom_left</span><span class="p">,</span> <span class="n">top_left</span><span class="p">]):</span>
     <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">],</span> <span class="p">[</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="s1">'-bo'</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">],</span> <span class="p">[</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="s1">&#39;-bo&#39;</span><span class="p">)</span>
 
 <span class="n">region_center</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top_left</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">bottom_right</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                  <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">top_left</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bottom_right</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">xy_region_center</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">region_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">region_center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="n">annotate</span><span class="p">(</span><span class="s2">"region to extract"</span><span class="p">,</span> <span class="p">[</span><span class="n">xy_region_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy_region_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> 
+<span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;region to extract&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">xy_region_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy_region_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> 
          <span class="p">[</span><span class="n">xy_region_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">50000</span><span class="p">,</span> <span class="n">xy_region_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">50000</span><span class="p">],</span>
-         <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"->"</span><span class="p">,</span>
-                <span class="n">connectionstyle</span><span class="o">=</span><span class="s2">"angle3,angleA=0,angleB=-90"</span><span class="p">),</span>
+         <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span>
+                <span class="n">connectionstyle</span><span class="o">=</span><span class="s2">&quot;angle3,angleA=0,angleB=-90&quot;</span><span class="p">),</span>
          <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> 
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Annotation at 0x65075b0></pre>
+<pre>&lt;matplotlib.text.Annotation at 0x65075b0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlkAAAJLCAYAAADU5oPXAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXd4U2X7xz9ZTZN070GhA1o62Fv2xh8iiChucOCevG4U
 ceB4ceDAPXndiuBABZkCsjcddFFauvdI0szz+yOIIIW2NM1J2nyui+u06ck535DknO9zP/dz3+DG
@@ -4158,85 +4283,98 @@ yow4J5GLzwR5xmkGZy4fBfgn0LHx758jL/M9hFxvpUNeh76QKqAE+bLzU1KQZ7b22yRqwRom4FHg
 d+QCzHnIBdWC87HH+Qly/cepotv9wF22CVdogUjk2SuQ34++BtZc4PgnkH8XTrkByLdPaMJF+CMX
 vd931vceaPxTnJOCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC
 IAiCIAiCIAiC4MT+H7BWA/qvduYKAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This looks like what we expect: a rectangle of data located in the northern part of France.</p>
 <p>The next step is to discretize a grid based on the coordinates that we have been using so far so that we can retrieve elevation data for each grid point to create a height map. We create a grid of latitudes and longitudes based on the bounding box coordinates.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span> <span class="o">=</span> <span class="n">top_left</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bottom_right</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span> <span class="o">=</span> <span class="n">top_left</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bottom_right</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">latitudes</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">top_left</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bottom_right</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">200</span><span class="p">)</span>
 <span class="n">longitudes</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And now we loop over all trajectories extracting 200 points on each line using the Google elevation API.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">start_t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start_t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">latitudes</span><span class="p">):</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{0}</span><span class="s2">,</span><span class="si">{1}</span><span class="s2">|</span><span class="si">{2}</span><span class="s2">,</span><span class="si">{3}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">min_longitude</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">)</span>
-    <span class="n">elvtn_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'path'</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
-                  <span class="s1">'samples'</span><span class="p">:</span> <span class="s1">'200'</span><span class="p">}</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="n">ELEVATION_BASE_URL</span> <span class="o">+</span> <span class="s1">'?'</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">elvtn_args</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">,</span><span class="si">{1}</span><span class="s2">|</span><span class="si">{2}</span><span class="s2">,</span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">min_longitude</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">)</span>
+    <span class="n">elvtn_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
+                  <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="s1">&#39;200&#39;</span><span class="p">}</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">ELEVATION_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">elvtn_args</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'OK'</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s2">"response was not ok for request(index: </span><span class="si">{0}</span><span class="s2">, path: </span><span class="si">{1}</span><span class="s2">), will retry shortly."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;OK&#39;</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;response was not ok for request(index: </span><span class="si">{0}</span><span class="s2">, path: </span><span class="si">{1}</span><span class="s2">), will retry shortly.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
     <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That's it. We have now downloaded the data we need for our 3D modelling task.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Plotting-the-height-data">Plotting the height data<a class="anchor-link" href="#Plotting-the-height-data">¶</a></h2>
+<h2 id="Plotting-the-height-data">Plotting the height data<a class="anchor-link" href="#Plotting-the-height-data">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -4244,69 +4382,85 @@ IAiCIAiCIAiC4MT+H7BWA/qvduYKAAAAAElFTkSuQmCC
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below, we loop over the results in our dataset and append them to a list. We then reshape the data into a matrix for easier handling. Finally, we build a coordinate mesh and plot the elevation data and some contour surfaces.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">build_elevationArray</span><span class="p">():</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">build_elevationArray</span><span class="p">():</span>
     <span class="n">elevationArray</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">result_set</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">result_point</span> <span class="ow">in</span> <span class="n">result_set</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]:</span>
-            <span class="n">elevationArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result_point</span><span class="p">[</span><span class="s1">'elevation'</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">result_point</span> <span class="ow">in</span> <span class="n">result_set</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]:</span>
+            <span class="n">elevationArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result_point</span><span class="p">[</span><span class="s1">&#39;elevation&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">elevationArray</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">elevationArray</span> <span class="o">=</span> <span class="n">build_elevationArray</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">elevationArray</span> <span class="o">=</span> <span class="n">build_elevationArray</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">)</span> <span class="c1"># needed for nicely displaying the contours</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">)</span> <span class="c1"># needed for nicely displaying the contours</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
-<span class="n">imshow</span><span class="p">(</span><span class="n">elevationArray</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'cubehelix'</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">,</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">imshow</span><span class="p">(</span><span class="n">elevationArray</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">,</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
 <span class="n">colorbar</span><span class="p">(</span><span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">title</span><span class="p">(</span><span class="s1">'terrain elevation (m)'</span><span class="p">)</span>
-<span class="n">xlabel</span><span class="p">(</span><span class="s1">'longitude'</span><span class="p">)</span>
-<span class="n">ylabel</span><span class="p">(</span><span class="s1">'latitude'</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s1">&#39;terrain elevation (m)&#39;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
 
 <span class="n">CS</span> <span class="o">=</span> <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAy4AAAGwCAYAAABPQDGxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXe8JUWZ979V3SfffO9kZhiGMOQksCgYQRQxu77ruiro
 7ppYEwqrqKyggLq46Cqr6yLrmhUwEAwoCIiApCEzwDADk+6Em9NJ3VXvH9Wh+txzB8Mwgtbv8+nb
@@ -11218,45 +11372,66 @@ wXUH+92BPRyFQqFQKPYPZXFRKBQKhUKhUCgOfaQm3lqbheMG+yuLi0KhUCgUCoVCoVD4KIuLQqFQ
 KBQKhUJx6PN2RdMri4tCoVAoFAqFQqF4V9N1oA9AoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqF
 QqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAcTPx/bMp6t7jAyAAAAAFJREFU
 E6yGPDYAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This looks quite beautiful. We can also just plot the contours of this map.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-<span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'cubehelix'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">)</span>
 <span class="n">colorbar</span><span class="p">()</span>
-<span class="n">title</span><span class="p">(</span><span class="s1">'terrain elevation (m)'</span><span class="p">)</span>
-<span class="n">xlabel</span><span class="p">(</span><span class="s1">'longitude'</span><span class="p">)</span>
-<span class="n">ylabel</span><span class="p">(</span><span class="s1">'latitude'</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s1">&#39;terrain elevation (m)&#39;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Text at 0x8509450></pre>
+<pre>&lt;matplotlib.text.Text at 0x8509450&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAy0AAAHBCAYAAABkCVTWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXVUVNvbgB+6OwUEFFDA7u6+duu1O68d18bu7u7uuHZ3
 KyICKtLdHcPMfH8MBgpIq7/vPGuxmBM7zj4z5+x3vwUCAgICAgICAgICAgICAgICAgICAgICAgIC
@@ -16512,16 +16687,20 @@ JqZQfzBSCTwIrEKdiF8KlNQ65/HXfFZ1ru2ow8reBB5AnZgfVOu4WYAv6kT8F6rOCVCAOkdmUVXZ
 NgKtz/rTCoIgCIIgCILwl1I7i9d/gMlNVRBBEARBEARBEIT6TAF+A/YCH3HyHBVBEARBEARBEARB
 EARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARB
 EARBuBT9P0+ZueVSrjYXAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Building-a-3D-model-from-the-height-data">Building a 3D model from the height data<a class="anchor-link" href="#Building-a-3D-model-from-the-height-data">¶</a></h1>
+<h1 id="Building-a-3D-model-from-the-height-data">Building a 3D model from the height data<a class="anchor-link" href="#Building-a-3D-model-from-the-height-data">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -16532,23 +16711,33 @@ EARBuBT9P0+ZueVSrjYXAAAAAElFTkSuQmCC
 <p>The reason I am generating code for OpenSCAD is that it's really easy to use. For instance, extruding a triangle of height and width equal to 100 mm in the $z$ direction over 10 mm can be expressed by the following line:</p>
 <blockquote><p>linear_extrude(height = 10) polygon(points=[[0,0],[100,0],[0,100]]);</p>
 </blockquote>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [22]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">'files/OpenSCAD.PNG'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;files/OpenSCAD.PNG&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[22]:</div>
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
 <div class="output_png output_subarea output_execute_result">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABkAAAANkCAYAAADvCeYgAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
 jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAANa+SURBVHhe7P0JlHR5Xdj/P8acY05OjtEck5ij
@@ -17517,34 +17706,48 @@ vhz52XfliPPYyz/8przy/a9K1Xe+IaNuukUWVTY7v7eq31f39OlxK6qIERQ4IoocUQUO886OcOI/
 5mpz206ZMHWcTJ1f4fyu3yK7ul+yPuqqyN0eVtHDPvf+6y0q6svcT8XvqYSQ5KEAQgghhGQn37n0
 Kudad7kMul3d7fGAvttDFT2u+c3d+m6Pq2+6Q6649lb54RU3yMX/fa3k/uvXct+wp+Sr3/tP+f+f
 8luMtHAJwgAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First, we generate the contour we want to work with.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [23]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">CS</span> <span class="o">=</span> <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">CS</span> <span class="o">=</span> <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAEACAYAAABbMHZzAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsfXd4VFX39Qq9EyD03kF6E5AOAgICAhZQEAERFZDewSBF
 EQSkiSIdqQpIkya9ho4EgqETegKkT5Ip6/tjZb6ZJDPJpKD8fLOeJ0+m3HvuuXfu3WeftdfeB0hF
@@ -19326,52 +19529,60 @@ tuvj4lDsq8sSFGg4Gh6pfXvSUPVbKpz7XoZtWIsvOHb02599e1Jf9WuQBPgzxh7gmiKhU+y/x/mE
 6Vfvc/vUM84UDhV3hlLBD7AzCc/9+LFwGmTnfFy1cKGpBjcIn+hxjBfOudY3jsbG1ni69lwCj+Ag
 5bT/3zkU+0biX4V2bcelte81BA2Pxr5jRb/9cazotz8agn4RERERERERERERERERERERERERERER
 EREREREREREREREREREREREREREREREREREREREREfB/LmtHL3uqx6IAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, we extract a collection of paths for each isosurface (whose existence I have discovered by reading <a href="http://stackoverflow.com/questions/17494047/how-to-smooth-a-plot-in-matplotlib-without-losing-contour-lines">this link</a> - before I thought that I should use "segments"...). Each path is made of vertices, which we can plot. The lines obtained by this will be extruded in our 3D model.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">isosurface_index</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">isosurface_index</span><span class="p">):</span>
     <span class="n">lc</span> <span class="o">=</span> <span class="n">CS</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="n">isosurface_index</span><span class="p">]</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">lc</span><span class="o">.</span><span class="n">get_paths</span><span class="p">():</span>
         <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vertices</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These vertices can be plotted:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [25]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_isosurface</span><span class="p">(</span><span class="n">isosurface_index</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_isosurface</span><span class="p">(</span><span class="n">isosurface_index</span><span class="p">):</span>
     <span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
     
     <span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-    <span class="n">title</span><span class="p">(</span><span class="s2">"height </span><span class="si">{0}</span><span class="s2"> meters"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">CS</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">isosurface_index</span><span class="p">]))</span>
+    <span class="n">title</span><span class="p">(</span><span class="s2">&quot;height </span><span class="si">{0}</span><span class="s2"> meters&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">CS</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">isosurface_index</span><span class="p">]))</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">isosurface_index</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
         <span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
@@ -19379,27 +19590,38 @@ EREREREREREREREREREREREREREREREREREREREREfB/LmtHL3uqx6IAAAAASUVORK5CYII=
     <span class="n">ylim</span><span class="p">(</span><span class="n">latitudes</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
     
     <span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-    <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">CS</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'cubehelix'</span><span class="p">)</span>
+    <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">CS</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [26]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_isosurface</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_isosurface</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmAAAAEKCAYAAAC17OlxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnWVYVVkXgF9AwkJFUAQDuwvbsbE7sVvH7rELxR67u1sx
 xu7uFgMUEBAkJKTz3vX9uEgIKDhOON95n+c83HN2rbO5d5911l57bVBQUFBQUFBQUFBQUFBQUFBQ
@@ -21772,46 +21994,62 @@ nA1Zz78Luf2qf3L7Vf9ulvYLGrANk9eChFtwDWmeuW0UYAauhgDgE+AlXEPhZ8732nFdGOgAJuHq
 KSuB+bjOszfGrAHAyprHVMBi4Ne/MOcoYGxNvnLg7pp9jbGmdWVtbDWtS0PW9HpyNmQ9/y7k9uuv
 ySm3X/Wfsy6NsaZ1kdswmUwmk8lkMplMJpPJZDKZTCaTyWQymUwmk8lkMplMJpPJZDKZTCaTyWQy
 mUwmk8lkMplMJpPJZDKZTCaTyWQymUwmk8lkMplMJqvt/wDG3xQhgrBIpgAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This can even be made interactive.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [27]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [28]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">plot_isosurface</span><span class="p">,</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">plot_isosurface</span><span class="p">,</span>
          <span class="n">isosurface_index</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">CS</span><span class="o">.</span><span class="n">collections</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmAAAAEKCAYAAAC17OlxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnWVYVVkXgF86BBFFRTGwu7AdO0bH7u7u7q4ZY3R07Bxz
 jLFHxxh1LOwWUQwQEEGk83KBe9f34yKCgIBizHznfZ7zeM7Ztc7mus86a6+9NigoKCgoKCgoKCgo
@@ -24174,200 +24412,258 @@ Z3BEykpgAY777PVRqy+wumqbClgCbLqDOkcCY6r0lQAPVu2rjzatTWt9s2lt1KVNb0ZnXdrzr4Ls
 v+6MTtl/3XqdtVEfbVobsg+TkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGR
 kZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGpyf8DvSwnJQ4vBQAA
 AAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have all the vertices we need in our mesh, we can build up a 3D extension of those. We need to convert the coordinates from each point of the segment from latitude longitude coordinates to some coordinates appropriate to the OpenSCAD modelling.</p>
 <p>We compute the extent of our model below.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [29]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">lon_mini</span> <span class="o">=</span> <span class="n">longitudes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lon_mini</span> <span class="o">=</span> <span class="n">longitudes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="n">lat_mini</span> <span class="o">=</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="n">dx</span> <span class="o">=</span> <span class="n">longitudes</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">longitudes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="n">dy</span> <span class="o">=</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">latitudes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[30]:</div>
+
+    <div class="prompt output_prompt">Out[30]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(0.29869100000000026, 0.15713900000000081)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, we define a scaling factor that will permit to compute the final dimensions of our object. Our scaling factor will be the target $dx$ (longitude extent) of our object, expressed in millimeters.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">scaling_factor</span> <span class="o">=</span> <span class="mf">100.</span> <span class="c1">#mm</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaling_factor</span> <span class="o">=</span> <span class="mf">100.</span> <span class="c1">#mm</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This allows us to write some scaling functions.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">scale_lon</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">lon</span><span class="p">:</span> <span class="n">scaling_factor</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">lon</span> <span class="o">-</span> <span class="n">lon_mini</span><span class="p">)</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scale_lon</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">lon</span><span class="p">:</span> <span class="n">scaling_factor</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">lon</span> <span class="o">-</span> <span class="n">lon_mini</span><span class="p">)</span> 
 <span class="n">scale_lat</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">lat</span><span class="p">:</span> <span class="n">scaling_factor</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">lat</span> <span class="o">-</span> <span class="n">lat_mini</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From this, we can define a function that scales the coordinates of a point and returns some OpenSCAD compatible string:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">array2str</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">arr</span><span class="p">:</span> <span class="s2">"[</span><span class="si">{0:.5f}</span><span class="s2">, </span><span class="si">{1:.5f}</span><span class="s2">]"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scale_lon</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">scale_lat</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">array2str</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">arr</span><span class="p">:</span> <span class="s2">&quot;[</span><span class="si">{0:.5f}</span><span class="s2">, </span><span class="si">{1:.5f}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scale_lon</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">scale_lat</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using the previous function, we can define a function that loops over all points and returns an extruded version using the <code>polygon</code> command of OpenSCAD. The function below takes into account a starting elevation due to the fact that we will stack extrusions on top of each other to build the final 3D model.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [35]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">vertices2extrusion</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">start_height</span><span class="p">,</span> <span class="n">extrusion_height</span><span class="p">):</span>
-    <span class="n">polygon</span> <span class="o">=</span> <span class="s2">"["</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">array2str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span> <span class="o">+</span> <span class="s2">"]"</span>
-    <span class="k">return</span> <span class="s2">"translate([0, 0, </span><span class="si">{0}</span><span class="s2">]) linear_extrude(height=</span><span class="si">{1}</span><span class="s2">) polygon(</span><span class="si">{2}</span><span class="s2">);"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start_height</span><span class="p">,</span> <span class="n">extrusion_height</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">vertices2extrusion</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">start_height</span><span class="p">,</span> <span class="n">extrusion_height</span><span class="p">):</span>
+    <span class="n">polygon</span> <span class="o">=</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">array2str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;translate([0, 0, </span><span class="si">{0}</span><span class="s2">]) linear_extrude(height=</span><span class="si">{1}</span><span class="s2">) polygon(</span><span class="si">{2}</span><span class="s2">);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start_height</span><span class="p">,</span> <span class="n">extrusion_height</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [36]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">vertices2extrusion</span><span class="p">(</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vertices2extrusion</span><span class="p">(</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[36]:</div>
+
+    <div class="prompt output_prompt">Out[36]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'translate([0, 0, 0]) linear_extrude(height=10) polygon([[0.00000, 49.52006], [0.35937, 49.70117], [0.50251, 49.83891], [0.79369, 49.96554], [1.00503, 50.05929], [1.19791, 50.22991], [1.44856, 50.49427], [1.50754, 50.54141], [1.73315, 50.75864], [1.89860, 51.02301], [2.01005, 51.17476], [2.10872, 51.28738], [2.38678, 51.55175], [2.51256, 51.75968], [2.56659, 51.81611], [2.78789, 52.08048], [3.01508, 52.23854], [3.14294, 52.34485], [3.01508, 52.44844], [2.71004, 52.60922]]);'</pre>
+<pre>&#39;translate([0, 0, 0]) linear_extrude(height=10) polygon([[0.00000, 49.52006], [0.35937, 49.70117], [0.50251, 49.83891], [0.79369, 49.96554], [1.00503, 50.05929], [1.19791, 50.22991], [1.44856, 50.49427], [1.50754, 50.54141], [1.73315, 50.75864], [1.89860, 51.02301], [2.01005, 51.17476], [2.10872, 51.28738], [2.38678, 51.55175], [2.51256, 51.75968], [2.56659, 51.81611], [2.78789, 52.08048], [3.01508, 52.23854], [3.14294, 52.34485], [3.01508, 52.44844], [2.71004, 52.60922]]);&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [37]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">vertices2extrusion</span><span class="p">(</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vertices2extrusion</span><span class="p">(</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[37]:</div>
+
+    <div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'translate([0, 0, 20]) linear_extrude(height=10) polygon([[0.00000, 49.52006], [0.35937, 49.70117], [0.50251, 49.83891], [0.79369, 49.96554], [1.00503, 50.05929], [1.19791, 50.22991], [1.44856, 50.49427], [1.50754, 50.54141], [1.73315, 50.75864], [1.89860, 51.02301], [2.01005, 51.17476], [2.10872, 51.28738], [2.38678, 51.55175], [2.51256, 51.75968], [2.56659, 51.81611], [2.78789, 52.08048], [3.01508, 52.23854], [3.14294, 52.34485], [3.01508, 52.44844], [2.71004, 52.60922]]);'</pre>
+<pre>&#39;translate([0, 0, 20]) linear_extrude(height=10) polygon([[0.00000, 49.52006], [0.35937, 49.70117], [0.50251, 49.83891], [0.79369, 49.96554], [1.00503, 50.05929], [1.19791, 50.22991], [1.44856, 50.49427], [1.50754, 50.54141], [1.73315, 50.75864], [1.89860, 51.02301], [2.01005, 51.17476], [2.10872, 51.28738], [2.38678, 51.55175], [2.51256, 51.75968], [2.56659, 51.81611], [2.78789, 52.08048], [3.01508, 52.23854], [3.14294, 52.34485], [3.01508, 52.44844], [2.71004, 52.60922]]);&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have our basic functions, we can apply this to all segments in our contours and output this to a 3D file. We will use define a z scaling factor much in the same way that we scaled our latitude and longitude above.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [38]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">scaling_factor_z</span> <span class="o">=</span> <span class="mf">50.</span> <span class="o">/</span> <span class="mf">200.</span> <span class="c1"># target size in z is 50 mm</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaling_factor_z</span> <span class="o">=</span> <span class="mf">50.</span> <span class="o">/</span> <span class="mf">200.</span> <span class="c1"># target size in z is 50 mm</span>
 <span class="n">scale_z</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">scaling_factor_z</span> <span class="o">*</span> <span class="n">z</span> 
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [39]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">'files/model.scad'</span><span class="p">):</span>
-    <span class="sd">""" generates OpenSCAD model code and writes it to file.</span>
-<span class="sd">    """</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="s2">""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;files/model.scad&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; generates OpenSCAD model code and writes it to file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">CS</span><span class="o">.</span><span class="n">collections</span><span class="p">)):</span> <span class="c1"># loop over every isosurface</span>
         <span class="n">current_height</span> <span class="o">=</span> <span class="n">CS</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">CS</span><span class="o">.</span><span class="n">collections</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
@@ -24377,7 +24673,7 @@ AAAASUVORK5CYII=
         <span class="n">vertices_list</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
         
         <span class="c1"># loop for one layer</span>
-        <span class="n">layer</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertices_list</span><span class="p">:</span>
             <span class="n">layer</span> <span class="o">+=</span> <span class="n">vertices2extrusion</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> 
                                         <span class="n">scale_z</span><span class="p">(</span><span class="n">current_height</span><span class="p">),</span>
@@ -24385,49 +24681,63 @@ AAAASUVORK5CYII=
         <span class="n">model</span> <span class="o">+=</span> <span class="n">layer</span>
     
     <span class="c1"># write to file</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
                                     
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [40]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>At this point, we have a working model. However, I noticed that we don't have a flat plate upon which the whole structure rests. So at this point I'm going back one step and manually setting the borders of our data to zero so that the isocontours we get are naturally bounded.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [41]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">elevationArray</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">elevationArray</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">elevationArray</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">elevationArray</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">elevationArray</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">elevationArray</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">CS</span> <span class="o">=</span> <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAEACAYAAABbMHZzAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsfXd4VFX39QoJoZMEQu+9dwSU3kRAQEQQFEVABAWkgyAI
 UgRBUKSoCIggVXqRIr2HjlRDC4ROgEDKJJmyvj/WzDeTZCaZkKC+/LKeZ56ZueXcc9s+u6y9D5CK
@@ -26253,62 +26563,79 @@ J9AUuhadka8fbf2mI1F6g+6hw9OR70zRXziLgZYkkGeK/sIJl++U9NflY/t0Mc5FvSq2uFIBPAih
 PIXwCvAwqhukpT8ugBpoCgJ3omp0HViE6nPtapyOjOnAstA6G/AnYPWPf8mnRGfkuxK4ASVXE3Bt
 6LfuoMPTke9M0d+JOFP0dyK6g/4sLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCws
 LCwsLCwsLCwsLCwsLCwsLAD+D5gb9cdeAvf3AAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As one can see, there now are borders on the edges of the model. This naturally builds a support plate for our 3D model.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [42]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">'files/model_bounded.scad'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;files/model_bounded.scad&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another experiment we can do is to spatially filter the data with a Gaussian filter. This will smooth all contours.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [43]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
 
 <span class="n">elevationArray</span> <span class="o">=</span> <span class="n">build_elevationArray</span><span class="p">()</span> <span class="c1"># rebuild data</span>
 <span class="n">elevationArray</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">elevationArray</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># filter it</span>
 
-<span class="n">elevationArray</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">elevationArray</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># make sure there's a nice border</span>
+<span class="n">elevationArray</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">elevationArray</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># make sure there&#39;s a nice border</span>
 <span class="n">elevationArray</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">elevationArray</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">CS</span> <span class="o">=</span> <span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">elevationArray</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="c1"># build contour set</span>
 
-<span class="n">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">'files/model_bounded_smoothed.scad'</span><span class="p">)</span> <span class="c1"># write model</span>
+<span class="n">generate_model_code</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;files/model_bounded_smoothed.scad&#39;</span><span class="p">)</span> <span class="c1"># write model</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAEACAYAAABbMHZzAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXV0FVfXxn83RpQQI1hwd3d3lwJtoUhpaZE6tLSlAi2l
 tJRCC8WKFKdYgeLu7hoshJCQEOJu9979/bFv3gRIQpB+r6w8a81K7syZM2dsny3P3gN5yEMe8pCH
@@ -28378,36 +28705,50 @@ nPnYt9b+dtOXSnRjcWh4JPYdLfrN5Bu4JJ0/WvSbyUz7Dkm/BR/bZ4HxR5JHxemuVHA1+wK2fAWf
 kDSDTLfHVSUvmmr4oOQfPY8bJG2uC40jsXElvp+uK+Db+NHzX+RDYj72vQnvkNhVxp+n2xaDhkdi
 39Gi31wcLfrNxWLQLyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
 IyMjIyMjIyMD/g8qgN4Bdl+NvwAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can display a little gallery of the generated models we now have.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [44]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'files/OpenSCAD_model.PNG'</span><span class="p">,</span> <span class="s1">'files/OpenSCAD_model_bounded.PNG'</span><span class="p">,</span> <span class="s1">'files/OpenSCAD_model_bounded_smoothed.PNG'</span><span class="p">]:</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;files/OpenSCAD_model.PNG&#39;</span><span class="p">,</span> <span class="s1">&#39;files/OpenSCAD_model_bounded.PNG&#39;</span><span class="p">,</span> <span class="s1">&#39;files/OpenSCAD_model_bounded_smoothed.PNG&#39;</span><span class="p">]:</span>
     <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">f</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBgAAAIVCAYAAAB7r0yNAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
 jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAMImSURBVHhe7d3nvyR1mcd9nxImMMwwDBmfLu66
 KElBghKUJFmCKElJKkkJJkBJElWSCAKC4q5pDbtrWN3wZ9zP7z/jfp27vn3m6rnO71xVXTl0fx68
@@ -29282,12 +29623,20 @@ LhAYAAAAAHSCQex48digCwQGAAAAAJ1gEDtePDboAoEBAAAAQCcYxI4bjw/aRmAAAAAA0AkGsOPG
 08DjhLYQGAAAAAB0goHrNPA4oS0EBgAAAACdYOA6DTxOaAuBAQAAAEAnGLhOB48V2kBgAAAAANAJ
 Bq3TwWOFNhAYAAAAAHSCQet08FihDQQGAAAAAJ1g0DotPF5oisAAAAAAoBMMWKeFxwtNERgAAAAA
 dIIB67TweKEpAgMAAACATjBgnR4eM9T3/679/1+ERjYFQIYJAAAAAElFTkSuQmCC
-"/>
+"
+>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA/EAAAIcCAYAAAC+bC59AAAAAXNSR0IArs4c6QAAAARnQU1BAACx
 jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAPD9SURBVHhe7P1puyRVmYYNP18piqGoKub5a7et
 jYwKCCiDAiqjyCSTCigyqSAOgIqgyKAyCSiiDN1O3a227dzaP+P5/v6M99hPXLHryrr2qjvmISMy
@@ -30373,12 +30722,20 @@ DDKdymdGRrwkSZK0EoNMp/KZkREvSZIkrcQg0xI+N4/NiJckSZJWYoxpCZ+bx2bES5IkSSsxxrSU
 z87jMuIlSZKklRhiWspn53EZ8ZIkSdJKDDGdw+fnMRnxkiRJ0kqMMJ3D5+cxGfGSJEnSSowwncPn
 5zEZ8ZIkSdJKjDCdy2fo8RjxkiRJ0koMMJ3LZ+jxGPGSJEnSSgwwXYLP0SP5v+f/DwBhQNl/wg9v
 AAAAAElFTkSuQmCC
-"/>
+"
+>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+sAAAISCAYAAAC06l4sAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
 jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAP+lSURBVHhe7L3nvy1Fnf97n5Iz5xwOybkPZxxn
 QJIKiIFjABxBUEEQAZWkkpSkkiRnJSgZSWIYZ9QZ06CO+vsf7j9w/4n7ZN/6rH0+a39WnW93V6cV
@@ -31764,23 +32121,28 @@ YFktvpbG5Vg3W7CpY13tg5mZmW2LA8tq8vU0Hse62cKNEetqHjMzMzsNjiurydfTeBzrZgs3JNbV
 eGZmZnbaHFdWm6+pcTjWzVagK9bVNmZmZmaKw8pq8zU1Dse6mZmZmdkJcVjZGHxd1edYNzMzMzM7
 IY4qG4uvrboc62ZmZmZmJ8RBZWPxtVWXY93MzMzM7IQ4qGxMvr5q+f8u/P+Kx/a9n8AWAAAAAABJ
 RU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Final and last step: print it using a 3D printer!</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -31789,6 +32151,7 @@ RU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we have learned how to use the Google elevation API to retrieve height data for a grid of geographical coordinates centered about Paris. This data was used in conjunction with the powerful numeric Python tools to produce a smooth mesh that was rendered using the OpenSCAD language. This 3D model can be exported to the STL format, ready for 3D printing.</p>
 <p>The tools developed within this post are generic and could thus make it possible to produce a similarly rendered 3D model of any region of the world.</p>
+
 </div>
 </div>
 </div>
@@ -31796,9 +32159,12 @@ RU5ErkJggg==
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20141027_ParisTopology.ipynb">20141027_ParisTopology.ipynb</a>.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

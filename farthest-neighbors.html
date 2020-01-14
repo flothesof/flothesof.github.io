@@ -1572,6 +1572,7 @@ h6:hover .anchor-link {
 <p>We will follow the advice of Peter Norvig (from his wonderful post on the <a href="http://nbviewer.ipython.org/url/norvig.com/ipython/TSPv3.ipynb">travelling salesman problem</a>):</p>
 <blockquote><p>In general our design philosophy is to first write an English description of the algorithm, then write Python code that closely mirrors the English description. This will probably require some auxilliary functions and data structures; just assume they exist; put them on a TO DO list, and eventually define them with the same design philosophy.</p>
 </blockquote>
+
 </div>
 </div>
 </div>
@@ -1580,40 +1581,45 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will consider the problem in the frame of points in the 2D plane and found in the range $[-1, 1]^2$. We will represent these points using the complex number type available in Python (inspired by Peter Norvig).</p>
 <p>Our first requirement will be to plot a list of points. We can write the following function for this.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'b'</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">"""plots a set of points, with optional arguments for axes and style"""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;b&#39;</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;plots a set of points, with optional arguments for axes and style&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ax</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -1624,71 +1630,88 @@ h6:hover .anchor-link {
 <li>points distributed randomly in the [-1, 1]^2 interval</li>
 </ul>
 <p>We write functions for both datasets below:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">random</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_circle_points</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="sd">"""creates a list of n points on a circle of radius one"""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_circle_points</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;creates a list of n points on a circle of radius one&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> \
             <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_point_cloud</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_point_cloud</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test these two datasets with our plotting function:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">circle100</span> <span class="o">=</span> <span class="n">create_circle_points</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3X2sHfV95/H3B1hMrVWKDTfEAa5t
@@ -1841,29 +1864,42 @@ Ao9khvVFtr3fb0lyin9Z+v6UdFv2ptt2TmbZuXS53cAHF7nPjSr/3nRfXNjeXaN+hxLL/q/AE2kZ
 DwD/LrPsx9K/yV7gN5di29PPf0LPP8GStv1WkqyMn5LU+WuAa4Fr0+kCbkrX7TEyB1JlbHtE+JJL
 M7Nxda1X3cysMAdOM7MxOXCamY3JgdPMbEwOnGZmY3LgNDMbkwOnmdmY/j9+cLW3q6KYIwAAAABJ
 RU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">cloud100</span> <span class="o">=</span> <span class="n">create_point_cloud</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">cloud100</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3X2sHXd95/H3Jw82tVCK7RgwSXzt
@@ -2023,11 +2059,15 @@ ReDzAyf8n4DTBt7/DeBB4CFgH/DyotMHfi1N4/708aoi8p8z7fcBPwfuyywXzZP3YeeS5BL/Henz
 l6V5OZTm7fzMe3el73sE+K0Z/+cmpX9H+r+4kt8Dk85DgWn/L+DhNI27gF/OvPf308/kEPBfy8h7
 +vp/MvAjWFDebyDplfFzku/8VcAHgQ+m2wX87/TYHiRTkCoi7xHhIZdmZtPqW6u6mdncHDjNzKbk
 wGlmNiUHTjOzKTlwmplNyYHTzGxKDpxmZlP6/wsaJsyOTdL6AAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -2039,15 +2079,16 @@ wGlmNiUHTjOzKTlwmplNyYHTzGxKDpxmZlP6/wsaJsyOTdL6AAAAAElFTkSuQmCC
 <li>add the farthest point from the remaining points to the solution set</li>
 <li>do this until we have reached $k$ points in the solution set</li>
 </ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">incremental_farthest_search</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">incremental_farthest_search</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">remaining_points</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:]</span>
     <span class="n">solution_set</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">solution_set</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remaining_points</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>\
@@ -2062,82 +2103,110 @@ wGlmNiUHTjOzKTlwmplNyYHTzGxKDpxmZlP6/wsaJsyOTdL6AAAAAElFTkSuQmCC
 
 <span class="c1">#TODO: function distance</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We now define a distance function (the absolute value of the difference of two complex numbers returns the distance between them).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">B</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's run the algorithm:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>[(-0.30901699437494756-0.9510565162951535j),
  (0.30901699437494745+0.9510565162951535j)]</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's plot the result of the algorithm.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XuQHeV55/HvM1yEJJeDBGMsAyMJ
@@ -2298,29 +2367,42 @@ Dcv4cfh6VRrbH7PszwBvA49FhqVJtr3Vb0lwin9++P6YcFt2htt2SmTZiXC57cCn+tznupX/YLgv
 NrZ3stvvkGLZfwY8FZbxCPBLkWU/G/5NdgK/PYhtDz9/laZ/gilt+50EWRlvE9T5q4CrgavD6Qbc
 GK7bE0QOpNLYdnfXJZciIr2qW6+6iEhiCpwiIj1S4BQR6ZECp4hIjxQ4RUR6pMApItIjBU4RkR79
 f77GtdMh1oioAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3X20HVWZ5/Hvc3lJbq5LSSBqBG4S
@@ -2490,29 +2572,42 @@ mRYn2fdmvyXBJf6y8PXMcF92hft2WmTdsXC9x4EP9XjMdcr/3vBYnNrf8U6/Q4p5/xfg0TCPB4B/
 GVn3o+F3sgv4SD/2PXz/RRr+Caa075sIemUcIijzVwJXAVeFyw24Idy2h4mcSKWx7+6uWy5FRLpV
 t1Z1EZHEFDhFRLqkwCki0iUFThGRLilwioh0SYFTRKRLCpwiIl36/6UXKfiuoG+GAAAAAElFTkSu
 QmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3X10HNd53/HvsyRFAtBJREq0LUvi
@@ -2701,39 +2796,53 @@ mHl/EpgEnows19az76W+S4JT/N7w+aJwX46F+/auyHu3hu97HvjYHH9z1fJ/LPwtTu/vSLXvIcG8
 /yPwbJjHE8BPR977G+Hf5Bjw643Y9/D1H1P0TzChfd9LMCpjkqDO3wp8FvhsuN2Ar4Zle5rIgVQS
 ++7uuuRSRKRW7darLiJSNwVOEZEaKXCKiNRIgVNEpEYKnCIiNVLgFBGpkQKniEiN/j/wmeLCAh6z
 PAAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Due to the random initialization, this will return different solutions to the problem if we run it multiple times.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> 
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> 
-                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbcAAAGfCAYAAADcaJywAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJztvX+QXGd57/l5ejSyutuQ4LGDHWB6
@@ -3076,36 +3185,50 @@ Zw+bP8Dx6D8Hfgx8pbb/l4GzTT1t/gGn5XY4QvuGgK8B36v9vaO2fxT429rr3wSexenB9CzwoQjs
 arkfwMeBidrrXcDngReAJeAtEX+v3ez7C+C52j37OvBPIrbvFPAycL1W/z4EPAw8XDsuwKdr9j+L
 S6/DJG6mqdDqrGmqs32ha8pmKDEMwzAyRxbDkoZhGEbOMedmGIZhZA5zboZhGEbmMOdmGIZhZA5z
 boZhGEbmMOdmGIZhZA5zboZhGEbmMOdmGIZhZI7/H7DojOF99vjMAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How does this extend to a point cloud?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">cloud100</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XuQHeV55/HvMyCJ0biIJSE7MqAR
@@ -3283,39 +3406,53 @@ PrCPoKHgrumTmyD/RWFgOBg+LgzXjwHfbjnh/wwMtbx/F/Ak8BSwFXhb2vkDvx3m8Xj4eEMaxx8z
 HXg6zONR4L2R9/5R+JkcAv4wi2MPX/9XWn4EUzr27QS9Mk4RfOdvAD4NfDrcbsD/CPftSSIFqTSO
 3d015FJEJKmmtaqLiAxMgVNEJCEFThGRhBQ4RUQSUuAUEUlIgVNEJCEFThGRhP4/wXU9Q1fqBugA
 AAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we can see how this compares when we do it multiple times:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> 
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> 
-                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbcAAAGfCAYAAADcaJywAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJztvW2MHNd55/t/ejgUu9tIYo3kWH7h
@@ -3651,37 +3788,44 @@ jrD5BJRH/wWAHwN4pr/9fQCeHhlp80OolttRh/ZNAfgugB/1/97Z374HwJf6r38HwAtQI5heAPAZ
 B3aNnQ8AnwMw13+9C8DXAVwCsAbgPse/a559fwTgpf45+2sAv+HYvlMA3gRwq3/9fQbAIwAe6X9O
 AP60b/8LSBl1GGIRTVm7ZkVT2fZZ15RkKBEEQRBqRx3DkoIgCELDEecmCIIg1A5xboIgCELtEOcm
 CIIg1A5xboIgCELtEOcmCIIg1A5xboIgCELtEOcmCIIg1I7/H/g9x3JQ5EkQAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In fact, we can compare the different solutions using an animation. Since version 2.1, <code>matplotlib</code> includes <a href="http://matplotlib.org/users/whats_new.html#interactive-js-widgets-for-animation">support for javascript based frame-by-frame animations</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">mpl_anim</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
     <span class="k">return</span>
@@ -3691,23 +3835,33 @@ CIIg1A5xboIgCELtEOcmCIIg1A5xboIgCELtEOcmCIIg1I7/H/g9x3JQ5EkQAAAAAElFTkSuQmCC
     <span class="n">plot_points</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> 
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> 
-                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 
 <span class="n">animation</span> <span class="o">=</span> <span class="n">mpl_anim</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">animation</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">())</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
-css/font-awesome.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
+css/font-awesome.min.css">
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -3848,33 +4002,41 @@ css/font-awesome.min.css" rel="stylesheet"/>
     }, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_imgbf9bccb4ec47447ca510de919c1b02af"/>
-<br/>
-<input id="_anim_sliderbf9bccb4ec47447ca510de919c1b02af" max="1" min="0" name="points" onchange="animbf9bccb4ec47447ca510de919c1b02af.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.slower()"><i class="fa fa-minus"></i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.first_frame()"><i class="fa fa-fast-backward">
-</i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.previous_frame()">
-<i class="fa fa-step-backward"></i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.reverse_animation()">
-<i class="fa fa-play fa-flip-horizontal"></i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.pause_animation()"><i class="fa fa-pause">
-</i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.play_animation()"><i class="fa fa-play"></i>
-</button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.next_frame()"><i class="fa fa-step-forward">
-</i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.last_frame()"><i class="fa fa-fast-forward">
-</i></button>
-<button onclick="animbf9bccb4ec47447ca510de919c1b02af.faster()"><i class="fa fa-plus"></i></button>
-<form action="#n" class="anim_control" name="_anim_loop_selectbf9bccb4ec47447ca510de919c1b02af">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_imgbf9bccb4ec47447ca510de919c1b02af">
+    <br>
+    <input id="_anim_sliderbf9bccb4ec47447ca510de919c1b02af" type="range" style="width:350px"
+           name="points" min="0" max="1" step="1" value="0"
+           onchange="animbf9bccb4ec47447ca510de919c1b02af.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.slower()"><i class="fa fa-minus"></i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.first_frame()"><i class="fa fa-fast-backward">
+        </i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.previous_frame()">
+        <i class="fa fa-step-backward"></i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.reverse_animation()">
+        <i class="fa fa-play fa-flip-horizontal"></i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.pause_animation()"><i class="fa fa-pause">
+        </i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.play_animation()"><i class="fa fa-play"></i>
+        </button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.next_frame()"><i class="fa fa-step-forward">
+        </i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.last_frame()"><i class="fa fa-fast-forward">
+        </i></button>
+    <button onclick="animbf9bccb4ec47447ca510de919c1b02af.faster()"><i class="fa fa-plus"></i></button>
+  <form action="#n" name="_anim_loop_selectbf9bccb4ec47447ca510de919c1b02af" class="anim_control">
+    <input type="radio" name="state"
+           value="once" > Once </input>
+    <input type="radio" name="state"
+           value="loop" checked> Loop </input>
+    <input type="radio" name="state"
+           value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -6083,29 +6245,36 @@ imKAJiJSFAM0EZGi/j9IOtII42pG4AAAAABJRU5ErkJggg==\
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Based on the previous implementation, we can define a criterion to distinguish between solutions and find the best among a given set of solutions. We choose the sum of the distances between the candidate solutions.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_solution</span><span class="p">(</span><span class="n">solution_set</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_solution</span><span class="p">(</span><span class="n">solution_set</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">distance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">solution_set</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">solution_set</span><span class="p">[</span><span class="mi">1</span><span class="p">:])])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -6119,71 +6288,102 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">optimal_circle_solution</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">optimal_circle_solution</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> \
                          <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can check that the solution is correct for test cases 2 and 4, since they are easy.</p>
 <p>Here's test case 2 points on a circle.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">optimal_circle_solution</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_circle_solution</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>2.0</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [22]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 <span class="n">evaluate_solution</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[22]:</div>
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>2.0</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XuQHeV55/HvM1yEJJeNBGNbBkYC
@@ -6344,65 +6544,98 @@ ER/hj2Mn8AbwY+A74fQPAPdEyq0Gfhj+oCcj048BHiUYKPhW48vtof7DwsCwLXxeHE4fJbjHfPQL
 bcdElp0Ml9sKfLrP31y3+u8Pf4uN7Z3q9j2kWPf/AJ4K63gI+HeRZT8f/k22A781iG0P3/83mv4J
 prTttxJkZbxF0OYvAS4FLg3nG3BduG5PENmRSmPb3V2nXIqI9Kpuo+oiIokpcIqI9EiBU0SkRwqc
 IiI9UuAUEemRAqeISI8UOEVEevT/AWtQ7WMbzlsRAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And here's test case 4 points on a circle.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [23]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">optimal_circle_solution</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_circle_solution</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[23]:</div>
+
+    <div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>4.242640687119285</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 <span class="n">evaluate_solution</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[24]:</div>
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>5.414213562373095</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3X+QHOV95/H3dxEg7bocJJBtGVgJ
@@ -6572,36 +6805,50 @@ IPiN+egH/v+Anpr1dwCPAo8BtwJvSLt+4L1hHT8MH69NY/9j1n0lcAx4ODItSrLv9T5LglP85eHz
 meG+7An37dzIusPhek8CH5nmd65V/feF38WJ/R1p9TmkWPd/Ah4P63gA+BeRdT8e/k32AL/fiX0P
 X/85Nf8EU9r3LQRZGccI2vy1wHXAdeFyA74abtujRA6k0th3d9cllyIi7araqLqISGIKnCIibVLg
 FBFpkwKniEibFDhFRNqkwCki0iYFThGRNv1/Se9okgXx/SEAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here we see that our approximate algorithm does not yield the right answer. To see why, we plot the point labels, their order in the solution set.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [25]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XuQHeV55/HvMwjQSKyDBMKWgZHA
@@ -6777,44 +7024,62 @@ ZFiYZNvr/ZYEp/jLwvfTw23ZGW7byZF5B8L5dgAfnuQ+12r594T74tj2Drb6HVJc9n8DHg2XcR/w
 65F5PxH+TXYCvzsV2x5+/lNq/gmmtO23EGRlHCCo81cCVwFXhdMN+Fq4bg8TOZBKY9vdXZdcioi0
 q2q96iIiiSlwioi0SYFTRKRNCpwiIm1S4BQRaZMCp4hImxQ4RUTa9P8BEe2iEVYTvXMAAAAASUVO
 RK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we see, the points don't have the expected order, thus computing the sum of the distances between points does not yield the minimal and optimal solution. However, we can compute this by hand to make sure the result is correct:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [26]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">distance</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">distance</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[26]:</div>
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>4.242640687119286</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is the expected value. So our "farthest neighbours approximate algorithm" behaves as we expect it on these two test cases.</p>
+
 </div>
 </div>
 </div>
@@ -6822,55 +7087,84 @@ RK5CYII=
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What about another larger test case, 10?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [27]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">optimal_circle_solution</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_circle_solution</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[27]:</div>
+
+    <div class="prompt output_prompt">Out[27]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>5.562305898749053</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [28]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">evaluate_solution</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[28]:</div>
+
+    <div class="prompt output_prompt">Out[28]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>14.693153625647701</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XmUHOV57/HvM1rQTBPbEgiMAUng
@@ -7070,16 +7364,21 @@ td9Dgus+K/b8I8Cu6Pk04LloG6ZGz6clve9RuQuB54lutEli32OfM4vSjUPzGdk4NJDUvp9Yx1je
 9u382Ht7o/c9DXx4jL+5Sut/KPot5ve3r9L3kOC6/wR4MlrHw8DPxd77a9HfZC/wq+Ox79HrP6Lg
 n2BC+76JkJVxlFDnbwA+CXwyWm7Al6Nte5zYgVQS++7uuuVSRKRWWWtVFxGpmwKniEiNFDhFRGqk
 wCkiUiMFThGRGilwiojUSIFTRKRG/x+ReJzjZohvyAAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is not very satisfying. Also, the metric we use suffers again from the permutation problem highlighted in the case of test case 4.</p>
+
 </div>
 </div>
 </div>
@@ -7087,49 +7386,68 @@ wCkiUiMFThGRGilwiojUSIFTRKRG/x+ReJzjZohvyAAAAABJRU5ErkJggg==
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can define a better solution by running the algorithm several times and keeping the one that minimizes the criterion above:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [29]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">best_solution</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tries</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">best_solution</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tries</span><span class="p">):</span>
     <span class="n">solution_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tries</span><span class="p">)]</span>
     <span class="n">sorted_solutions</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">solution_sets</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">evaluate_solution</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sorted_solutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">best_solution</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span>
-           <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+           <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">evaluate_solution</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[30]:</div>
+
+    <div class="prompt output_prompt">Out[30]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>12.18068388836029</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XuUVWd9//H393AJM5NWwaDGJEBi
@@ -7332,55 +7650,78 @@ jU3z6tn3Yt8l4RR/UfR8WrQv+6N9Oy/23rXR+x4G3jHB31yl9d8V/Rbz+ztQ6XtIcN1/BXw/Wsc3
 gV+Nvfd90d9kP/DeRux79PrPKfgnmNC+byVkZRwn1PmrgQ8AH4iWG/CZaNseIHYglcS+u7suuRQR
 qVWn9aqLiNRNgVNEpEYKnCIiNVLgFBGpkQKniEiNFDhFRGqkwCkiUqP/D6zkWfQy1C+qAAAAAElF
 TkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Unfortunately, this does not eliminate the ordering problem that is important when computing the metric. As a quick workaround, we could order the points by their angle:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">sorted_sol</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sorted_sol</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">)</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">sorted_sol</span><span class="p">,</span>
-           <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+           <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">evaluate_solution</span><span class="p">(</span><span class="n">sorted_sol</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[32]:</div>
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>5.361390426676054</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAAEyCAYAAACVsznTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMS4xLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvAOZPmwAAIABJREFUeJzt3XuYHHWd7/H3t3MhM8MqiUTlNgm4
@@ -7583,16 +7924,21 @@ FD3PiKbPI9xjPv6F/xTIFS2/A7gPuB+4CTg56fUDb4zWcW/0fGUS+1/lut8LHAbuiT3m1rPvpb5L
 win+ouj1tGhf9kb7dk5s2YFouQeAd03wNzfe+u+Kfov5/R0c73tIcN1/AfwwWsd3gFfGlv1g9DfZ
 C3ygEfsevf9ziv4JJrTvmwlZGYcJdf5K4MPAh6P5Bnwh2rb7iB1IJbHv7q5LLkVEatVpveoiInVT
 4BQRqZECp4hIjRQ4RURqpMApIlIjBU4RkRopcIqI1Oj/AybItuV9FmMrAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is closer to the optimal solution. Actually, it is even lower. This is due to the fact that our metric does not take into account the last segment "closing the circle".</p>
+
 </div>
 </div>
 </div>
@@ -7600,15 +7946,16 @@ C3ygEfsevf9ziv4JJrTvmwlZGYcJdf5K4MPAh6P5Bnwh2rb7iB1IJbHv7q5LLkVEatVpveoiInVT
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's finish this with an animation of different solutions for growing number of points on the circle and then on the random point cloud.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
     <span class="k">return</span>
@@ -7618,24 +7965,34 @@ C3ygEfsevf9ziv4JJrTvmwlZGYcJdf5K4MPAh6P5Bnwh2rb7iB1IJbHv7q5LLkVEatVpveoiInVT
     <span class="n">plot_points</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">circle100</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> 
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> 
-                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"{i+1} points"</span><span class="p">)</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;{i+1} points&quot;</span><span class="p">)</span>
 
 <span class="n">animation</span> <span class="o">=</span> <span class="n">mpl_anim</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">animation</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">())</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[33]:</div>
+
+    <div class="prompt output_prompt">Out[33]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
-css/font-awesome.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
+css/font-awesome.min.css">
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -7776,33 +8133,41 @@ css/font-awesome.min.css" rel="stylesheet"/>
     }, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_img986a4f8dd13e4cb49514ddd7beefd44d"/>
-<br/>
-<input id="_anim_slider986a4f8dd13e4cb49514ddd7beefd44d" max="1" min="0" name="points" onchange="anim986a4f8dd13e4cb49514ddd7beefd44d.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.slower()"><i class="fa fa-minus"></i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.first_frame()"><i class="fa fa-fast-backward">
-</i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.previous_frame()">
-<i class="fa fa-step-backward"></i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.reverse_animation()">
-<i class="fa fa-play fa-flip-horizontal"></i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.pause_animation()"><i class="fa fa-pause">
-</i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.play_animation()"><i class="fa fa-play"></i>
-</button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.next_frame()"><i class="fa fa-step-forward">
-</i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.last_frame()"><i class="fa fa-fast-forward">
-</i></button>
-<button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.faster()"><i class="fa fa-plus"></i></button>
-<form action="#n" class="anim_control" name="_anim_loop_select986a4f8dd13e4cb49514ddd7beefd44d">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_img986a4f8dd13e4cb49514ddd7beefd44d">
+    <br>
+    <input id="_anim_slider986a4f8dd13e4cb49514ddd7beefd44d" type="range" style="width:350px"
+           name="points" min="0" max="1" step="1" value="0"
+           onchange="anim986a4f8dd13e4cb49514ddd7beefd44d.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.slower()"><i class="fa fa-minus"></i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.first_frame()"><i class="fa fa-fast-backward">
+        </i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.previous_frame()">
+        <i class="fa fa-step-backward"></i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.reverse_animation()">
+        <i class="fa fa-play fa-flip-horizontal"></i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.pause_animation()"><i class="fa fa-pause">
+        </i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.play_animation()"><i class="fa fa-play"></i>
+        </button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.next_frame()"><i class="fa fa-step-forward">
+        </i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.last_frame()"><i class="fa fa-fast-forward">
+        </i></button>
+    <button onclick="anim986a4f8dd13e4cb49514ddd7beefd44d.faster()"><i class="fa fa-plus"></i></button>
+  <form action="#n" name="_anim_loop_select986a4f8dd13e4cb49514ddd7beefd44d" class="anim_control">
+    <input type="radio" name="state"
+           value="once" > Once </input>
+    <input type="radio" name="state"
+           value="loop" checked> Loop </input>
+    <input type="radio" name="state"
+           value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -12778,17 +13143,21 @@ IiKNYoAmItIoBmgiIo1igCYi0igGaCIijWKAJiLSqP8fPbwg17Dxz3UAAAAASUVORK5CYII=\
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [34]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
     <span class="k">return</span>
@@ -12798,24 +13167,34 @@ IiKNYoAmItIoBmgiIo1igCYi0igGaCIijWKAJiLSqP8fPbwg17Dxz3UAAAAASUVORK5CYII=\
     <span class="n">plot_points</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
     <span class="n">plot_points</span><span class="p">(</span><span class="n">incremental_farthest_search</span><span class="p">(</span><span class="n">cloud100</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> 
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> 
-                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'o'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'markersize'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"{i+1} points"</span><span class="p">)</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;{i+1} points&quot;</span><span class="p">)</span>
 
 <span class="n">animation</span> <span class="o">=</span> <span class="n">mpl_anim</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">animation</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">())</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[34]:</div>
+
+    <div class="prompt output_prompt">Out[34]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
-css/font-awesome.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
+css/font-awesome.min.css">
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -12956,33 +13335,41 @@ css/font-awesome.min.css" rel="stylesheet"/>
     }, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_img816c8d339e494d36ad96c0625f1b9b91"/>
-<br/>
-<input id="_anim_slider816c8d339e494d36ad96c0625f1b9b91" max="1" min="0" name="points" onchange="anim816c8d339e494d36ad96c0625f1b9b91.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.slower()"><i class="fa fa-minus"></i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.first_frame()"><i class="fa fa-fast-backward">
-</i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.previous_frame()">
-<i class="fa fa-step-backward"></i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.reverse_animation()">
-<i class="fa fa-play fa-flip-horizontal"></i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.pause_animation()"><i class="fa fa-pause">
-</i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.play_animation()"><i class="fa fa-play"></i>
-</button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.next_frame()"><i class="fa fa-step-forward">
-</i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.last_frame()"><i class="fa fa-fast-forward">
-</i></button>
-<button onclick="anim816c8d339e494d36ad96c0625f1b9b91.faster()"><i class="fa fa-plus"></i></button>
-<form action="#n" class="anim_control" name="_anim_loop_select816c8d339e494d36ad96c0625f1b9b91">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_img816c8d339e494d36ad96c0625f1b9b91">
+    <br>
+    <input id="_anim_slider816c8d339e494d36ad96c0625f1b9b91" type="range" style="width:350px"
+           name="points" min="0" max="1" step="1" value="0"
+           onchange="anim816c8d339e494d36ad96c0625f1b9b91.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.slower()"><i class="fa fa-minus"></i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.first_frame()"><i class="fa fa-fast-backward">
+        </i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.previous_frame()">
+        <i class="fa fa-step-backward"></i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.reverse_animation()">
+        <i class="fa fa-play fa-flip-horizontal"></i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.pause_animation()"><i class="fa fa-pause">
+        </i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.play_animation()"><i class="fa fa-play"></i>
+        </button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.next_frame()"><i class="fa fa-step-forward">
+        </i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.last_frame()"><i class="fa fa-fast-forward">
+        </i></button>
+    <button onclick="anim816c8d339e494d36ad96c0625f1b9b91.faster()"><i class="fa fa-plus"></i></button>
+  <form action="#n" name="_anim_loop_select816c8d339e494d36ad96c0625f1b9b91" class="anim_control">
+    <input type="radio" name="state"
+           value="once" > Once </input>
+    <input type="radio" name="state"
+           value="loop" checked> Loop </input>
+    <input type="radio" name="state"
+           value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -17906,10 +18293,14 @@ JiJSFAM0EZGiGKCJiBTFAE1EpKj/Hxvs4wI6AsqQAAAAAElFTkSuQmCC\
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -17917,6 +18308,7 @@ JiJSFAM0EZGiGKCJiBTFAE1EpKj/Hxvs4wI6AsqQAAAAAElFTkSuQmCC\
 <p>Let's end this post here and review a few things.</p>
 <p>We explored an approximate solution to the farthest neighbors problem and tried to compare our expectations with the algorithm outputs on test cases. As far as I can tell, the algorithm does what it is supposed to do. However, it's far from perfect. And we couldn't compare its results to "true solutions" since this problem explodes in terms of combinatorial optimization, just like the <a href="https://github.com/norvig/pytudes/blob/master/ipynb/TSP.ipynb">travelling salesman problem</a>.</p>
 <p>Regarding the studied applications, I believe this algorithm behaves quite well for point clouds, but we can observe that for circle patterns, the solution will not be optimal since the greedily chosen points hinder the formation of well-space points on the circle.</p>
+
 </div>
 </div>
 </div>
@@ -17924,9 +18316,12 @@ JiJSFAM0EZGiGKCJiBTFAE1EpKj/Hxvs4wI6AsqQAAAAAElFTkSuQmCC\
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20150716_FarthestNeighbors.ipynb">20150716_FarthestNeighbors.ipynb</a>.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

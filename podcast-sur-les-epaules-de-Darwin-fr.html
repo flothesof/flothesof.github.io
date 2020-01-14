@@ -1569,49 +1569,56 @@ h6:hover .anchor-link {
 <p>Dans ce billet, nous allons <a href="http://flothesof.github.io/podcast-rendez-vous-avec-X-fr.html">comme il y a quelques semaines</a>, construire un flux RSS pour mon émission radio préférée : <em>Sur les épaules de Darwin</em>, animée par l'extraordinaire Jean Claude Ameisen.</p>
 <p>Afin de faire ceci, nous allons partir du <a href="http://clementgrimal.fr/darwin/">travail de Clément Grimal</a>, qui maintient une liste à jour des émissions avec des liens de téléchargement. Une question, avant de commencer. Pourquoi faire ce travail, alors que le site de Clément permet déjà d'écouter à volonté ces émissions ? Tout simplement parce que son site ne permet pas de faire une recherche plein texte sur le contenu des émissions et également parce que j'aime écouter les émissions dans un logiciel de podcast afin de marquer ma progression.</p>
 <p>Le lien vers le flux RSS généré à partir du présent notebook est ici : <strong><a href="https://raw.githubusercontent.com/flothesof/posts/master/files/podcast_Sur_les_epaules_de_Darwin.xml">https://raw.githubusercontent.com/flothesof/posts/master/files/podcast_Sur_les_epaules_de_Darwin.xml</a></strong>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Récupération-des-liens-vers-les-émissions">Récupération des liens vers les émissions<a class="anchor-link" href="#Récupération-des-liens-vers-les-émissions">¶</a></h1>
+<h1 id="R&#233;cup&#233;ration-des-liens-vers-les-&#233;missions">R&#233;cup&#233;ration des liens vers les &#233;missions<a class="anchor-link" href="#R&#233;cup&#233;ration-des-liens-vers-les-&#233;missions">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">"http://clementgrimal.fr/darwin/"</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://clementgrimal.fr/darwin/&quot;</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">'utf-8'</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -1623,234 +1630,319 @@ h6:hover .anchor-link {
 <li>lien de téléchargement</li>
 <li>lien vers la page du site France Inter (pour en extraire la description de l'émission)</li>
 </ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut extraire toutes les émissions comme ceci :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_shows</span> <span class="o">=</span> <span class="p">([</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'table'</span><span class="p">)</span> <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">'li'</span><span class="p">))</span> <span class="k">if</span> <span class="n">item</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_shows</span> <span class="o">=</span> <span class="p">([</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">))</span> <span class="k">if</span> <span class="n">item</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_shows</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_shows</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[7]:</div>
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>385</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A partir de la première émission, on peut obtenir le lien vers le mp3 ainsi que le site France Inter, de même que le titre et la date de diffusion :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">show</span> <span class="o">=</span> <span class="n">all_shows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show</span> <span class="o">=</span> <span class="n">all_shows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'download-link'</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;download-link&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'http://prevost.pascal.free.fr/public/podcast/sur_les_epaules_de_darwin/Jean-Claude%20Ameisen%20-%20SUR%20LES%20EPAULES%20DE%20DARWIN%2004.09.2010.mp3'</pre>
+<pre>&#39;http://prevost.pascal.free.fr/public/podcast/sur_les_epaules_de_darwin/Jean-Claude%20Ameisen%20-%20SUR%20LES%20EPAULES%20DE%20DARWIN%2004.09.2010.mp3&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'http://www.franceinter.fr/em/sur-les-epaules-de-darwin/94428'</pre>
+<pre>&#39;http://www.franceinter.fr/em/sur-les-epaules-de-darwin/94428&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>"La théorie de l'évolution de Charles Darwin"</pre>
+<pre>&#34;La théorie de l&#39;évolution de Charles Darwin&#34;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">str</span><span class="p">(</span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)[</span><span class="mi">14</span><span class="p">:]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">str</span><span class="p">(</span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)[</span><span class="mi">14</span><span class="p">:]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[12]:</div>
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'4 Septembre 2010'</pre>
+<pre>&#39;4 Septembre 2010&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ecrivons maintenant une boucle sur tous les épisodes :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">show_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">show</span> <span class="ow">in</span> <span class="n">all_shows</span><span class="p">:</span>
-    <span class="n">download_link</span> <span class="o">=</span> <span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'download-link'</span><span class="p">)</span>
-    <span class="n">description_link</span> <span class="o">=</span> <span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)[</span><span class="mi">14</span><span class="p">:]</span>
+    <span class="n">download_link</span> <span class="o">=</span> <span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;download-link&#39;</span><span class="p">)</span>
+    <span class="n">description_link</span> <span class="o">=</span> <span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">show</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)[</span><span class="mi">14</span><span class="p">:]</span>
     <span class="k">if</span> <span class="n">download_link</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">download_link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'.'</span><span class="p">):</span>
-            <span class="n">download_link</span> <span class="o">=</span> <span class="s2">"http://clementgrimal.fr/darwin"</span> <span class="o">+</span> <span class="n">download_link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">download_link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+            <span class="n">download_link</span> <span class="o">=</span> <span class="s2">&quot;http://clementgrimal.fr/darwin&quot;</span> <span class="o">+</span> <span class="n">download_link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">download_link</span> <span class="o">=</span> <span class="n">download_link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">download_link</span> <span class="o">=</span> <span class="n">download_link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">show_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">download_link</span><span class="p">,</span> <span class="n">description_link</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">date</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Construisons un tableau avec ces données :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">show_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'lien mp3'</span><span class="p">,</span> <span class="s1">'lien description'</span><span class="p">,</span> <span class="s1">'titre'</span><span class="p">,</span> <span class="s1">'date'</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">show_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lien mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;lien description&#39;</span><span class="p">,</span> <span class="s1">&#39;titre&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">])</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -1867,108 +1959,119 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>lien mp3</th>
-<th>lien description</th>
-<th>titre</th>
-<th>date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>La théorie de l'évolution de Charles Darwin</td>
-<td>4 Septembre 2010</td>
-</tr>
-<tr>
-<th>1</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Le propre de l'homme?</td>
-<td>11 Septembre 2010</td>
-</tr>
-<tr>
-<th>2</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Nos mémoires</td>
-<td>18 Septembre 2010</td>
-</tr>
-<tr>
-<th>3</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Nos émotions</td>
-<td>25 Septembre 2010</td>
-</tr>
-<tr>
-<th>4</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Longévité, jeunesse et vieillissement</td>
-<td>2 Octobre 2010</td>
-</tr>
-<tr>
-<th>5</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>MORT CELLULAIRE ET SCULPTURE DU VIVANT</td>
-<td>9 Octobre 2010</td>
-</tr>
-<tr>
-<th>6</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>NAISSANCES</td>
-<td>16 Octobre 2010</td>
-</tr>
-<tr>
-<th>7</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Biodiversité</td>
-<td>23 Octobre 2010</td>
-</tr>
-<tr>
-<th>8</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>mort cellulaire et sculpture du vivant (2)</td>
-<td>30 Octobre 2010</td>
-</tr>
-<tr>
-<th>9</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Un voyage avec Oliver Sacks         ( 1 )</td>
-<td>6 Novembre 2010</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lien mp3</th>
+      <th>lien description</th>
+      <th>titre</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>La théorie de l'évolution de Charles Darwin</td>
+      <td>4 Septembre 2010</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Le propre de l'homme?</td>
+      <td>11 Septembre 2010</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Nos mémoires</td>
+      <td>18 Septembre 2010</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Nos émotions</td>
+      <td>25 Septembre 2010</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Longévité, jeunesse et vieillissement</td>
+      <td>2 Octobre 2010</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>MORT CELLULAIRE ET SCULPTURE DU VIVANT</td>
+      <td>9 Octobre 2010</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>NAISSANCES</td>
+      <td>16 Octobre 2010</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Biodiversité</td>
+      <td>23 Octobre 2010</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>mort cellulaire et sculpture du vivant (2)</td>
+      <td>30 Octobre 2010</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Un voyage avec Oliver Sacks         ( 1 )</td>
+      <td>6 Novembre 2010</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[16]:</div>
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -1985,108 +2088,119 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>lien mp3</th>
-<th>lien description</th>
-<th>titre</th>
-<th>date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>371</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-0...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>A la recherche des mystères du sommeil (3)</td>
-<td>9 Décembre 2017</td>
-</tr>
-<tr>
-<th>372</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-1...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Explorer</td>
-<td>16 Décembre 2017</td>
-</tr>
-<tr>
-<th>373</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Les forges du ciel</td>
-<td>23 Décembre 2017</td>
-</tr>
-<tr>
-<th>374</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-3...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Les forges du ciel (2)</td>
-<td>30 Décembre 2017</td>
-</tr>
-<tr>
-<th>375</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-0...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>La glace et le feu</td>
-<td>6 Janvier 2018</td>
-</tr>
-<tr>
-<th>376</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-1...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Eclats de passé : le Croissant Fertile</td>
-<td>13 Janvier 2018</td>
-</tr>
-<tr>
-<th>377</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Eclats de passé : la révolution Néolithique</td>
-<td>20 Janvier 2018</td>
-</tr>
-<tr>
-<th>378</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Eclats de passé : A la recherche des origines ...</td>
-<td>27 Janvier 2018</td>
-</tr>
-<tr>
-<th>379</th>
-<td>http://clementgrimal.fr/darwin/files/2018-02-0...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>A la recherche des origines des inégalités (2)</td>
-<td>3 Février 2018</td>
-</tr>
-<tr>
-<th>380</th>
-<td>http://clementgrimal.fr/darwin/files/2018-02-1...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>A la recherche des origines des inégalités (3)</td>
-<td>10 Février 2018</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lien mp3</th>
+      <th>lien description</th>
+      <th>titre</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>371</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-0...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>A la recherche des mystères du sommeil (3)</td>
+      <td>9 Décembre 2017</td>
+    </tr>
+    <tr>
+      <th>372</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-1...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Explorer</td>
+      <td>16 Décembre 2017</td>
+    </tr>
+    <tr>
+      <th>373</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Les forges du ciel</td>
+      <td>23 Décembre 2017</td>
+    </tr>
+    <tr>
+      <th>374</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-3...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Les forges du ciel (2)</td>
+      <td>30 Décembre 2017</td>
+    </tr>
+    <tr>
+      <th>375</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-0...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>La glace et le feu</td>
+      <td>6 Janvier 2018</td>
+    </tr>
+    <tr>
+      <th>376</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-1...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Eclats de passé : le Croissant Fertile</td>
+      <td>13 Janvier 2018</td>
+    </tr>
+    <tr>
+      <th>377</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Eclats de passé : la révolution Néolithique</td>
+      <td>20 Janvier 2018</td>
+    </tr>
+    <tr>
+      <th>378</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Eclats de passé : A la recherche des origines ...</td>
+      <td>27 Janvier 2018</td>
+    </tr>
+    <tr>
+      <th>379</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-02-0...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>A la recherche des origines des inégalités (2)</td>
+      <td>3 Février 2018</td>
+    </tr>
+    <tr>
+      <th>380</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-02-1...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>A la recherche des origines des inégalités (3)</td>
+      <td>10 Février 2018</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[17]:</div>
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -2103,56 +2217,60 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>lien mp3</th>
-<th>lien description</th>
-<th>titre</th>
-<th>date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>count</th>
-<td>381</td>
-<td>381</td>
-<td>381</td>
-<td>381</td>
-</tr>
-<tr>
-<th>unique</th>
-<td>381</td>
-<td>381</td>
-<td>310</td>
-<td>381</td>
-</tr>
-<tr>
-<th>top</th>
-<td>http://clementgrimal.fr/darwin/files/2014-11-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>La glace et le feu</td>
-<td>22 Février 2014</td>
-</tr>
-<tr>
-<th>freq</th>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>1</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lien mp3</th>
+      <th>lien description</th>
+      <th>titre</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>381</td>
+      <td>381</td>
+      <td>381</td>
+      <td>381</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>381</td>
+      <td>381</td>
+      <td>310</td>
+      <td>381</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>http://clementgrimal.fr/darwin/files/2014-11-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>La glace et le feu</td>
+      <td>22 Février 2014</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous voilà maintenant en possession des liens vers 381 épisodes publiés sur le site de Clément Grimal. On remarque que certaines d'entre elles sont des rediffusions (310 épisodes uniques sur 381).</p>
+
 </div>
 </div>
 </div>
@@ -2160,13 +2278,14 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Téléchargeons maintenant les descriptions des émissions.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Téléchargement-des-descriptions-à-partir-du-site-de-France-Inter">Téléchargement des descriptions à partir du site de France Inter<a class="anchor-link" href="#Téléchargement-des-descriptions-à-partir-du-site-de-France-Inter">¶</a></h1>
+<h1 id="T&#233;l&#233;chargement-des-descriptions-&#224;-partir-du-site-de-France-Inter">T&#233;l&#233;chargement des descriptions &#224; partir du site de France Inter<a class="anchor-link" href="#T&#233;l&#233;chargement-des-descriptions-&#224;-partir-du-site-de-France-Inter">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -2174,105 +2293,133 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous avons les liens vers les descriptions : il suffit donc de lire la page de chaque émission et d'en extraire le contenu intéressant.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'lien description'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lien description&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">link</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'http://www.franceinter.fr/em/sur-les-epaules-de-darwin/94428'</pre>
+<pre>&#39;http://www.franceinter.fr/em/sur-les-epaules-de-darwin/94428&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">article</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'article'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">article</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;article&#39;</span><span class="p">)</span>
 <span class="n">article</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[20]:</div>
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><article class="content-body">
-<p><strong>Bibliographie:</strong></p>
-<p><strong>L'origine des espèces de Charles Darwin aux Editions Flammarion Origines,</strong></p>
-<div class="dva_ad inread" id="dva_128139881/RF_france_inter/divers/divers/rg/inread0"></div>
-<script type="text/javascript">
+<pre>&lt;article class=&#34;content-body&#34;&gt;
+&lt;p&gt;&lt;strong&gt;Bibliographie:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;L&#39;origine des espèces de Charles Darwin aux Editions Flammarion Origines,&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;dva_ad inread&#34; id=&#34;dva_128139881/RF_france_inter/divers/divers/rg/inread0&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;text/javascript&#34;&gt;
     window.dejavuAds = window.dejavuAds || {
         targets: null,
         slots: []
     };
     var deviceSizes = { all: [[2, 2],], desktop: [[533, 300],],  };
     window.dejavuAds.slots.push({
-        name: 'dva_128139881/RF_france_inter/divers/divers/rg/inread0',
-        id: 'dva_128139881/RF_france_inter/divers/divers/rg/inread0',
-        adunit: '128139881/RF_france_inter/divers/divers/rg/inread',
+        name: &#39;dva_128139881/RF_france_inter/divers/divers/rg/inread0&#39;,
+        id: &#39;dva_128139881/RF_france_inter/divers/divers/rg/inread0&#39;,
+        adunit: &#39;128139881/RF_france_inter/divers/divers/rg/inread&#39;,
         sizes: deviceSizes,
-        targets: { pos: 'inread' }
+        targets: { pos: &#39;inread&#39; }
     });
-</script>
-<p><strong>Lettres choisies (1828-1859)de Charles Darwin traduit de l'anglais par Mickael Popelard préface de Stefen Jay Gould aux Editions Bayard</strong></p>
-<p><strong>L'expression des émotions chez les hommes et les animaux de Charles Darwin aux Editions Rivages</strong></p>
-<p><strong>La lettre volée, d'Edgar Allan Poe, Ed Folio Gallimard</strong></p>
-<p><strong>La mal-mesure de l'homme de Stephen Jay Gould aux Editions Odile Jacob</strong></p>
-<p><strong>Identité et violence: l'illusion du destin d'Amartya Sen aux editions Odile Jacob</strong></p>
-<p><strong>"Dans la Lumière et les Ombres. Darwin et le bouleversement du monde" de Jean-Claude Ameisen aux Editions Fayard / Seuil</strong></p>
-<h3><strong>invité(s)</strong></h3>
-<h3><strong>Charles Darwin 1809-1882</strong></h3>
-<h3><strong>programmation musicale</strong></h3>
-<h3><strong>Benjamin Biolay</strong></h3>
-<p><strong>Si tu suis mon regard album: LA SUPERBElabel: NAIVE RECORDSparution: 2010</strong></p>
-<h3><strong>Jane Birkin</strong></h3>
-<p><strong>Apocalypstick album: EX FAN DES SIXTIESlabel: FONTANAparution: 1978</strong></p>
-<h3><strong>Luke</strong></h3>
-<p><strong>LE ROBOT album: LE ROBOTlabel: JIVE EPIC / SONYparution: 2010</strong></p>
-<h3><strong>Cat power</strong></h3>
-<p><strong>THE GREATEST album: THE GREATESTlabel: MATADORparution: 2006</strong></p>
-<h3><strong>Amparo Sanchez et Omara Portuondo</strong></h3>
-<p><strong>La parrandita de las santas album: TUCSON HABANAlabel: VIA LACTEA RECORDSparution: 2010</strong></p>
-</article></pre>
+&lt;/script&gt;
+&lt;p&gt;&lt;strong&gt;Lettres choisies (1828-1859)de Charles Darwin traduit de l&#39;anglais par Mickael Popelard préface de Stefen Jay Gould aux Editions Bayard&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;L&#39;expression des émotions chez les hommes et les animaux de Charles Darwin aux Editions Rivages&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;La lettre volée, d&#39;Edgar Allan Poe, Ed Folio Gallimard&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;La mal-mesure de l&#39;homme de Stephen Jay Gould aux Editions Odile Jacob&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Identité et violence: l&#39;illusion du destin d&#39;Amartya Sen aux editions Odile Jacob&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&#34;Dans la Lumière et les Ombres. Darwin et le bouleversement du monde&#34; de Jean-Claude Ameisen aux Editions Fayard / Seuil&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;strong&gt;invité(s)&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;strong&gt;Charles Darwin 1809-1882&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;strong&gt;programmation musicale&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;strong&gt;Benjamin Biolay&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Si tu suis mon regard album: LA SUPERBElabel: NAIVE RECORDSparution: 2010&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;strong&gt;Jane Birkin&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Apocalypstick album: EX FAN DES SIXTIESlabel: FONTANAparution: 1978&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;strong&gt;Luke&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;LE ROBOT album: LE ROBOTlabel: JIVE EPIC / SONYparution: 2010&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;strong&gt;Cat power&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;THE GREATEST album: THE GREATESTlabel: MATADORparution: 2006&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;strong&gt;Amparo Sanchez et Omara Portuondo&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;La parrandita de las santas album: TUCSON HABANAlabel: VIA LACTEA RECORDSparution: 2010&lt;/strong&gt;&lt;/p&gt;
+&lt;/article&gt;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Il se trouve que des balises script sont contenues dans les épisodes (elles affichent de la publicité sur le site de France Inter).</p>
+
 </div>
 </div>
 </div>
@@ -2280,96 +2427,109 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Si on reformate les tags HTML, on obtient le résultat suivant :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [23]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bs4</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bs4</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_description</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">"""Extracts a text-only description of the formatted HTML."""</span>
-    <span class="n">desc</span> <span class="o">=</span> <span class="s1">''</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_description</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts a text-only description of the formatted HTML.&quot;&quot;&quot;</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="n">unmatched</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">article</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'p'</span><span class="p">:</span>
-            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">''</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'h1'</span><span class="p">:</span>
-            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">' '</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'h2'</span><span class="p">:</span>
-            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">'  '</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'h3'</span><span class="p">:</span>
-            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">'   '</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'blockquote'</span><span class="p">:</span>
-            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">'>'</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'ul'</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">" - "</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">children</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">bs4</span><span class="o">.</span><span class="n">Tag</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;p&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;h1&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;h2&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">&#39;  &#39;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;h3&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">&#39;   &#39;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;blockquote&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">+=</span> <span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;ul&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot; - &quot;</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">children</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">bs4</span><span class="o">.</span><span class="n">Tag</span><span class="p">)]:</span>
                 <span class="n">desc</span> <span class="o">+=</span> <span class="n">item</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">):</span>
-                    <span class="n">desc</span> <span class="o">+=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'a'</span><span class="p">:</span>
-            <span class="n">desc</span> <span class="o">+=</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'ol'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+                    <span class="n">desc</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">+=</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;ol&#39;</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">bs4</span><span class="o">.</span><span class="n">Tag</span><span class="p">):</span>
-                    <span class="n">desc</span> <span class="o">+=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
-        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'hr'</span><span class="p">,</span> <span class="s1">'aside'</span><span class="p">]:</span>
+                    <span class="n">desc</span> <span class="o">+=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;hr&#39;</span><span class="p">,</span> <span class="s1">&#39;aside&#39;</span><span class="p">]:</span>
             <span class="n">desc</span> <span class="o">+=</span> <span class="n">make_description</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">unmatched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">unmatched</span><span class="p">))</span>
-    <span class="k">assert</span> <span class="nb">set</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="s1">'div'</span><span class="p">,</span> <span class="s1">'figure'</span><span class="p">])</span><span class="o">.</span><span class="n">issuperset</span><span class="p">(</span><span class="n">unmatched</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="s1">&#39;figure&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">issuperset</span><span class="p">(</span><span class="n">unmatched</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">desc</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Voici donc notre version texte seul pour la description :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [28]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">desc</span> <span class="o">=</span> <span class="n">make_description</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">desc</span> <span class="o">=</span> <span class="n">make_description</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Bibliographie:
-L'origine des espèces de Charles Darwin aux Editions Flammarion Origines,
-Lettres choisies (1828-1859)de Charles Darwin traduit de l'anglais par Mickael Popelard préface de Stefen Jay Gould aux Editions Bayard
-L'expression des émotions chez les hommes et les animaux de Charles Darwin aux Editions Rivages
-La lettre volée, d'Edgar Allan Poe, Ed Folio Gallimard
-La mal-mesure de l'homme de Stephen Jay Gould aux Editions Odile Jacob
-Identité et violence: l'illusion du destin d'Amartya Sen aux editions Odile Jacob
-"Dans la Lumière et les Ombres. Darwin et le bouleversement du monde" de Jean-Claude Ameisen aux Editions Fayard / Seuil
+L&#39;origine des espèces de Charles Darwin aux Editions Flammarion Origines,
+Lettres choisies (1828-1859)de Charles Darwin traduit de l&#39;anglais par Mickael Popelard préface de Stefen Jay Gould aux Editions Bayard
+L&#39;expression des émotions chez les hommes et les animaux de Charles Darwin aux Editions Rivages
+La lettre volée, d&#39;Edgar Allan Poe, Ed Folio Gallimard
+La mal-mesure de l&#39;homme de Stephen Jay Gould aux Editions Odile Jacob
+Identité et violence: l&#39;illusion du destin d&#39;Amartya Sen aux editions Odile Jacob
+&#34;Dans la Lumière et les Ombres. Darwin et le bouleversement du monde&#34; de Jean-Claude Ameisen aux Editions Fayard / Seuil
    invité(s)
    Charles Darwin 1809-1882
    programmation musicale
@@ -2387,46 +2547,60 @@ La parrandita de las santas album: TUCSON HABANAlabel: VIA LACTEA RECORDSparutio
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut comparer notre version à l'original:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [29]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">article</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">article</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[30]:</div>
+
+    <div class="prompt output_prompt">Out[30]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <article class="content-body">
 <p><strong>Bibliographie:</strong></p>
 <p><strong>L'origine des espèces de Charles Darwin aux Editions Flammarion Origines,</strong></p>
 <div class="dva_ad inread" id="dva_128139881/RF_france_inter/divers/divers/rg/inread0"></div>
+
 <p><strong>Lettres choisies (1828-1859)de Charles Darwin traduit de l'anglais par Mickael Popelard préface de Stefen Jay Gould aux Editions Bayard</strong></p>
 <p><strong>L'expression des émotions chez les hommes et les animaux de Charles Darwin aux Editions Rivages</strong></p>
 <p><strong>La lettre volée, d'Edgar Allan Poe, Ed Folio Gallimard</strong></p>
@@ -2448,118 +2622,157 @@ La parrandita de las santas album: TUCSON HABANAlabel: VIA LACTEA RECORDSparutio
 <p><strong>La parrandita de las santas album: TUCSON HABANAlabel: VIA LACTEA RECORDSparution: 2010</strong></p>
 </article>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant écrire une boucle sur toutes les descriptions d'épisode :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">link_getter</span><span class="p">(</span><span class="n">description_link</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">description_link</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tqdm</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [34]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">descriptions</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">description_link</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm_notebook</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'lien description'</span><span class="p">]):</span>
-    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">link_getter</span><span class="p">(</span><span class="n">description_link</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
-    <span class="n">article</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'article'</span><span class="p">)</span>
-    <span class="n">script</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'script'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">descriptions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">description_link</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm_notebook</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lien description&#39;</span><span class="p">]):</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">link_getter</span><span class="p">(</span><span class="n">description_link</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="n">article</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;article&#39;</span><span class="p">)</span>
+    <span class="n">script</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">script</span><span class="p">:</span>
         <span class="n">script</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
     <span class="n">descriptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_description</span><span class="p">(</span><span class="n">article</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="34796f31-85b8-4324-820f-7c9102617842"></div>
-<div class="output_subarea output_widget_view">
+
+    <div class="prompt"></div>
+
+
+
+
+
+ 
+ 
+<div id="d9c84053-f56b-4915-b9d0-89f810150031"></div>
+<div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#34796f31-85b8-4324-820f-7c9102617842');
+var element = $('#d9c84053-f56b-4915-b9d0-89f810150031');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "845c4d52560b4575a1ae74aedfb09f9d", "version_major": 2, "version_minor": 0}
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 </pre>
 </div>
 </div>
+
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [35]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'description'</span><span class="p">]</span> <span class="o">=</span> <span class="n">descriptions</span>
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [36]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">descriptions</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[36]:</div>
+
+    <div class="prompt output_prompt">Out[36]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -2576,119 +2789,130 @@ var element = $('#34796f31-85b8-4324-820f-7c9102617842');
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>lien mp3</th>
-<th>lien description</th>
-<th>titre</th>
-<th>date</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>La théorie de l'évolution de Charles Darwin</td>
-<td>4 Septembre 2010</td>
-<td>Bibliographie:\nL'origine des espèces de Charl...</td>
-</tr>
-<tr>
-<th>1</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Le propre de l'homme?</td>
-<td>11 Septembre 2010</td>
-<td>programmation musicale\n   STAFF BENDA BILI...</td>
-</tr>
-<tr>
-<th>2</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Nos mémoires</td>
-<td>18 Septembre 2010</td>
-<td>programmation musicale\n   Iggy POP\nKing o...</td>
-</tr>
-<tr>
-<th>3</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Nos émotions</td>
-<td>25 Septembre 2010</td>
-<td>programmation musicale\n   EMILY LOISEAU\nL...</td>
-</tr>
-<tr>
-<th>4</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Longévité, jeunesse et vieillissement</td>
-<td>2 Octobre 2010</td>
-<td>programmation musicale\n   Bonga\nMona ki g...</td>
-</tr>
-<tr>
-<th>5</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>MORT CELLULAIRE ET SCULPTURE DU VIVANT</td>
-<td>9 Octobre 2010</td>
-<td>programmation musicale\n   Nouvelle vague /...</td>
-</tr>
-<tr>
-<th>6</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>NAISSANCES</td>
-<td>16 Octobre 2010</td>
-<td>invité(s)\n   René Frydman\nChef du Pôle Mè...</td>
-</tr>
-<tr>
-<th>7</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Biodiversité</td>
-<td>23 Octobre 2010</td>
-<td>"L'infinité des formes les plus belles et les ...</td>
-</tr>
-<tr>
-<th>8</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>mort cellulaire et sculpture du vivant (2)</td>
-<td>30 Octobre 2010</td>
-<td>« Nous ne nous baignons pas deux fois dans le ...</td>
-</tr>
-<tr>
-<th>9</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Un voyage avec Oliver Sacks         ( 1 )</td>
-<td>6 Novembre 2010</td>
-<td>A la rencontre de la singularité de nos mondes...</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lien mp3</th>
+      <th>lien description</th>
+      <th>titre</th>
+      <th>date</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>La théorie de l'évolution de Charles Darwin</td>
+      <td>4 Septembre 2010</td>
+      <td>Bibliographie:\nL'origine des espèces de Charl...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Le propre de l'homme?</td>
+      <td>11 Septembre 2010</td>
+      <td>programmation musicale\n   STAFF BENDA BILI...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Nos mémoires</td>
+      <td>18 Septembre 2010</td>
+      <td>programmation musicale\n   Iggy POP\nKing o...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Nos émotions</td>
+      <td>25 Septembre 2010</td>
+      <td>programmation musicale\n   EMILY LOISEAU\nL...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Longévité, jeunesse et vieillissement</td>
+      <td>2 Octobre 2010</td>
+      <td>programmation musicale\n   Bonga\nMona ki g...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>MORT CELLULAIRE ET SCULPTURE DU VIVANT</td>
+      <td>9 Octobre 2010</td>
+      <td>programmation musicale\n   Nouvelle vague /...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>NAISSANCES</td>
+      <td>16 Octobre 2010</td>
+      <td>invité(s)\n   René Frydman\nChef du Pôle Mè...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Biodiversité</td>
+      <td>23 Octobre 2010</td>
+      <td>"L'infinité des formes les plus belles et les ...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>mort cellulaire et sculpture du vivant (2)</td>
+      <td>30 Octobre 2010</td>
+      <td>« Nous ne nous baignons pas deux fois dans le ...</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Un voyage avec Oliver Sacks         ( 1 )</td>
+      <td>6 Novembre 2010</td>
+      <td>A la rencontre de la singularité de nos mondes...</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [37]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[37]:</div>
+
+    <div class="prompt output_prompt">Out[37]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -2705,109 +2929,112 @@ var element = $('#34796f31-85b8-4324-820f-7c9102617842');
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>lien mp3</th>
-<th>lien description</th>
-<th>titre</th>
-<th>date</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>371</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-0...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>A la recherche des mystères du sommeil (3)</td>
-<td>9 Décembre 2017</td>
-<td>\n            A la recherche des mystères du s...</td>
-</tr>
-<tr>
-<th>372</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-1...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Explorer</td>
-<td>16 Décembre 2017</td>
-<td>\n            Explorer\n        \nUne heure qu...</td>
-</tr>
-<tr>
-<th>373</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Les forges du ciel</td>
-<td>23 Décembre 2017</td>
-<td>\n            Les forges du ciel\n        \nNo...</td>
-</tr>
-<tr>
-<th>374</th>
-<td>http://clementgrimal.fr/darwin/files/2017-12-3...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Les forges du ciel (2)</td>
-<td>30 Décembre 2017</td>
-<td>\n            Les forges du ciel (2)\n        ...</td>
-</tr>
-<tr>
-<th>375</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-0...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>La glace et le feu</td>
-<td>6 Janvier 2018</td>
-<td>\n            La glace et le feu \n        \nN...</td>
-</tr>
-<tr>
-<th>376</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-1...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Eclats de passé : le Croissant Fertile</td>
-<td>13 Janvier 2018</td>
-<td>\n            Eclats de passé : le Croissant F...</td>
-</tr>
-<tr>
-<th>377</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Eclats de passé : la révolution Néolithique</td>
-<td>20 Janvier 2018</td>
-<td>\n            Eclats de passé : la révolution ...</td>
-</tr>
-<tr>
-<th>378</th>
-<td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>Eclats de passé : A la recherche des origines ...</td>
-<td>27 Janvier 2018</td>
-<td>\n            Eclats de passé : A la recherche...</td>
-</tr>
-<tr>
-<th>379</th>
-<td>http://clementgrimal.fr/darwin/files/2018-02-0...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>A la recherche des origines des inégalités (2)</td>
-<td>3 Février 2018</td>
-<td>\n            A la recherche des origines des ...</td>
-</tr>
-<tr>
-<th>380</th>
-<td>http://clementgrimal.fr/darwin/files/2018-02-1...</td>
-<td>https://www.franceinter.fr/emissions/sur-les-e...</td>
-<td>A la recherche des origines des inégalités (3)</td>
-<td>10 Février 2018</td>
-<td>\n            A la recherche des origines des ...</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lien mp3</th>
+      <th>lien description</th>
+      <th>titre</th>
+      <th>date</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>371</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-0...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>A la recherche des mystères du sommeil (3)</td>
+      <td>9 Décembre 2017</td>
+      <td>\n            A la recherche des mystères du s...</td>
+    </tr>
+    <tr>
+      <th>372</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-1...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Explorer</td>
+      <td>16 Décembre 2017</td>
+      <td>\n            Explorer\n        \nUne heure qu...</td>
+    </tr>
+    <tr>
+      <th>373</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Les forges du ciel</td>
+      <td>23 Décembre 2017</td>
+      <td>\n            Les forges du ciel\n        \nNo...</td>
+    </tr>
+    <tr>
+      <th>374</th>
+      <td>http://clementgrimal.fr/darwin/files/2017-12-3...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Les forges du ciel (2)</td>
+      <td>30 Décembre 2017</td>
+      <td>\n            Les forges du ciel (2)\n        ...</td>
+    </tr>
+    <tr>
+      <th>375</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-0...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>La glace et le feu</td>
+      <td>6 Janvier 2018</td>
+      <td>\n            La glace et le feu \n        \nN...</td>
+    </tr>
+    <tr>
+      <th>376</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-1...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Eclats de passé : le Croissant Fertile</td>
+      <td>13 Janvier 2018</td>
+      <td>\n            Eclats de passé : le Croissant F...</td>
+    </tr>
+    <tr>
+      <th>377</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Eclats de passé : la révolution Néolithique</td>
+      <td>20 Janvier 2018</td>
+      <td>\n            Eclats de passé : la révolution ...</td>
+    </tr>
+    <tr>
+      <th>378</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-01-2...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>Eclats de passé : A la recherche des origines ...</td>
+      <td>27 Janvier 2018</td>
+      <td>\n            Eclats de passé : A la recherche...</td>
+    </tr>
+    <tr>
+      <th>379</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-02-0...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>A la recherche des origines des inégalités (2)</td>
+      <td>3 Février 2018</td>
+      <td>\n            A la recherche des origines des ...</td>
+    </tr>
+    <tr>
+      <th>380</th>
+      <td>http://clementgrimal.fr/darwin/files/2018-02-1...</td>
+      <td>https://www.franceinter.fr/emissions/sur-les-e...</td>
+      <td>A la recherche des origines des inégalités (3)</td>
+      <td>10 Février 2018</td>
+      <td>\n            A la recherche des origines des ...</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Taille-des-fichiers-mp3">Taille des fichiers mp3<a class="anchor-link" href="#Taille-des-fichiers-mp3">¶</a></h1>
+<h1 id="Taille-des-fichiers-mp3">Taille des fichiers mp3<a class="anchor-link" href="#Taille-des-fichiers-mp3">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -2815,71 +3042,101 @@ var element = $('#34796f31-85b8-4324-820f-7c9102617842');
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Il nous manque encore la récupération des tailles de fichier mp3, qui sera inscrite dans le flux RSS :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [38]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">byte_lengths</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">mp3_link</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm_notebook</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'lien mp3'</span><span class="p">]):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">byte_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">mp3_link</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm_notebook</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lien mp3&#39;</span><span class="p">]):</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">mp3_link</span><span class="p">)</span>
-    <span class="n">byte_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">'content-length'</span><span class="p">])</span>
+    <span class="n">byte_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;content-length&#39;</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="7bd1663b-08e0-467a-8e2c-d3298284c33c"></div>
-<div class="output_subarea output_widget_view">
+
+    <div class="prompt"></div>
+
+
+
+
+
+ 
+ 
+<div id="8347acb1-91db-4451-8687-abc1bbd271c5"></div>
+<div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#7bd1663b-08e0-467a-8e2c-d3298284c33c');
+var element = $('#8347acb1-91db-4451-8687-abc1bbd271c5');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "e4172632f6f24eef863e7c37c12283ea", "version_major": 2, "version_minor": 0}
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 </pre>
 </div>
 </div>
+
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [39]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'byte_length'</span><span class="p">]</span> <span class="o">=</span> <span class="n">byte_lengths</span>
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [40]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;byte_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">byte_lengths</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[40]:</div>
+
+    <div class="prompt output_prompt">Out[40]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -2896,75 +3153,78 @@ var element = $('#7bd1663b-08e0-467a-8e2c-d3298284c33c');
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>lien mp3</th>
-<th>lien description</th>
-<th>titre</th>
-<th>date</th>
-<th>description</th>
-<th>byte_length</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>La théorie de l'évolution de Charles Darwin</td>
-<td>4 Septembre 2010</td>
-<td>Bibliographie:\nL'origine des espèces de Charl...</td>
-<td>51120256</td>
-</tr>
-<tr>
-<th>1</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Le propre de l'homme?</td>
-<td>11 Septembre 2010</td>
-<td>programmation musicale\n   STAFF BENDA BILI...</td>
-<td>52287616</td>
-</tr>
-<tr>
-<th>2</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Nos mémoires</td>
-<td>18 Septembre 2010</td>
-<td>programmation musicale\n   Iggy POP\nKing o...</td>
-<td>51320960</td>
-</tr>
-<tr>
-<th>3</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Nos émotions</td>
-<td>25 Septembre 2010</td>
-<td>programmation musicale\n   EMILY LOISEAU\nL...</td>
-<td>54608000</td>
-</tr>
-<tr>
-<th>4</th>
-<td>http://prevost.pascal.free.fr/public/podcast/s...</td>
-<td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
-<td>Longévité, jeunesse et vieillissement</td>
-<td>2 Octobre 2010</td>
-<td>programmation musicale\n   Bonga\nMona ki g...</td>
-<td>52762752</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lien mp3</th>
+      <th>lien description</th>
+      <th>titre</th>
+      <th>date</th>
+      <th>description</th>
+      <th>byte_length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>La théorie de l'évolution de Charles Darwin</td>
+      <td>4 Septembre 2010</td>
+      <td>Bibliographie:\nL'origine des espèces de Charl...</td>
+      <td>51120256</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Le propre de l'homme?</td>
+      <td>11 Septembre 2010</td>
+      <td>programmation musicale\n   STAFF BENDA BILI...</td>
+      <td>52287616</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Nos mémoires</td>
+      <td>18 Septembre 2010</td>
+      <td>programmation musicale\n   Iggy POP\nKing o...</td>
+      <td>51320960</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Nos émotions</td>
+      <td>25 Septembre 2010</td>
+      <td>programmation musicale\n   EMILY LOISEAU\nL...</td>
+      <td>54608000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>http://prevost.pascal.free.fr/public/podcast/s...</td>
+      <td>http://www.franceinter.fr/em/sur-les-epaules-d...</td>
+      <td>Longévité, jeunesse et vieillissement</td>
+      <td>2 Octobre 2010</td>
+      <td>programmation musicale\n   Bonga\nMona ki g...</td>
+      <td>52762752</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Ecriture-du-fichier-RSS">Ecriture du fichier RSS<a class="anchor-link" href="#Ecriture-du-fichier-RSS">¶</a></h1>
+<h1 id="Ecriture-du-fichier-RSS">Ecriture du fichier RSS<a class="anchor-link" href="#Ecriture-du-fichier-RSS">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -2972,55 +3232,61 @@ var element = $('#7bd1663b-08e0-467a-8e2c-d3298284c33c');
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Maintenant que nous avons collecté toutes les émissions, nous pouvons écrire un ficher RSS, comme nous l'avions déjà fait <a href="http://flothesof.github.io/podcast-rendez-vous-avec-X-fr.html">dans le cas de l'émission Rendez vous avec X</a>.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [41]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dateparser</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [42]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
-<span class="n">rss</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">"rss"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"2.0"</span><span class="p">)</span>
-<span class="n">channel</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">rss</span><span class="p">,</span> <span class="s2">"channel"</span><span class="p">)</span>
-<span class="n">title</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">)</span>
-<span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">'Podcast Sur les épaules de Darwin'</span>
-<span class="n">description</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">)</span>
-<span class="n">description</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"Podcast inofficiel de l'émission Sur les épaules de Darwin, tiré du site http://clementgrimal.fr/darwin/ et https://www.franceinter.fr/emissions/sur-les-epaules-de-darwin"</span>
-<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">item</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s2">"item"</span><span class="p">)</span>
-    <span class="n">item_title</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">)</span>
-    <span class="n">item_title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'titre'</span><span class="p">]</span>
-    <span class="n">item_description</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">)</span>
-    <span class="n">item_description</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'description'</span><span class="p">]</span>
-    <span class="n">item_pubdate</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">"pubDate"</span><span class="p">)</span>
-    <span class="n">item_pubdate</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">dateparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'</span><span class="si">%a</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> %b %Y 11:00:00'</span><span class="p">)</span>
-    <span class="n">item_enclosure</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">"enclosure"</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">'</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">'lien mp3'</span><span class="p">]),</span>
-                                   <span class="n">length</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">byte_length</span><span class="p">,</span>
-                                  <span class="nb">type</span><span class="o">=</span><span class="s2">"audio/mpeg"</span><span class="p">)</span>
-<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">rss</span><span class="p">)</span>
-<span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"files/podcast_Sur_les_epaules_de_Darwin.xml"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dateparser</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+
+<span class="n">rss</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;rss&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span><span class="p">)</span>
+<span class="n">channel</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">rss</span><span class="p">,</span> <span class="s2">&quot;channel&quot;</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">)</span>
+<span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Podcast Sur les épaules de Darwin&#39;</span>
+<span class="n">description</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">)</span>
+<span class="n">description</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Podcast inofficiel de l&#39;émission Sur les épaules de Darwin, tiré du site http://clementgrimal.fr/darwin/ et https://www.franceinter.fr/emissions/sur-les-epaules-de-darwin&quot;</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">)</span>
+    <span class="n">item_title</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">)</span>
+    <span class="n">item_title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;titre&#39;</span><span class="p">]</span>
+    <span class="n">item_description</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">)</span>
+    <span class="n">item_description</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+    <span class="n">item_pubdate</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;pubDate&quot;</span><span class="p">)</span>
+    <span class="n">item_pubdate</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">dateparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> %b %Y 11:00:00&#39;</span><span class="p">)</span>
+    <span class="n">item_enclosure</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;enclosure&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;lien mp3&#39;</span><span class="p">]),</span>
+                                   <span class="n">length</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">byte_length</span><span class="p">,</span>
+                                  <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;audio/mpeg&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">rss</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;files/podcast_Sur_les_epaules_de_Darwin.xml&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Le lien vers le fichier généré est ici : <strong><a href="https://raw.githubusercontent.com/flothesof/posts/master/files/podcast_Sur_les_epaules_de_Darwin.xml">https://raw.githubusercontent.com/flothesof/posts/master/files/podcast_Sur_les_epaules_de_Darwin.xml</a></strong>.</p>
+
 </div>
 </div>
 </div>
@@ -3028,9 +3294,12 @@ var element = $('#7bd1663b-08e0-467a-8e2c-d3298284c33c');
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>Ce billet a été écrit à l'aide d'un notebook Jupyter. Son contenu est sous licence BSD. Une vue statique de ce notebook peut être consultée et téléchargée ici : <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170908_PodcastEpaulesDeDarwin.ipynb">20170908_PodcastEpaulesDeDarwin.ipynb</a>.</em></p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

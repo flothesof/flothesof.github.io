@@ -1568,6 +1568,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we'll produce an animation of the k-means algorithm. The k-means algorithm is a very useful clustering tool. It allows you to cluster your data into a given number of categories.</p>
+
 </div>
 </div>
 </div>
@@ -1583,6 +1584,7 @@ h6:hover .anchor-link {
 </ul>
 </li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -1596,69 +1598,91 @@ h6:hover .anchor-link {
 </ul>
 <p>To follow along, a working knowledge of numpy is therefore necessary.</p>
 <p>To implement the algorithm, we will start by defining a dataset to work with. We choose a dataset containing three clusters, with a little bit of variance around each cluster center. We construct the point cloud by stacking shifted random numbers:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [101]:</div>
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="c1"># necessary imports</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># necessary imports</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [102]:</div>
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.75</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.75</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span>
                   <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.25</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])),</span>
                   <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]))))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can plot the dataset as well as the cluster centers:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [103]:</div>
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mf">0.75</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span> <span class="mf">0.25</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]),</span> <span class="mf">0.5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[103]:</div>
+
+    <div class="prompt output_prompt">Out[103]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.patches.Circle at 0x1a7f0c18></pre>
+<pre>&lt;matplotlib.patches.Circle at 0x1a7f0c18&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeMAAAFXCAYAAACRLCZbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8FPX9x/FXgOByBPGgoiISFUerVu3PArGFCIhiUQSp
 JSKBqGC1SFFUQGi1HljBqlWqoIIGQjViBSSCSDgMtg1Y61HPqZbgjUUQCcKSEPP7Y5LNtdnM7s7u
@@ -1942,94 +1966,131 @@ AwdM09xlGEY7YBBwu8vJ8hzTNKcD0wEMw8gGbmouEIM7vannAB2BYsMw3jAM4xEX0uB5hmEMNwzj
 U6yenSsNw3jR7TR5hWmaB4DrgJeweik+Y5rm++6mypsMw3ga+AdwomEYnxqGoWVOg/spMBqrZ/Ab
 Nf/UCz24I4H1hmG8idWuXmSa5jqX05QIQjavaW5qERERl2kGLhEREZcpGIuIiLhMwVhERMRlCsYi
 IiIuUzAWERFxmYKxiIiIyxSMRUREXKZgLCIi4rL/BwHwT/vyMIPsAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We now write a function that initializes k centroids by randomly selecting them from the data points.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [104]:</div>
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="sd">"""returns k centroids from the initial points"""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns k centroids from the initial points&quot;&quot;&quot;</span>
     <span class="n">centroids</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">centroids</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's try the function:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [105]:</div>
+<div class="prompt input_prompt">In&nbsp;[105]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[105]:</div>
+
+    <div class="prompt output_prompt">Out[105]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[-0.48840901, -0.14088659],
        [-0.53984176,  0.53868892],
        [ 0.98947381,  0.30255966]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's represent the results using a plot:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [106]:</div>
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">centroids</span> <span class="o">=</span> <span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[106]:</div>
+
+    <div class="prompt output_prompt">Out[106]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.PathCollection at 0x1f01c940></pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x1f01c940&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeMAAAFXCAYAAACRLCZbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt4XNV57/GvEbKnJAKeEgVIII2eQlZza9zU8SUXu2Bw
 THyJXMcgfHxRXJyQJn4Il5iLmzQtdVM7BELcxJxgjGRxiIwDcmwMxgKDnNPK5nCAPHnidOVyRBvK
@@ -2254,55 +2315,72 @@ rzHmGWPM9xyUIfKMMUuMMb/By+zcZ4x52HWZosJa+zvgS8AjeFmKO621P3dbqmgyxvwA+GfgPcaY
 3xhjtM1pbh8DVuBlBj+T+k9Z6LmdDRw0xjyLN66+11r7mOMyxUHB4TWtTS0iIuKYVuASERFxTMFY
 RETEMQVjERERxxSMRUREHFMwFhERcUzBWERExDEFYxEREccUjEVERBz7//ai6xD5sTZiAAAAAElF
 TkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now let's define a function that returns the closest centroid for each point. We will use numpy broadcasting to do this. If this code looks overly complicated, don't worry, we'll try to explain why it works in the next section.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [107]:</div>
+<div class="prompt input_prompt">In&nbsp;[107]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">closest_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">centroids</span><span class="p">):</span>
-    <span class="sd">"""returns an array containing the index to the nearest centroid for each point"""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">closest_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">centroids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns an array containing the index to the nearest centroid for each point&quot;&quot;&quot;</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">points</span> <span class="o">-</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can test the code like so:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [108]:</div>
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">closest_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[108]:</div>
+
+    <div class="prompt output_prompt">Out[108]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,
        1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
@@ -2316,63 +2394,89 @@ TkSuQmCC
        1, 1, 2, 1, 2, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1,
        2, 0, 1, 1, 2, 1, 2, 0, 1, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1], dtype=int64)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So why does the previous function work? It makes use of what I would call some advanced numpy broadcasting tricks.</p>
 <p>To investigate this broadcasting into more detail, let's look at some intermediate steps in the computing process. First, our variable <code>c</code> denotes our centroids that we want to work with. Let's look at their coordinates:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [109]:</div>
+<div class="prompt input_prompt">In&nbsp;[109]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">c</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[109]:</div>
+
+    <div class="prompt output_prompt">Out[109]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[-0.04883724,  0.6316724 ],
        [ 0.27231992,  0.32268518],
        [-0.76809563,  0.82267701]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One of the interesting things with numpy is that we can extend an array by a new dimension using the <code>np.newaxis</code> command like this:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [110]:</div>
+<div class="prompt input_prompt">In&nbsp;[110]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">c_extended</span> <span class="o">=</span> <span class="n">c</span><span class="p">[:</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c_extended</span> <span class="o">=</span> <span class="n">c</span><span class="p">[:</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">c_extended</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[110]:</div>
+
+    <div class="prompt output_prompt">Out[110]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[[-0.04883724,  0.6316724 ]],
 
@@ -2380,37 +2484,53 @@ TkSuQmCC
 
        [[-0.76809563,  0.82267701]]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our array, which had a shape of 3x2 becomes an array of the following shape:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [111]:</div>
+<div class="prompt input_prompt">In&nbsp;[111]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">c_extended</span><span class="o">.</span><span class="n">shape</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c_extended</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[111]:</div>
+
+    <div class="prompt output_prompt">Out[111]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(3L, 1L, 2L)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -2419,45 +2539,67 @@ TkSuQmCC
 <p>In particular, the rule used here for non-matching dimensions is:</p>
 <blockquote><p>If the two arrays differ in their number of dimensions, the shape of the array with fewer dimensions is padded with ones on its leading (left) side.</p>
 </blockquote>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [112]:</div>
+<div class="prompt input_prompt">In&nbsp;[112]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">p</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[112]:</div>
+
+    <div class="prompt output_prompt">Out[112]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 1.13251313, -0.49784654])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [113]:</div>
+<div class="prompt input_prompt">In&nbsp;[113]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">c_extended</span> <span class="o">-</span> <span class="n">p</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c_extended</span> <span class="o">-</span> <span class="n">p</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[113]:</div>
+
+    <div class="prompt output_prompt">Out[113]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[[-1.18135037,  1.12951893]],
 
@@ -2465,52 +2607,77 @@ TkSuQmCC
 
        [[-1.90060876,  1.32052355]]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [114]:</div>
+<div class="prompt input_prompt">In&nbsp;[114]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="p">(</span><span class="n">c_extended</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="p">(</span><span class="n">c_extended</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[114]:</div>
+
+    <div class="prompt output_prompt">Out[114]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(3L, 1L, 2L)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The broadcasting allows us to keep the first dimension as the point dimension, which allows us to generalize the trick for more than one point, as demonstrated by the next line:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [115]:</div>
+<div class="prompt input_prompt">In&nbsp;[115]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_extended</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_extended</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[115]:</div>
+
+    <div class="prompt output_prompt">Out[115]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[[  1.18135037e+00,  -1.12951893e+00],
         [  3.19833710e-01,  -5.72897144e-02],
@@ -2527,148 +2694,209 @@ TkSuQmCC
         [  2.38734102e+00,   2.69933560e-01],
         [  2.17858861e+00,  -1.52364760e+00]]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This then allows us to apply square root, square and sum operations that efficiently reduce the number of dimensions of the matrix:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [116]:</div>
+<div class="prompt input_prompt">In&nbsp;[116]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_extended</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_extended</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[116]:</div>
+
+    <div class="prompt output_prompt">Out[116]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[ 1.63444233,  0.32492417,  1.73059633,  1.97625455],
        [ 1.18878284,  0.25170098,  1.55144878,  1.53078707],
        [ 2.31432412,  1.06834567,  2.40255307,  2.6585241 ]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can obtain the index of the closest centroid using the <code>np.argmin</code> function:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [117]:</div>
+<div class="prompt input_prompt">In&nbsp;[117]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_extended</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">points</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_extended</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[117]:</div>
+
+    <div class="prompt output_prompt">Out[117]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([1, 1, 1, 1], dtype=int64)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The last step in the algorithm is to move the centroids to the mean location associated with it:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [118]:</div>
+<div class="prompt input_prompt">In&nbsp;[118]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">centroids</span><span class="p">):</span>
-    <span class="sd">"""returns the new centroids assigned from the points closest to them"""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">centroids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns the new centroids assigned from the points closest to them&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">points</span><span class="p">[</span><span class="n">closest</span><span class="o">==</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">centroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [119]:</div>
+<div class="prompt input_prompt">In&nbsp;[119]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[119]:</div>
+
+    <div class="prompt output_prompt">Out[119]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[-0.06971844,  0.66614582],
        [ 0.85831935, -0.18948577],
        [-0.82669027,  0.23483006]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can visualize these first two steps in the following way:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [120]:</div>
+<div class="prompt input_prompt">In&nbsp;[120]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">centroids</span> <span class="o">=</span> <span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">closest</span> <span class="o">=</span> <span class="n">closest_centroid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">centroids</span><span class="p">)</span>
 <span class="n">centroids</span> <span class="o">=</span> <span class="n">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">centroids</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[120]:</div>
+
+    <div class="prompt output_prompt">Out[120]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.PathCollection at 0x1f34d0f0></pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x1f34d0f0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeMAAAFXCAYAAACRLCZbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztvX14FPW99/+KMWFrC9JjacWnmvuIY+1ppf1RQmqFoyg+
 AGlyUTV6jKSIv9Jaih4VVFq1pbSFWiz1eOOpiInhaNBqUiAoBGmDPQ1w+Pnwy63tqG18rFqPpwg9
@@ -3002,25 +3230,30 @@ DKMTmAL80sNDfx6oNQzjIiAEjDMM4wHTNK/00IYRBEHLTuzwEek5Dml5BBnp2Y9o6guwHttnRBba
 TfOvwNeB7VgRdptM0/yNV8ePYhjGQ8CvgVMNw3jdMAy/2uWdCVyBFfH4TOSfH1GhE4FdhmE8i7XO
 tcU0zSd9sCOeoE+B+q5lkJ4hMHqWllOTUs+qTS2EEEL4jCpwCSGEED4jZyyEEEL4jJyxEEII4TNy
 xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can animate this type of plot using a module called JSAnimation:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [121]:</div>
+<div class="prompt input_prompt">In&nbsp;[121]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">JSAnimation</span> <span class="kn">import</span> <span class="n">IPython_display</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">JSAnimation</span> <span class="kn">import</span> <span class="n">IPython_display</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">animation</span>
 
 <span class="c1"># create a simple animation</span>
@@ -3037,20 +3270,29 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
     <span class="n">centroids</span> <span class="o">=</span> <span class="n">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">centroids</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">closest</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
     <span class="k">return</span> 
 
 <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[121]:</div>
+
+    <div class="prompt output_prompt">Out[121]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
+
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -3186,26 +3428,29 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
     if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_imgWBMWNBMWVQCQMSCJ"/>
-<br/>
-<input id="_anim_sliderWBMWNBMWVQCQMSCJ" max="1" min="0" name="points" onchange="animWBMWNBMWVQCQMSCJ.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="animWBMWNBMWVQCQMSCJ.slower()">–</button>
-<button onclick="animWBMWNBMWVQCQMSCJ.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animWBMWNBMWVQCQMSCJ.faster()">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_selectWBMWNBMWVQCQMSCJ">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_imgWBMWNBMWVQCQMSCJ">
+    <br>
+    <input id="_anim_sliderWBMWNBMWVQCQMSCJ" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="animWBMWNBMWVQCQMSCJ.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="animWBMWNBMWVQCQMSCJ.slower()">&#8211;</button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animWBMWNBMWVQCQMSCJ.faster()">+</button>
+  <form action="#n" name="_anim_loop_selectWBMWNBMWVQCQMSCJ" class="anim_control">
+    <input type="radio" name="state" value="once" > Once </input>
+    <input type="radio" name="state" value="loop" checked> Loop </input>
+    <input type="radio" name="state" value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -3234,15 +3479,20 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The previous animation shows how the points in the dataset are changing their assigned centroid and how the centroid itself moves.</p>
+
 </div>
 </div>
 </div>
@@ -3250,15 +3500,16 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also try running the same type of animation using more clusters than intended in the original data:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [122]:</div>
+<div class="prompt input_prompt">In&nbsp;[122]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">centroids</span> <span class="o">=</span> <span class="n">initialize_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 
@@ -3271,20 +3522,29 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
     <span class="n">centroids</span> <span class="o">=</span> <span class="n">move_centroids</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">centroids</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">closest</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
     <span class="k">return</span> 
 
 <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[122]:</div>
+
+    <div class="prompt output_prompt">Out[122]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
+
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -3420,26 +3680,29 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
     if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_imgXAAVSFEAULKIEEPT"/>
-<br/>
-<input id="_anim_sliderXAAVSFEAULKIEEPT" max="1" min="0" name="points" onchange="animXAAVSFEAULKIEEPT.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="animXAAVSFEAULKIEEPT.slower()">–</button>
-<button onclick="animXAAVSFEAULKIEEPT.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="/></button>
-<button onclick="animXAAVSFEAULKIEEPT.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"/></button>
-<button onclick="animXAAVSFEAULKIEEPT.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="/></button>
-<button onclick="animXAAVSFEAULKIEEPT.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animXAAVSFEAULKIEEPT.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animXAAVSFEAULKIEEPT.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"/></button>
-<button onclick="animXAAVSFEAULKIEEPT.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animXAAVSFEAULKIEEPT.faster()">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_selectXAAVSFEAULKIEEPT">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_imgXAAVSFEAULKIEEPT">
+    <br>
+    <input id="_anim_sliderXAAVSFEAULKIEEPT" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="animXAAVSFEAULKIEEPT.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="animXAAVSFEAULKIEEPT.slower()">&#8211;</button>
+    <button onclick="animXAAVSFEAULKIEEPT.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="></button>
+    <button onclick="animXAAVSFEAULKIEEPT.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"></button>
+    <button onclick="animXAAVSFEAULKIEEPT.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="></button>
+    <button onclick="animXAAVSFEAULKIEEPT.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animXAAVSFEAULKIEEPT.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animXAAVSFEAULKIEEPT.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"></button>
+    <button onclick="animXAAVSFEAULKIEEPT.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animXAAVSFEAULKIEEPT.faster()">+</button>
+  <form action="#n" name="_anim_loop_selectXAAVSFEAULKIEEPT" class="anim_control">
+    <input type="radio" name="state" value="once" > Once </input>
+    <input type="radio" name="state" value="loop" checked> Loop </input>
+    <input type="radio" name="state" value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -3488,15 +3751,20 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So that's it for today. I hope you have enjoyed this little notebook that demosntrated how to implement the k-means algorithm and animate it in the browser.</p>
+
 </div>
 </div>
 </div>
@@ -3504,9 +3772,12 @@ xkIIIYTPyBkLIYQQPiNnLIQQQviMnLEQQgjhM3LGQgghhM/8Xx7rw2IELJpjAAAAAElFTkSuQmCC
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20150717_Kmeans.ipynb">20150717_Kmeans.ipynb</a>.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

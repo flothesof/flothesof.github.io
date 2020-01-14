@@ -1569,43 +1569,56 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Have you ever seen this plot?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">'http://planetforlife.com/images/growinggap.jpg'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://planetforlife.com/images/growinggap.jpg&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[1]:</div>
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <img src="http://planetforlife.com/images/growinggap.jpg"/>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What this plot shows are historical discoveries of regular conventional oil (aka "oil fields") and production (aka "taking oil out of the oil field"). People who try to understand the world often think about this problem when they consider how much our current way of life is based on oil.</p>
 <p>Ever since I first saw a version of this plot in a talk (<a href="https://www.youtube.com/watch?v=sjRkU8eMW_4">this one</a>), I've been wondering about this fascinating data. Since there is an oil field list page on Wikipedia, let's try to see if we can roughly replicate this curve.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Oil-fields-on-Wikipedia">Oil fields on Wikipedia<a class="anchor-link" href="#Oil-fields-on-Wikipedia">¶</a></h1>
+<h1 id="Oil-fields-on-Wikipedia">Oil fields on Wikipedia<a class="anchor-link" href="#Oil-fields-on-Wikipedia">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1613,50 +1626,63 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The data for oil fields can be found here: <a href="https://en.wikipedia.org/wiki/List_of_oil_fields">https://en.wikipedia.org/wiki/List_of_oil_fields</a>. Let's download the data and parse it into a table. We can do this with a little bit of manual fiddling using <code>requests</code>, <code>beautifulsoup</code> and <code>pandas</code>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://en.wikipedia.org/wiki/List_of_oil_fields'</span><span class="p">)</span>
-<span class="n">tree</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'table'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'wikitable'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_oil_fields&#39;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;wikitable&#39;</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -1673,87 +1699,90 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Field</th>
-<th>Location</th>
-<th>Discovered</th>
-<th>Started production</th>
-<th>Peaked</th>
-<th>Recoverable oil, past and future (billion barrels)</th>
-<th>Production (million barrels/day)</th>
-<th>Rate of decline</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Ghawar Field</td>
-<td>Saudi Arabia</td>
-<td>1948[3]</td>
-<td>1951[3]</td>
-<td>2005,[4] disputed[5]</td>
-<td>88-104[6]</td>
-<td>5[7]</td>
-<td>8% per year[8]</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Burgan Field</td>
-<td>Kuwait</td>
-<td>1937</td>
-<td>1948</td>
-<td>2005[9]</td>
-<td>66-72[8]</td>
-<td>1.7[10]</td>
-<td>14% per year[citation needed]</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ahvaz Field</td>
-<td>Iran</td>
-<td>1958</td>
-<td>NaN</td>
-<td>1970s[11]</td>
-<td>65 (25 recoverable)[12]</td>
-<td>.750[13]</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Upper Zakum oil field</td>
-<td>Abu Dhabi, UAE</td>
-<td>1963[14]</td>
-<td>1982[15][16] (1967[14])</td>
-<td>Production still increasing</td>
-<td>50[15] (21 recoverable[14])</td>
-<td>0.750[15]</td>
-<td>Extension planned to 1 MMb/d[17]</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Gachsaran Field</td>
-<td>Iran</td>
-<td>1927</td>
-<td>1930</td>
-<td>1974</td>
-<td>66[18]</td>
-<td>0.480</td>
-<td>NaN</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Field</th>
+      <th>Location</th>
+      <th>Discovered</th>
+      <th>Started production</th>
+      <th>Peaked</th>
+      <th>Recoverable oil, past and future (billion barrels)</th>
+      <th>Production (million barrels/day)</th>
+      <th>Rate of decline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ghawar Field</td>
+      <td>Saudi Arabia</td>
+      <td>1948[3]</td>
+      <td>1951[3]</td>
+      <td>2005,[4] disputed[5]</td>
+      <td>88-104[6]</td>
+      <td>5[7]</td>
+      <td>8% per year[8]</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Burgan Field</td>
+      <td>Kuwait</td>
+      <td>1937</td>
+      <td>1948</td>
+      <td>2005[9]</td>
+      <td>66-72[8]</td>
+      <td>1.7[10]</td>
+      <td>14% per year[citation needed]</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ahvaz Field</td>
+      <td>Iran</td>
+      <td>1958</td>
+      <td>NaN</td>
+      <td>1970s[11]</td>
+      <td>65 (25 recoverable)[12]</td>
+      <td>.750[13]</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Upper Zakum oil field</td>
+      <td>Abu Dhabi, UAE</td>
+      <td>1963[14]</td>
+      <td>1982[15][16] (1967[14])</td>
+      <td>Production still increasing</td>
+      <td>50[15] (21 recoverable[14])</td>
+      <td>0.750[15]</td>
+      <td>Extension planned to 1 MMb/d[17]</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Gachsaran Field</td>
+      <td>Iran</td>
+      <td>1927</td>
+      <td>1930</td>
+      <td>1974</td>
+      <td>66[18]</td>
+      <td>0.480</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Analysis">Analysis<a class="anchor-link" href="#Analysis">¶</a></h1>
+<h1 id="Analysis">Analysis<a class="anchor-link" href="#Analysis">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1761,35 +1790,46 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have this list of oil fields, we can do some elementary plot by country and year discovered.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="By-country">By country<a class="anchor-link" href="#By-country">¶</a></h2>
+<h2 id="By-country">By country<a class="anchor-link" href="#By-country">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
-<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">'bokeh'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
+<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;bokeh&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="94415e47-279c-47cb-b1e6-0917b3a17b0a"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="62d02b7a-8e3c-48ec-be2a-71750db1f5c0"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#94415e47-279c-47cb-b1e6-0917b3a17b0a');
+var element = $('#62d02b7a-8e3c-48ec-be2a-71750db1f5c0');
 
 (function(root) {
   function now() {
@@ -2321,11 +2361,18 @@ var element = $('#94415e47-279c-47cb-b1e6-0917b3a17b0a');
 }(window));
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <style>div.hololayout {
   display: flex;
   align-items: center;
@@ -2433,8 +2480,10 @@ div.bk-hbox div.bk-data-table {
     padding: 20px;
 }
 </style>
+
+
 <div class="logo-block">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAB+wAAAfsBxc2miwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAA6zSURB
 VHic7ZtpeFRVmsf/5966taWqUlUJ2UioBBJiIBAwCZtog9IOgjqACsogKtqirT2ttt069nQ/zDzt
 tI4+CrJIREFaFgWhBXpUNhHZQoKBkIUASchWla1S+3ar7r1nPkDaCAnZKoQP/D7mnPOe9/xy76n3
@@ -2502,17 +2551,35 @@ SLHujPOTPVW+rwY+sxskAAC2HrA8t2Vvc7ffP1r9o+vwR2dcr92InIAbKKC1FZ5tB1tf+/G8p8sv
 N/9Q5zd/XR34LYCwV5JdccMEAMDBk45DH243r/X4xGvqxFa/GNpS7n6rwOwNWwHVE26oAADYurf1
 zx/utOzt+DMKYM0p17YtZZ5VNzqfsB2HewG1WXE8PoZ7gOclbTIvynZf9JV+fqZtfgs/8F/Nu5rB
 EIBmJ+8QRMmpU7EzGRsf2FzuePqYRbzh/zE26EwdrT10f6r6o8HOYzCJB9Dpff8tbnGLG8L/A/WE
-roTBs2RqAAAAAElFTkSuQmCC" style="height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle"/>
-<img src="data:image/png;base64,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" style="height:15px; border-radius:12px; display: inline-block; float: left"/>
+roTBs2RqAAAAAElFTkSuQmCC'
+     style='height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle'></img>
+
+
+  <img src='data:image/png;base64,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'
+       style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
+  
+
+
+
+
 </div>
+
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="1d0be4de-c917-4452-ab03-5101533a7ffa"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="180ea644-7877-4d62-bd37-763dd9d32bc7"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#1d0be4de-c917-4452-ab03-5101533a7ffa');
+var element = $('#180ea644-7877-4d62-bd37-763dd9d32bc7');
 function HoloViewsWidget() {
 }
 
@@ -3307,29 +3374,42 @@ if (window.Jupyter !== undefined) {
 
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 tools=['hover'] xrotation=45] 
-hv.Bars(df.groupby('Location').agg('count')['Field'])
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 tools=[&#39;hover&#39;] xrotation=45] 
+hv.Bars(df.groupby(&#39;Location&#39;).agg(&#39;count&#39;)[&#39;Field&#39;])
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
-<div id="922ebe26-2073-4634-b2fb-9ae9d17b946c"></div>
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+
+<div id="3ea42913-7ed7-45c0-8837-979489e583a6"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#922ebe26-2073-4634-b2fb-9ae9d17b946c');
+var element = $('#3ea42913-7ed7-45c0-8837-979489e583a6');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1005')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3378,23 +3458,27 @@ if (!(document.getElementById('1005')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, as you can see in the above plot, some labels are not adequate and repeat the countries several times. Let's clean this up by replacing each country with its nearest neighbor from a list of world countries.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pycountry</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pycountry</span>
 <span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">SequenceMatcher</span>
 
 <span class="k">def</span> <span class="nf">similar</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -3415,40 +3499,54 @@ if (!(document.getElementById('1005')) && !(document.getElementById('_anim_imgNo
         <span class="c1"># difflib</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(((</span><span class="n">co</span><span class="p">,</span> <span class="n">similar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">co</span><span class="p">))</span> <span class="k">for</span> <span class="n">co</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [8]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="p">[</span><span class="n">match_country</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">Location</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=['hover'] xrotation=45] 
-hv.Bars(df.groupby('Location').agg('count')['Field'].sort_values())
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="p">[</span><span class="n">match_country</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">Location</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45] 
+hv.Bars(df.groupby(&#39;Location&#39;).agg(&#39;count&#39;)[&#39;Field&#39;].sort_values())
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
-<div id="17ca0488-d25c-4cfc-864b-74ec70680488"></div>
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+
+<div id="f604bcc5-d6b0-44d7-b9b3-89a87450d3ae"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#17ca0488-d25c-4cfc-864b-74ec70680488');
+var element = $('#f604bcc5-d6b0-44d7-b9b3-89a87450d3ae');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1116')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3497,21 +3595,25 @@ if (!(document.getElementById('1116')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The above plot nicely shows the key players in the oil market: Russia and the Gulf states.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="By-discovery-year">By discovery year<a class="anchor-link" href="#By-discovery-year">¶</a></h2>
+<h2 id="By-discovery-year">By discovery year<a class="anchor-link" href="#By-discovery-year">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -3519,39 +3621,52 @@ if (!(document.getElementById('1116')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We also need to clean up the data of discovery year. We will do so using a regular expression.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">'(\d</span><span class="si">{4}</span><span class="s1">)'</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d</span><span class="si">{4}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=['hover'] xrotation=45] 
-hv.Bars(df.groupby('Discovered').agg('count')['Field'])
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45] 
+hv.Bars(df.groupby(&#39;Discovered&#39;).agg(&#39;count&#39;)[&#39;Field&#39;])
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
-<div id="4d510df6-288e-48c4-bf8c-3f5024d5311f"></div>
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+
+<div id="ff749bbe-f42a-471c-bdd3-04f15cfd42d0"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#4d510df6-288e-48c4-bf8c-3f5024d5311f');
+var element = $('#ff749bbe-f42a-471c-bdd3-04f15cfd42d0');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1227')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3600,58 +3715,76 @@ if (!(document.getElementById('1227')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here the trend is not yet apparent. Let's regroup these by ten year bins.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2020</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2020</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=['hover'] xrotation=45]
-hv.Bars((bin_edges, hist), kdims='Decade discovered', vdims='number of oil fields')
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45]
+hv.Bars((bin_edges, hist), kdims=&#39;Decade discovered&#39;, vdims=&#39;number of oil fields&#39;)
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[14]:</div>
-<div id="51f9f8b4-c5fb-493a-8192-c1a72ed1c601"></div>
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+
+<div id="8a0fa168-cb31-4521-b6f0-afe9a75a52ed"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#51f9f8b4-c5fb-493a-8192-c1a72ed1c601');
+var element = $('#8a0fa168-cb31-4521-b6f0-afe9a75a52ed');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1338')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3700,21 +3833,25 @@ if (!(document.getElementById('1338')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So it seems indeed that the amount of oil fields discovered has been on the decline for quite a long time.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Analysis-of-the-amount-of-oil">Analysis of the amount of oil<a class="anchor-link" href="#Analysis-of-the-amount-of-oil">¶</a></h1>
+<h1 id="Analysis-of-the-amount-of-oil">Analysis of the amount of oil<a class="anchor-link" href="#Analysis-of-the-amount-of-oil">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3723,54 +3860,68 @@ if (!(document.getElementById('1338')) && !(document.getElementById('_anim_imgNo
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, what really matters is the amount of oil discovered. Can we also do this? To achieve that, we need to extract the amount of oil from our table.</p>
 <p>We first need to clean up the data a little bit.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Recoverable oil'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">'Recoverable oil, past and future (billion barrels)'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">'(\d+(?:\.\d+)?)'</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Recoverable oil, past and future (billion barrels)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d+(?:\.\d+)?)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's plot the data in billion barrels, first per country, then per decade discovered.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="By-country">By country<a class="anchor-link" href="#By-country">¶</a></h2>
+<h2 id="By-country">By country<a class="anchor-link" href="#By-country">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=['hover'] xrotation=45] 
-hv.Bars(df[['Location', 'Recoverable oil']].groupby('Location').agg('sum').sort_values(by='Recoverable oil'))
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45] 
+hv.Bars(df[[&#39;Location&#39;, &#39;Recoverable oil&#39;]].groupby(&#39;Location&#39;).agg(&#39;sum&#39;).sort_values(by=&#39;Recoverable oil&#39;))
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[16]:</div>
-<div id="29bb6eb0-d0fb-49c3-b487-36f1656737a4"></div>
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+
+<div id="85bbe361-2f9e-4a5f-ae0b-1f5c28ce72bd"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#29bb6eb0-d0fb-49c3-b487-36f1656737a4');
+var element = $('#85bbe361-2f9e-4a5f-ae0b-1f5c28ce72bd');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1449')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3819,49 +3970,64 @@ if (!(document.getElementById('1449')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="By-discovery-year">By discovery year<a class="anchor-link" href="#By-discovery-year">¶</a></h2>
+<h2 id="By-discovery-year">By discovery year<a class="anchor-link" href="#By-discovery-year">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">subdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'Discovered'</span><span class="p">,</span> <span class="s1">'Recoverable oil'</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-<span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">'Discovered'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
-                               <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2020</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">subdf</span><span class="p">[</span><span class="s1">'Recoverable oil'</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">subdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Discovered&#39;</span><span class="p">,</span> <span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Discovered&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
+                               <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2020</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Recoverable oil&#39;</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=['hover'] xrotation=45]
-hv.Bars((bin_edges, hist), kdims='Decade discovered', vdims='Billions of barrels')
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45]
+hv.Bars((bin_edges, hist), kdims=&#39;Decade discovered&#39;, vdims=&#39;Billions of barrels&#39;)
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
-<div id="43ad3fc2-7e30-42df-ac19-e79e270f67ef"></div>
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+
+<div id="f26ec59f-8602-43ac-9920-f7feae136c8d"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#43ad3fc2-7e30-42df-ac19-e79e270f67ef');
+var element = $('#f26ec59f-8602-43ac-9920-f7feae136c8d');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1560')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3910,21 +4076,25 @@ if (!(document.getElementById('1560')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we see a sharp drop in discoveries since at least three decades. This could very possibly mean that the age of big oil field discoveries is over.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Forecasting-using-the-Hubbert-curve">Forecasting using the Hubbert curve<a class="anchor-link" href="#Forecasting-using-the-Hubbert-curve">¶</a></h1>
+<h1 id="Forecasting-using-the-Hubbert-curve">Forecasting using the Hubbert curve<a class="anchor-link" href="#Forecasting-using-the-Hubbert-curve">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3933,13 +4103,14 @@ if (!(document.getElementById('1560')) && !(document.getElementById('_anim_imgNo
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, we would like to have an idea for how long the production can adapt to the worldwide oil demand. To do that, we can use the Hubbert model (as in the famous <a href="https://en.wikipedia.org/wiki/Hubbert_curve">Hubbert curve</a>) to fit the data we have gathered and give some predictions about world oil production.</p>
 <p>First, let's take a look at the Hubbert model itself.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Hubbert-model">The Hubbert model<a class="anchor-link" href="#The-Hubbert-model">¶</a></h2>
+<h2 id="The-Hubbert-model">The Hubbert model<a class="anchor-link" href="#The-Hubbert-model">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -3951,56 +4122,71 @@ $$
 Q(t) = \frac{Q_{\infty}}{1 + \exp(-\omega (t - \tau))}
 $$<p>The parameter $Q_{\infty}$ gives the total quantity of oil you can extract from a well and $\tau$ defines the peak extraction time of the oil (as well as the point when you have extracted half of the existing capacity). $t$ is then the time (in years for our purposes). Finally, $\omega$ is a parameter that describes how fast or how slowly the oil is extracted.</p>
 <p>Let's have a quick look at the cumulative production curve.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hubbert_cumprod</span><span class="p">(</span><span class="n">qinf</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-    <span class="sd">"""Hubbert cumulative production function."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hubbert_cumprod</span><span class="p">(</span><span class="n">qinf</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hubbert cumulative production function.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">qinf</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">omega</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">tau</span><span class="p">)))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="n">cumprod</span> <span class="o">=</span> <span class="n">hubbert_cumprod</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">cumprod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">cumprod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'cumulative production'</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-<span class="n">tau_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'tau'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cumprod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">cumprod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;cumulative production&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">tau_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;tau&#39;</span><span class="p">)</span>
 
 <span class="n">cumprod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
-<div id="3d32ffb0-0d5d-4e19-a041-9d4bf8974996"></div>
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+
+<div id="a2204693-3f9f-4275-916e-9362ad4f49f5"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#3d32ffb0-0d5d-4e19-a041-9d4bf8974996');
+var element = $('#a2204693-3f9f-4275-916e-9362ad4f49f5');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1670')) && !(document.getElementById('_anim_imgNone'))) {
@@ -4049,60 +4235,78 @@ if (!(document.getElementById('1670')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The time derivative of the cumulative production is the <em>instantaneous</em> production, the production at a given moment in time. We can plot it alongside the previous graph.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [22]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hubbert_prod</span><span class="p">(</span><span class="n">qinf</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-    <span class="sd">"""Hubbert instantaneous production function."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hubbert_prod</span><span class="p">(</span><span class="n">qinf</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hubbert instantaneous production function.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">qinf</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">omega</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">tau</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">omega</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">tau</span><span class="p">)))</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [23]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">prod</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
-<span class="n">prod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">prod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'instantaneous production'</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">cumprod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span> <span class="o">+</span> <span class="n">prod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prod</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+<span class="n">prod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">prod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;instantaneous production&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">cumprod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span> <span class="o">+</span> <span class="n">prod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[24]:</div>
-<div id="112dd700-ad24-4d43-8f4d-fb3363a646ec"></div>
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+
+<div id="86294e39-98fd-4ce4-b3e1-e4355a226de7"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#112dd700-ad24-4d43-8f4d-fb3363a646ec');
+var element = $('#86294e39-98fd-4ce4-b3e1-e4355a226de7');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2067')) && !(document.getElementById('_anim_imgNone'))) {
@@ -4151,14 +4355,17 @@ if (!(document.getElementById('2067')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Fitting-the-model-to-our-data">Fitting the model to our data<a class="anchor-link" href="#Fitting-the-model-to-our-data">¶</a></h2>
+<h2 id="Fitting-the-model-to-our-data">Fitting the model to our data<a class="anchor-link" href="#Fitting-the-model-to-our-data">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -4167,23 +4374,33 @@ if (!(document.getElementById('2067')) && !(document.getElementById('_anim_imgNo
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now of course, the question is: how do we use that model and our data that we have used in the above section together? I propose the following: we fit the time dynamics corresponding to the $\omega$ parameter using the average world data and then use this to do some forecasting.</p>
 <p>A simple strategy for this fit is to use the data on the peak production associated to the oil fields. Some of the fields give a starting data as well as a peak date. For instance the Ghawar Field in Saudi Arabia has the following data:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [25]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[25]:</div>
+
+    <div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>Field                                                         Ghawar Field
 Location                                                      Saudi Arabia
@@ -4196,37 +4413,53 @@ Rate of decline                                             8% per year[8]
 Recoverable oil                                                         88
 Name: 0, dtype: object</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The field started production in 1951, peaked in 2005 (even though this is disputed) and has a total recoverable oil quantity of at least 88 billion barrels. This means we can fit the production data using the current production of 5 million barrels per day. Since our units is billion barrels for the reserve, we will convert this production value to billion barrels per year:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [26]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="mf">5e6</span> <span class="o">*</span> <span class="mi">365</span> <span class="o">*</span> <span class="mf">1e-9</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="mf">5e6</span> <span class="o">*</span> <span class="mi">365</span> <span class="o">*</span> <span class="mf">1e-9</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[26]:</div>
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>1.8250000000000002</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -4242,118 +4475,154 @@ $$
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here $n$ is approximately 15 years and $Q_{\infty}$ 88 billion barrels.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [27]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [28]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">curve_fit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="n">omega</span> <span class="o">*</span> <span class="mi">88</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">curve_fit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="n">omega</span> <span class="o">*</span> <span class="mi">88</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
          <span class="n">xdata</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.</span><span class="p">],</span>
          <span class="n">ydata</span><span class="o">=</span> <span class="p">[</span><span class="mf">1.82</span><span class="p">],</span>
          <span class="n">p0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.6/site-packages/scipy/optimize/minpack.py:787: OptimizeWarning: Covariance of the parameters could not be estimated
   category=OptimizeWarning)
 </pre>
 </div>
 </div>
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[28]:</div>
+
+    <div class="prompt output_prompt">Out[28]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(array([0.1028937]), array([[inf]]))</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see if the data we get is the one we expect:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [29]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mi">2005</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mi">2005</span>
 <span class="n">omega</span> <span class="o">=</span> <span class="mf">0.1028</span>
 <span class="n">Q</span> <span class="o">=</span> <span class="mi">88</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1951</span><span class="p">,</span> <span class="mi">2051</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="n">cumprod</span> <span class="o">=</span> <span class="n">hubbert_cumprod</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
 <span class="n">prod</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">cumprod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">cumprod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'cumulative production'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'model'</span><span class="p">)</span>
-<span class="n">tau_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'tau'</span><span class="p">)</span>
-<span class="n">prod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">prod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'instantaneous production'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'model'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cumprod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">cumprod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;cumulative production&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+<span class="n">tau_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;tau&#39;</span><span class="p">)</span>
+<span class="n">prod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">prod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;instantaneous production&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">data_point</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Points</span><span class="p">((</span><span class="mi">2019</span><span class="p">,</span> <span class="mf">1.82</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'data point'</span><span class="p">)</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_point</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Points</span><span class="p">((</span><span class="mi">2019</span><span class="p">,</span> <span class="mf">1.82</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data point&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [tools=['hover'] width=600] Overlay [legend_position='top_left']
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [tools=[&#39;hover&#39;] width=600] Overlay [legend_position=&#39;top_left&#39;]
 prod_plot * tau_plot * data_point
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[32]:</div>
-<div id="b2222975-dfb7-4c4b-872a-063ad0f0a83f"></div>
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+
+
+<div id="8245d04e-a095-4533-ac23-280cfe1b9b5a"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#b2222975-dfb7-4c4b-872a-063ad0f0a83f');
+var element = $('#8245d04e-a095-4533-ac23-280cfe1b9b5a');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNone'))) {
@@ -4402,14 +4671,18 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, this fit is not very good. But I can't think of a better way than just this simple point estimate.</p>
+
 </div>
 </div>
 </div>
@@ -4417,29 +4690,38 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can move on and do this fit on the other oil fields that have the complete data: recoverable oil, peak year and current production. A little more of data munging is needed:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Peak'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Peaked'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">'(\d</span><span class="si">{4}</span><span class="s1">)'</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peaked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d</span><span class="si">{4}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="n">df</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Peak'</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">])</span>
 
-<span class="n">df</span><span class="p">[</span><span class="s1">'Production'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Production (million barrels/day)'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">'(\d*\.?\d*)'</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Production&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Production (million barrels/day)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d*\.?\d*)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[33]:</div>
+
+    <div class="prompt output_prompt">Out[33]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -4456,131 +4738,143 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Field</th>
-<th>Location</th>
-<th>Discovered</th>
-<th>Started production</th>
-<th>Peaked</th>
-<th>Recoverable oil, past and future (billion barrels)</th>
-<th>Production (million barrels/day)</th>
-<th>Rate of decline</th>
-<th>Recoverable oil</th>
-<th>Peak</th>
-<th>n</th>
-<th>Production</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Ghawar Field</td>
-<td>Saudi Arabia</td>
-<td>1948.0</td>
-<td>1951[3]</td>
-<td>2005,[4] disputed[5]</td>
-<td>88-104[6]</td>
-<td>5[7]</td>
-<td>8% per year[8]</td>
-<td>88.0</td>
-<td>2005</td>
-<td>5113 days</td>
-<td>5</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Burgan Field</td>
-<td>Kuwait</td>
-<td>1937.0</td>
-<td>1948</td>
-<td>2005[9]</td>
-<td>66-72[8]</td>
-<td>1.7[10]</td>
-<td>14% per year[citation needed]</td>
-<td>66.0</td>
-<td>2005</td>
-<td>5113 days</td>
-<td>1.7</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ahvaz Field</td>
-<td>Iran, Islamic Republic of</td>
-<td>1958.0</td>
-<td>NaN</td>
-<td>1970s[11]</td>
-<td>65 (25 recoverable)[12]</td>
-<td>.750[13]</td>
-<td>NaN</td>
-<td>65.0</td>
-<td>1970</td>
-<td>17897 days</td>
-<td>.750</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Upper Zakum oil field</td>
-<td>United Arab Emirates</td>
-<td>1963.0</td>
-<td>1982[15][16] (1967[14])</td>
-<td>Production still increasing</td>
-<td>50[15] (21 recoverable[14])</td>
-<td>0.750[15]</td>
-<td>Extension planned to 1 MMb/d[17]</td>
-<td>50.0</td>
-<td>NaN</td>
-<td>NaT</td>
-<td>0.750</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Gachsaran Field</td>
-<td>Iran, Islamic Republic of</td>
-<td>1927.0</td>
-<td>1930</td>
-<td>1974</td>
-<td>66[18]</td>
-<td>0.480</td>
-<td>NaN</td>
-<td>66.0</td>
-<td>1974</td>
-<td>16436 days</td>
-<td>0.480</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Field</th>
+      <th>Location</th>
+      <th>Discovered</th>
+      <th>Started production</th>
+      <th>Peaked</th>
+      <th>Recoverable oil, past and future (billion barrels)</th>
+      <th>Production (million barrels/day)</th>
+      <th>Rate of decline</th>
+      <th>Recoverable oil</th>
+      <th>Peak</th>
+      <th>n</th>
+      <th>Production</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ghawar Field</td>
+      <td>Saudi Arabia</td>
+      <td>1948.0</td>
+      <td>1951[3]</td>
+      <td>2005,[4] disputed[5]</td>
+      <td>88-104[6]</td>
+      <td>5[7]</td>
+      <td>8% per year[8]</td>
+      <td>88.0</td>
+      <td>2005</td>
+      <td>5113 days</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Burgan Field</td>
+      <td>Kuwait</td>
+      <td>1937.0</td>
+      <td>1948</td>
+      <td>2005[9]</td>
+      <td>66-72[8]</td>
+      <td>1.7[10]</td>
+      <td>14% per year[citation needed]</td>
+      <td>66.0</td>
+      <td>2005</td>
+      <td>5113 days</td>
+      <td>1.7</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ahvaz Field</td>
+      <td>Iran, Islamic Republic of</td>
+      <td>1958.0</td>
+      <td>NaN</td>
+      <td>1970s[11]</td>
+      <td>65 (25 recoverable)[12]</td>
+      <td>.750[13]</td>
+      <td>NaN</td>
+      <td>65.0</td>
+      <td>1970</td>
+      <td>17897 days</td>
+      <td>.750</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Upper Zakum oil field</td>
+      <td>United Arab Emirates</td>
+      <td>1963.0</td>
+      <td>1982[15][16] (1967[14])</td>
+      <td>Production still increasing</td>
+      <td>50[15] (21 recoverable[14])</td>
+      <td>0.750[15]</td>
+      <td>Extension planned to 1 MMb/d[17]</td>
+      <td>50.0</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Gachsaran Field</td>
+      <td>Iran, Islamic Republic of</td>
+      <td>1927.0</td>
+      <td>1930</td>
+      <td>1974</td>
+      <td>66[18]</td>
+      <td>0.480</td>
+      <td>NaN</td>
+      <td>66.0</td>
+      <td>1974</td>
+      <td>16436 days</td>
+      <td>0.480</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's drop the fields that don't have enough data:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [34]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fit_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'Field'</span><span class="p">,</span> <span class="s1">'Location'</span><span class="p">,</span> <span class="s1">'Discovered'</span><span class="p">,</span> <span class="s1">'Recoverable oil'</span><span class="p">,</span> <span class="s1">'Peak'</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">,</span> <span class="s1">'Production'</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-<span class="n">fit_data</span><span class="p">[</span><span class="s1">'Production'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">fit_data</span><span class="p">[</span><span class="s1">'Production'</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fit_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Field&#39;</span><span class="p">,</span> <span class="s1">&#39;Location&#39;</span><span class="p">,</span> <span class="s1">&#39;Discovered&#39;</span><span class="p">,</span> <span class="s1">&#39;Recoverable oil&#39;</span><span class="p">,</span> <span class="s1">&#39;Peak&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;Production&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;Production&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;Production&#39;</span><span class="p">])</span>
 <span class="n">fit_data</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">fit_data</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[34]:</div>
+
+    <div class="prompt output_prompt">Out[34]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -4597,130 +4891,134 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Field</th>
-<th>Location</th>
-<th>Discovered</th>
-<th>Recoverable oil</th>
-<th>Peak</th>
-<th>n</th>
-<th>Production</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Ghawar Field</td>
-<td>Saudi Arabia</td>
-<td>1948.0</td>
-<td>88.0</td>
-<td>2005</td>
-<td>5113 days</td>
-<td>5.000</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Burgan Field</td>
-<td>Kuwait</td>
-<td>1937.0</td>
-<td>66.0</td>
-<td>2005</td>
-<td>5113 days</td>
-<td>1.700</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ahvaz Field</td>
-<td>Iran, Islamic Republic of</td>
-<td>1958.0</td>
-<td>65.0</td>
-<td>1970</td>
-<td>17897 days</td>
-<td>0.750</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Gachsaran Field</td>
-<td>Iran, Islamic Republic of</td>
-<td>1927.0</td>
-<td>66.0</td>
-<td>1974</td>
-<td>16436 days</td>
-<td>0.480</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Cantarell Field</td>
-<td>Mexico</td>
-<td>1976.0</td>
-<td>35.0</td>
-<td>2004</td>
-<td>5479 days</td>
-<td>0.340</td>
-</tr>
-<tr>
-<th>5</th>
-<td>Tengiz Field</td>
-<td>Kazakhstan</td>
-<td>1979.0</td>
-<td>26.0</td>
-<td>2010</td>
-<td>3287 days</td>
-<td>0.530</td>
-</tr>
-<tr>
-<th>6</th>
-<td>Samotlor Field</td>
-<td>Russian Federation</td>
-<td>1965.0</td>
-<td>14.0</td>
-<td>1980</td>
-<td>14245 days</td>
-<td>0.844</td>
-</tr>
-<tr>
-<th>7</th>
-<td>Prudhoe Bay</td>
-<td>United States</td>
-<td>1967.0</td>
-<td>25.0</td>
-<td>1988</td>
-<td>11323 days</td>
-<td>0.660</td>
-</tr>
-<tr>
-<th>8</th>
-<td>Ekofisk oil field</td>
-<td>Norway</td>
-<td>1969.0</td>
-<td>3.3</td>
-<td>2006</td>
-<td>4748 days</td>
-<td>0.127</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Field</th>
+      <th>Location</th>
+      <th>Discovered</th>
+      <th>Recoverable oil</th>
+      <th>Peak</th>
+      <th>n</th>
+      <th>Production</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ghawar Field</td>
+      <td>Saudi Arabia</td>
+      <td>1948.0</td>
+      <td>88.0</td>
+      <td>2005</td>
+      <td>5113 days</td>
+      <td>5.000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Burgan Field</td>
+      <td>Kuwait</td>
+      <td>1937.0</td>
+      <td>66.0</td>
+      <td>2005</td>
+      <td>5113 days</td>
+      <td>1.700</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ahvaz Field</td>
+      <td>Iran, Islamic Republic of</td>
+      <td>1958.0</td>
+      <td>65.0</td>
+      <td>1970</td>
+      <td>17897 days</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Gachsaran Field</td>
+      <td>Iran, Islamic Republic of</td>
+      <td>1927.0</td>
+      <td>66.0</td>
+      <td>1974</td>
+      <td>16436 days</td>
+      <td>0.480</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Cantarell Field</td>
+      <td>Mexico</td>
+      <td>1976.0</td>
+      <td>35.0</td>
+      <td>2004</td>
+      <td>5479 days</td>
+      <td>0.340</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Tengiz Field</td>
+      <td>Kazakhstan</td>
+      <td>1979.0</td>
+      <td>26.0</td>
+      <td>2010</td>
+      <td>3287 days</td>
+      <td>0.530</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Samotlor Field</td>
+      <td>Russian Federation</td>
+      <td>1965.0</td>
+      <td>14.0</td>
+      <td>1980</td>
+      <td>14245 days</td>
+      <td>0.844</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Prudhoe Bay</td>
+      <td>United States</td>
+      <td>1967.0</td>
+      <td>25.0</td>
+      <td>1988</td>
+      <td>11323 days</td>
+      <td>0.660</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Ekofisk oil field</td>
+      <td>Norway</td>
+      <td>1969.0</td>
+      <td>3.3</td>
+      <td>2006</td>
+      <td>4748 days</td>
+      <td>0.127</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now loop over this table and fit the omega values.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [35]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="k">def</span> <span class="nf">fit_func</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
@@ -4728,7 +5026,7 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 <span class="n">omegas</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">model_production</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">series</span><span class="p">[</span><span class="s1">'Recoverable oil'</span><span class="p">]</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">series</span><span class="p">[</span><span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mi">365</span>
     <span class="n">prod</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">Production</span>
     <span class="n">fit</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">fit_func</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">),</span>
@@ -4737,39 +5035,56 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
         <span class="n">p0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
     <span class="n">omegas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fit</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">model_production</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fit_func</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">omegas</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">Q</span><span class="p">))</span>
-<span class="n">fit_data</span><span class="p">[</span><span class="s1">'omega'</span><span class="p">]</span> <span class="o">=</span> <span class="n">omegas</span>
-<span class="n">fit_data</span><span class="p">[</span><span class="s1">'model_production'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_production</span>
+<span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;omega&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">omegas</span>
+<span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;model_production&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_production</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.6/site-packages/scipy/optimize/minpack.py:787: OptimizeWarning: Covariance of the parameters could not be estimated
   category=OptimizeWarning)
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [36]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fit_data</span><span class="p">[[</span><span class="s1">'Field'</span><span class="p">,</span> <span class="s1">'Production'</span><span class="p">,</span> <span class="s1">'model_production'</span><span class="p">]]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fit_data</span><span class="p">[[</span><span class="s1">&#39;Field&#39;</span><span class="p">,</span> <span class="s1">&#39;Production&#39;</span><span class="p">,</span> <span class="s1">&#39;model_production&#39;</span><span class="p">]]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[36]:</div>
+
+    <div class="prompt output_prompt">Out[36]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -4786,81 +5101,85 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Field</th>
-<th>Production</th>
-<th>model_production</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Ghawar Field</td>
-<td>5.000</td>
-<td>1.406367</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Burgan Field</td>
-<td>1.700</td>
-<td>1.054775</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ahvaz Field</td>
-<td>0.750</td>
-<td>0.296773</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Gachsaran Field</td>
-<td>0.480</td>
-<td>0.328125</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Cantarell Field</td>
-<td>0.340</td>
-<td>0.521986</td>
-</tr>
-<tr>
-<th>5</th>
-<td>Tengiz Field</td>
-<td>0.530</td>
-<td>0.646347</td>
-</tr>
-<tr>
-<th>6</th>
-<td>Samotlor Field</td>
-<td>0.844</td>
-<td>0.080308</td>
-</tr>
-<tr>
-<th>7</th>
-<td>Prudhoe Bay</td>
-<td>0.660</td>
-<td>0.180414</td>
-</tr>
-<tr>
-<th>8</th>
-<td>Ekofisk oil field</td>
-<td>0.127</td>
-<td>0.056793</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Field</th>
+      <th>Production</th>
+      <th>model_production</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ghawar Field</td>
+      <td>5.000</td>
+      <td>1.406367</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Burgan Field</td>
+      <td>1.700</td>
+      <td>1.054775</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ahvaz Field</td>
+      <td>0.750</td>
+      <td>0.296773</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Gachsaran Field</td>
+      <td>0.480</td>
+      <td>0.328125</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Cantarell Field</td>
+      <td>0.340</td>
+      <td>0.521986</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Tengiz Field</td>
+      <td>0.530</td>
+      <td>0.646347</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Samotlor Field</td>
+      <td>0.844</td>
+      <td>0.080308</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Prudhoe Bay</td>
+      <td>0.660</td>
+      <td>0.180414</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Ekofisk oil field</td>
+      <td>0.127</td>
+      <td>0.056793</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If we compare the model predictions as well as the real values, we can see that the point-fit is not really a good method (in the sense that it doesn't fit the data really well).</p>
+
 </div>
 </div>
 </div>
@@ -4868,13 +5187,14 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>But at least, we now have some values for the $\omega$ parameter. So we can turn to forecasting oil reserves as a function of time, using the average omega value.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Forecasting-using-the-Hubbert-model">Forecasting using the Hubbert model<a class="anchor-link" href="#Forecasting-using-the-Hubbert-model">¶</a></h2>
+<h2 id="Forecasting-using-the-Hubbert-model">Forecasting using the Hubbert model<a class="anchor-link" href="#Forecasting-using-the-Hubbert-model">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -4882,49 +5202,62 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our final plot will be simple: using an average value for the omega parameter, we can plot the yearly oil production in billion of barrels as a function of time under the assumption that all oil fields follow the Hubbert model.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [37]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">mean_omega</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">omega</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_omega</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">omega</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [38]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">subdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'Field'</span><span class="p">,</span> <span class="s1">'Discovered'</span><span class="p">,</span> <span class="s1">'Peak'</span><span class="p">,</span> <span class="s1">'Recoverable oil'</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">subdf</span><span class="p">[</span><span class="s1">'Peak'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">'Peak'</span><span class="p">])</span>
-<span class="n">subdf</span><span class="p">[</span><span class="s1">'UntilPeak'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">'Peak'</span><span class="p">]</span> <span class="o">-</span> <span class="n">subdf</span><span class="p">[</span><span class="s1">'Discovered'</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">subdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Field&#39;</span><span class="p">,</span> <span class="s1">&#39;Discovered&#39;</span><span class="p">,</span> <span class="s1">&#39;Peak&#39;</span><span class="p">,</span> <span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">])</span>
+<span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;UntilPeak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Discovered&#39;</span><span class="p">])</span>
 <span class="n">subdf</span><span class="o">.</span><span class="n">UntilPeak</span> <span class="o">=</span> <span class="n">subdf</span><span class="o">.</span><span class="n">UntilPeak</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">subdf</span><span class="o">.</span><span class="n">UntilPeak</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
-<span class="n">subdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">),</span> <span class="s1">'Peak'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subdf</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">)]</span><span class="o">.</span><span class="n">Discovered</span> <span class="o">+</span> <span class="n">subdf</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">)]</span><span class="o">.</span><span class="n">UntilPeak</span>
+<span class="n">subdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">),</span> <span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subdf</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">)]</span><span class="o">.</span><span class="n">Discovered</span> <span class="o">+</span> <span class="n">subdf</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">)]</span><span class="o">.</span><span class="n">UntilPeak</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [39]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">subdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">subdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[39]:</div>
+
+    <div class="prompt output_prompt">Out[39]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
@@ -4941,101 +5274,116 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Field</th>
-<th>Discovered</th>
-<th>Peak</th>
-<th>Recoverable oil</th>
-<th>UntilPeak</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Ghawar Field</td>
-<td>1948.0</td>
-<td>2005.0</td>
-<td>88.0</td>
-<td>57.0</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Burgan Field</td>
-<td>1937.0</td>
-<td>2005.0</td>
-<td>66.0</td>
-<td>68.0</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ahvaz Field</td>
-<td>1958.0</td>
-<td>1970.0</td>
-<td>65.0</td>
-<td>12.0</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Upper Zakum oil field</td>
-<td>1963.0</td>
-<td>1987.0</td>
-<td>50.0</td>
-<td>24.0</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Gachsaran Field</td>
-<td>1927.0</td>
-<td>1974.0</td>
-<td>66.0</td>
-<td>47.0</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Field</th>
+      <th>Discovered</th>
+      <th>Peak</th>
+      <th>Recoverable oil</th>
+      <th>UntilPeak</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ghawar Field</td>
+      <td>1948.0</td>
+      <td>2005.0</td>
+      <td>88.0</td>
+      <td>57.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Burgan Field</td>
+      <td>1937.0</td>
+      <td>2005.0</td>
+      <td>66.0</td>
+      <td>68.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ahvaz Field</td>
+      <td>1958.0</td>
+      <td>1970.0</td>
+      <td>65.0</td>
+      <td>12.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Upper Zakum oil field</td>
+      <td>1963.0</td>
+      <td>1987.0</td>
+      <td>50.0</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Gachsaran Field</td>
+      <td>1927.0</td>
+      <td>1974.0</td>
+      <td>66.0</td>
+      <td>47.0</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [40]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2080</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2080</span><span class="p">)</span>
 <span class="n">total_production</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
 <span class="n">curves</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">subdf</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">field_production</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="n">series</span><span class="p">[</span><span class="s1">'Recoverable oil'</span><span class="p">],</span> <span class="n">mean_omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">series</span><span class="p">[</span><span class="s1">'Peak'</span><span class="p">])</span>
+    <span class="n">field_production</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="n">series</span><span class="p">[</span><span class="s1">&#39;Recoverable oil&#39;</span><span class="p">],</span> <span class="n">mean_omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">series</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">])</span>
     <span class="n">total_production</span> <span class="o">+=</span> <span class="n">field_production</span>
-    <span class="n">curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">field_production</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">series</span><span class="o">.</span><span class="n">Field</span><span class="p">,</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'year'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'billion barrels'</span><span class="p">))</span>
+    <span class="n">curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">field_production</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">series</span><span class="o">.</span><span class="n">Field</span><span class="p">,</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;billion barrels&#39;</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [41]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [width=600 tools=['hover']]
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [width=600 tools=[&#39;hover&#39;]]
 hv.Overlay(curves)
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[41]:</div>
-<div id="c74129b4-927f-496f-bed0-2d825b14d0b4"></div>
+
+    <div class="prompt output_prompt">Out[41]:</div>
+
+
+
+
+
+<div id="06f27639-dda4-46e8-80a7-298b92915f44"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#c74129b4-927f-496f-bed0-2d825b14d0b4');
+var element = $('#06f27639-dda4-46e8-80a7-298b92915f44');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2618')) && !(document.getElementById('_anim_imgNone'))) {
@@ -5084,37 +5432,51 @@ if (!(document.getElementById('2618')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And finally, we can show the total production over the years computed using this data as well as the cumulative production.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [42]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [tools=['hover']]
-hv.Curve((t, total_production), kdims='year', vdims='billion barrels', label='yearly production').opts(width=300) + \
-    hv.Curve((t, total_production.cumsum()), kdims='year', vdims='cumulated billion barrels', label='cumulative production').opts(width=300)
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [tools=[&#39;hover&#39;]]
+hv.Curve((t, total_production), kdims=&#39;year&#39;, vdims=&#39;billion barrels&#39;, label=&#39;yearly production&#39;).opts(width=300) + \
+    hv.Curve((t, total_production.cumsum()), kdims=&#39;year&#39;, vdims=&#39;cumulated billion barrels&#39;, label=&#39;cumulative production&#39;).opts(width=300)
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[42]:</div>
-<div id="99c676aa-c14f-4efe-8bf4-78c88789e964"></div>
+
+    <div class="prompt output_prompt">Out[42]:</div>
+
+
+
+
+
+<div id="0945b52c-8234-4924-afaa-1704240f2aea"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#99c676aa-c14f-4efe-8bf4-78c88789e964');
+var element = $('#0945b52c-8234-4924-afaa-1704240f2aea');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNone'))) {
@@ -5163,21 +5525,25 @@ if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Are these curves realistic? Well, probably not. In particular, they don't look like the data that I cited at the beginning of this article. Does that mean that the model we used to describe this situation is wrong? Yes, very probably (or our fit procedure, of course)! However, it is still usefull in the sense that it gives a numerical estimate of the world oil production from first principles as well as its dynamics.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -5185,6 +5551,7 @@ if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I hope you had fun following along this data exploration. While the first parts were simply descriptive, we tried to apply some basic modeling to the publicly available data. I don't think the result is very good, but it nonetheless is an interesting approach to get to know some of basic data related to oil fields.</p>
+
 </div>
 </div>
 </div>
@@ -5192,9 +5559,12 @@ if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20190102_OilFieldsWikipedia.ipynb">20190102_OilFieldsWikipedia.ipynb</a>.</em></p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

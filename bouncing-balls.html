@@ -1568,13 +1568,14 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Following a recent <a href="https://www.youtube.com/watch?v=tCc6ft3xmPs">Lindy Hop</a> class, I'm now interesting in bouncing off the ground with my feet.</p>
 <p>But what is bouncing? How does it work? And, most importantly, what are its equations? Follow me into the world of elastic collisions.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-mathematics-of-bouncing:-a-falling-ball">The mathematics of bouncing: a falling ball<a class="anchor-link" href="#The-mathematics-of-bouncing:-a-falling-ball">¶</a></h1>
+<h1 id="The-mathematics-of-bouncing:-a-falling-ball">The mathematics of bouncing: a falling ball<a class="anchor-link" href="#The-mathematics-of-bouncing:-a-falling-ball">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1582,6 +1583,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I'd like to formulate the bouncing problem in terms of a simple analogy: the movement of a ball that falls on the ground and bounces off from it.</p>
+
 </div>
 </div>
 </div>
@@ -1593,59 +1595,73 @@ $$m \frac{d \vec{v}}{dt} = m \vec{g}$$<p>Gravity is constant and thus we can int
 $$
 \vec{x} = \frac{1}{2}\vec{g}t^2 + \vec{v_0}t + \vec{x_0}
 $$<p>This is already interesting, as this equation describes the trajectory of a cannon ball when friction is negligible, or a thrown rock, a basketball and numerous other things. Let's implement this.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_trajectory</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_trajectory</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">2.</span> <span class="o">*</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">])[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">v_0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">x_0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">'-o'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'or'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x (m)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'y (m)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'trajectory over duration $\Delta t = </span><span class="si">{}</span><span class="s1">$ seconds'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_max</span> <span class="o">-</span> <span class="n">t_min</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x (m)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y (m)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;trajectory over duration $\Delta t = </span><span class="si">{}</span><span class="s1">$ seconds&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_max</span> <span class="o">-</span> <span class="n">t_min</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_trajectory</span><span class="p">(</span><span class="n">x_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_trajectory</span><span class="p">(</span><span class="n">x_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
                 <span class="n">v_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]),</span>
                 <span class="n">t_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
                 <span class="n">t_max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfcAAAFwCAYAAAClwDJHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl81NW9//HXZF9JAoQdEjYPi+wIKsqiKO4btmL32ms3
 lHt/lS7X29vb2+3aVmxLr91srdZbS61a1FoU2URQlCWyBQ5rgABhTSAJZJ35/TETnCQTspCZ7yzv
@@ -1938,59 +1954,82 @@ LoWSu0js+jHwD2vtRuAhvNtL5jW5z2vADL/rLW0j6Wly21TfY0XEAdryVURa5JsKtwa4ylpb19r9
 fcj/DNUAAABaSURBVI8ZAzxqrb0vqMGJSItUcxeRFllrq4EfAl9tx8O+DjwSnIhEpC1UcxcREYky
 qrmLiIhEGSV3ERGRKKPkLiIiEmWU3EVERKKMkruIiEiUUXIXERGJMv8fT8HMTNbpWcgAAAAASUVO
 RK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This seems to work, let's see what happens if we make it interactive.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>:0: FutureWarning: IPython widgets are experimental and may change in the future.
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v_0x</span><span class="p">,</span> <span class="n">v_0y</span><span class="p">,</span> <span class="n">t_max</span><span class="p">:</span> <span class="n">plot_trajectory</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v_0x</span><span class="p">,</span> <span class="n">v_0y</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span><span class="p">),</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v_0x</span><span class="p">,</span> <span class="n">v_0y</span><span class="p">,</span> <span class="n">t_max</span><span class="p">:</span> <span class="n">plot_trajectory</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v_0x</span><span class="p">,</span> <span class="n">v_0y</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span><span class="p">),</span>
          <span class="n">v_0x</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> 
          <span class="n">v_0y</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> 
          <span class="n">t_max</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAFwCAYAAABO94lEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcVNWd9/FP9Q5N07TQgAI2InBE3BB3jYCiUWNco3GN
 xieJGmMmz8RkEieTmclMJquZxCRmsmjUeRIzoxKVGJeIBoK7uCJwRLQbEBoaaHrf6z5/3FtYXV3d
@@ -2218,32 +2257,37 @@ Wugi0XId8DbwM2vt82nOzwI2J/1ea619A8AYsxlY5h2vAQ5Kul2Nd18RCYha6CLRMh13S8b5/ZyP
 8T3gT9baVcAXcLfqrUq5zVJgUdLv/W3H6KScO9W7r4gERNunisge3mVrK4ETrbXde7u9d58jcfdp
 /qSvwYnIgNRCF5E9rLUdwLeBzw/hbl8BvuxPRCIyWGqhi4iIhIBa6CIiIiGggi4iIhICKugiIiIh
 oIIuIiISAiroIiIiIaCCLiIiEgL/H69JBAfUvH2EAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can produce a simple animation from the previous code.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">JSAnimation</span> <span class="kn">import</span> <span class="n">IPython_display</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">JSAnimation</span> <span class="kn">import</span> <span class="n">IPython_display</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">animation</span>
 
 <span class="n">frames</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'x (m)'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'y (m)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x (m)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y (m)&#39;</span><span class="p">)</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">frames</span><span class="p">)</span>
 <span class="n">v_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">22</span><span class="p">])</span>
 <span class="n">x_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,))</span>
@@ -2252,25 +2296,34 @@ oIIuIiISAiroIiIiIaCCLiIiEgL/H69JBAfUvH2EAAAAAElFTkSuQmCC
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">'-o'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'or'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="s1">'or'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"$t = </span><span class="si">{:.2f}</span><span class="s2">$ seconds"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$t = </span><span class="si">{:.2f}</span><span class="s2">$ seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span> 
 
 <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="n">frames</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
+
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -2406,26 +2459,29 @@ oIIuIiISAiroIiIiIaCCLiIiEgL/H69JBAfUvH2EAAAAAElFTkSuQmCC
     if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_imgUQUGWUOERNZPLRPW"/>
-<br/>
-<input id="_anim_sliderUQUGWUOERNZPLRPW" max="1" min="0" name="points" onchange="animUQUGWUOERNZPLRPW.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="animUQUGWUOERNZPLRPW.slower()">–</button>
-<button onclick="animUQUGWUOERNZPLRPW.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="/></button>
-<button onclick="animUQUGWUOERNZPLRPW.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"/></button>
-<button onclick="animUQUGWUOERNZPLRPW.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="/></button>
-<button onclick="animUQUGWUOERNZPLRPW.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animUQUGWUOERNZPLRPW.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animUQUGWUOERNZPLRPW.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"/></button>
-<button onclick="animUQUGWUOERNZPLRPW.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animUQUGWUOERNZPLRPW.faster()">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_selectUQUGWUOERNZPLRPW">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_imgUQUGWUOERNZPLRPW">
+    <br>
+    <input id="_anim_sliderUQUGWUOERNZPLRPW" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="animUQUGWUOERNZPLRPW.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="animUQUGWUOERNZPLRPW.slower()">&#8211;</button>
+    <button onclick="animUQUGWUOERNZPLRPW.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="></button>
+    <button onclick="animUQUGWUOERNZPLRPW.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"></button>
+    <button onclick="animUQUGWUOERNZPLRPW.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="></button>
+    <button onclick="animUQUGWUOERNZPLRPW.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animUQUGWUOERNZPLRPW.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animUQUGWUOERNZPLRPW.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"></button>
+    <button onclick="animUQUGWUOERNZPLRPW.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animUQUGWUOERNZPLRPW.faster()">+</button>
+  <form action="#n" name="_anim_loop_selectUQUGWUOERNZPLRPW" class="anim_control">
+    <input type="radio" name="state" value="once" > Once </input>
+    <input type="radio" name="state" value="loop" checked> Loop </input>
+    <input type="radio" name="state" value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -2464,22 +2520,27 @@ oIIuIiISAiroIiIiIaCCLiIiEgL/H69JBAfUvH2EAAAAAElFTkSuQmCC
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can notice in the previous animation, the ball comes to a stop when reaching the highest altitude. This is typical for a gravity-based ball throw.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Adding-an-elastic-collision-to-create-a-bouncing-effect">Adding an elastic collision to create a bouncing effect<a class="anchor-link" href="#Adding-an-elastic-collision-to-create-a-bouncing-effect">¶</a></h1>
+<h1 id="Adding-an-elastic-collision-to-create-a-bouncing-effect">Adding an elastic collision to create a bouncing effect<a class="anchor-link" href="#Adding-an-elastic-collision-to-create-a-bouncing-effect">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -2491,23 +2552,24 @@ oIIuIiISAiroIiIiIaCCLiIiEgL/H69JBAfUvH2EAAAAAElFTkSuQmCC
 <p>We will implement the vector form of the formula describing the change in velocity for two moving objects:
 $$
 \begin{align}
-\mathbf{v}'_1&=\mathbf{v}_1-\frac{2 m_2}{m_1+m_2} \ \frac{\langle \mathbf{v}_1-\mathbf{v}_2,\,\mathbf{x}_1-\mathbf{x}_2\rangle}{\|\mathbf{x}_1-\mathbf{x}_2\|^2} \ (\mathbf{x}_1-\mathbf{x}_2),
+\mathbf{v}'_1&amp;=\mathbf{v}_1-\frac{2 m_2}{m_1+m_2} \ \frac{\langle \mathbf{v}_1-\mathbf{v}_2,\,\mathbf{x}_1-\mathbf{x}_2\rangle}{\|\mathbf{x}_1-\mathbf{x}_2\|^2} \ (\mathbf{x}_1-\mathbf{x}_2),
 \\
-\mathbf{v}'_2&=\mathbf{v}_2-\frac{2 m_1}{m_1+m_2} \ \frac{\langle \mathbf{v}_2-\mathbf{v}_1,\,\mathbf{x}_2-\mathbf{x}_1\rangle}{\|\mathbf{x}_2-\mathbf{x}_1\|^2} \ (\mathbf{x}_2-\mathbf{x}_1)
+\mathbf{v}'_2&amp;=\mathbf{v}_2-\frac{2 m_1}{m_1+m_2} \ \frac{\langle \mathbf{v}_2-\mathbf{v}_1,\,\mathbf{x}_2-\mathbf{x}_1\rangle}{\|\mathbf{x}_2-\mathbf{x}_1\|^2} \ (\mathbf{x}_2-\mathbf{x}_1)
 \end{align}
 $$</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_velocity_after_collision</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">x1</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_velocity_after_collision</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">x1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    computes the new velocity of the ball, in vector form, after collision</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m2</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">m1</span>
     <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,))</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">])</span>
@@ -2515,23 +2577,26 @@ $$</p>
     <span class="n">v1_prime</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m2</span> <span class="o">/</span> <span class="p">(</span><span class="n">m1</span> <span class="o">+</span> <span class="n">m2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v1_prime</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see what the result of this formula is, using an interactive animation.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_collision_outcome</span><span class="p">(</span><span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">,</span> <span class="n">m1</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_collision_outcome</span><span class="p">(</span><span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">,</span> <span class="n">m1</span><span class="p">):</span>
 
     
     <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">])</span>
@@ -2541,33 +2606,44 @@ $$</p>
     <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1x</span><span class="p">,</span> <span class="n">x1y</span><span class="p">])</span>
     <span class="n">v1_prime</span> <span class="o">=</span> <span class="n">compute_velocity_after_collision</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x1x</span><span class="p">,</span> <span class="n">x1y</span><span class="p">,</span> <span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">'b'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x1x</span><span class="p">,</span> <span class="n">x1y</span><span class="p">,</span> <span class="n">v1_prime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1_prime</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x1x</span><span class="p">,</span> <span class="n">x1y</span><span class="p">,</span> <span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x1x</span><span class="p">,</span> <span class="n">x1y</span><span class="p">,</span> <span class="n">v1_prime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1_prime</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">plot_collision_outcome</span><span class="p">,</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">plot_collision_outcome</span><span class="p">,</span>
         <span class="n">v1x</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
         <span class="n">v1y</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
         <span class="n">m1</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAegAAAFVCAYAAAAkBHynAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAEUNJREFUeJzt3X2o5XWdB/D3mRnvaHCnv25kLeXz949AoyIjY02oFmUr
 VzZ62N3StcySXdSedgUty8KywjYpI6eyNMiaFGopYxUakIgeDIngOzM9uVrQkNbYoDY6d/+YM+5l
@@ -2648,11 +2724,15 @@ BlJrvauU8qxJrI0VOfS7Jpz7ZUcO7MhSa91ZSvljkqOT3D/RVbESC79vs1ki6yZ+F7c53r11RYa7
 3uvB1UluKqWclQM76XMnuxyW4dYkryyl3DV8fN4kF8OKbU3yxVLKwZP6eTogvXEw796V5POllJkk
 v0jyjcXeZBY3ADRo4i1uAODJBDQANEhAA0CDBDQANEhAA0CDBDQANEhAA0CD/g8jK08yZ9owHQAA
 AABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -2668,59 +2748,75 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_bounce_time</span><span class="p">(</span><span class="n">vy0</span><span class="p">,</span> <span class="n">xy0</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_bounce_time</span><span class="p">(</span><span class="n">vy0</span><span class="p">,</span> <span class="n">xy0</span><span class="p">):</span>
     <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="mf">9.81</span><span class="p">,</span> <span class="n">vy0</span><span class="p">,</span> <span class="n">xy0</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">roots</span><span class="p">[</span><span class="n">roots</span> <span class="o">></span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">roots</span><span class="p">[</span><span class="n">roots</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use the example from the animation we drew in the first part of this post to check that our function is correct. In that animation, the bouncing time was around 4.5 seconds for an initial vertical velocity of 22 m/s and an initial vertical position of 0 meters.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">compute_bounce_time</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">compute_bounce_time</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 4.48521916])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This seems to work.</p>
 <p>So now all that's left to do is do an animation using the functions we have put together. We'll specify the number of bounces we want to observe and animate the whole thing.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_trajectory_with_bounce</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">number_of_bounces</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_trajectory_with_bounce</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">number_of_bounces</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="mf">0.</span>
     <span class="n">total_time</span> <span class="o">=</span> <span class="mf">0.</span>
@@ -2729,7 +2825,7 @@ $$
         <span class="k">if</span> <span class="n">bounce_time</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># we only keep the biggest bouncing time (in case there's a near zero one)</span>
+            <span class="c1"># we only keep the biggest bouncing time (in case there&#39;s a near zero one)</span>
             <span class="n">bounce_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">bounce_time</span><span class="p">)</span>
             
         <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">bounce_time</span><span class="p">)</span>
@@ -2742,32 +2838,43 @@ $$
         <span class="n">total_time</span> <span class="o">+=</span> <span class="n">bounce_time</span>
 
     <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">'-o'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x (m)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'y (m)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"total time: </span><span class="si">{:.2f}</span><span class="s2"> seconds"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_time</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x (m)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y (m)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;total time: </span><span class="si">{:.2f}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_time</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_trajectory_with_bounce</span><span class="p">(</span><span class="n">x_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_trajectory_with_bounce</span><span class="p">(</span><span class="n">x_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
                 <span class="n">v_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]),</span>
                 <span class="n">number_of_bounces</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAe4AAAFtCAYAAADBM4kgAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xt8XHWd//HXTK5NMm3TNnRaLqncvlKXQFy6InfcXa/g
 ivFSdbUVBFFKdDXeViyKsoIEBNT1tijobzXKxfuuuHJVvKFGUMEvFGhpoaVpm2tzT+b3x5lJJpOZ
@@ -3063,25 +3170,30 @@ e6l7dI8RoB3SRPxAiVsk4IwxdcBXcLrDB40x70pz2BM4yX2+jgQeX3h0IjJfStwiwXc18GNr7R+A
 LThbrjamHPMj4Oykx5m2DYylfO+M+M+KSJFoW08RSSwH+yXwYmvt+FzHx3/mBODfrbVvLGhwIjKD
 WtwigrV2BLgSePc8fuwDwPsLE5GIZKIWt4iIiI+oxS0iIuIjStwiIiI+osQtIiLiI0rcIiIiPqLE
 LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using the previous code, we can come up with an animation of a boucing ball:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># general variables</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># general variables</span>
 <span class="n">number_of_bounces</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">frames</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">7.</span> <span class="o">/</span> <span class="n">frames</span>
@@ -3090,8 +3202,8 @@ LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
 <span class="c1"># configure axes</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'x (m)'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'y (m)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x (m)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y (m)&#39;</span><span class="p">)</span>
 
 <span class="c1"># compute trajectory</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">frames</span><span class="p">)</span>
@@ -3105,7 +3217,7 @@ LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
     <span class="k">if</span> <span class="n">bounce_time</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">continue</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># we only keep the biggest bouncing time (in case there's a near zero one)</span>
+        <span class="c1"># we only keep the biggest bouncing time (in case there&#39;s a near zero one)</span>
         <span class="n">bounce_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">bounce_time</span><span class="p">)</span>
 
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">bounce_time</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
@@ -3120,25 +3232,34 @@ LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">'-o'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'or'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="s1">'or'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"$t = </span><span class="si">{:.2f}</span><span class="s2">$ seconds"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">dt</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$t = </span><span class="si">{:.2f}</span><span class="s2">$ seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">dt</span><span class="p">))</span>
     <span class="k">return</span> 
 
 <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                         <span class="n">frames</span><span class="o">=</span><span class="n">frames</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[14]:</div>
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
+
 <script language="javascript">
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
@@ -3274,26 +3395,29 @@ LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
     if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
   }
 </script>
-<div align="center" class="animation">
-<img id="_anim_imgYDGGYHULHSJQEOIQ"/>
-<br/>
-<input id="_anim_sliderYDGGYHULHSJQEOIQ" max="1" min="0" name="points" onchange="animYDGGYHULHSJQEOIQ.set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="animYDGGYHULHSJQEOIQ.slower()">–</button>
-<button onclick="animYDGGYHULHSJQEOIQ.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="/></button>
-<button onclick="animYDGGYHULHSJQEOIQ.faster()">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_selectYDGGYHULHSJQEOIQ">
-<input name="state" type="radio" value="once"/> Once 
-    <input checked="" name="state" type="radio" value="loop"/> Loop 
-    <input name="state" type="radio" value="reflect"/> Reflect 
+
+<div class="animation" align="center">
+    <img id="_anim_imgYDGGYHULHSJQEOIQ">
+    <br>
+    <input id="_anim_sliderYDGGYHULHSJQEOIQ" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="animYDGGYHULHSJQEOIQ.set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="animYDGGYHULHSJQEOIQ.slower()">&#8211;</button>
+    <button onclick="animYDGGYHULHSJQEOIQ.first_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgaeZk4EQAAASlJREFUKM/dkj9LQnEUhp9zr3bpj1uBcKGiJWxzLWivKAIRjIhcCqcgqJbKRagPICiVSVEuNTu0tLYGUg4tkRGUdxLJ0u79Ndxr5FfwTO/L+xzO4XCgO+v2T70AFU+/A/Dhmlzg6Pr0DKAMwOH4zQxAAbAkv2xNeF2RoQUVc1ytgttXUbWVdN1dOPE8pz4j4APQsdFtKA0WY6vpKjqvVciHnvZTS6Ja4HgggJLs7MHxl9nCh8NYcO+iGG0agiaC4h9oa6Vsw2yiK+QHSZT934YoEQABNBcTNDszsrhm1m1B+bFS86PT6QFppx6oeSaeOwlMXRp1h4aK13Y2kuHhUo9ykPboPvFjeEvsrhTMt3ylHyB0r8KZyYdCrbfj4OveoHMANjuyx+76rV+/blxKMZUnLgAAAABJRU5ErkJggg=="></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.previous_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgyTCyQ6wAAANRJREFUKM9jYBjO4AiUfgzFGGAp4+yayUvX6jMwMDCsYmBgOCS4OAOrSYmMgcc8/pd5Q3irC+Neh/1AlmeBMVgZmP8yMLD8/c/cqv9r90whzv/MX7Eq/MfAwMDIwCuZdfSV8U8WDgZGRmYGrAoZGRgY/jO8b3sj/J2F6T8j4z80pzEhmIwMjAxsSbqqlkeZGP//Z8SlkJnhPwMjwx/Guoe1NhmRwk+YGH5jV8jOwMPHzcDBysAwh8FrxQwtPU99HrwBXsnAwMDAsJiBgYGBoZ1xmKYqALHhMpn1o7igAAAAAElFTkSuQmCC"></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.reverse_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAgmVvZElgAAAVFJREFUKM+t0k8ow3EYx/H3s/2aLDUSZctFkgsHEi1XLi5ukpPSWsuJklwclsPSsDKFi7MSJ0I5qF2GHO2m0FY7+BdNv7Y9DpuxDSt5vsfvq+fT9/k+8D8VBxIAWH6H0ead4Qb5BRwCENoceZi5Stl/6BgCBmtWhjzxg4mUQ02rAhil7JgB9tze7aTLxFAKsUUd14B9ZzCyFUk401gQyQJaDNcBHwv7t7ETd0ZVQFEEzcNCdE/1wtj15imGWlEB8qkf2QaAWjbG/bPSamIDyX65/iwDIFx7tWjUvWCoSo5oGbYATN7PORt7W9IZEQXJH8ohuN7C0VVX91KNqYhq4a1lEGJI0j892tazXCWQRUpwAbYDcHczPxXuajq3mbnhfANz5eOJxsuNvs7+jud0UcuyL3QAkuEMx4rnIvBYq1JhEwPAUb3fG7x8tVdc292/7Po7f2VqA+Yz7ZwAAAAASUVORK5CYII="></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.pause_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkR91DQ2AAAAKtJREFUKM9jYCANTEVib2K4jcRbzQihGWEC00JuNjN8Z2Q0Zo3VYWA4lL005venH9+c3ZK5IfIsMIXMBtc12Bj+MMgxMDAwMPzWe2TBzPCf4SLcZCYY4/9/RgZGBiaYFf8gljFhKiQERhUOeoX/Gf8y/GX4y/APmlj+Mfxj+MfwH64Qnnq0zr9fyfLrPzP3eQYGBobvk5x4GX4xMIij23gdib0cRWYHiVmAAQDK5ircshCbHQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.play_animation()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkEmo00MwAAAS9JREFUKM+tkj1IQmEUhp9j94LQj0FD4RRBLdLQ3ftb26PRcCiQIIiIDFwKC0OhaAiam5wVDBpqCKohQojMLYzaAiUatOtpuQrKVQl64fu+4Xt4OLwc+Fs+nNM16jsPAWS6gZXggoZfXmfhog3hcZ6aTXF87Sp68OmH4/YggAo8bmfyyeh6Z1AAKPVldyO1+Iz2uILq3AriJSe3l+H7aj+cuRnrTsVDxSxay+VYbMDnCtZxxQOU9G4nlU9E1HQBxRkCQMRGRnIbpxMARkvxCIoAorYMMrq0mJ0qu4COUW3xyVDqJC4P+86P0ewDQbQqgevhlc2C8ETApXAEFLzvwa3EXG9BoIE1GQUbv1h7k4fTXxBu6cKgUbX5M3ZzNC+a7rQ936HV56SlRpcle+Mf8wvgJ16zo/4BtQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.next_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAkd/uac8wAAAMhJREFUKM9jYBie4DEUQ8B+fEq3+3UrMzAwMFxjYGBgYJizYubaOUxYFUaXh/6vWfRfEMIL/+//P5gZJoei4/f/7wxnY1PeNUXdE2RgYGZgYoCrY2BBVsjKwMDAwvCS4f3SG/dXxm5gYESSQ1HIwvCPgZmB8f8Pxv+Kxxb/YfiPJIdi9T8GJgaG/38ZFd4Fx0xUYsZt4h8GBgb2D2bLy7KnMTAwMEIxFoVCXIYr1IoDnkF4XAysqNIwUMDAwMDAsADKS2NkGL4AAIARMlfNIfZMAAAAAElFTkSuQmCC"></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.last_frame()"><img class="anim_icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QURCAknOOpFQQAAAS9JREFUKM/dkrEvQ3EQxz/33mtoQxiYpANbLU26NAabSCcSUouGBVNDjYQaOiDpIEiKjURIw2Kx04hEYmkHEpGoJpSISaXq9Wd4P03/ht5y98197/u9XA4aK4rAWw3lgWddZ3S+/G9mEovtAB8AHE4pgTQAx8PbJweRmsq6GimmNpxaNYXVzMNNCI6A2figimwCGACK786zuWgh3qcsKf/w0pM4X0m/doNVFVzVGlEQsdRj193VxEWpH0RsdRu+zi3tVMqCAsDShoiYqiSV4OouVDFEqS9Pbiyg7vV62lpQ2BJ4Gg0meg0MbNpkYG/e+540NNFyrE1a8qHk5BaAjfnrzUaHfAWImVrLIXbgnx4/9X06s35cweWsVACa3a24PVp0X+rPv1aHFnSONdiL8Qci0lzwpOM5sQAAAABJRU5ErkJggg=="></button>
+    <button onclick="animYDGGYHULHSJQEOIQ.faster()">+</button>
+  <form action="#n" name="_anim_loop_selectYDGGYHULHSJQEOIQ" class="anim_control">
+    <input type="radio" name="state" value="once" > Once </input>
+    <input type="radio" name="state" value="loop" checked> Loop </input>
+    <input type="radio" name="state" value="reflect" > Reflect </input>
   </form>
 </div>
+
+
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
@@ -3412,15 +3536,19 @@ LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
     }, 0);
   })()
 </script>
+
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1>
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3430,6 +3558,7 @@ LSIi4iNK3CIiIj7y/wFyIqE9FrwToAAAAABJRU5ErkJggg==
 <p>I hope you've enjoyed this blog post that shows how to animate a bouncing ball according to the laws of physics.
 I'm a bit sad that this post was not about explaining the physics of the bouncing, but rather just about computing trajectories.</p>
 <p>Coming back to my original impulse (which was Lindy Hop), I'll now watch the previous animation and try to hop along to it. Happy bouncing!</p>
+
 </div>
 </div>
 </div>
@@ -3437,9 +3566,12 @@ I'm a bit sad that this post was not about explaining the physics of the bouncin
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20151001_BouncingBalls.ipynb">20151001_BouncingBalls.ipynb</a>.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

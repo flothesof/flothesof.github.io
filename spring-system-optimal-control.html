@@ -1570,13 +1570,14 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In yesterday's post, I investigated spring systems, inspired by the paper <a href="https://arxiv.org/pdf/1910.00935.pdf">DiffTaichi</a> which is about differentiable physics simulations and how to control them using neural networks.</p>
 <p>Since I'm trying to better understand what this paper is about, the goal of this post is to use their simple example as a starting point. What's nice about their work is that the code is open-sourced. In particular, the simple mass spring example is <a href="https://github.com/yuanming-hu/taichi/blob/master/examples/difftaichi/mass_spring_simple.py">here</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Defining-the-problem">Defining the problem<a class="anchor-link" href="#Defining-the-problem">¶</a></h1>
+<h1 id="Defining-the-problem">Defining the problem<a class="anchor-link" href="#Defining-the-problem">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1584,17 +1585,18 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The problem is about three connected springs:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
-<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">'bokeh'</span><span class="p">,</span> <span class="s1">'matplotlib'</span><span class="p">)</span>
+<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;bokeh&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
               <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">],</span>
@@ -1605,29 +1607,39 @@ h6:hover .anchor-link {
                            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 
 <span class="k">def</span> <span class="nf">plot_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">):</span>
-    <span class="sd">"""Plots all x as 2D points, connected by springs indicated by spring_anchors."""</span>
+    <span class="sd">&quot;&quot;&quot;Plots all x as 2D points, connected by springs indicated by spring_anchors.&quot;&quot;&quot;</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spring_anchors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">spring_anchors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="n">x</span><span class="p">[[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="p">:]))</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Overlay</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
     <span class="n">scatter</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Scatter</span><span class="p">((</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Labels</span><span class="p">({(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">):</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]},</span> <span class="p">[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">],</span> <span class="s1">'text'</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Labels</span><span class="p">({(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">):</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]},</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="s1">&#39;text&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">scatter</span> <span class="o">*</span> <span class="n">lines</span> <span class="o">*</span> <span class="n">labels</span>
 
 <span class="n">plot_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="84fe62b6-c25c-4010-8f99-826fc08a81db"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="74d10447-2ed7-420b-8f33-d15ffeb78e59"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#84fe62b6-c25c-4010-8f99-826fc08a81db');
+var element = $('#74d10447-2ed7-420b-8f33-d15ffeb78e59');
 
 (function(root) {
   function now() {
@@ -2162,11 +2174,18 @@ var element = $('#84fe62b6-c25c-4010-8f99-826fc08a81db');
 }(window));
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <style>div.hololayout {
   display: flex;
   align-items: center;
@@ -2274,8 +2293,10 @@ div.bk-hbox div.bk-data-table {
     padding: 20px;
 }
 </style>
+
+
 <div class="logo-block">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAB+wAAAfsBxc2miwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAA6zSURB
 VHic7ZtpeFRVmsf/5966taWqUlUJ2UioBBJiIBAwCZtog9IOgjqACsogKtqirT2ttt069nQ/zDzt
 tI4+CrJIREFaFgWhBXpUNhHZQoKBkIUASchWla1S+3ar7r1nPkDaCAnZKoQP/D7mnPOe9/xy76n3
@@ -2343,9 +2364,16 @@ SLHujPOTPVW+rwY+sxskAAC2HrA8t2Vvc7ffP1r9o+vwR2dcr92InIAbKKC1FZ5tB1tf+/G8p8sv
 N/9Q5zd/XR34LYCwV5JdccMEAMDBk45DH243r/X4xGvqxFa/GNpS7n6rwOwNWwHVE26oAADYurf1
 zx/utOzt+DMKYM0p17YtZZ5VNzqfsB2HewG1WXE8PoZ7gOclbTIvynZf9JV+fqZtfgs/8F/Nu5rB
 EIBmJ+8QRMmpU7EzGRsf2FzuePqYRbzh/zE26EwdrT10f6r6o8HOYzCJB9Dpff8tbnGLG8L/A/WE
-roTBs2RqAAAAAElFTkSuQmCC" style="height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle"/>
-<img src="data:image/png;base64,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" style="height:15px; border-radius:12px; display: inline-block; float: left"/>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+roTBs2RqAAAAAElFTkSuQmCC'
+     style='height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle'></img>
+
+
+  <img src='data:image/png;base64,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'
+       style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
+  
+
+
+  <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAFMAAABTABZarKtgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAArNSURB
 VFiFnVd5VFNXGv/ee0kgGyQhbFoXIKCFYEXEDVErTucMoKUOWA/VLsNSLPQgFTOdyrHPiIp1lFIQ
 OlaPShEG3EpPcQmISCuV1bQ1CLKIULeQhJA9JO+9+UMT0x5aPfOdc895373f/e7v/t537/ddBF5Q
@@ -2395,16 +2423,29 @@ bicI4gSO40NTAgD4bVnuODIAT2pElUq1FEEQO4fD6QsPD++fqixHEATj8/ntjoCrqKhwS0hIsJWV
 leURBHEOx3G563pT3tn5+flBDAbjg6CgoMMpKSlK17GhoSFMJpMFPk04DJIkEQzDzCwW6+5UD5Oa
 mhrfO3fufECS5GHXnf8pAAAAHMfdURTdimGYPjExsTo0NHTyj2ynEplMxurs7HyHIAiKJMlSHMct
 U9k9N2vl5+cH0en0TRiGWX18fC65vnh+LxqNBq2oqFhgMpmi7XY7arVaj+zdu/fxn/l/4bSZl5fH
-5nK5CQAQMtXznCRJePpEbwOAZhzHX4ix/wHzzC/tu64gcwAAAABJRU5ErkJggg==" style="height:15px; border-radius:12px; display: inline-block; float: left"/>
+5nK5CQAQMtXznCRJePpEbwOAZhzHX4ix/wHzzC/tu64gcwAAAABJRU5ErkJggg=='
+       style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
+  
+
+
 </div>
+
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="fd51d57d-7788-4bef-9574-0ac2b0358eea"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="caab96c3-e315-4a35-a50b-9d8b8a3409b0"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#fd51d57d-7788-4bef-9574-0ac2b0358eea');
+var element = $('#caab96c3-e315-4a35-a50b-9d8b8a3409b0');
 function HoloViewsWidget() {
 }
 
@@ -3277,12 +3318,23 @@ if (window.Jupyter !== undefined) {
 
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[1]:</div>
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="1003" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1003" id="63b03229-6c05-4929-b8b8-8abfee93e9dc"></div>
+<div id='1003' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="63b03229-6c05-4929-b8b8-8abfee93e9dc" data-root-id="1003"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3310,27 +3362,31 @@ if (window.Jupyter !== undefined) {
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The points have masses and the springs have stiffness as well as spring lengths and follow (damped) Newtonian dynamics (here, I implemented this with numpy and accelerated it using numba). This leads to the following type of behaviour:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span> 
 
 <span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">compute_spring_forces</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">):</span>
-    <span class="sd">"""Computes the spring forces."""</span>
+    <span class="sd">&quot;&quot;&quot;Computes the spring forces.&quot;&quot;&quot;</span>
     <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spring_anchors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">spring_anchors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -3344,7 +3400,7 @@ if (window.Jupyter !== undefined) {
 
 <span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">time_step_integration</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
-    <span class="sd">"""Integrates the forces using semi-implicit Euler time integration with damping."""</span>
+    <span class="sd">&quot;&quot;&quot;Integrates the forces using semi-implicit Euler time integration with damping.&quot;&quot;&quot;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">*</span> <span class="n">damping</span><span class="p">)</span> 
     <span class="n">v_new</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">forces</span> <span class="o">/</span> <span class="n">masses</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">x_new</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">v_new</span>
@@ -3364,8 +3420,8 @@ if (window.Jupyter !== undefined) {
 
 <span class="k">def</span> <span class="nf">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">n_frames</span><span class="p">):</span>
     <span class="n">hmap</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">HoloMap</span><span class="p">({</span><span class="n">i</span><span class="p">:</span> <span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">snapshots</span><span class="p">),</span> <span class="n">n_frames</span><span class="p">)},</span> 
-                      <span class="n">kdims</span><span class="o">=</span><span class="p">[</span><span class="s1">'snapshot'</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">hv</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">hmap</span><span class="p">,</span> <span class="n">holomap</span><span class="o">=</span><span class="s1">'scrubber'</span><span class="p">)</span>
+                      <span class="n">kdims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;snapshot&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">hv</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">hmap</span><span class="p">,</span> <span class="n">holomap</span><span class="o">=</span><span class="s1">&#39;scrubber&#39;</span><span class="p">)</span>
 
 <span class="n">spring_stiffnesses</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
 <span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
@@ -3374,36 +3430,51 @@ if (window.Jupyter !== undefined) {
 <span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">)</span>
 <span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<div align="center" class="animation">
-<div id="_anim_img28f0b7a3f4d74c64aff463f66a0aeaec">
-<div id="1318" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1318" id="4fbc08d1-9bee-449b-8963-0a3cf881ebef"></div>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="animation" align="center">
+    <div id="_anim_img28f0b7a3f4d74c64aff463f66a0aeaec">
+        
+            <div id='1318' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="4fbc08d1-9bee-449b-8963-0a3cf881ebef" data-root-id="1318"></div>
 </div>
-</div>
-<br/>
-<input id="_anim_slider28f0b7a3f4d74c64aff463f66a0aeaec" max="1" min="0" name="points" oninput="HoloViews.index['1318'].set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="HoloViews.index['1318'].slower()" style="text-align: center">–</button>
-<button onclick="HoloViews.index['1318'].first_frame()" style="text-align: center; min-width: 40px">▐◀◀</button>
-<button onclick="HoloViews.index['1318'].previous_frame()" style="text-align: center; min-width: 40px">▐◀</button>
-<button onclick="HoloViews.index['1318'].reverse_animation()" style="text-align: center; min-width: 40px">◀</button>
-<button onclick="HoloViews.index['1318'].pause_animation()" style="text-align: center; min-width: 40px">▐ ▌</button>
-<button onclick="HoloViews.index['1318'].play_animation()" style="text-align: center; min-width: 40px">▶</button>
-<button onclick="HoloViews.index['1318'].next_frame()" style="text-align: center; min-width: 40px">▶▌</button>
-<button onclick="HoloViews.index['1318'].last_frame()" style="text-align: center; min-width: 40px">▶▶▌</button>
-<button onclick="HoloViews.index['1318'].faster()" style="text-align: center">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_select28f0b7a3f4d74c64aff463f66a0aeaec">
-<input name="state" type="radio" value="once" {once_checked}=""/> Once 
-        <input name="state" type="radio" value="loop" {loop_checked}=""/> Loop 
-        <input name="state" type="radio" value="reflect" {reflect_checked}=""/> Reflect 
+        
+    </div>
+    <br>
+    <input id="_anim_slider28f0b7a3f4d74c64aff463f66a0aeaec" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" oninput="HoloViews.index['1318'].set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="HoloViews.index['1318'].slower()" style="text-align: center">&#8211;</button>
+    <button onclick="HoloViews.index['1318'].first_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;&#9664;</button>
+    <button onclick="HoloViews.index['1318'].previous_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;</button>
+    <button onclick="HoloViews.index['1318'].reverse_animation()" style="text-align: center; min-width: 40px">&#9664;</button>
+    <button onclick="HoloViews.index['1318'].pause_animation()" style="text-align: center; min-width: 40px">&#9616;&nbsp;&#9612;</button>
+    <button onclick="HoloViews.index['1318'].play_animation()" style="text-align: center; min-width: 40px">&#9654;</button>
+    <button onclick="HoloViews.index['1318'].next_frame()" style="text-align: center; min-width: 40px">&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['1318'].last_frame()" style="text-align: center; min-width: 40px">&#9654;&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['1318'].faster()" style="text-align: center">+</button>
+    <form action="#n" name="_anim_loop_select28f0b7a3f4d74c64aff463f66a0aeaec" class="anim_control">
+        <input type="radio" name="state" value="once" {once_checked}> Once </input>
+        <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+        <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
     </form>
 </div>
 <script type="application/javascript">/* Instantiate the BokehScrubberWidget class. */
@@ -3442,14 +3513,17 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Setting-an-objective">Setting an objective<a class="anchor-link" href="#Setting-an-objective">¶</a></h1>
+<h1 id="Setting-an-objective">Setting an objective<a class="anchor-link" href="#Setting-an-objective">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3458,15 +3532,16 @@ create_widget();
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The cited paper proposes a way of controlling this simulation. Let's say that our objective is for the triangle constituted by the three points to have a certain area at the end of the simulation and that we can modify the rest lengths of the three simulated springs. How do we accomplish this?</p>
 <p>First of all, we need to define a cost function. Which is the difference between the area and the objective value we want to reach. Knowing the final position of the points, we can easily compute the triangle area:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">triangle_area</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">x01</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">x02</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -3476,60 +3551,82 @@ create_widget();
 
 <span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">cost_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">"""Difference between area and target area of triangle, squared."""</span>
+    <span class="sd">&quot;&quot;&quot;Difference between area and target area of triangle, squared.&quot;&quot;&quot;</span>
     <span class="n">target_area</span> <span class="o">=</span> <span class="mf">0.2</span>
     <span class="n">area</span> <span class="o">=</span> <span class="n">triangle_area</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span> 
 
 <span class="n">triangle_area</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">triangle_area</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[3]:</div>
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(0.005000000000000001, 0.008243853015880287)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use the cost function to evaluate the last configuration in our first simulation:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'sanity check: {(triangle_area(snapshots[-1]) - 0.2)**2}, cost function: {cost_function(snapshots[-1])}'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sanity check: {(triangle_area(snapshots[-1]) - 0.2)**2}, cost function: {cost_function(snapshots[-1])}&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>sanity check: 0.036770419906195326, cost function: 0.036770419906195326
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Gradient-descent">Gradient descent<a class="anchor-link" href="#Gradient-descent">¶</a></h1>
+<h1 id="Gradient-descent">Gradient descent<a class="anchor-link" href="#Gradient-descent">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3537,6 +3634,7 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, how do we improve the state of things? A simple way to proceed is to do gradient descent. The gradient of our cost function depends on the three rest length parameters of our triangle. We can use finite differences to approximately compute this gradient. Intuitively, this means putting a number on: if I increase the rest length of spring 1 by a little, how much is the cost going to change?</p>
+
 </div>
 </div>
 </div>
@@ -3544,52 +3642,63 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can do this by changing the spring length of the first spring by just a little bit and see how the cost changes.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
 <span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">)</span>
 <span class="n">cost0</span> <span class="o">=</span> <span class="n">cost_function</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">spring_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.001</span>
 <span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">)</span>
 <span class="n">cost1</span> <span class="o">=</span> <span class="n">cost_function</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'initial cost </span><span class="si">{cost0:.5f}</span><span class="s1">, after changing first rest length </span><span class="si">{cost1:.5f}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'gradient d cost / d rest_length approx. {(cost1 - cost0)/0.001:.4e}'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;initial cost </span><span class="si">{cost0:.5f}</span><span class="s1">, after changing first rest length </span><span class="si">{cost1:.5f}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;gradient d cost / d rest_length approx. {(cost1 - cost0)/0.001:.4e}&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>initial cost 0.03803, after changing first rest length 0.03802
 gradient d cost / d rest_length approx. -1.1613e-02
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can automate this method to compute this for all three spring lengths.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">compute_approximate_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">dl</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
     <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">spring_lengths</span><span class="p">)</span>
     <span class="c1"># starting point</span>
@@ -3607,95 +3716,131 @@ gradient d cost / d rest_length approx. -1.1613e-02
 <span class="n">approx_grad</span> <span class="o">=</span> <span class="n">compute_approximate_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">]))</span>
 <span class="n">approx_grad</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([-0.01161341, -0.02329161, -0.02888142])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you're familiar with gradients, you know that making a small step in the direction of the negative gradient will yield a lower cost.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="n">spring_lengths</span> <span class="o">+=</span> <span class="o">-</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">approx_grad</span>
 
 <span class="n">spring_lengths</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[7]:</div>
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([0.10011613, 0.10023292, 0.14171017])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see if the cost is lower (as we expect).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'cost before </span><span class="si">{cost0:.5e}</span><span class="s1">, cost after: {cost_function(snapshots[-1]):.5e}'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cost before </span><span class="si">{cost0:.5e}</span><span class="s1">, cost after: {cost_function(snapshots[-1]):.5e}&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>cost before 3.80279e-02, cost after: 3.80222e-02
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can just iterate this procedure. Hopefully, the cost will just go down. We try to stop when reaching a given error level.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">])</span>
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.0001</span>
 <span class="n">costs</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">iters</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
@@ -3705,21 +3850,28 @@ gradient d cost / d rest_length approx. -1.1613e-02
     <span class="n">cost</span> <span class="o">=</span> <span class="n">cost_function</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">iters</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'iter </span><span class="si">{iters}</span><span class="s1">: cost </span><span class="si">{cost:.5e}</span><span class="s1"> abs(grad).max(): {np.abs(approx_grad).max()}'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cost</span> <span class="o"><</span> <span class="mf">1e-3</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;iter </span><span class="si">{iters}</span><span class="s1">: cost </span><span class="si">{cost:.5e}</span><span class="s1"> abs(grad).max(): {np.abs(approx_grad).max()}&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
         <span class="n">learning_rate</span> <span class="o">/=</span> <span class="mi">20</span>
-    <span class="k">elif</span> <span class="n">cost</span> <span class="o"><</span> <span class="mf">1e-4</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="mf">1e-4</span><span class="p">:</span>
         <span class="n">learning_rate</span> <span class="o">/=</span> <span class="mi">20</span>
-    <span class="k">if</span> <span class="n">cost</span> <span class="o"><</span> <span class="mf">1e-6</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
         <span class="k">break</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>iter 0: cost 3.79989e-02 abs(grad).max(): 0.028881420714124695
 iter 20: cost 3.73775e-02 abs(grad).max(): 0.032907591919373314
@@ -3760,33 +3912,49 @@ iter 700: cost 5.21528e-05 abs(grad).max(): 0.006851570491115766
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>How does cost decrease if we plot it?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span><span class="o">.</span><span class="n">redim</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'iterations'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'cost function'</span><span class="p">)</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span><span class="o">.</span><span class="n">redim</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;iterations&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;cost function&#39;</span><span class="p">)</span> 
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="1901" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1901" id="2f18a5e8-de04-4850-8417-17365db93dfe"></div>
+<div id='1901' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="2f18a5e8-de04-4850-8417-17365db93dfe" data-root-id="1901"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3814,54 +3982,73 @@ iter 700: cost 5.21528e-05 abs(grad).max(): 0.006851570491115766
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's look at the final simulation:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">n_frames</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">n_frames</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<div align="center" class="animation">
-<div id="_anim_img922aee7c2e3e49298c5457193247d61e">
-<div id="2009" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="2009" id="55fbdc9a-9060-4480-b70d-f036edbce7d7"></div>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="animation" align="center">
+    <div id="_anim_img922aee7c2e3e49298c5457193247d61e">
+        
+            <div id='2009' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="55fbdc9a-9060-4480-b70d-f036edbce7d7" data-root-id="2009"></div>
 </div>
-</div>
-<br/>
-<input id="_anim_slider922aee7c2e3e49298c5457193247d61e" max="1" min="0" name="points" oninput="HoloViews.index['2009'].set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="HoloViews.index['2009'].slower()" style="text-align: center">–</button>
-<button onclick="HoloViews.index['2009'].first_frame()" style="text-align: center; min-width: 40px">▐◀◀</button>
-<button onclick="HoloViews.index['2009'].previous_frame()" style="text-align: center; min-width: 40px">▐◀</button>
-<button onclick="HoloViews.index['2009'].reverse_animation()" style="text-align: center; min-width: 40px">◀</button>
-<button onclick="HoloViews.index['2009'].pause_animation()" style="text-align: center; min-width: 40px">▐ ▌</button>
-<button onclick="HoloViews.index['2009'].play_animation()" style="text-align: center; min-width: 40px">▶</button>
-<button onclick="HoloViews.index['2009'].next_frame()" style="text-align: center; min-width: 40px">▶▌</button>
-<button onclick="HoloViews.index['2009'].last_frame()" style="text-align: center; min-width: 40px">▶▶▌</button>
-<button onclick="HoloViews.index['2009'].faster()" style="text-align: center">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_select922aee7c2e3e49298c5457193247d61e">
-<input name="state" type="radio" value="once" {once_checked}=""/> Once 
-        <input name="state" type="radio" value="loop" {loop_checked}=""/> Loop 
-        <input name="state" type="radio" value="reflect" {reflect_checked}=""/> Reflect 
+        
+    </div>
+    <br>
+    <input id="_anim_slider922aee7c2e3e49298c5457193247d61e" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" oninput="HoloViews.index['2009'].set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="HoloViews.index['2009'].slower()" style="text-align: center">&#8211;</button>
+    <button onclick="HoloViews.index['2009'].first_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;&#9664;</button>
+    <button onclick="HoloViews.index['2009'].previous_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;</button>
+    <button onclick="HoloViews.index['2009'].reverse_animation()" style="text-align: center; min-width: 40px">&#9664;</button>
+    <button onclick="HoloViews.index['2009'].pause_animation()" style="text-align: center; min-width: 40px">&#9616;&nbsp;&#9612;</button>
+    <button onclick="HoloViews.index['2009'].play_animation()" style="text-align: center; min-width: 40px">&#9654;</button>
+    <button onclick="HoloViews.index['2009'].next_frame()" style="text-align: center; min-width: 40px">&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['2009'].last_frame()" style="text-align: center; min-width: 40px">&#9654;&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['2009'].faster()" style="text-align: center">+</button>
+    <form action="#n" name="_anim_loop_select922aee7c2e3e49298c5457193247d61e" class="anim_control">
+        <input type="radio" name="state" value="once" {once_checked}> Once </input>
+        <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+        <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
     </form>
 </div>
 <script type="application/javascript">/* Instantiate the BokehScrubberWidget class. */
@@ -3900,70 +4087,100 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's check if we've reached the objective and what the rest lengths are now.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">triangle_area</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">triangle_area</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[12]:</div>
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>0.19927232110562043</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed this works: we have reached a triangle area of 0.2.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spring_lengths</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([0.81642608, 0.81785103, 0.86011158])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As a side note, these are not the lengths we expected to find, since the paper mentions [0.600, 0.600, 0.529]. Still, the solution is quite close.</p>
+
 </div>
 </div>
 </div>
@@ -3971,6 +4188,7 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, the next question would be: what does it mean for the simulation to be differentiable at every timestep? And how does the neural network control this simulation as described in the paper?</p>
+
 </div>
 </div>
 </div>
@@ -3978,9 +4196,12 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the Jupyter Notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20191030_SpringOptimalControl.ipynb">20191030_SpringOptimalControl.ipynb</a>.</em></p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

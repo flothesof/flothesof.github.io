@@ -1568,6 +1568,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, we'll be building a simple simulation of points connected through springs (inspired by <a href="https://arxiv.org/pdf/1910.00935.pdf">this paper</a>).</p>
+
 </div>
 </div>
 </div>
@@ -1575,15 +1576,16 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's first define a triangle of points, as well as springs that connect the points.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
               <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
@@ -1593,42 +1595,54 @@ h6:hover .anchor-link {
                            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
-<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">'bokeh'</span><span class="p">,</span> <span class="s1">'matplotlib'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
+<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;bokeh&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">plot_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">):</span>
-    <span class="sd">"""Plots all x as 2D points, connected by springs indicated by spring_anchors."""</span>
+    <span class="sd">&quot;&quot;&quot;Plots all x as 2D points, connected by springs indicated by spring_anchors.&quot;&quot;&quot;</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spring_anchors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">spring_anchors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="n">x</span><span class="p">[[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="p">:]))</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Overlay</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
     <span class="n">scatter</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Scatter</span><span class="p">((</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.2</span><span class="p">))</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Labels</span><span class="p">({(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">):</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]},</span> <span class="p">[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">],</span> <span class="s1">'text'</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Labels</span><span class="p">({(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">):</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]},</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="s1">&#39;text&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">scatter</span> <span class="o">*</span> <span class="n">lines</span> <span class="o">*</span> <span class="n">labels</span>
 
 <span class="n">plot_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="36e0f9f8-81a9-4040-b655-a0bf193e565c"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="6aa9ca61-e831-47c6-bc60-874a602ef08d"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#36e0f9f8-81a9-4040-b655-a0bf193e565c');
+var element = $('#6aa9ca61-e831-47c6-bc60-874a602ef08d');
 
 (function(root) {
   function now() {
@@ -2163,11 +2177,18 @@ var element = $('#36e0f9f8-81a9-4040-b655-a0bf193e565c');
 }(window));
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <style>div.bk-hbox {
     display: flex;
     justify-content: center;
@@ -2275,8 +2296,10 @@ div.hologroup {
   margin-right: 0.5em;
 }
 </style>
+
+
 <div class="logo-block">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAB+wAAAfsBxc2miwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAA6zSURB
 VHic7ZtpeFRVmsf/5966taWqUlUJ2UioBBJiIBAwCZtog9IOgjqACsogKtqirT2ttt069nQ/zDzt
 tI4+CrJIREFaFgWhBXpUNhHZQoKBkIUASchWla1S+3ar7r1nPkDaCAnZKoQP/D7mnPOe9/xy76n3
@@ -2344,9 +2367,16 @@ SLHujPOTPVW+rwY+sxskAAC2HrA8t2Vvc7ffP1r9o+vwR2dcr92InIAbKKC1FZ5tB1tf+/G8p8sv
 N/9Q5zd/XR34LYCwV5JdccMEAMDBk45DH243r/X4xGvqxFa/GNpS7n6rwOwNWwHVE26oAADYurf1
 zx/utOzt+DMKYM0p17YtZZ5VNzqfsB2HewG1WXE8PoZ7gOclbTIvynZf9JV+fqZtfgs/8F/Nu5rB
 EIBmJ+8QRMmpU7EzGRsf2FzuePqYRbzh/zE26EwdrT10f6r6o8HOYzCJB9Dpff8tbnGLG8L/A/WE
-roTBs2RqAAAAAElFTkSuQmCC" style="height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle"/>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAK6wAACusBgosNWgAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAf9SURBVFiFvZh7cFTVHcc/59y7793sJiFAwkvAYDRqFWwdraLVlj61diRYsDjqCFbFKrYo0CltlSq1tLaC2GprGIriGwqjFu10OlrGv8RiK/IICYECSWBDkt3s695zTv9IAtlHeOn0O7Mzu797z+/3Ob/z+p0VfBq9doNFljuABwAXw2PcvGHt6bgwxhz7Ls4YZNVXxxANLENwE2D1W9PAGmAhszZ0/X9gll5yCbHoOirLzmaQs0F6F8QMZq1v/8xgNm7DYwwjgXJLYL4witQ16+sv/U9HdDmV4WrKw6B06cZC/RMrM4MZ7xz61DAbtzEXmAvUAX4pMOVecg9/MFFu3j3Gz7gQBLygS2RGumBkL0cubiFRsR3LzVBV1UMk3IrW73PT9C2lYOwhQB4ClhX1AuKpjLcV27oEjyUpNUJCg1CvcejykWTCXyQgzic2HIIBjg3pS6+uRLKAhumZvD4U+tq0jTrgkVKQQtLekfTtxIPAkhTNF6G7kZm7aPp6M9myKVQEoaYaIhEQYvD781DML/RfBGNZXAl4irJiwBa07e/y7cQnBaJghIX6ENl2GR/fGCBoz6cm5qeyEqQA5ZYA5x5eeiV0Qph4gjFAUSwAr6QllQgcxS/Jm25Cr2Tmpsk03XI9NfI31FTZBEOgVOk51adqDBNPCNPSRlkiDXbBEwOU2WxH+I7itQZ62g56OjM33suq1YsZHVtGZSUI2QdyYgkgOthQNIF7BIGDnRAJgJSgj69cUx1gB8PkOGwL4E1gPrM27gIg7NlGKLQApc7BmEnAxP5g/rw4YqBrCDB5xHkw5rdR/1qTrN/hKNo6YUwVDNpFsnjYS8RbidBPcPXFP6R6yfExuOXmN4A3jv1+8ZUwgY9D2OWjUZE6lO88jDwHI8ZixGiMKSeYTBamCoDk6kDAb6y1OcH1a6KpD/fZesoFw5FlIXAVCIiH4PxrV+p2npVDToTBmtjY8t1swh2V61E9KqWiyuPEjM8dbfxuvfa49Zayf9R136Wr8mBSf/T7bNteA8zwaGEUbFpckWwq95n59dUIywKl2fbOIS5e8bWSu0tJ1a5redAYfqkdjesodFajcgaVNWhXo1C9SrkN3Usmv3UMJrc6/DDwkwEntkEJLe67tSLhvyzK8rHDQWleve5CGk4VZEB1r+5bg2E2si+Y0QatDK6jUVkX5eg2YYlp++ZM+rfMNYamAj8Y7MAVWFqaR1f/t2xzU4IHjybBtthzuiAASqv7jTF7jOqDMAakFHgDNsFyP+FhwZHBmH9F7cutIYkQCylYYv1AZSqsn1/+bX51OMMjPSl2nAnM7hnjOx2v53YgNWAzHM9Q/9l0lQWPSCBSyokAtOBC1Rj+w/1Xs+STDp4/E5g7Rs2zm2+oeVd7PUuHKDf6A4r5EsPT5K3gfCnBXNUYnvGzb+KcCczYYWOnLpy4eOXuG2oec0PBN8XQQAnpvS35AvAykr56rWhPBiV4MvtceGLxk5Mr6A1O8IfK7rl7xJ0r9kyumuP4fa0lMqTBLJIAJqEf1J3qE92lMBndlyfRD2YBghHC4hlny7ASqCeWo5zaoDdIWfnIefNGTb9fC73QDfhyBUCNOxrGPSUBfPem9us253YTV+3mcBbdkUYfzmHiLqZbYdIGHHON2ZlemXouaJUOO6TqtdHEQuXYY8Yt+EbDgmlS6RdzkaDTv2P9A3gICiq93sWhb5mc5wVhuU3Y7m5hOc3So7qFT3SLgOXHb/cyOfMn7xROegoC/PTcn3v8gbKPgDopJFk3R/uBPWQiwQ+2/GJevRMObLUzqe/saJjQUQTTftEVMW9tWxPgAocwcj9abNcZe7s+6t2R2xXZG7zyYLp8Q1PiRBBHym5bYuXi8Qt+/LvGu9f/5YDAxABsaRNPH6Xr4D4Sk87a897SOy9v/fKwjoF2eQel95yDESGEF6gEMwKhLwKus3wOVjTtes7qzgLdXTMnNCNoEpbcrtNuq6N7Xh/+eqcbj94xQkp7mdKpW5XbtbR8Z26kgMCAf2UU5YEovRUVRHbu2b3vK1UdDFkDCyMRQxbpdv8nhKAGIa7QaQedzT07fFPny53R738JoVYBdVrnsNx9XZ9v33UeGO+AA2MMUkgqQ5UcdDLZSFeVgONnXeHqSAC5Ew1BXwko0D1Zct3dT1duOjS3MzZnEUJtBuoQAq3SGOLR4ekjn9NC5nVOaYXf9lETrUkmOJy3pOz8OKIb2A1cWhJCCEzOxU2mUPror+2/L3yyM3pkM7jTjr1nBOgkGeyQ7erxpdJsMAS9wb2F9rzMxNY1K2PMU0WtZV82VU8Wp6vbKJVo9Lx/+4cydORdxCCQ/kDGTZCWsRpLu7VD7bfKqL8V2orKTp/PtzaXy42jr6TwAuisi+7JolUG4wY+8vyrISCMtRrLKWpvjAOqx/QGhp0rjRo5xD3x98CWQuOQN8qumRMmI7jKZPUEpzNVZsj4Zbaq1to5tZZsKIydLWojhIXrJnES79EaOzv3du2NytKuxzJKAA6wF8xqEE8s2jo/1wd/khslQGxd81Zg62Bbp31XBH+iETt7Y3ELA0iU6iGDlQ5mexe0VEx4a3x8V1AaYwFJgTiwaOsDmeK2J8nMUOqsnB1A+dcA04ucCYt0urkjmflk9iT2v30q/gZn5rQPvor4n9Ou634PeBzoznes/iot/7WnClKoM/+zCIjH5kwT8ChQjTHPIPTjFV3PpU/Hx+DM/A9U3IXI4SPCYAAAAABJRU5ErkJggg==" style="height:15px; border-radius:12px; display: inline-block; float: left"/>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+roTBs2RqAAAAAElFTkSuQmCC'
+     style='height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle'></img>
+
+
+  <img src='data:image/png;base64,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'
+       style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
+  
+
+
+  <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAFMAAABTABZarKtgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAArNSURB
 VFiFnVd5VFNXGv/ee0kgGyQhbFoXIKCFYEXEDVErTucMoKUOWA/VLsNSLPQgFTOdyrHPiIp1lFIQ
 OlaPShEG3EpPcQmISCuV1bQ1CLKIULeQhJA9JO+9+UMT0x5aPfOdc895373f/e7v/t537/ddBF5Q
@@ -2396,16 +2426,29 @@ bicI4gSO40NTAgD4bVnuODIAT2pElUq1FEEQO4fD6QsPD++fqixHEATj8/ntjoCrqKhwS0hIsJWV
 leURBHEOx3G563pT3tn5+flBDAbjg6CgoMMpKSlK17GhoSFMJpMFPk04DJIkEQzDzCwW6+5UD5Oa
 mhrfO3fufECS5GHXnf8pAAAAHMfdURTdimGYPjExsTo0NHTyj2ynEplMxurs7HyHIAiKJMlSHMct
 U9k9N2vl5+cH0en0TRiGWX18fC65vnh+LxqNBq2oqFhgMpmi7XY7arVaj+zdu/fxn/l/4bSZl5fH
-5nK5CQAQMtXznCRJePpEbwOAZhzHX4ix/wHzzC/tu64gcwAAAABJRU5ErkJggg==" style="height:15px; border-radius:12px; display: inline-block; float: left"/>
+5nK5CQAQMtXznCRJePpEbwOAZhzHX4ix/wHzzC/tu64gcwAAAABJRU5ErkJggg=='
+       style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
+  
+
+
 </div>
+
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="7b58f91f-cbb6-4609-9402-948f0f3cadc3"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="65656c54-fa7a-47ee-9c3d-da65a0347585"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#7b58f91f-cbb6-4609-9402-948f0f3cadc3');
+var element = $('#65656c54-fa7a-47ee-9c3d-da65a0347585');
 function HoloViewsWidget() {
 }
 
@@ -3278,12 +3321,23 @@ if (window.Jupyter !== undefined) {
 
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[2]:</div>
+
+    <div class="prompt output_prompt">Out[2]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="1003" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1003" id="ad01099f-2399-44bc-b11e-e202a163121b"></div>
+<div id='1003' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="ad01099f-2399-44bc-b11e-e202a163121b" data-root-id="1003"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3311,45 +3365,52 @@ if (window.Jupyter !== undefined) {
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, we're going to define springs parameters and masses.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">spring_stiffnesses</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spring_stiffnesses</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
 <span class="n">spring_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
 <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">spring_stiffnesses</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To move the particles, we need to add the spring forces to a force vector and step it forward in time.</p>
 <p>Let's first do the force computation.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_spring_forces</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">):</span>
-    <span class="sd">"""Computes the spring forces."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_spring_forces</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the spring forces.&quot;&quot;&quot;</span>
     <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spring_anchors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">spring_anchors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -3364,36 +3425,49 @@ if (window.Jupyter !== undefined) {
 <span class="n">forces</span> <span class="o">=</span> <span class="n">compute_spring_forces</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spring_anchors</span><span class="p">,</span> <span class="n">spring_lengths</span><span class="p">,</span> <span class="n">spring_stiffnesses</span><span class="p">)</span>
 <span class="n">forces</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[ 1.00009999, -1.00009999],
        [-2.29304321, -1.29294322],
        [ 1.29294322,  2.29304321]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's write the time integrator:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">time_step_integration</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
-    <span class="sd">"""Integrates the forces using semi-implicit Euler time integration with damping."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">time_step_integration</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Integrates the forces using semi-implicit Euler time integration with damping.&quot;&quot;&quot;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">*</span> <span class="n">damping</span><span class="p">)</span> 
     <span class="n">v_new</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">forces</span> <span class="o">/</span> <span class="n">masses</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">x_new</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">v_new</span>
@@ -3403,13 +3477,22 @@ if (window.Jupyter !== undefined) {
 
 <span class="n">time_step_integration</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(array([[ 0.010001  , -0.010001  ],
         [ 0.97706957, -0.01292943],
@@ -3417,23 +3500,27 @@ if (window.Jupyter !== undefined) {
         [-0.22930432, -0.12929432],
         [ 0.12929432,  0.22930432]]))</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can write the forward program:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">new_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">snapshots</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3447,16 +3534,29 @@ if (window.Jupyter !== undefined) {
 <span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="1318" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1318" id="3fcb3025-1080-438d-b498-f9424e433b0a"></div>
+<div id='1318' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="3fcb3025-1080-438d-b498-f9424e433b0a" data-root-id="1318"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3484,40 +3584,57 @@ if (window.Jupyter !== undefined) {
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also show some of the coordinate plots over time.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">node_number</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">node_number</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">([</span><span class="n">snapshot</span><span class="p">[</span><span class="n">node_number</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">snapshot</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">],</span> 
-             <span class="n">label</span><span class="o">=</span><span class="s1">'node</span><span class="si">{}</span><span class="s1">_x'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node_number</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'coordinate'</span><span class="p">)</span> <span class="o">*</span> \
+             <span class="n">label</span><span class="o">=</span><span class="s1">&#39;node</span><span class="si">{}</span><span class="s1">_x&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node_number</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;coordinate&#39;</span><span class="p">)</span> <span class="o">*</span> \
            <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">([</span><span class="n">snapshot</span><span class="p">[</span><span class="n">node_number</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">snapshot</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">],</span> 
-             <span class="n">label</span><span class="o">=</span><span class="s1">'node</span><span class="si">{}</span><span class="s1">_y'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node_number</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">'coordinate'</span><span class="p">)</span>
+             <span class="n">label</span><span class="o">=</span><span class="s1">&#39;node</span><span class="si">{}</span><span class="s1">_y&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node_number</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;coordinate&#39;</span><span class="p">)</span>
 
 <span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[7]:</div>
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="1633" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1633" id="79e4d62f-efaf-4be9-9c9c-0c67fb3beb8a"></div>
+<div id='1633' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="79e4d62f-efaf-4be9-9c9c-0c67fb3beb8a" data-root-id="1633"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3545,59 +3662,78 @@ if (window.Jupyter !== undefined) {
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With all that done, we can now do an animation showing the spring evolution over time.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">n_frames</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="n">n_frames</span><span class="p">):</span>
     <span class="n">hmap</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">HoloMap</span><span class="p">({</span><span class="n">i</span><span class="p">:</span> <span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">snapshots</span><span class="p">),</span> <span class="n">n_frames</span><span class="p">)},</span> 
-                      <span class="n">kdims</span><span class="o">=</span><span class="p">[</span><span class="s1">'snapshot'</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">hv</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">hmap</span><span class="p">,</span> <span class="n">holomap</span><span class="o">=</span><span class="s1">'scrubber'</span><span class="p">)</span>
+                      <span class="n">kdims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;snapshot&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">hv</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">hmap</span><span class="p">,</span> <span class="n">holomap</span><span class="o">=</span><span class="s1">&#39;scrubber&#39;</span><span class="p">)</span>
 
 <span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<div align="center" class="animation">
-<div id="_anim_img868de9150eae49988bfca95c4a5f547c">
-<div id="1852" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="1852" id="2e38e0c1-9a51-48ca-9bd9-c1fe177f8648"></div>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="animation" align="center">
+    <div id="_anim_img868de9150eae49988bfca95c4a5f547c">
+        
+            <div id='1852' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="2e38e0c1-9a51-48ca-9bd9-c1fe177f8648" data-root-id="1852"></div>
 </div>
-</div>
-<br/>
-<input id="_anim_slider868de9150eae49988bfca95c4a5f547c" max="1" min="0" name="points" oninput="HoloViews.index['1852'].set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="HoloViews.index['1852'].slower()" style="text-align: center">–</button>
-<button onclick="HoloViews.index['1852'].first_frame()" style="text-align: center; min-width: 40px">▐◀◀</button>
-<button onclick="HoloViews.index['1852'].previous_frame()" style="text-align: center; min-width: 40px">▐◀</button>
-<button onclick="HoloViews.index['1852'].reverse_animation()" style="text-align: center; min-width: 40px">◀</button>
-<button onclick="HoloViews.index['1852'].pause_animation()" style="text-align: center; min-width: 40px">▐ ▌</button>
-<button onclick="HoloViews.index['1852'].play_animation()" style="text-align: center; min-width: 40px">▶</button>
-<button onclick="HoloViews.index['1852'].next_frame()" style="text-align: center; min-width: 40px">▶▌</button>
-<button onclick="HoloViews.index['1852'].last_frame()" style="text-align: center; min-width: 40px">▶▶▌</button>
-<button onclick="HoloViews.index['1852'].faster()" style="text-align: center">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_select868de9150eae49988bfca95c4a5f547c">
-<input name="state" type="radio" value="once" {once_checked}=""/> Once 
-        <input name="state" type="radio" value="loop" {loop_checked}=""/> Loop 
-        <input name="state" type="radio" value="reflect" {reflect_checked}=""/> Reflect 
+        
+    </div>
+    <br>
+    <input id="_anim_slider868de9150eae49988bfca95c4a5f547c" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" oninput="HoloViews.index['1852'].set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="HoloViews.index['1852'].slower()" style="text-align: center">&#8211;</button>
+    <button onclick="HoloViews.index['1852'].first_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;&#9664;</button>
+    <button onclick="HoloViews.index['1852'].previous_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;</button>
+    <button onclick="HoloViews.index['1852'].reverse_animation()" style="text-align: center; min-width: 40px">&#9664;</button>
+    <button onclick="HoloViews.index['1852'].pause_animation()" style="text-align: center; min-width: 40px">&#9616;&nbsp;&#9612;</button>
+    <button onclick="HoloViews.index['1852'].play_animation()" style="text-align: center; min-width: 40px">&#9654;</button>
+    <button onclick="HoloViews.index['1852'].next_frame()" style="text-align: center; min-width: 40px">&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['1852'].last_frame()" style="text-align: center; min-width: 40px">&#9654;&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['1852'].faster()" style="text-align: center">+</button>
+    <form action="#n" name="_anim_loop_select868de9150eae49988bfca95c4a5f547c" class="anim_control">
+        <input type="radio" name="state" value="once" {once_checked}> Once </input>
+        <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+        <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
     </form>
 </div>
 <script type="application/javascript">/* Instantiate the BokehScrubberWidget class. */
@@ -3636,21 +3772,25 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As can be seen in the above, the simulation stabilizes after some initial jiggling. This is due to the fact that the spring lengths set initially induce back and forth oscillations of the structure.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Random-network-of-springs">Random network of springs<a class="anchor-link" href="#Random-network-of-springs">¶</a></h1>
+<h1 id="Random-network-of-springs">Random network of springs<a class="anchor-link" href="#Random-network-of-springs">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3658,15 +3798,16 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, this framework can be applied to different situations, such as a randomly connected network of springs.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">n_particles</span> <span class="o">=</span> <span class="mi">10</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_particles</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_particles</span><span class="p">),</span> 
           <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_particles</span><span class="p">)]</span>
 <span class="n">n_springs</span> <span class="o">=</span> <span class="mi">20</span>
@@ -3678,27 +3819,42 @@ create_widget();
 <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">n_particles</span><span class="p">)</span>
 <span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="2380" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="2380" id="82ed284c-fc7f-4e92-afc2-851f28d69d3c"></div>
+<div id='2380' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="82ed284c-fc7f-4e92-afc2-851f28d69d3c" data-root-id="2380"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3726,27 +3882,43 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="3341" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="3341" id="afa34719-f61f-46da-9393-90abfb338c1a"></div>
+<div id='3341' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="afa34719-f61f-46da-9393-90abfb338c1a" data-root-id="3341"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3774,47 +3946,65 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<div align="center" class="animation">
-<div id="_anim_img2580c738fe33404087a6899adf2a710b">
-<div id="3560" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="3560" id="f9141109-4f13-4c41-88b8-dc8bffd5ff64"></div>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="animation" align="center">
+    <div id="_anim_img2580c738fe33404087a6899adf2a710b">
+        
+            <div id='3560' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="f9141109-4f13-4c41-88b8-dc8bffd5ff64" data-root-id="3560"></div>
 </div>
-</div>
-<br/>
-<input id="_anim_slider2580c738fe33404087a6899adf2a710b" max="1" min="0" name="points" oninput="HoloViews.index['3560'].set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="HoloViews.index['3560'].slower()" style="text-align: center">–</button>
-<button onclick="HoloViews.index['3560'].first_frame()" style="text-align: center; min-width: 40px">▐◀◀</button>
-<button onclick="HoloViews.index['3560'].previous_frame()" style="text-align: center; min-width: 40px">▐◀</button>
-<button onclick="HoloViews.index['3560'].reverse_animation()" style="text-align: center; min-width: 40px">◀</button>
-<button onclick="HoloViews.index['3560'].pause_animation()" style="text-align: center; min-width: 40px">▐ ▌</button>
-<button onclick="HoloViews.index['3560'].play_animation()" style="text-align: center; min-width: 40px">▶</button>
-<button onclick="HoloViews.index['3560'].next_frame()" style="text-align: center; min-width: 40px">▶▌</button>
-<button onclick="HoloViews.index['3560'].last_frame()" style="text-align: center; min-width: 40px">▶▶▌</button>
-<button onclick="HoloViews.index['3560'].faster()" style="text-align: center">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_select2580c738fe33404087a6899adf2a710b">
-<input name="state" type="radio" value="once" {once_checked}=""/> Once 
-        <input name="state" type="radio" value="loop" {loop_checked}=""/> Loop 
-        <input name="state" type="radio" value="reflect" {reflect_checked}=""/> Reflect 
+        
+    </div>
+    <br>
+    <input id="_anim_slider2580c738fe33404087a6899adf2a710b" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" oninput="HoloViews.index['3560'].set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="HoloViews.index['3560'].slower()" style="text-align: center">&#8211;</button>
+    <button onclick="HoloViews.index['3560'].first_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;&#9664;</button>
+    <button onclick="HoloViews.index['3560'].previous_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;</button>
+    <button onclick="HoloViews.index['3560'].reverse_animation()" style="text-align: center; min-width: 40px">&#9664;</button>
+    <button onclick="HoloViews.index['3560'].pause_animation()" style="text-align: center; min-width: 40px">&#9616;&nbsp;&#9612;</button>
+    <button onclick="HoloViews.index['3560'].play_animation()" style="text-align: center; min-width: 40px">&#9654;</button>
+    <button onclick="HoloViews.index['3560'].next_frame()" style="text-align: center; min-width: 40px">&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['3560'].last_frame()" style="text-align: center; min-width: 40px">&#9654;&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['3560'].faster()" style="text-align: center">+</button>
+    <form action="#n" name="_anim_loop_select2580c738fe33404087a6899adf2a710b" class="anim_control">
+        <input type="radio" name="state" value="once" {once_checked}> Once </input>
+        <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+        <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
     </form>
 </div>
 <script type="application/javascript">/* Instantiate the BokehScrubberWidget class. */
@@ -3853,14 +4043,17 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-structured-network-of-springs">A structured network of springs<a class="anchor-link" href="#A-structured-network-of-springs">¶</a></h1>
+<h1 id="A-structured-network-of-springs">A structured network of springs<a class="anchor-link" href="#A-structured-network-of-springs">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3868,15 +4061,16 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What about a structured network of springs?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
 <span class="n">spring_anchors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
@@ -3898,27 +4092,42 @@ create_widget();
 <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">snapshots</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[14]:</div>
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="4634" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="4634" id="ccb2a58a-1a30-4da5-9357-1b04bf8b226f"></div>
+<div id='4634' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="ccb2a58a-1a30-4da5-9357-1b04bf8b226f" data-root-id="4634"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3946,27 +4155,43 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="5633" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="5633" id="1ce5ba44-7f36-456a-b091-7ba50b3a90c6"></div>
+<div id='5633' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="1ce5ba44-7f36-456a-b091-7ba50b3a90c6" data-root-id="5633"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -3994,47 +4219,65 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<div align="center" class="animation">
-<div id="_anim_img47ac33a9d6834f75af165d19f82a9c65">
-<div id="5852" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="5852" id="8bf97753-ade5-4542-bae8-47c039862dcc"></div>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="animation" align="center">
+    <div id="_anim_img47ac33a9d6834f75af165d19f82a9c65">
+        
+            <div id='5852' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="8bf97753-ade5-4542-bae8-47c039862dcc" data-root-id="5852"></div>
 </div>
-</div>
-<br/>
-<input id="_anim_slider47ac33a9d6834f75af165d19f82a9c65" max="1" min="0" name="points" oninput="HoloViews.index['5852'].set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="HoloViews.index['5852'].slower()" style="text-align: center">–</button>
-<button onclick="HoloViews.index['5852'].first_frame()" style="text-align: center; min-width: 40px">▐◀◀</button>
-<button onclick="HoloViews.index['5852'].previous_frame()" style="text-align: center; min-width: 40px">▐◀</button>
-<button onclick="HoloViews.index['5852'].reverse_animation()" style="text-align: center; min-width: 40px">◀</button>
-<button onclick="HoloViews.index['5852'].pause_animation()" style="text-align: center; min-width: 40px">▐ ▌</button>
-<button onclick="HoloViews.index['5852'].play_animation()" style="text-align: center; min-width: 40px">▶</button>
-<button onclick="HoloViews.index['5852'].next_frame()" style="text-align: center; min-width: 40px">▶▌</button>
-<button onclick="HoloViews.index['5852'].last_frame()" style="text-align: center; min-width: 40px">▶▶▌</button>
-<button onclick="HoloViews.index['5852'].faster()" style="text-align: center">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_select47ac33a9d6834f75af165d19f82a9c65">
-<input name="state" type="radio" value="once" {once_checked}=""/> Once 
-        <input name="state" type="radio" value="loop" {loop_checked}=""/> Loop 
-        <input name="state" type="radio" value="reflect" {reflect_checked}=""/> Reflect 
+        
+    </div>
+    <br>
+    <input id="_anim_slider47ac33a9d6834f75af165d19f82a9c65" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" oninput="HoloViews.index['5852'].set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="HoloViews.index['5852'].slower()" style="text-align: center">&#8211;</button>
+    <button onclick="HoloViews.index['5852'].first_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;&#9664;</button>
+    <button onclick="HoloViews.index['5852'].previous_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;</button>
+    <button onclick="HoloViews.index['5852'].reverse_animation()" style="text-align: center; min-width: 40px">&#9664;</button>
+    <button onclick="HoloViews.index['5852'].pause_animation()" style="text-align: center; min-width: 40px">&#9616;&nbsp;&#9612;</button>
+    <button onclick="HoloViews.index['5852'].play_animation()" style="text-align: center; min-width: 40px">&#9654;</button>
+    <button onclick="HoloViews.index['5852'].next_frame()" style="text-align: center; min-width: 40px">&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['5852'].last_frame()" style="text-align: center; min-width: 40px">&#9654;&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['5852'].faster()" style="text-align: center">+</button>
+    <form action="#n" name="_anim_loop_select47ac33a9d6834f75af165d19f82a9c65" class="anim_control">
+        <input type="radio" name="state" value="once" {once_checked}> Once </input>
+        <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+        <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
     </form>
 </div>
 <script type="application/javascript">/* Instantiate the BokehScrubberWidget class. */
@@ -4073,14 +4316,17 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Adding-some-gravity-and-fixed-nodes">Adding some gravity and fixed nodes<a class="anchor-link" href="#Adding-some-gravity-and-fixed-nodes">¶</a></h1>
+<h1 id="Adding-some-gravity-and-fixed-nodes">Adding some gravity and fixed nodes<a class="anchor-link" href="#Adding-some-gravity-and-fixed-nodes">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -4088,16 +4334,17 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One way we can make this system more interesting is to add some more forces to it, set some nodes to be fixed and let it move according to its dynamics.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_gravity_forces</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
-    <span class="sd">"""Adds a vertical force to node with mass m."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_gravity_forces</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds a vertical force to node with mass m.&quot;&quot;&quot;</span>
     <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">forces</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">masses</span> <span class="o">*</span> <span class="n">g</span>
     <span class="k">return</span> <span class="n">forces</span>
@@ -4116,16 +4363,18 @@ create_widget();
         <span class="n">snapshots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_x</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">snapshots</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
 
 <span class="n">spring_anchors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -4159,16 +4408,29 @@ create_widget();
 
 <span class="n">plot_points</span><span class="p">(</span><span class="n">snapshots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">spring_anchors</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="6964" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="6964" id="ff58eb47-80ed-493e-9408-ce3b3fe8d415"></div>
+<div id='6964' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="ff58eb47-80ed-493e-9408-ce3b3fe8d415" data-root-id="6964"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -4196,27 +4458,43 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_time_plots</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[19]:</div>
+
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div id="7963" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="7963" id="11b7fa66-ebc6-4690-843c-44f071c6e682"></div>
+<div id='7963' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="11b7fa66-ebc6-4690-843c-44f071c6e682" data-root-id="7963"></div>
 </div>
 <script type="application/javascript">(function(root) {
   function embed_document(root) {
@@ -4244,47 +4522,65 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">make_animation</span><span class="p">(</span><span class="n">snapshots</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<div align="center" class="animation">
-<div id="_anim_imgb4b7279c1a4d4a73aed6b2e1e19f4209">
-<div id="8182" style="display: table; margin: 0 auto;">
-<div class="bk-root" data-root-id="8182" id="4707a27c-22ea-4dd2-a00e-625a64ffd0d8"></div>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="animation" align="center">
+    <div id="_anim_imgb4b7279c1a4d4a73aed6b2e1e19f4209">
+        
+            <div id='8182' style='display: table; margin: 0 auto;'>
+
+
+
+
+
+  <div class="bk-root" id="4707a27c-22ea-4dd2-a00e-625a64ffd0d8" data-root-id="8182"></div>
 </div>
-</div>
-<br/>
-<input id="_anim_sliderb4b7279c1a4d4a73aed6b2e1e19f4209" max="1" min="0" name="points" oninput="HoloViews.index['8182'].set_frame(parseInt(this.value));" step="1" style="width:350px" type="range" value="0"/>
-<br/>
-<button onclick="HoloViews.index['8182'].slower()" style="text-align: center">–</button>
-<button onclick="HoloViews.index['8182'].first_frame()" style="text-align: center; min-width: 40px">▐◀◀</button>
-<button onclick="HoloViews.index['8182'].previous_frame()" style="text-align: center; min-width: 40px">▐◀</button>
-<button onclick="HoloViews.index['8182'].reverse_animation()" style="text-align: center; min-width: 40px">◀</button>
-<button onclick="HoloViews.index['8182'].pause_animation()" style="text-align: center; min-width: 40px">▐ ▌</button>
-<button onclick="HoloViews.index['8182'].play_animation()" style="text-align: center; min-width: 40px">▶</button>
-<button onclick="HoloViews.index['8182'].next_frame()" style="text-align: center; min-width: 40px">▶▌</button>
-<button onclick="HoloViews.index['8182'].last_frame()" style="text-align: center; min-width: 40px">▶▶▌</button>
-<button onclick="HoloViews.index['8182'].faster()" style="text-align: center">+</button>
-<form action="#n" class="anim_control" name="_anim_loop_selectb4b7279c1a4d4a73aed6b2e1e19f4209">
-<input name="state" type="radio" value="once" {once_checked}=""/> Once 
-        <input name="state" type="radio" value="loop" {loop_checked}=""/> Loop 
-        <input name="state" type="radio" value="reflect" {reflect_checked}=""/> Reflect 
+        
+    </div>
+    <br>
+    <input id="_anim_sliderb4b7279c1a4d4a73aed6b2e1e19f4209" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" oninput="HoloViews.index['8182'].set_frame(parseInt(this.value));"></input>
+    <br>
+    <button onclick="HoloViews.index['8182'].slower()" style="text-align: center">&#8211;</button>
+    <button onclick="HoloViews.index['8182'].first_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;&#9664;</button>
+    <button onclick="HoloViews.index['8182'].previous_frame()" style="text-align: center; min-width: 40px">&#9616;&#9664;</button>
+    <button onclick="HoloViews.index['8182'].reverse_animation()" style="text-align: center; min-width: 40px">&#9664;</button>
+    <button onclick="HoloViews.index['8182'].pause_animation()" style="text-align: center; min-width: 40px">&#9616;&nbsp;&#9612;</button>
+    <button onclick="HoloViews.index['8182'].play_animation()" style="text-align: center; min-width: 40px">&#9654;</button>
+    <button onclick="HoloViews.index['8182'].next_frame()" style="text-align: center; min-width: 40px">&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['8182'].last_frame()" style="text-align: center; min-width: 40px">&#9654;&#9654;&#9612;</button>
+    <button onclick="HoloViews.index['8182'].faster()" style="text-align: center">+</button>
+    <form action="#n" name="_anim_loop_selectb4b7279c1a4d4a73aed6b2e1e19f4209" class="anim_control">
+        <input type="radio" name="state" value="once" {once_checked}> Once </input>
+        <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+        <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
     </form>
 </div>
 <script type="application/javascript">/* Instantiate the BokehScrubberWidget class. */
@@ -4323,14 +4619,18 @@ create_widget();
   }
 })(window);</script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>That's the end of this notebook. I hope you've enjoyed looking at these jiggly things as much as I do.</p>
+
 </div>
 </div>
 </div>
@@ -4338,9 +4638,12 @@ create_widget();
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the Jupyter Notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20191029_springsTest.ipynb">20191029_springsTest.ipynb</a>.</em></p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

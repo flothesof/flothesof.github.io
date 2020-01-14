@@ -1573,13 +1573,14 @@ h6:hover .anchor-link {
 <p>In this blog post, we will look at the vibrating string equation and solve it using two different mathematical methods.
 First, we will use a time-domain finite difference method. In a second step, we will use a frequency domain approach (i.e. a Fourier method) to solve the same problem.</p>
 <p>I wrote this post while going through the excellent MOOC Fundamentals of Waves and Vibrations. Feel free to check out  what I wrote about the experience <a href="http://flothesof.github.io/anki-MOOC-fundamentals-waves-vibrations.html">here</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-vibrating-string-equation">The vibrating string equation<a class="anchor-link" href="#The-vibrating-string-equation">¶</a></h1>
+<h1 id="The-vibrating-string-equation">The vibrating string equation<a class="anchor-link" href="#The-vibrating-string-equation">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1587,6 +1588,7 @@ First, we will use a time-domain finite difference method. In a second step, we 
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's start by introducing the <a href="https://en.wikipedia.org/wiki/String_vibration">vibrating string</a> equation.</p>
+
 </div>
 </div>
 </div>
@@ -1608,13 +1610,14 @@ $$
 <li>$\forall x \in [0, L], \quad y(x, 0) = y_0(x)$</li>
 <li>$\forall x \in [0, L], \quad \dot{y}(x, 0) = 0$</li>
 </ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Time-domain-solution">Time-domain solution<a class="anchor-link" href="#Time-domain-solution">¶</a></h1>
+<h1 id="Time-domain-solution">Time-domain solution<a class="anchor-link" href="#Time-domain-solution">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1635,20 +1638,21 @@ $$
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can setup a simple implementation of the solution as follows:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">class</span> <span class="nc">TimeDomainSolver</span><span class="p">:</span>
     
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="p">):</span>
-        <span class="sd">"""Setup of the time domain solver."""</span>
+        <span class="sd">&quot;&quot;&quot;Setup of the time domain solver.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">nx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">/</span><span class="n">m</span><span class="p">)</span>
@@ -1659,7 +1663,7 @@ $$
         
         
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Steps the system forward in time."""</span>
+        <span class="sd">&quot;&quot;&quot;Steps the system forward in time.&quot;&quot;&quot;</span>
         <span class="n">unext</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ucurr</span><span class="p">)</span>
         <span class="n">unext</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ucurr</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">uprev</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> \
                         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ucurr</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ucurr</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ucurr</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
@@ -1669,63 +1673,79 @@ $$
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To test our implementation, we will consider a triangular initial string with the properties of a low E string of a guitar (such as those that you can find on the back of electric guitar strings, as <a href="http://www.daddario.com/DAstringtensionguide.Page?sid=91901025-4136-404a-8c26-e020667e8b5e">here</a>).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="mf">0.6477</span> <span class="c1"># m</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="mf">0.6477</span> <span class="c1"># m</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mf">7.93</span> <span class="o">*</span> <span class="mf">9.81</span> <span class="c1"># kg * m.s^-2</span>
 <span class="n">f0</span> <span class="o">=</span> <span class="mf">82.4</span> <span class="c1"># Hz</span>
 <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">L</span> <span class="o">*</span> <span class="n">f0</span>
 <span class="n">m</span> <span class="o">=</span> <span class="n">T</span> <span class="o">/</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span>
 
-<span class="n">triangle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o"><</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">>=</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> 
+<span class="n">triangle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> 
 
 <span class="n">td_solver</span> <span class="o">=</span> <span class="n">TimeDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's visualize the initial position of the string:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
-<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">'bokeh'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
+<span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;bokeh&#39;</span><span class="p">)</span>
 <span class="n">hv</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">defaults</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="3c4ef523-b614-4a48-bb9e-2ea269fb8cc2"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="24daf674-992d-4c70-8fe0-5a626c89eb75"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#3c4ef523-b614-4a48-bb9e-2ea269fb8cc2');
+var element = $('#24daf674-992d-4c70-8fe0-5a626c89eb75');
 
 (function(root) {
   function now() {
@@ -2257,11 +2277,18 @@ var element = $('#3c4ef523-b614-4a48-bb9e-2ea269fb8cc2');
 }(window));
 </script>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea">
-<link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <style>div.hololayout {
   display: flex;
   align-items: center;
@@ -2369,8 +2396,10 @@ div.bk-hbox div.bk-data-table {
     padding: 20px;
 }
 </style>
+
+
 <div class="logo-block">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAB+wAAAfsBxc2miwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAA6zSURB
 VHic7ZtpeFRVmsf/5966taWqUlUJ2UioBBJiIBAwCZtog9IOgjqACsogKtqirT2ttt069nQ/zDzt
 tI4+CrJIREFaFgWhBXpUNhHZQoKBkIUASchWla1S+3ar7r1nPkDaCAnZKoQP/D7mnPOe9/xy76n3
@@ -2438,17 +2467,35 @@ SLHujPOTPVW+rwY+sxskAAC2HrA8t2Vvc7ffP1r9o+vwR2dcr92InIAbKKC1FZ5tB1tf+/G8p8sv
 N/9Q5zd/XR34LYCwV5JdccMEAMDBk45DH243r/X4xGvqxFa/GNpS7n6rwOwNWwHVE26oAADYurf1
 zx/utOzt+DMKYM0p17YtZZ5VNzqfsB2HewG1WXE8PoZ7gOclbTIvynZf9JV+fqZtfgs/8F/Nu5rB
 EIBmJ+8QRMmpU7EzGRsf2FzuePqYRbzh/zE26EwdrT10f6r6o8HOYzCJB9Dpff8tbnGLG8L/A/WE
-roTBs2RqAAAAAElFTkSuQmCC" style="height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle"/>
-<img src="data:image/png;base64,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" style="height:15px; border-radius:12px; display: inline-block; float: left"/>
+roTBs2RqAAAAAElFTkSuQmCC'
+     style='height:25px; border-radius:12px; display: inline-block; float: left; vertical-align: middle'></img>
+
+
+  <img src='data:image/png;base64,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'
+       style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
+  
+
+
+
+
 </div>
+
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div id="be55b8a1-f3da-493c-b5f9-00da009b2a67"></div>
-<div class="output_subarea output_javascript">
+
+    <div class="prompt"></div>
+
+
+
+
+
+<div id="550f2935-25b0-4550-91d0-ee5473a9ac4c"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#be55b8a1-f3da-493c-b5f9-00da009b2a67');
+var element = $('#550f2935-25b0-4550-91d0-ee5473a9ac4c');
 function HoloViewsWidget() {
 }
 
@@ -3243,28 +3290,41 @@ if (window.Jupyter !== undefined) {
 
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">td_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">td_solver</span><span class="o">.</span><span class="n">uprev</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">td_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">td_solver</span><span class="o">.</span><span class="n">uprev</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
-<div id="a0db5b43-afe2-43fb-b997-0941d4eb9c2c"></div>
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+
+<div id="2be233d0-0ea5-4867-a0b8-8726ddce1801"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#a0db5b43-afe2-43fb-b997-0941d4eb9c2c');
+var element = $('#2be233d0-0ea5-4867-a0b8-8726ddce1801');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1004')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3313,37 +3373,51 @@ if (!(document.getElementById('1004')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now step the system and see how the string deforms.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">td_solver</span><span class="o">.</span><span class="n">steps</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">td_solver</span><span class="o">.</span><span class="n">steps</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">td_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">td_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="p">))</span><span class="o">.</span><span class="n">redim</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
-<div id="ce596355-148a-45ab-985d-d1fdcfd14c24"></div>
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+
+<div id="f2342dc7-9dca-477e-a602-620b52000843"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#ce596355-148a-45ab-985d-d1fdcfd14c24');
+var element = $('#f2342dc7-9dca-477e-a602-620b52000843');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1114')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3392,43 +3466,57 @@ if (!(document.getElementById('1114')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's animate this:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap='scrubber'
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap=&#39;scrubber&#39;
 snapshots = []
 td_solver = TimeDomainSolver(L, 200, T, m, triangle)
 for _ in range(41):
     snapshots.append(td_solver.ucurr.copy())
     td_solver.steps(10)
 
-td_hmap = hv.HoloMap({i: hv.Curve((td_solver.x, snapshots[i]), label='time domain') for i in range(len(snapshots))}, kdims=['snapshot'])
+td_hmap = hv.HoloMap({i: hv.Curve((td_solver.x, snapshots[i]), label=&#39;time domain&#39;) for i in range(len(snapshots))}, kdims=[&#39;snapshot&#39;])
 td_hmap
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
-<div id="58566587-787e-4c34-b26d-b5375cca3ac9"></div>
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+
+<div id="37976127-449f-4b7a-b044-9a2e217a3d6e"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#58566587-787e-4c34-b26d-b5375cca3ac9');
+var element = $('#37976127-449f-4b7a-b044-9a2e217a3d6e');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1224')) && !(document.getElementById('_anim_imgdb5cce439df648c5aa16306c183fb3b9'))) {
@@ -3531,14 +3619,18 @@ if (!(document.getElementById('1224')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can observe that the vibrations of the string keeps the initial triangular shape and that this shape repeats after some time. In fact, this is a particular wave we are observing: a <a href="https://en.wikipedia.org/wiki/Standing_wave">standing wave</a>. This is due to the symmetry in the way we have formulated this problem.</p>
+
 </div>
 </div>
 </div>
@@ -3546,13 +3638,14 @@ if (!(document.getElementById('1224')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now on to the frequency domain solution.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Frequency-domain-solution">Frequency domain solution<a class="anchor-link" href="#Frequency-domain-solution">¶</a></h1>
+<h1 id="Frequency-domain-solution">Frequency domain solution<a class="anchor-link" href="#Frequency-domain-solution">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3567,6 +3660,7 @@ where
 $$
 B_{n}={2 \over L}\int _{{0}}^{{L}}f(x)\sin \left(n\pi {x \over L}\right){\mathrm  d}x.
 $$</p>
+
 </div>
 </div>
 </div>
@@ -3574,18 +3668,19 @@ $$</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's use this to compute a frequency domain solver that operates with a truncated number of modes. We will keep a similar time step for animation since this will allow us to exactly compare the outcome of the simulation between our two solvers.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">FrequencyDomainSolver</span><span class="p">:</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">FrequencyDomainSolver</span><span class="p">:</span>
     
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">nmodes</span><span class="p">):</span>
-        <span class="sd">"""Setup of the time domain solver."""</span>
+        <span class="sd">&quot;&quot;&quot;Setup of the time domain solver.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">nx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">L</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -3603,7 +3698,7 @@ $$</p>
         
         
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Steps the system forward in time."""</span>
+        <span class="sd">&quot;&quot;&quot;Steps the system forward in time.&quot;&quot;&quot;</span>
         <span class="n">unext</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ucurr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">Bn</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nmodes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bn</span><span class="p">):</span>
@@ -3614,32 +3709,44 @@ $$</p>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fd_solver</span> <span class="o">=</span> <span class="n">FrequencyDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">nmodes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fd_solver</span> <span class="o">=</span> <span class="n">FrequencyDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">nmodes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">fd_solver</span><span class="o">.</span><span class="n">steps</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">td_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fd_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="p">))</span><span class="o">.</span><span class="n">redim</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
-<div id="7fbd41b3-b3a6-4e0d-9d08-cb00d215e902"></div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+
+<div id="ee11d61f-b9af-4555-b466-fe53073235ae"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#7fbd41b3-b3a6-4e0d-9d08-cb00d215e902');
+var element = $('#ee11d61f-b9af-4555-b466-fe53073235ae');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1547')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3688,36 +3795,49 @@ if (!(document.getElementById('1547')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap='scrubber'
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap=&#39;scrubber&#39;
 snapshots = []
 fd_solver = FrequencyDomainSolver(L, 200, T, m, triangle, nmodes=10)
 for _ in range(41):
     snapshots.append(fd_solver.ucurr.copy())
     fd_solver.steps(10)
 
-fd_hmap = hv.HoloMap({i: hv.Curve((fd_solver.x, snapshots[i]), label='frequency domain') for i in range(len(snapshots))}, kdims=['snapshot'])
+fd_hmap = hv.HoloMap({i: hv.Curve((fd_solver.x, snapshots[i]), label=&#39;frequency domain&#39;) for i in range(len(snapshots))}, kdims=[&#39;snapshot&#39;])
 fd_hmap
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
-<div id="9f011580-ebeb-451e-969a-6c1f9b8c265a"></div>
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+
+<div id="db828fd1-7c3c-4233-9344-510d3153c55d"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#9f011580-ebeb-451e-969a-6c1f9b8c265a');
+var element = $('#db828fd1-7c3c-4233-9344-510d3153c55d');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1657')) && !(document.getElementById('_anim_imga0631d449ccb48869e51314bf7898c00'))) {
@@ -3820,44 +3940,58 @@ if (!(document.getElementById('1657')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The solution obtained with this approach looks a lot like the previous. Except for the fact that the string looks less triangular than before! This is due to the fact that the infinite sum of modes has been replaced by a truncated sum.</p>
 <p>Let's superpose the obtained figures for comparison.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Comparison-of-both-methods">Comparison of both methods<a class="anchor-link" href="#Comparison-of-both-methods">¶</a></h1>
+<h1 id="Comparison-of-both-methods">Comparison of both methods<a class="anchor-link" href="#Comparison-of-both-methods">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap='scrubber'
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap=&#39;scrubber&#39;
 fd_hmap * td_hmap
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[12]:</div>
-<div id="122ee82e-32ff-4b79-813f-b72871800ade"></div>
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+
+<div id="911d0e7b-1899-4273-b942-1c5dd44f711c"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#122ee82e-32ff-4b79-813f-b72871800ade');
+var element = $('#911d0e7b-1899-4273-b942-1c5dd44f711c');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1980')) && !(document.getElementById('_anim_img601cad669b0b495c94f13d2adfa380fa'))) {
@@ -3960,14 +4094,17 @@ if (!(document.getElementById('1980')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="More-modes">More modes<a class="anchor-link" href="#More-modes">¶</a></h2>
+<h2 id="More-modes">More modes<a class="anchor-link" href="#More-modes">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -3975,45 +4112,58 @@ if (!(document.getElementById('1980')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can get a more accurate solution in the frequency domain if we put more modes into it, i.e. if we truncate the sum at a larger number of modes.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">snapshots</span> <span class="o">=</span> <span class="p">[]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">snapshots</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">fd_solver</span> <span class="o">=</span> <span class="n">FrequencyDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">nmodes</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">41</span><span class="p">):</span>
     <span class="n">snapshots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fd_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
     <span class="n">fd_solver</span><span class="o">.</span><span class="n">steps</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
-<span class="n">fd_hmap2</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">HoloMap</span><span class="p">({</span><span class="n">i</span><span class="p">:</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">fd_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">snapshots</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'frequency domain'</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snapshots</span><span class="p">))},</span> <span class="n">kdims</span><span class="o">=</span><span class="p">[</span><span class="s1">'snapshot'</span><span class="p">])</span>
+<span class="n">fd_hmap2</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">HoloMap</span><span class="p">({</span><span class="n">i</span><span class="p">:</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">fd_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">snapshots</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frequency domain&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">snapshots</span><span class="p">))},</span> <span class="n">kdims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;snapshot&#39;</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap='scrubber'
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap=&#39;scrubber&#39;
 fd_hmap2 * td_hmap
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[14]:</div>
-<div id="7b35fcfb-2e3b-45bf-80ca-e6eb1111ad44"></div>
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+
+<div id="85a9877b-c2db-4006-b455-65fedefc1f6a"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#7b35fcfb-2e3b-45bf-80ca-e6eb1111ad44');
+var element = $('#85a9877b-c2db-4006-b455-65fedefc1f6a');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2414')) && !(document.getElementById('_anim_img43e6f333c0d8485daaa3084ca487852f'))) {
@@ -4116,21 +4266,25 @@ if (!(document.getElementById('2414')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed, by adding more modes to the frequency domain model, the result is more accurate (considering that the time domain solution as the reference).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Longer-simulation-times">Longer simulation times<a class="anchor-link" href="#Longer-simulation-times">¶</a></h2>
+<h2 id="Longer-simulation-times">Longer simulation times<a class="anchor-link" href="#Longer-simulation-times">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -4138,54 +4292,69 @@ if (!(document.getElementById('2414')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another way of comparing these two approaches is to see what happens for very long simulation times.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fd_solver</span> <span class="o">=</span> <span class="n">FrequencyDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">nmodes</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fd_solver</span> <span class="o">=</span> <span class="n">FrequencyDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">nmodes</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">fd_solver</span><span class="o">.</span><span class="n">steps</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">td_solver</span> <span class="o">=</span> <span class="n">TimeDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">td_solver</span> <span class="o">=</span> <span class="n">TimeDomainSolver</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">triangle</span><span class="p">)</span>
 <span class="n">factor</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span>
 <span class="n">td_solver</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">td_solver</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">factor</span><span class="o">**</span><span class="mi">2</span> 
 <span class="n">td_solver</span><span class="o">.</span><span class="n">steps</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">factor</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">td_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">td_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'time domain'</span><span class="p">)</span><span class="o">.</span><span class="n">redim</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">6</span><span class="p">))</span> <span class="o">*</span> \
-                        <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">fd_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fd_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'frequency domain'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">td_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">td_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;time domain&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">redim</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">6</span><span class="p">))</span> <span class="o">*</span> \
+                        <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">fd_solver</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fd_solver</span><span class="o">.</span><span class="n">ucurr</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frequency domain&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[17]:</div>
-<div id="b0dbda7a-da7a-4366-94e6-b9a6dba3a189"></div>
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+
+<div id="bb3c4bf3-4bd3-4f69-9c63-765bf84b7a80"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#b0dbda7a-da7a-4366-94e6-b9a6dba3a189');
+var element = $('#bb3c4bf3-4bd3-4f69-9c63-765bf84b7a80');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2848')) && !(document.getElementById('_anim_imgNone'))) {
@@ -4234,22 +4403,26 @@ if (!(document.getElementById('2848')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the above plot, we see that the time domain solution is now pretty wigly. This phenomenom is a natural artifact of the simulated string and is called <em>numerical dispersion</em>. Here, the frequency domain solution is more trustworthy since it is a closed-form sum and does not accumulate small errors due to many updates of a numerical value.</p>
 <p>This is an important argument for choosing one or the other model in engineering applications.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -4257,6 +4430,7 @@ if (!(document.getElementById('2848')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's all about tradeoffs. In the physics application that I use every day at work, it seems that each community has its preferred method and numerical strategy, which in a very broad way boils down to choosing time-domain or frequency-domain as your method to solve a wave propagation problem.</p>
+
 </div>
 </div>
 </div>
@@ -4264,45 +4438,67 @@ if (!(document.getElementById('2848')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another question is: is this realistic? That is a difficult question, and to try to answer that we could have a look at YouTube, where one can find some realistic videos from guitars.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">YouTubeVideo</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">YouTubeVideo</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">'MZ1O1JkL5Dw'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;MZ1O1JkL5Dw&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[19]:</div>
+
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
-<iframe allowfullscreen="" frameborder="0" height="300" src="https://www.youtube.com/embed/MZ1O1JkL5Dw" width="400"></iframe>
+
+        <iframe
+            width="400"
+            height="300"
+            src="https://www.youtube.com/embed/MZ1O1JkL5Dw"
+            frameborder="0"
+            allowfullscreen
+        ></iframe>
+        
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Bonus">Bonus<a class="anchor-link" href="#Bonus">¶</a></h1>
+<h1 id="Bonus">Bonus<a class="anchor-link" href="#Bonus">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -4310,46 +4506,59 @@ if (!(document.getElementById('2848')) && !(document.getElementById('_anim_imgNo
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What happens if we excite the string with "half a triangle", a triangle on half of its side?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">half_triangle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o"><</span> <span class="n">L</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">>=</span> <span class="n">L</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">>=</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">half_triangle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">L</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">L</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap='scrubber'
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">output</span> holomap=&#39;scrubber&#39;
 snapshots = []
 td_solver = TimeDomainSolver(L, 400, T, m, half_triangle)
 for _ in range(80):
     snapshots.append(td_solver.ucurr.copy())
     td_solver.steps(20)
 
-td_hmap = hv.HoloMap({i: hv.Curve((td_solver.x, snapshots[i]), label='time domain') for i in range(len(snapshots))}, kdims=['snapshot'])
+td_hmap = hv.HoloMap({i: hv.Curve((td_solver.x, snapshots[i]), label=&#39;time domain&#39;) for i in range(len(snapshots))}, kdims=[&#39;snapshot&#39;])
 td_hmap
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
-<div id="0cdeec86-de6b-4705-91ca-cf20a481cda0"></div>
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+
+<div id="cb3e6314-8789-453a-9a09-15e3a65d92cf"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#0cdeec86-de6b-4705-91ca-cf20a481cda0');
+var element = $('#cb3e6314-8789-453a-9a09-15e3a65d92cf');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('3069')) && !(document.getElementById('_anim_imgf448c1d9b1894f50a7ee668d7935c926'))) {
@@ -4452,17 +4661,23 @@ if (!(document.getElementById('3069')) && !(document.getElementById('_anim_imgNo
 })(window);
 </script>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20190328_vibratingStringTimeFrequency.ipynb">20190328_vibratingStringTimeFrequency.ipynb</a>.</em></p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

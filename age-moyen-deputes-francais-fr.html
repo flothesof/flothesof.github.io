@@ -1568,13 +1568,14 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce billet, je calcule la moyenne d'âge des députés français (c'est-à-dire les élus qui représentent les français à l'assemblée nationale, à ne pas confondre avec les sénateurs). Je me sers pour cela d'un document disponible sur le site de l'assemblée nationale, en PDF. J'en extrais les textes puis les traite afin de tracer un histogramme à l'aide du package d'analyse de données pour Python <code>pandas</code>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h1>
+<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1582,14 +1583,15 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Pourquoi calculer l'âge moyen des députés ? Bonne question : l'idée m'est venue suite à la lecture de ce tweet.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><blockquote class="twitter-tweet" lang="en"><p dir="ltr" lang="fr">La moyennz d'âge des députés et sénateurs français est de 65 ans ! STOP ! Place à la jeunesse !</p>— Geof'☭ (@DebailleuxG) <a href="https://twitter.com/DebailleuxG/status/683281096822374401">January 2, 2016</a></blockquote></p>
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<p><blockquote class="twitter-tweet" lang="en"><p lang="fr" dir="ltr">La moyennz d&#39;âge des députés et sénateurs français est de 65 ans ! STOP ! Place à la jeunesse !</p>&mdash; Geof&#39;☭ (@DebailleuxG) <a href="https://twitter.com/DebailleuxG/status/683281096822374401">January 2, 2016</a></blockquote></p>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
 </div>
 </div>
@@ -1598,13 +1600,14 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comment savoir si ce qui est affirmé ici est vrai ou pas ? Je me concentre ici sur une réponse partielle : calculer l'âge moyen des députés et plus exactement leur distribution.</p>
 <p>Ca tombe bien, car l'assemblée nationale met à disposition une liste alphabétique en PDF <a href="http://www2.assemblee-nationale.fr/static/tribun/trombinoscope/trombinoscope_alpha.pdf">ici</a>. Nous allons nous en servir pour calculer la distribution des âges.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conversion-du-PDF-en-texte">Conversion du PDF en texte<a class="anchor-link" href="#Conversion-du-PDF-en-texte">¶</a></h1>
+<h1 id="Conversion-du-PDF-en-texte">Conversion du PDF en texte<a class="anchor-link" href="#Conversion-du-PDF-en-texte">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1612,43 +1615,51 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Il s'agit tout d'abord de convertir le fichier PDF en fichier texte brut. Je me sers ici de <code>pdftotext</code>, un utilitaire que l'on peut utiliser en ligne de commande.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pdftotext.exe
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pdftotext.exe
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>pdftotext version 3.04
-Copyright 1996-2014 Glyph & Cog, LLC
-Usage: pdftotext [options] <PDF-file> [<text-file>]
-  -f <int>             : first page to convert
-  -l <int>             : last page to convert
+Copyright 1996-2014 Glyph &amp; Cog, LLC
+Usage: pdftotext [options] &lt;PDF-file&gt; [&lt;text-file&gt;]
+  -f &lt;int&gt;             : first page to convert
+  -l &lt;int&gt;             : last page to convert
   -layout              : maintain original physical layout
   -table               : similar to -layout, but optimized for tables
   -lineprinter         : use strict fixed-pitch/height layout
   -raw                 : keep strings in content stream order
-  -fixed <fp>          : assume fixed-pitch (or tabular) text
-  -linespacing <fp>    : fixed line spacing for LinePrinter mode
+  -fixed &lt;fp&gt;          : assume fixed-pitch (or tabular) text
+  -linespacing &lt;fp&gt;    : fixed line spacing for LinePrinter mode
   -clip                : separate clipped text
-  -enc <string>        : output text encoding name
-  -eol <string>        : output end-of-line convention (unix, dos, or mac)
-  -nopgbrk             : don't insert page breaks between pages
-  -opw <string>        : owner password (for encrypted files)
-  -upw <string>        : user password (for encrypted files)
-  -q                   : don't print any messages or errors
-  -cfg <string>        : configuration file to use in place of .xpdfrc
+  -enc &lt;string&gt;        : output text encoding name
+  -eol &lt;string&gt;        : output end-of-line convention (unix, dos, or mac)
+  -nopgbrk             : don&#39;t insert page breaks between pages
+  -opw &lt;string&gt;        : owner password (for encrypted files)
+  -upw &lt;string&gt;        : user password (for encrypted files)
+  -q                   : don&#39;t print any messages or errors
+  -cfg &lt;string&gt;        : configuration file to use in place of .xpdfrc
   -v                   : print copyright and version info
   -h                   : print usage information
   -help                : print usage information
@@ -1657,45 +1668,51 @@ Usage: pdftotext [options] <PDF-file> [<text-file>]
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Après avoir lu l'aide, on peut convertir le fichier PDF en texte à l'aide de la commande suivante.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pdftotext.exe trombinoscope_alpha.pdf
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pdftotext.exe trombinoscope_alpha.pdf
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Lisons maintenant le fichier texte créé pour en extraire les noms des députés et les dates de naissance.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Extraction-du-texte">Extraction du texte<a class="anchor-link" href="#Extraction-du-texte">¶</a></h1>
+<h1 id="Extraction-du-texte">Extraction du texte<a class="anchor-link" href="#Extraction-du-texte">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Travail-sur-fragment">Travail sur fragment<a class="anchor-link" href="#Travail-sur-fragment">¶</a></h2>
+<h2 id="Travail-sur-fragment">Travail sur fragment<a class="anchor-link" href="#Travail-sur-fragment">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -1703,37 +1720,38 @@ Usage: pdftotext [options] <PDF-file> [<text-file>]
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Après avoir regardé le contenu du fichier texte au bloc note, je me suis rendu compte que les noms et dates de naissance sont dans le désordre. Pas de problème, on va lire ça avec des expressions régulières et on va voir si on arrive à trouver ce qu'on cherche ! On va travailler sur la première page dans un premier temps (on commence petit avant d'étendre la méthode au document entier) :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">first_page</span> <span class="o">=</span> <span class="s2">"""Ain - Circonscription n° 5</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">first_page</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Ain - Circonscription n° 5</span>
 <span class="s2">M. Damien Abad</span>
 
 <span class="s2">Val-de-Marne - Circonscription n° 6</span>
 <span class="s2">Mme Laurence Abeille</span>
 
-<span class="s2">Les Républicains Né le 5 avril 1980 à Nîmes (Gard) Secrétaire d'âge de l'Assemblée nationale</span>
-<span class="s2">Président du conseil départemental (Ain) Élu à l'Assemblée nationale le 20 juin 2012</span>
+<span class="s2">Les Républicains Né le 5 avril 1980 à Nîmes (Gard) Secrétaire d&#39;âge de l&#39;Assemblée nationale</span>
+<span class="s2">Président du conseil départemental (Ain) Élu à l&#39;Assemblée nationale le 20 juin 2012</span>
 <span class="s2">Mayotte - Circonscription n° 2</span>
 <span class="s2">M. Ibrahim Aboubacar</span>
 
 <span class="s2">Écologiste Née le 17 juin 1960 à Neuilly-sur-Seine (Hauts-de-Seine)</span>
-<span class="s2">Cadre du secteur privé Élue à l'Assemblée nationale le 20 juin 2012</span>
+<span class="s2">Cadre du secteur privé Élue à l&#39;Assemblée nationale le 20 juin 2012</span>
 <span class="s2">Hérault - Circonscription n° 6</span>
 <span class="s2">M. Élie Aboud</span>
 
 <span class="s2">Socialiste, républicain et citoyen Né le 1erfévrier 1965 à Fomboni (Comores)</span>
-<span class="s2">Ingénieur des travaux publics Élu à l'Assemblée nationale le 20 juin 2012</span>
+<span class="s2">Ingénieur des travaux publics Élu à l&#39;Assemblée nationale le 20 juin 2012</span>
 <span class="s2">Haute-Savoie - Circonscription n° 1</span>
 <span class="s2">M. Bernard Accoyer</span>
 
 <span class="s2">Les Républicains Né le 12 octobre 1959 à Beyrouth (Liban)</span>
-<span class="s2">Médecin cardiologue (Chef de service) Adjoint au Maire de Béziers Élu à l'Assemblée nationale le 20 juin 2007 Réélu le 16 décembre 2012</span>
+<span class="s2">Médecin cardiologue (Chef de service) Adjoint au Maire de Béziers Élu à l&#39;Assemblée nationale le 20 juin 2007 Réélu le 16 décembre 2012</span>
 <span class="s2">Finistère - Circonscription n° 2</span>
 <span class="s2">Mme Patricia Adam</span>
 
@@ -1742,127 +1760,162 @@ Usage: pdftotext [options] <PDF-file> [<text-file>]
 <span class="s2">Socialiste, républicain et citoyen Née le 15 avril 1953 à Saint-Cloud (Hauts-de-Seine)</span>
 
 <span class="s2">Médecin ORL</span>
-<span class="s2">Maire d'Annecy-le-Vieux</span>
-<span class="s2">Élu à l'Assemblée nationale le 28 mars 1993 Réélu les 1erjuin 1997, 16 juin 2002, 20 juin 2007 et 20 juin 2012</span>
+<span class="s2">Maire d&#39;Annecy-le-Vieux</span>
+<span class="s2">Élu à l&#39;Assemblée nationale le 28 mars 1993 Réélu les 1erjuin 1997, 16 juin 2002, 20 juin 2007 et 20 juin 2012</span>
 
-<span class="s2">Cadre d'action sociale Élue à l'Assemblée nationale le 16 juin 2002 Réélue les 20 juin 2007 et 20 juin 2012</span>
+<span class="s2">Cadre d&#39;action sociale Élue à l&#39;Assemblée nationale le 16 juin 2002 Réélue les 20 juin 2007 et 20 juin 2012</span>
 
-<span class="s2">15"""</span>
+<span class="s2">15&quot;&quot;&quot;</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Construisons d'abord une expression régulière pour les prénoms :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"^(?:M\.|Mme) ((?:[\w\-]+.?)+)"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^(?:M\.|Mme) ((?:[\w\-]+.?)+)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>['Damien Abad',
- 'Laurence Abeille',
- 'Ibrahim Aboubacar',
- 'Élie Aboud',
- 'Bernard Accoyer',
- 'Patricia Adam']</pre>
+<pre>[&#39;Damien Abad&#39;,
+ &#39;Laurence Abeille&#39;,
+ &#39;Ibrahim Aboubacar&#39;,
+ &#39;Élie Aboud&#39;,
+ &#39;Bernard Accoyer&#39;,
+ &#39;Patricia Adam&#39;]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant passer aux dates de naissance :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">'Née? le (\d+(?: |er)\w+ \d+)'</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;Née? le (\d+(?: |er)\w+ \d+)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">p2</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p2</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[8]:</div>
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>['5 avril 1980',
- '17 juin 1960',
- '1erfévrier 1965',
- '12 octobre 1959',
- '12 août 1945',
- '15 avril 1953']</pre>
+<pre>[&#39;5 avril 1980&#39;,
+ &#39;17 juin 1960&#39;,
+ &#39;1erfévrier 1965&#39;,
+ &#39;12 octobre 1959&#39;,
+ &#39;12 août 1945&#39;,
+ &#39;15 avril 1953&#39;]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>L'expression régulière trouvée est un peu compliquée à cause de la présence de dates écrites sous la forme <code>1erfévrier</code>. On pourra aussi noter l'utilisation de groupes <a href="http://stackoverflow.com/questions/3512471/what-is-a-non-capturing-group">non-capturants</a>, qui permettent de matcher des parties d'expression mais de ne pas les conserver dans la sortie finale. Ceux-ci s'écrivent <code>(?:...)</code> au lieu de <code>(...)</code> pour les groupes normaux.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Extraction-du-texte-complet">Extraction du texte complet<a class="anchor-link" href="#Extraction-du-texte-complet">¶</a></h2>
+<h2 id="Extraction-du-texte-complet">Extraction du texte complet<a class="anchor-link" href="#Extraction-du-texte-complet">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -1870,229 +1923,283 @@ Usage: pdftotext [options] <PDF-file> [<text-file>]
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Maintenant que la première page donne des résultats valides, passons au texte complet.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'trombinoscope_alpha.txt'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;trombinoscope_alpha.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 <span class="n">names</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>['Damien Abad',
- 'Laurence Abeille',
- 'Ibrahim Aboubacar',
- 'Élie Aboud',
- 'Bernard Accoyer',
- 'Patricia Adam',
- 'Sylviane Alaux',
- 'Éric Alauzet',
- 'Yves Albarello',
- 'Brigitte Allain',
- 'Jean-Pierre Allossery',
- 'Nicole Ameline',
- 'Pouria Amirshahi',
- 'François André',
- 'Sylvie Andrieux',
- 'Benoist Apparu',
- 'Nathalie Appéré',
- 'Kader Arif',
- 'Laurence Arribagé',
- 'François Asensi',
- 'Christian Assaf',
- 'Isabelle Attard',
- 'Julien Aubert',
- 'Olivier Audibert Troin',
- 'Danielle Auroi',
- 'Pierre Aylagas',
- 'Jean-Marc Ayrault',
- 'Bruno Nestor Azerot',
- 'Alexis Bachelay',
- 'Guillaume Bachelay',
- 'Jean-Paul Bacquet',
- 'Dominique Baert',
- 'Guy Bailliart',
- 'Patrick Balkany',
- 'Gérard Bapt',
- 'Frédéric Barbier',
- 'Jean-Pierre Barbier',
- 'Serge Bardy',
- 'Ericka Bareigts',
- 'Claude Bartolone',
- 'Christian Bataille',
- 'Delphine Batho',
- 'Marie-Noëlle Battistel',
- 'Laurent Baumel',
- 'Philippe Baumel',
- 'Denis Baupin',
- 'Nicolas Bays',
- 'Catherine Beaubatie',
- 'Marie-Françoise Bechtel',
- 'Jean-Marie Beffara']</pre>
+<pre>[&#39;Damien Abad&#39;,
+ &#39;Laurence Abeille&#39;,
+ &#39;Ibrahim Aboubacar&#39;,
+ &#39;Élie Aboud&#39;,
+ &#39;Bernard Accoyer&#39;,
+ &#39;Patricia Adam&#39;,
+ &#39;Sylviane Alaux&#39;,
+ &#39;Éric Alauzet&#39;,
+ &#39;Yves Albarello&#39;,
+ &#39;Brigitte Allain&#39;,
+ &#39;Jean-Pierre Allossery&#39;,
+ &#39;Nicole Ameline&#39;,
+ &#39;Pouria Amirshahi&#39;,
+ &#39;François André&#39;,
+ &#39;Sylvie Andrieux&#39;,
+ &#39;Benoist Apparu&#39;,
+ &#39;Nathalie Appéré&#39;,
+ &#39;Kader Arif&#39;,
+ &#39;Laurence Arribagé&#39;,
+ &#39;François Asensi&#39;,
+ &#39;Christian Assaf&#39;,
+ &#39;Isabelle Attard&#39;,
+ &#39;Julien Aubert&#39;,
+ &#39;Olivier Audibert Troin&#39;,
+ &#39;Danielle Auroi&#39;,
+ &#39;Pierre Aylagas&#39;,
+ &#39;Jean-Marc Ayrault&#39;,
+ &#39;Bruno Nestor Azerot&#39;,
+ &#39;Alexis Bachelay&#39;,
+ &#39;Guillaume Bachelay&#39;,
+ &#39;Jean-Paul Bacquet&#39;,
+ &#39;Dominique Baert&#39;,
+ &#39;Guy Bailliart&#39;,
+ &#39;Patrick Balkany&#39;,
+ &#39;Gérard Bapt&#39;,
+ &#39;Frédéric Barbier&#39;,
+ &#39;Jean-Pierre Barbier&#39;,
+ &#39;Serge Bardy&#39;,
+ &#39;Ericka Bareigts&#39;,
+ &#39;Claude Bartolone&#39;,
+ &#39;Christian Bataille&#39;,
+ &#39;Delphine Batho&#39;,
+ &#39;Marie-Noëlle Battistel&#39;,
+ &#39;Laurent Baumel&#39;,
+ &#39;Philippe Baumel&#39;,
+ &#39;Denis Baupin&#39;,
+ &#39;Nicolas Bays&#39;,
+ &#39;Catherine Beaubatie&#39;,
+ &#39;Marie-Françoise Bechtel&#39;,
+ &#39;Jean-Marie Beffara&#39;]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On voit que l'expression régulière fonctionne plutôt bien. Comptons le nombre de députés identifiés.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>577</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On a le compte pour les noms ! Passons aux dates de naissance.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">birthdates</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">birthdates</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 <span class="n">birthdates</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[12]:</div>
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>['5 avril 1980',
- '17 juin 1960',
- '1erfévrier 1965',
- '12 octobre 1959',
- '12 août 1945',
- '15 avril 1953',
- '1erjuillet 1945',
- '7 juin 1958',
- '17 mars 1952',
- '23 avril 1956',
- '31 juillet 1945',
- '4 juillet 1952',
- '27 mars 1972',
- '19 juillet 1967',
- '15 décembre 1961',
- '24 novembre 1969',
- '8 juillet 1975',
- '3 juillet 1959',
- '25 mai 1970',
- '1erjuin 1945',
- '1erseptembre 1972',
- '14 novembre 1969',
- '11 juin 1978',
- '16 août 1960',
- '29 février 1944',
- '24 juillet 1942',
- '25 janvier 1950',
- '22 juillet 1961',
- '19 août 1973',
- '13 juillet 1974',
- '11 mars 1949',
- '24 octobre 1959',
- '24 septembre 1946',
- '16 août 1948',
- '4 février 1946',
- '30 août 1960',
- '11 novembre 1960',
- '6 novembre 1947',
- '16 avril 1967',
- '29 juillet 1951',
- '13 mai 1946',
- '23 mars 1973',
- '20 août 1956',
- '13 août 1965',
- '14 novembre 1961',
- '2 juin 1962',
- '1ermai 1977',
- '10 février 1964',
- '19 mars 1946',
- '13 octobre 1962']</pre>
+<pre>[&#39;5 avril 1980&#39;,
+ &#39;17 juin 1960&#39;,
+ &#39;1erfévrier 1965&#39;,
+ &#39;12 octobre 1959&#39;,
+ &#39;12 août 1945&#39;,
+ &#39;15 avril 1953&#39;,
+ &#39;1erjuillet 1945&#39;,
+ &#39;7 juin 1958&#39;,
+ &#39;17 mars 1952&#39;,
+ &#39;23 avril 1956&#39;,
+ &#39;31 juillet 1945&#39;,
+ &#39;4 juillet 1952&#39;,
+ &#39;27 mars 1972&#39;,
+ &#39;19 juillet 1967&#39;,
+ &#39;15 décembre 1961&#39;,
+ &#39;24 novembre 1969&#39;,
+ &#39;8 juillet 1975&#39;,
+ &#39;3 juillet 1959&#39;,
+ &#39;25 mai 1970&#39;,
+ &#39;1erjuin 1945&#39;,
+ &#39;1erseptembre 1972&#39;,
+ &#39;14 novembre 1969&#39;,
+ &#39;11 juin 1978&#39;,
+ &#39;16 août 1960&#39;,
+ &#39;29 février 1944&#39;,
+ &#39;24 juillet 1942&#39;,
+ &#39;25 janvier 1950&#39;,
+ &#39;22 juillet 1961&#39;,
+ &#39;19 août 1973&#39;,
+ &#39;13 juillet 1974&#39;,
+ &#39;11 mars 1949&#39;,
+ &#39;24 octobre 1959&#39;,
+ &#39;24 septembre 1946&#39;,
+ &#39;16 août 1948&#39;,
+ &#39;4 février 1946&#39;,
+ &#39;30 août 1960&#39;,
+ &#39;11 novembre 1960&#39;,
+ &#39;6 novembre 1947&#39;,
+ &#39;16 avril 1967&#39;,
+ &#39;29 juillet 1951&#39;,
+ &#39;13 mai 1946&#39;,
+ &#39;23 mars 1973&#39;,
+ &#39;20 août 1956&#39;,
+ &#39;13 août 1965&#39;,
+ &#39;14 novembre 1961&#39;,
+ &#39;2 juin 1962&#39;,
+ &#39;1ermai 1977&#39;,
+ &#39;10 février 1964&#39;,
+ &#39;19 mars 1946&#39;,
+ &#39;13 octobre 1962&#39;]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">birthdates</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">birthdates</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>577</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On a aussi le compte pour les dates de naissance ! On peut mettre tout ça dans une dataframe Pandas.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Analyse-des-données-à-l'aide-de-Pandas">Analyse des données à l'aide de Pandas<a class="anchor-link" href="#Analyse-des-données-à-l'aide-de-Pandas">¶</a></h1>
+<h1 id="Analyse-des-donn&#233;es-&#224;-l'aide-de-Pandas">Analyse des donn&#233;es &#224; l'aide de Pandas<a class="anchor-link" href="#Analyse-des-donn&#233;es-&#224;-l'aide-de-Pandas">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -2101,1959 +2208,2087 @@ Usage: pdftotext [options] <PDF-file> [<text-file>]
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Avant de pouvoir utiliser pandas pour faire des calculs de type Excel, il nous faut encore convertir les dates de naissance, qui sont du texte, vers des objets de type date.</p>
 <p>On va utiliser <a href="http://pandas.pydata.org/pandas-docs/stable/10min.html?highlight=timestamp"><code>pd.Timestamp</code></a> pour stocker les dates au bon format. On peut donner à l'objet Timestamp des chaînes de caractère en entrée, chose que nous allons faire.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">'2012/5/1'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2012/5/1&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Timestamp('2012-05-01 00:00:00')</pre>
+<pre>Timestamp(&#39;2012-05-01 00:00:00&#39;)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous pouvons écire la fonction ci-dessous :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">convert2date</span><span class="p">(</span><span class="n">date_str</span><span class="p">):</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'janvier'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'février'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'mars'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'avril'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-         <span class="s1">'mai'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'juin'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'juillet'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">'août'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> 
-         <span class="s1">'septembre'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">'octobre'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'novembre'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">'décembre'</span><span class="p">:</span><span class="mi">12</span><span class="p">}</span>
-    <span class="n">splits</span> <span class="o">=</span> <span class="n">date_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">convert2date</span><span class="p">(</span><span class="n">date_str</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;janvier&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;février&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;mars&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;avril&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+         <span class="s1">&#39;mai&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;juin&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;juillet&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;août&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> 
+         <span class="s1">&#39;septembre&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;octobre&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;novembre&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;décembre&#39;</span><span class="p">:</span><span class="mi">12</span><span class="p">}</span>
+    <span class="n">splits</span> <span class="o">=</span> <span class="n">date_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">start</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'1er'</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">start</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;1er&#39;</span><span class="p">):</span>
             <span class="n">splits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
-            <span class="n">splits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'1'</span><span class="p">)</span>
+            <span class="n">splits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
     
     
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'/'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">'/'</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Testons notre fonction sur notre collection de dates de naissance. Nous sélectionnons ici seulement les dates qui commencent par le 3 du mois.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">birthdates</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'3 '</span><span class="p">)]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">birthdates</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;3 &#39;</span><span class="p">)]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[17]:</div>
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>['3 juillet 1959',
- '3 septembre 1963',
- '3 janvier 1966',
- '3 janvier 1973',
- '3 février 1948',
- '3 janvier 1940',
- '3 mars 1951',
- '3 août 1941',
- '3 janvier 1958',
- '3 février 1967',
- '3 août 1956',
- '3 décembre 1950',
- '3 août 1953',
- '3 mars 1940',
- '3 mai 1955',
- '3 mars 1949',
- '3 mai 1951',
- '3 août 1945',
- '3 août 1951',
- '3 janvier 1974',
- '3 janvier 1948',
- '3 janvier 1947',
- '3 février 1958']</pre>
+<pre>[&#39;3 juillet 1959&#39;,
+ &#39;3 septembre 1963&#39;,
+ &#39;3 janvier 1966&#39;,
+ &#39;3 janvier 1973&#39;,
+ &#39;3 février 1948&#39;,
+ &#39;3 janvier 1940&#39;,
+ &#39;3 mars 1951&#39;,
+ &#39;3 août 1941&#39;,
+ &#39;3 janvier 1958&#39;,
+ &#39;3 février 1967&#39;,
+ &#39;3 août 1956&#39;,
+ &#39;3 décembre 1950&#39;,
+ &#39;3 août 1953&#39;,
+ &#39;3 mars 1940&#39;,
+ &#39;3 mai 1955&#39;,
+ &#39;3 mars 1949&#39;,
+ &#39;3 mai 1951&#39;,
+ &#39;3 août 1945&#39;,
+ &#39;3 août 1951&#39;,
+ &#39;3 janvier 1974&#39;,
+ &#39;3 janvier 1948&#39;,
+ &#39;3 janvier 1947&#39;,
+ &#39;3 février 1958&#39;]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous vérifions ci-dessous que les résultats sont pertinents :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">convert2date</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">birthdates</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'3 '</span><span class="p">)]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">convert2date</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">birthdates</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;3 &#39;</span><span class="p">)]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>[Timestamp('1959-07-03 00:00:00'),
- Timestamp('1963-09-03 00:00:00'),
- Timestamp('1966-01-03 00:00:00'),
- Timestamp('1973-01-03 00:00:00'),
- Timestamp('1948-02-03 00:00:00'),
- Timestamp('1940-01-03 00:00:00'),
- Timestamp('1951-03-03 00:00:00'),
- Timestamp('1941-08-03 00:00:00'),
- Timestamp('1958-01-03 00:00:00'),
- Timestamp('1967-02-03 00:00:00'),
- Timestamp('1956-08-03 00:00:00'),
- Timestamp('1950-12-03 00:00:00'),
- Timestamp('1953-08-03 00:00:00'),
- Timestamp('1940-03-03 00:00:00'),
- Timestamp('1955-05-03 00:00:00'),
- Timestamp('1949-03-03 00:00:00'),
- Timestamp('1951-05-03 00:00:00'),
- Timestamp('1945-08-03 00:00:00'),
- Timestamp('1951-08-03 00:00:00'),
- Timestamp('1974-01-03 00:00:00'),
- Timestamp('1948-01-03 00:00:00'),
- Timestamp('1947-01-03 00:00:00'),
- Timestamp('1958-02-03 00:00:00')]</pre>
+<pre>[Timestamp(&#39;1959-07-03 00:00:00&#39;),
+ Timestamp(&#39;1963-09-03 00:00:00&#39;),
+ Timestamp(&#39;1966-01-03 00:00:00&#39;),
+ Timestamp(&#39;1973-01-03 00:00:00&#39;),
+ Timestamp(&#39;1948-02-03 00:00:00&#39;),
+ Timestamp(&#39;1940-01-03 00:00:00&#39;),
+ Timestamp(&#39;1951-03-03 00:00:00&#39;),
+ Timestamp(&#39;1941-08-03 00:00:00&#39;),
+ Timestamp(&#39;1958-01-03 00:00:00&#39;),
+ Timestamp(&#39;1967-02-03 00:00:00&#39;),
+ Timestamp(&#39;1956-08-03 00:00:00&#39;),
+ Timestamp(&#39;1950-12-03 00:00:00&#39;),
+ Timestamp(&#39;1953-08-03 00:00:00&#39;),
+ Timestamp(&#39;1940-03-03 00:00:00&#39;),
+ Timestamp(&#39;1955-05-03 00:00:00&#39;),
+ Timestamp(&#39;1949-03-03 00:00:00&#39;),
+ Timestamp(&#39;1951-05-03 00:00:00&#39;),
+ Timestamp(&#39;1945-08-03 00:00:00&#39;),
+ Timestamp(&#39;1951-08-03 00:00:00&#39;),
+ Timestamp(&#39;1974-01-03 00:00:00&#39;),
+ Timestamp(&#39;1948-01-03 00:00:00&#39;),
+ Timestamp(&#39;1947-01-03 00:00:00&#39;),
+ Timestamp(&#39;1958-02-03 00:00:00&#39;)]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous pouvons maintenant fabriquer notre DataFrame avec l'ensemble des données :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">],</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">],</span> 
                            <span class="p">[</span><span class="n">convert2date</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">birthdates</span><span class="p">])),</span> 
-             <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">'Noms'</span><span class="p">,</span> <span class="s1">'Dates de naissance'</span><span class="p">))</span>
+             <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Noms&#39;</span><span class="p">,</span> <span class="s1">&#39;Dates de naissance&#39;</span><span class="p">))</span>
 <span class="n">df</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[19]:</div>
+
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Noms</th>
-<th>Dates de naissance</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Damien Abad</td>
-<td>1980-04-05</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Laurence Abeille</td>
-<td>1960-06-17</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ibrahim Aboubacar</td>
-<td>1965-02-01</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Élie Aboud</td>
-<td>1959-10-12</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Bernard Accoyer</td>
-<td>1945-08-12</td>
-</tr>
-<tr>
-<th>5</th>
-<td>Patricia Adam</td>
-<td>1953-04-15</td>
-</tr>
-<tr>
-<th>6</th>
-<td>Sylviane Alaux</td>
-<td>1945-07-01</td>
-</tr>
-<tr>
-<th>7</th>
-<td>Éric Alauzet</td>
-<td>1958-06-07</td>
-</tr>
-<tr>
-<th>8</th>
-<td>Yves Albarello</td>
-<td>1952-03-17</td>
-</tr>
-<tr>
-<th>9</th>
-<td>Brigitte Allain</td>
-<td>1956-04-23</td>
-</tr>
-<tr>
-<th>10</th>
-<td>Jean-Pierre Allossery</td>
-<td>1945-07-31</td>
-</tr>
-<tr>
-<th>11</th>
-<td>Nicole Ameline</td>
-<td>1952-07-04</td>
-</tr>
-<tr>
-<th>12</th>
-<td>Pouria Amirshahi</td>
-<td>1972-03-27</td>
-</tr>
-<tr>
-<th>13</th>
-<td>François André</td>
-<td>1967-07-19</td>
-</tr>
-<tr>
-<th>14</th>
-<td>Sylvie Andrieux</td>
-<td>1961-12-15</td>
-</tr>
-<tr>
-<th>15</th>
-<td>Benoist Apparu</td>
-<td>1969-11-24</td>
-</tr>
-<tr>
-<th>16</th>
-<td>Nathalie Appéré</td>
-<td>1975-07-08</td>
-</tr>
-<tr>
-<th>17</th>
-<td>Kader Arif</td>
-<td>1959-07-03</td>
-</tr>
-<tr>
-<th>18</th>
-<td>Laurence Arribagé</td>
-<td>1970-05-25</td>
-</tr>
-<tr>
-<th>19</th>
-<td>François Asensi</td>
-<td>1945-06-01</td>
-</tr>
-<tr>
-<th>20</th>
-<td>Christian Assaf</td>
-<td>1972-09-01</td>
-</tr>
-<tr>
-<th>21</th>
-<td>Isabelle Attard</td>
-<td>1969-11-14</td>
-</tr>
-<tr>
-<th>22</th>
-<td>Julien Aubert</td>
-<td>1978-06-11</td>
-</tr>
-<tr>
-<th>23</th>
-<td>Olivier Audibert Troin</td>
-<td>1960-08-16</td>
-</tr>
-<tr>
-<th>24</th>
-<td>Danielle Auroi</td>
-<td>1944-02-29</td>
-</tr>
-<tr>
-<th>25</th>
-<td>Pierre Aylagas</td>
-<td>1942-07-24</td>
-</tr>
-<tr>
-<th>26</th>
-<td>Jean-Marc Ayrault</td>
-<td>1950-01-25</td>
-</tr>
-<tr>
-<th>27</th>
-<td>Bruno Nestor Azerot</td>
-<td>1961-07-22</td>
-</tr>
-<tr>
-<th>28</th>
-<td>Alexis Bachelay</td>
-<td>1973-08-19</td>
-</tr>
-<tr>
-<th>29</th>
-<td>Guillaume Bachelay</td>
-<td>1974-07-13</td>
-</tr>
-<tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>547</th>
-<td>Stéphane Travert</td>
-<td>1969-10-12</td>
-</tr>
-<tr>
-<th>548</th>
-<td>Catherine Troallic</td>
-<td>1974-05-10</td>
-</tr>
-<tr>
-<th>549</th>
-<td>Jean-Paul Tuaiva</td>
-<td>1972-10-30</td>
-</tr>
-<tr>
-<th>550</th>
-<td>Cécile Untermaier</td>
-<td>1951-12-28</td>
-</tr>
-<tr>
-<th>551</th>
-<td>Jean-Jacques Urvoas</td>
-<td>1959-09-19</td>
-</tr>
-<tr>
-<th>552</th>
-<td>Daniel Vaillant</td>
-<td>1949-07-19</td>
-</tr>
-<tr>
-<th>553</th>
-<td>Jacques Valax</td>
-<td>1951-08-23</td>
-</tr>
-<tr>
-<th>554</th>
-<td>François Vannson</td>
-<td>1962-10-20</td>
-</tr>
-<tr>
-<th>555</th>
-<td>Catherine Vautrin</td>
-<td>1960-07-26</td>
-</tr>
-<tr>
-<th>556</th>
-<td>Michel Vauzelle</td>
-<td>1944-08-15</td>
-</tr>
-<tr>
-<th>557</th>
-<td>Francis Vercamer</td>
-<td>1958-05-10</td>
-</tr>
-<tr>
-<th>558</th>
-<td>Patrice Verchère</td>
-<td>1973-12-29</td>
-</tr>
-<tr>
-<th>559</th>
-<td>Fabrice Verdier</td>
-<td>1968-12-16</td>
-</tr>
-<tr>
-<th>560</th>
-<td>Michel Vergnier</td>
-<td>1946-11-25</td>
-</tr>
-<tr>
-<th>561</th>
-<td>Arnaud Viala</td>
-<td>1974-12-04</td>
-</tr>
-<tr>
-<th>562</th>
-<td>Jean-Sébastien Vialatte</td>
-<td>1951-01-30</td>
-</tr>
-<tr>
-<th>563</th>
-<td>Jean-Pierre Vigier</td>
-<td>1969-10-22</td>
-</tr>
-<tr>
-<th>564</th>
-<td>Philippe Vigier</td>
-<td>1958-02-03</td>
-</tr>
-<tr>
-<th>565</th>
-<td>Patrick Vignal</td>
-<td>1958-01-22</td>
-</tr>
-<tr>
-<th>566</th>
-<td>François-Xavier Villain</td>
-<td>1950-05-31</td>
-</tr>
-<tr>
-<th>567</th>
-<td>Jean-Michel Villaumé</td>
-<td>1946-03-27</td>
-</tr>
-<tr>
-<th>568</th>
-<td>Philippe Vitel</td>
-<td>1955-02-22</td>
-</tr>
-<tr>
-<th>569</th>
-<td>Jean Jacques Vlody</td>
-<td>1967-08-19</td>
-</tr>
-<tr>
-<th>570</th>
-<td>Michel Voisin</td>
-<td>1944-10-06</td>
-</tr>
-<tr>
-<th>571</th>
-<td>Jean-Luc Warsmann</td>
-<td>1965-10-22</td>
-</tr>
-<tr>
-<th>572</th>
-<td>Laurent Wauquiez</td>
-<td>1975-04-12</td>
-</tr>
-<tr>
-<th>573</th>
-<td>Éric Woerth</td>
-<td>1956-01-29</td>
-</tr>
-<tr>
-<th>574</th>
-<td>Paola Zanetti</td>
-<td>1976-09-01</td>
-</tr>
-<tr>
-<th>575</th>
-<td>Marie-Jo Zimmermann</td>
-<td>1951-04-29</td>
-</tr>
-<tr>
-<th>576</th>
-<td>Michel Zumkeller</td>
-<td>1966-01-21</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Noms</th>
+      <th>Dates de naissance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Damien Abad</td>
+      <td>1980-04-05</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Laurence Abeille</td>
+      <td>1960-06-17</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ibrahim Aboubacar</td>
+      <td>1965-02-01</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Élie Aboud</td>
+      <td>1959-10-12</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Bernard Accoyer</td>
+      <td>1945-08-12</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Patricia Adam</td>
+      <td>1953-04-15</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Sylviane Alaux</td>
+      <td>1945-07-01</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Éric Alauzet</td>
+      <td>1958-06-07</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Yves Albarello</td>
+      <td>1952-03-17</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Brigitte Allain</td>
+      <td>1956-04-23</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Jean-Pierre Allossery</td>
+      <td>1945-07-31</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Nicole Ameline</td>
+      <td>1952-07-04</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Pouria Amirshahi</td>
+      <td>1972-03-27</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>François André</td>
+      <td>1967-07-19</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Sylvie Andrieux</td>
+      <td>1961-12-15</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Benoist Apparu</td>
+      <td>1969-11-24</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Nathalie Appéré</td>
+      <td>1975-07-08</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Kader Arif</td>
+      <td>1959-07-03</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Laurence Arribagé</td>
+      <td>1970-05-25</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>François Asensi</td>
+      <td>1945-06-01</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Christian Assaf</td>
+      <td>1972-09-01</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Isabelle Attard</td>
+      <td>1969-11-14</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Julien Aubert</td>
+      <td>1978-06-11</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Olivier Audibert Troin</td>
+      <td>1960-08-16</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Danielle Auroi</td>
+      <td>1944-02-29</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Pierre Aylagas</td>
+      <td>1942-07-24</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Jean-Marc Ayrault</td>
+      <td>1950-01-25</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Bruno Nestor Azerot</td>
+      <td>1961-07-22</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Alexis Bachelay</td>
+      <td>1973-08-19</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Guillaume Bachelay</td>
+      <td>1974-07-13</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>547</th>
+      <td>Stéphane Travert</td>
+      <td>1969-10-12</td>
+    </tr>
+    <tr>
+      <th>548</th>
+      <td>Catherine Troallic</td>
+      <td>1974-05-10</td>
+    </tr>
+    <tr>
+      <th>549</th>
+      <td>Jean-Paul Tuaiva</td>
+      <td>1972-10-30</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>Cécile Untermaier</td>
+      <td>1951-12-28</td>
+    </tr>
+    <tr>
+      <th>551</th>
+      <td>Jean-Jacques Urvoas</td>
+      <td>1959-09-19</td>
+    </tr>
+    <tr>
+      <th>552</th>
+      <td>Daniel Vaillant</td>
+      <td>1949-07-19</td>
+    </tr>
+    <tr>
+      <th>553</th>
+      <td>Jacques Valax</td>
+      <td>1951-08-23</td>
+    </tr>
+    <tr>
+      <th>554</th>
+      <td>François Vannson</td>
+      <td>1962-10-20</td>
+    </tr>
+    <tr>
+      <th>555</th>
+      <td>Catherine Vautrin</td>
+      <td>1960-07-26</td>
+    </tr>
+    <tr>
+      <th>556</th>
+      <td>Michel Vauzelle</td>
+      <td>1944-08-15</td>
+    </tr>
+    <tr>
+      <th>557</th>
+      <td>Francis Vercamer</td>
+      <td>1958-05-10</td>
+    </tr>
+    <tr>
+      <th>558</th>
+      <td>Patrice Verchère</td>
+      <td>1973-12-29</td>
+    </tr>
+    <tr>
+      <th>559</th>
+      <td>Fabrice Verdier</td>
+      <td>1968-12-16</td>
+    </tr>
+    <tr>
+      <th>560</th>
+      <td>Michel Vergnier</td>
+      <td>1946-11-25</td>
+    </tr>
+    <tr>
+      <th>561</th>
+      <td>Arnaud Viala</td>
+      <td>1974-12-04</td>
+    </tr>
+    <tr>
+      <th>562</th>
+      <td>Jean-Sébastien Vialatte</td>
+      <td>1951-01-30</td>
+    </tr>
+    <tr>
+      <th>563</th>
+      <td>Jean-Pierre Vigier</td>
+      <td>1969-10-22</td>
+    </tr>
+    <tr>
+      <th>564</th>
+      <td>Philippe Vigier</td>
+      <td>1958-02-03</td>
+    </tr>
+    <tr>
+      <th>565</th>
+      <td>Patrick Vignal</td>
+      <td>1958-01-22</td>
+    </tr>
+    <tr>
+      <th>566</th>
+      <td>François-Xavier Villain</td>
+      <td>1950-05-31</td>
+    </tr>
+    <tr>
+      <th>567</th>
+      <td>Jean-Michel Villaumé</td>
+      <td>1946-03-27</td>
+    </tr>
+    <tr>
+      <th>568</th>
+      <td>Philippe Vitel</td>
+      <td>1955-02-22</td>
+    </tr>
+    <tr>
+      <th>569</th>
+      <td>Jean Jacques Vlody</td>
+      <td>1967-08-19</td>
+    </tr>
+    <tr>
+      <th>570</th>
+      <td>Michel Voisin</td>
+      <td>1944-10-06</td>
+    </tr>
+    <tr>
+      <th>571</th>
+      <td>Jean-Luc Warsmann</td>
+      <td>1965-10-22</td>
+    </tr>
+    <tr>
+      <th>572</th>
+      <td>Laurent Wauquiez</td>
+      <td>1975-04-12</td>
+    </tr>
+    <tr>
+      <th>573</th>
+      <td>Éric Woerth</td>
+      <td>1956-01-29</td>
+    </tr>
+    <tr>
+      <th>574</th>
+      <td>Paola Zanetti</td>
+      <td>1976-09-01</td>
+    </tr>
+    <tr>
+      <th>575</th>
+      <td>Marie-Jo Zimmermann</td>
+      <td>1951-04-29</td>
+    </tr>
+    <tr>
+      <th>576</th>
+      <td>Michel Zumkeller</td>
+      <td>1966-01-21</td>
+    </tr>
+  </tbody>
 </table>
 <p>577 rows × 2 columns</p>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Armé de cette dataframe, nous pouvons calculer l'âge des différents députés assez facilement :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>datetime.date(2016, 1, 8)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [22]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Dates de naissance'</span><span class="p">]</span> 
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [23]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dates de naissance&#39;</span><span class="p">]</span> 
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[23]:</div>
+
+    <div class="prompt output_prompt">Out[23]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Noms</th>
-<th>Dates de naissance</th>
-<th>Âge</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Damien Abad</td>
-<td>1980-04-05</td>
-<td>13061 days</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Laurence Abeille</td>
-<td>1960-06-17</td>
-<td>20293 days</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ibrahim Aboubacar</td>
-<td>1965-02-01</td>
-<td>18603 days</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Élie Aboud</td>
-<td>1959-10-12</td>
-<td>20542 days</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Bernard Accoyer</td>
-<td>1945-08-12</td>
-<td>25716 days</td>
-</tr>
-<tr>
-<th>5</th>
-<td>Patricia Adam</td>
-<td>1953-04-15</td>
-<td>22913 days</td>
-</tr>
-<tr>
-<th>6</th>
-<td>Sylviane Alaux</td>
-<td>1945-07-01</td>
-<td>25758 days</td>
-</tr>
-<tr>
-<th>7</th>
-<td>Éric Alauzet</td>
-<td>1958-06-07</td>
-<td>21034 days</td>
-</tr>
-<tr>
-<th>8</th>
-<td>Yves Albarello</td>
-<td>1952-03-17</td>
-<td>23307 days</td>
-</tr>
-<tr>
-<th>9</th>
-<td>Brigitte Allain</td>
-<td>1956-04-23</td>
-<td>21809 days</td>
-</tr>
-<tr>
-<th>10</th>
-<td>Jean-Pierre Allossery</td>
-<td>1945-07-31</td>
-<td>25728 days</td>
-</tr>
-<tr>
-<th>11</th>
-<td>Nicole Ameline</td>
-<td>1952-07-04</td>
-<td>23198 days</td>
-</tr>
-<tr>
-<th>12</th>
-<td>Pouria Amirshahi</td>
-<td>1972-03-27</td>
-<td>15992 days</td>
-</tr>
-<tr>
-<th>13</th>
-<td>François André</td>
-<td>1967-07-19</td>
-<td>17705 days</td>
-</tr>
-<tr>
-<th>14</th>
-<td>Sylvie Andrieux</td>
-<td>1961-12-15</td>
-<td>19747 days</td>
-</tr>
-<tr>
-<th>15</th>
-<td>Benoist Apparu</td>
-<td>1969-11-24</td>
-<td>16846 days</td>
-</tr>
-<tr>
-<th>16</th>
-<td>Nathalie Appéré</td>
-<td>1975-07-08</td>
-<td>14794 days</td>
-</tr>
-<tr>
-<th>17</th>
-<td>Kader Arif</td>
-<td>1959-07-03</td>
-<td>20643 days</td>
-</tr>
-<tr>
-<th>18</th>
-<td>Laurence Arribagé</td>
-<td>1970-05-25</td>
-<td>16664 days</td>
-</tr>
-<tr>
-<th>19</th>
-<td>François Asensi</td>
-<td>1945-06-01</td>
-<td>25788 days</td>
-</tr>
-<tr>
-<th>20</th>
-<td>Christian Assaf</td>
-<td>1972-09-01</td>
-<td>15834 days</td>
-</tr>
-<tr>
-<th>21</th>
-<td>Isabelle Attard</td>
-<td>1969-11-14</td>
-<td>16856 days</td>
-</tr>
-<tr>
-<th>22</th>
-<td>Julien Aubert</td>
-<td>1978-06-11</td>
-<td>13725 days</td>
-</tr>
-<tr>
-<th>23</th>
-<td>Olivier Audibert Troin</td>
-<td>1960-08-16</td>
-<td>20233 days</td>
-</tr>
-<tr>
-<th>24</th>
-<td>Danielle Auroi</td>
-<td>1944-02-29</td>
-<td>26246 days</td>
-</tr>
-<tr>
-<th>25</th>
-<td>Pierre Aylagas</td>
-<td>1942-07-24</td>
-<td>26831 days</td>
-</tr>
-<tr>
-<th>26</th>
-<td>Jean-Marc Ayrault</td>
-<td>1950-01-25</td>
-<td>24089 days</td>
-</tr>
-<tr>
-<th>27</th>
-<td>Bruno Nestor Azerot</td>
-<td>1961-07-22</td>
-<td>19893 days</td>
-</tr>
-<tr>
-<th>28</th>
-<td>Alexis Bachelay</td>
-<td>1973-08-19</td>
-<td>15482 days</td>
-</tr>
-<tr>
-<th>29</th>
-<td>Guillaume Bachelay</td>
-<td>1974-07-13</td>
-<td>15154 days</td>
-</tr>
-<tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>547</th>
-<td>Stéphane Travert</td>
-<td>1969-10-12</td>
-<td>16889 days</td>
-</tr>
-<tr>
-<th>548</th>
-<td>Catherine Troallic</td>
-<td>1974-05-10</td>
-<td>15218 days</td>
-</tr>
-<tr>
-<th>549</th>
-<td>Jean-Paul Tuaiva</td>
-<td>1972-10-30</td>
-<td>15775 days</td>
-</tr>
-<tr>
-<th>550</th>
-<td>Cécile Untermaier</td>
-<td>1951-12-28</td>
-<td>23387 days</td>
-</tr>
-<tr>
-<th>551</th>
-<td>Jean-Jacques Urvoas</td>
-<td>1959-09-19</td>
-<td>20565 days</td>
-</tr>
-<tr>
-<th>552</th>
-<td>Daniel Vaillant</td>
-<td>1949-07-19</td>
-<td>24279 days</td>
-</tr>
-<tr>
-<th>553</th>
-<td>Jacques Valax</td>
-<td>1951-08-23</td>
-<td>23514 days</td>
-</tr>
-<tr>
-<th>554</th>
-<td>François Vannson</td>
-<td>1962-10-20</td>
-<td>19438 days</td>
-</tr>
-<tr>
-<th>555</th>
-<td>Catherine Vautrin</td>
-<td>1960-07-26</td>
-<td>20254 days</td>
-</tr>
-<tr>
-<th>556</th>
-<td>Michel Vauzelle</td>
-<td>1944-08-15</td>
-<td>26078 days</td>
-</tr>
-<tr>
-<th>557</th>
-<td>Francis Vercamer</td>
-<td>1958-05-10</td>
-<td>21062 days</td>
-</tr>
-<tr>
-<th>558</th>
-<td>Patrice Verchère</td>
-<td>1973-12-29</td>
-<td>15350 days</td>
-</tr>
-<tr>
-<th>559</th>
-<td>Fabrice Verdier</td>
-<td>1968-12-16</td>
-<td>17189 days</td>
-</tr>
-<tr>
-<th>560</th>
-<td>Michel Vergnier</td>
-<td>1946-11-25</td>
-<td>25246 days</td>
-</tr>
-<tr>
-<th>561</th>
-<td>Arnaud Viala</td>
-<td>1974-12-04</td>
-<td>15010 days</td>
-</tr>
-<tr>
-<th>562</th>
-<td>Jean-Sébastien Vialatte</td>
-<td>1951-01-30</td>
-<td>23719 days</td>
-</tr>
-<tr>
-<th>563</th>
-<td>Jean-Pierre Vigier</td>
-<td>1969-10-22</td>
-<td>16879 days</td>
-</tr>
-<tr>
-<th>564</th>
-<td>Philippe Vigier</td>
-<td>1958-02-03</td>
-<td>21158 days</td>
-</tr>
-<tr>
-<th>565</th>
-<td>Patrick Vignal</td>
-<td>1958-01-22</td>
-<td>21170 days</td>
-</tr>
-<tr>
-<th>566</th>
-<td>François-Xavier Villain</td>
-<td>1950-05-31</td>
-<td>23963 days</td>
-</tr>
-<tr>
-<th>567</th>
-<td>Jean-Michel Villaumé</td>
-<td>1946-03-27</td>
-<td>25489 days</td>
-</tr>
-<tr>
-<th>568</th>
-<td>Philippe Vitel</td>
-<td>1955-02-22</td>
-<td>22235 days</td>
-</tr>
-<tr>
-<th>569</th>
-<td>Jean Jacques Vlody</td>
-<td>1967-08-19</td>
-<td>17674 days</td>
-</tr>
-<tr>
-<th>570</th>
-<td>Michel Voisin</td>
-<td>1944-10-06</td>
-<td>26026 days</td>
-</tr>
-<tr>
-<th>571</th>
-<td>Jean-Luc Warsmann</td>
-<td>1965-10-22</td>
-<td>18340 days</td>
-</tr>
-<tr>
-<th>572</th>
-<td>Laurent Wauquiez</td>
-<td>1975-04-12</td>
-<td>14881 days</td>
-</tr>
-<tr>
-<th>573</th>
-<td>Éric Woerth</td>
-<td>1956-01-29</td>
-<td>21894 days</td>
-</tr>
-<tr>
-<th>574</th>
-<td>Paola Zanetti</td>
-<td>1976-09-01</td>
-<td>14373 days</td>
-</tr>
-<tr>
-<th>575</th>
-<td>Marie-Jo Zimmermann</td>
-<td>1951-04-29</td>
-<td>23630 days</td>
-</tr>
-<tr>
-<th>576</th>
-<td>Michel Zumkeller</td>
-<td>1966-01-21</td>
-<td>18249 days</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Noms</th>
+      <th>Dates de naissance</th>
+      <th>Âge</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Damien Abad</td>
+      <td>1980-04-05</td>
+      <td>13061 days</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Laurence Abeille</td>
+      <td>1960-06-17</td>
+      <td>20293 days</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ibrahim Aboubacar</td>
+      <td>1965-02-01</td>
+      <td>18603 days</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Élie Aboud</td>
+      <td>1959-10-12</td>
+      <td>20542 days</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Bernard Accoyer</td>
+      <td>1945-08-12</td>
+      <td>25716 days</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Patricia Adam</td>
+      <td>1953-04-15</td>
+      <td>22913 days</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Sylviane Alaux</td>
+      <td>1945-07-01</td>
+      <td>25758 days</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Éric Alauzet</td>
+      <td>1958-06-07</td>
+      <td>21034 days</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Yves Albarello</td>
+      <td>1952-03-17</td>
+      <td>23307 days</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Brigitte Allain</td>
+      <td>1956-04-23</td>
+      <td>21809 days</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Jean-Pierre Allossery</td>
+      <td>1945-07-31</td>
+      <td>25728 days</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Nicole Ameline</td>
+      <td>1952-07-04</td>
+      <td>23198 days</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Pouria Amirshahi</td>
+      <td>1972-03-27</td>
+      <td>15992 days</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>François André</td>
+      <td>1967-07-19</td>
+      <td>17705 days</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Sylvie Andrieux</td>
+      <td>1961-12-15</td>
+      <td>19747 days</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Benoist Apparu</td>
+      <td>1969-11-24</td>
+      <td>16846 days</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Nathalie Appéré</td>
+      <td>1975-07-08</td>
+      <td>14794 days</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Kader Arif</td>
+      <td>1959-07-03</td>
+      <td>20643 days</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Laurence Arribagé</td>
+      <td>1970-05-25</td>
+      <td>16664 days</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>François Asensi</td>
+      <td>1945-06-01</td>
+      <td>25788 days</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Christian Assaf</td>
+      <td>1972-09-01</td>
+      <td>15834 days</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Isabelle Attard</td>
+      <td>1969-11-14</td>
+      <td>16856 days</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Julien Aubert</td>
+      <td>1978-06-11</td>
+      <td>13725 days</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Olivier Audibert Troin</td>
+      <td>1960-08-16</td>
+      <td>20233 days</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Danielle Auroi</td>
+      <td>1944-02-29</td>
+      <td>26246 days</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Pierre Aylagas</td>
+      <td>1942-07-24</td>
+      <td>26831 days</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Jean-Marc Ayrault</td>
+      <td>1950-01-25</td>
+      <td>24089 days</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Bruno Nestor Azerot</td>
+      <td>1961-07-22</td>
+      <td>19893 days</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Alexis Bachelay</td>
+      <td>1973-08-19</td>
+      <td>15482 days</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Guillaume Bachelay</td>
+      <td>1974-07-13</td>
+      <td>15154 days</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>547</th>
+      <td>Stéphane Travert</td>
+      <td>1969-10-12</td>
+      <td>16889 days</td>
+    </tr>
+    <tr>
+      <th>548</th>
+      <td>Catherine Troallic</td>
+      <td>1974-05-10</td>
+      <td>15218 days</td>
+    </tr>
+    <tr>
+      <th>549</th>
+      <td>Jean-Paul Tuaiva</td>
+      <td>1972-10-30</td>
+      <td>15775 days</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>Cécile Untermaier</td>
+      <td>1951-12-28</td>
+      <td>23387 days</td>
+    </tr>
+    <tr>
+      <th>551</th>
+      <td>Jean-Jacques Urvoas</td>
+      <td>1959-09-19</td>
+      <td>20565 days</td>
+    </tr>
+    <tr>
+      <th>552</th>
+      <td>Daniel Vaillant</td>
+      <td>1949-07-19</td>
+      <td>24279 days</td>
+    </tr>
+    <tr>
+      <th>553</th>
+      <td>Jacques Valax</td>
+      <td>1951-08-23</td>
+      <td>23514 days</td>
+    </tr>
+    <tr>
+      <th>554</th>
+      <td>François Vannson</td>
+      <td>1962-10-20</td>
+      <td>19438 days</td>
+    </tr>
+    <tr>
+      <th>555</th>
+      <td>Catherine Vautrin</td>
+      <td>1960-07-26</td>
+      <td>20254 days</td>
+    </tr>
+    <tr>
+      <th>556</th>
+      <td>Michel Vauzelle</td>
+      <td>1944-08-15</td>
+      <td>26078 days</td>
+    </tr>
+    <tr>
+      <th>557</th>
+      <td>Francis Vercamer</td>
+      <td>1958-05-10</td>
+      <td>21062 days</td>
+    </tr>
+    <tr>
+      <th>558</th>
+      <td>Patrice Verchère</td>
+      <td>1973-12-29</td>
+      <td>15350 days</td>
+    </tr>
+    <tr>
+      <th>559</th>
+      <td>Fabrice Verdier</td>
+      <td>1968-12-16</td>
+      <td>17189 days</td>
+    </tr>
+    <tr>
+      <th>560</th>
+      <td>Michel Vergnier</td>
+      <td>1946-11-25</td>
+      <td>25246 days</td>
+    </tr>
+    <tr>
+      <th>561</th>
+      <td>Arnaud Viala</td>
+      <td>1974-12-04</td>
+      <td>15010 days</td>
+    </tr>
+    <tr>
+      <th>562</th>
+      <td>Jean-Sébastien Vialatte</td>
+      <td>1951-01-30</td>
+      <td>23719 days</td>
+    </tr>
+    <tr>
+      <th>563</th>
+      <td>Jean-Pierre Vigier</td>
+      <td>1969-10-22</td>
+      <td>16879 days</td>
+    </tr>
+    <tr>
+      <th>564</th>
+      <td>Philippe Vigier</td>
+      <td>1958-02-03</td>
+      <td>21158 days</td>
+    </tr>
+    <tr>
+      <th>565</th>
+      <td>Patrick Vignal</td>
+      <td>1958-01-22</td>
+      <td>21170 days</td>
+    </tr>
+    <tr>
+      <th>566</th>
+      <td>François-Xavier Villain</td>
+      <td>1950-05-31</td>
+      <td>23963 days</td>
+    </tr>
+    <tr>
+      <th>567</th>
+      <td>Jean-Michel Villaumé</td>
+      <td>1946-03-27</td>
+      <td>25489 days</td>
+    </tr>
+    <tr>
+      <th>568</th>
+      <td>Philippe Vitel</td>
+      <td>1955-02-22</td>
+      <td>22235 days</td>
+    </tr>
+    <tr>
+      <th>569</th>
+      <td>Jean Jacques Vlody</td>
+      <td>1967-08-19</td>
+      <td>17674 days</td>
+    </tr>
+    <tr>
+      <th>570</th>
+      <td>Michel Voisin</td>
+      <td>1944-10-06</td>
+      <td>26026 days</td>
+    </tr>
+    <tr>
+      <th>571</th>
+      <td>Jean-Luc Warsmann</td>
+      <td>1965-10-22</td>
+      <td>18340 days</td>
+    </tr>
+    <tr>
+      <th>572</th>
+      <td>Laurent Wauquiez</td>
+      <td>1975-04-12</td>
+      <td>14881 days</td>
+    </tr>
+    <tr>
+      <th>573</th>
+      <td>Éric Woerth</td>
+      <td>1956-01-29</td>
+      <td>21894 days</td>
+    </tr>
+    <tr>
+      <th>574</th>
+      <td>Paola Zanetti</td>
+      <td>1976-09-01</td>
+      <td>14373 days</td>
+    </tr>
+    <tr>
+      <th>575</th>
+      <td>Marie-Jo Zimmermann</td>
+      <td>1951-04-29</td>
+      <td>23630 days</td>
+    </tr>
+    <tr>
+      <th>576</th>
+      <td>Michel Zumkeller</td>
+      <td>1966-01-21</td>
+      <td>18249 days</td>
+    </tr>
+  </tbody>
 </table>
 <p>577 rows × 3 columns</p>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Le problème, c'est que l'âge est en jours, on va donc <a href="http://stackoverflow.com/questions/16103238/pandas-timedelta-in-days">le convertir en années</a> :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mi">365</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Âge'</span><span class="p">]]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mi">365</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge&#39;</span><span class="p">]]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [25]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[25]:</div>
+
+    <div class="prompt output_prompt">Out[25]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Noms</th>
-<th>Dates de naissance</th>
-<th>Âge</th>
-<th>Âge (années)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>Damien Abad</td>
-<td>1980-04-05</td>
-<td>13061 days</td>
-<td>35.783562</td>
-</tr>
-<tr>
-<th>1</th>
-<td>Laurence Abeille</td>
-<td>1960-06-17</td>
-<td>20293 days</td>
-<td>55.597260</td>
-</tr>
-<tr>
-<th>2</th>
-<td>Ibrahim Aboubacar</td>
-<td>1965-02-01</td>
-<td>18603 days</td>
-<td>50.967123</td>
-</tr>
-<tr>
-<th>3</th>
-<td>Élie Aboud</td>
-<td>1959-10-12</td>
-<td>20542 days</td>
-<td>56.279452</td>
-</tr>
-<tr>
-<th>4</th>
-<td>Bernard Accoyer</td>
-<td>1945-08-12</td>
-<td>25716 days</td>
-<td>70.454795</td>
-</tr>
-<tr>
-<th>5</th>
-<td>Patricia Adam</td>
-<td>1953-04-15</td>
-<td>22913 days</td>
-<td>62.775342</td>
-</tr>
-<tr>
-<th>6</th>
-<td>Sylviane Alaux</td>
-<td>1945-07-01</td>
-<td>25758 days</td>
-<td>70.569863</td>
-</tr>
-<tr>
-<th>7</th>
-<td>Éric Alauzet</td>
-<td>1958-06-07</td>
-<td>21034 days</td>
-<td>57.627397</td>
-</tr>
-<tr>
-<th>8</th>
-<td>Yves Albarello</td>
-<td>1952-03-17</td>
-<td>23307 days</td>
-<td>63.854795</td>
-</tr>
-<tr>
-<th>9</th>
-<td>Brigitte Allain</td>
-<td>1956-04-23</td>
-<td>21809 days</td>
-<td>59.750685</td>
-</tr>
-<tr>
-<th>10</th>
-<td>Jean-Pierre Allossery</td>
-<td>1945-07-31</td>
-<td>25728 days</td>
-<td>70.487671</td>
-</tr>
-<tr>
-<th>11</th>
-<td>Nicole Ameline</td>
-<td>1952-07-04</td>
-<td>23198 days</td>
-<td>63.556164</td>
-</tr>
-<tr>
-<th>12</th>
-<td>Pouria Amirshahi</td>
-<td>1972-03-27</td>
-<td>15992 days</td>
-<td>43.813699</td>
-</tr>
-<tr>
-<th>13</th>
-<td>François André</td>
-<td>1967-07-19</td>
-<td>17705 days</td>
-<td>48.506849</td>
-</tr>
-<tr>
-<th>14</th>
-<td>Sylvie Andrieux</td>
-<td>1961-12-15</td>
-<td>19747 days</td>
-<td>54.101370</td>
-</tr>
-<tr>
-<th>15</th>
-<td>Benoist Apparu</td>
-<td>1969-11-24</td>
-<td>16846 days</td>
-<td>46.153425</td>
-</tr>
-<tr>
-<th>16</th>
-<td>Nathalie Appéré</td>
-<td>1975-07-08</td>
-<td>14794 days</td>
-<td>40.531507</td>
-</tr>
-<tr>
-<th>17</th>
-<td>Kader Arif</td>
-<td>1959-07-03</td>
-<td>20643 days</td>
-<td>56.556164</td>
-</tr>
-<tr>
-<th>18</th>
-<td>Laurence Arribagé</td>
-<td>1970-05-25</td>
-<td>16664 days</td>
-<td>45.654795</td>
-</tr>
-<tr>
-<th>19</th>
-<td>François Asensi</td>
-<td>1945-06-01</td>
-<td>25788 days</td>
-<td>70.652055</td>
-</tr>
-<tr>
-<th>20</th>
-<td>Christian Assaf</td>
-<td>1972-09-01</td>
-<td>15834 days</td>
-<td>43.380822</td>
-</tr>
-<tr>
-<th>21</th>
-<td>Isabelle Attard</td>
-<td>1969-11-14</td>
-<td>16856 days</td>
-<td>46.180822</td>
-</tr>
-<tr>
-<th>22</th>
-<td>Julien Aubert</td>
-<td>1978-06-11</td>
-<td>13725 days</td>
-<td>37.602740</td>
-</tr>
-<tr>
-<th>23</th>
-<td>Olivier Audibert Troin</td>
-<td>1960-08-16</td>
-<td>20233 days</td>
-<td>55.432877</td>
-</tr>
-<tr>
-<th>24</th>
-<td>Danielle Auroi</td>
-<td>1944-02-29</td>
-<td>26246 days</td>
-<td>71.906849</td>
-</tr>
-<tr>
-<th>25</th>
-<td>Pierre Aylagas</td>
-<td>1942-07-24</td>
-<td>26831 days</td>
-<td>73.509589</td>
-</tr>
-<tr>
-<th>26</th>
-<td>Jean-Marc Ayrault</td>
-<td>1950-01-25</td>
-<td>24089 days</td>
-<td>65.997260</td>
-</tr>
-<tr>
-<th>27</th>
-<td>Bruno Nestor Azerot</td>
-<td>1961-07-22</td>
-<td>19893 days</td>
-<td>54.501370</td>
-</tr>
-<tr>
-<th>28</th>
-<td>Alexis Bachelay</td>
-<td>1973-08-19</td>
-<td>15482 days</td>
-<td>42.416438</td>
-</tr>
-<tr>
-<th>29</th>
-<td>Guillaume Bachelay</td>
-<td>1974-07-13</td>
-<td>15154 days</td>
-<td>41.517808</td>
-</tr>
-<tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>547</th>
-<td>Stéphane Travert</td>
-<td>1969-10-12</td>
-<td>16889 days</td>
-<td>46.271233</td>
-</tr>
-<tr>
-<th>548</th>
-<td>Catherine Troallic</td>
-<td>1974-05-10</td>
-<td>15218 days</td>
-<td>41.693151</td>
-</tr>
-<tr>
-<th>549</th>
-<td>Jean-Paul Tuaiva</td>
-<td>1972-10-30</td>
-<td>15775 days</td>
-<td>43.219178</td>
-</tr>
-<tr>
-<th>550</th>
-<td>Cécile Untermaier</td>
-<td>1951-12-28</td>
-<td>23387 days</td>
-<td>64.073973</td>
-</tr>
-<tr>
-<th>551</th>
-<td>Jean-Jacques Urvoas</td>
-<td>1959-09-19</td>
-<td>20565 days</td>
-<td>56.342466</td>
-</tr>
-<tr>
-<th>552</th>
-<td>Daniel Vaillant</td>
-<td>1949-07-19</td>
-<td>24279 days</td>
-<td>66.517808</td>
-</tr>
-<tr>
-<th>553</th>
-<td>Jacques Valax</td>
-<td>1951-08-23</td>
-<td>23514 days</td>
-<td>64.421918</td>
-</tr>
-<tr>
-<th>554</th>
-<td>François Vannson</td>
-<td>1962-10-20</td>
-<td>19438 days</td>
-<td>53.254795</td>
-</tr>
-<tr>
-<th>555</th>
-<td>Catherine Vautrin</td>
-<td>1960-07-26</td>
-<td>20254 days</td>
-<td>55.490411</td>
-</tr>
-<tr>
-<th>556</th>
-<td>Michel Vauzelle</td>
-<td>1944-08-15</td>
-<td>26078 days</td>
-<td>71.446575</td>
-</tr>
-<tr>
-<th>557</th>
-<td>Francis Vercamer</td>
-<td>1958-05-10</td>
-<td>21062 days</td>
-<td>57.704110</td>
-</tr>
-<tr>
-<th>558</th>
-<td>Patrice Verchère</td>
-<td>1973-12-29</td>
-<td>15350 days</td>
-<td>42.054795</td>
-</tr>
-<tr>
-<th>559</th>
-<td>Fabrice Verdier</td>
-<td>1968-12-16</td>
-<td>17189 days</td>
-<td>47.093151</td>
-</tr>
-<tr>
-<th>560</th>
-<td>Michel Vergnier</td>
-<td>1946-11-25</td>
-<td>25246 days</td>
-<td>69.167123</td>
-</tr>
-<tr>
-<th>561</th>
-<td>Arnaud Viala</td>
-<td>1974-12-04</td>
-<td>15010 days</td>
-<td>41.123288</td>
-</tr>
-<tr>
-<th>562</th>
-<td>Jean-Sébastien Vialatte</td>
-<td>1951-01-30</td>
-<td>23719 days</td>
-<td>64.983562</td>
-</tr>
-<tr>
-<th>563</th>
-<td>Jean-Pierre Vigier</td>
-<td>1969-10-22</td>
-<td>16879 days</td>
-<td>46.243836</td>
-</tr>
-<tr>
-<th>564</th>
-<td>Philippe Vigier</td>
-<td>1958-02-03</td>
-<td>21158 days</td>
-<td>57.967123</td>
-</tr>
-<tr>
-<th>565</th>
-<td>Patrick Vignal</td>
-<td>1958-01-22</td>
-<td>21170 days</td>
-<td>58.000000</td>
-</tr>
-<tr>
-<th>566</th>
-<td>François-Xavier Villain</td>
-<td>1950-05-31</td>
-<td>23963 days</td>
-<td>65.652055</td>
-</tr>
-<tr>
-<th>567</th>
-<td>Jean-Michel Villaumé</td>
-<td>1946-03-27</td>
-<td>25489 days</td>
-<td>69.832877</td>
-</tr>
-<tr>
-<th>568</th>
-<td>Philippe Vitel</td>
-<td>1955-02-22</td>
-<td>22235 days</td>
-<td>60.917808</td>
-</tr>
-<tr>
-<th>569</th>
-<td>Jean Jacques Vlody</td>
-<td>1967-08-19</td>
-<td>17674 days</td>
-<td>48.421918</td>
-</tr>
-<tr>
-<th>570</th>
-<td>Michel Voisin</td>
-<td>1944-10-06</td>
-<td>26026 days</td>
-<td>71.304110</td>
-</tr>
-<tr>
-<th>571</th>
-<td>Jean-Luc Warsmann</td>
-<td>1965-10-22</td>
-<td>18340 days</td>
-<td>50.246575</td>
-</tr>
-<tr>
-<th>572</th>
-<td>Laurent Wauquiez</td>
-<td>1975-04-12</td>
-<td>14881 days</td>
-<td>40.769863</td>
-</tr>
-<tr>
-<th>573</th>
-<td>Éric Woerth</td>
-<td>1956-01-29</td>
-<td>21894 days</td>
-<td>59.983562</td>
-</tr>
-<tr>
-<th>574</th>
-<td>Paola Zanetti</td>
-<td>1976-09-01</td>
-<td>14373 days</td>
-<td>39.378082</td>
-</tr>
-<tr>
-<th>575</th>
-<td>Marie-Jo Zimmermann</td>
-<td>1951-04-29</td>
-<td>23630 days</td>
-<td>64.739726</td>
-</tr>
-<tr>
-<th>576</th>
-<td>Michel Zumkeller</td>
-<td>1966-01-21</td>
-<td>18249 days</td>
-<td>49.997260</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Noms</th>
+      <th>Dates de naissance</th>
+      <th>Âge</th>
+      <th>Âge (années)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Damien Abad</td>
+      <td>1980-04-05</td>
+      <td>13061 days</td>
+      <td>35.783562</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Laurence Abeille</td>
+      <td>1960-06-17</td>
+      <td>20293 days</td>
+      <td>55.597260</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ibrahim Aboubacar</td>
+      <td>1965-02-01</td>
+      <td>18603 days</td>
+      <td>50.967123</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Élie Aboud</td>
+      <td>1959-10-12</td>
+      <td>20542 days</td>
+      <td>56.279452</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Bernard Accoyer</td>
+      <td>1945-08-12</td>
+      <td>25716 days</td>
+      <td>70.454795</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Patricia Adam</td>
+      <td>1953-04-15</td>
+      <td>22913 days</td>
+      <td>62.775342</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Sylviane Alaux</td>
+      <td>1945-07-01</td>
+      <td>25758 days</td>
+      <td>70.569863</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Éric Alauzet</td>
+      <td>1958-06-07</td>
+      <td>21034 days</td>
+      <td>57.627397</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Yves Albarello</td>
+      <td>1952-03-17</td>
+      <td>23307 days</td>
+      <td>63.854795</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Brigitte Allain</td>
+      <td>1956-04-23</td>
+      <td>21809 days</td>
+      <td>59.750685</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Jean-Pierre Allossery</td>
+      <td>1945-07-31</td>
+      <td>25728 days</td>
+      <td>70.487671</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Nicole Ameline</td>
+      <td>1952-07-04</td>
+      <td>23198 days</td>
+      <td>63.556164</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Pouria Amirshahi</td>
+      <td>1972-03-27</td>
+      <td>15992 days</td>
+      <td>43.813699</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>François André</td>
+      <td>1967-07-19</td>
+      <td>17705 days</td>
+      <td>48.506849</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Sylvie Andrieux</td>
+      <td>1961-12-15</td>
+      <td>19747 days</td>
+      <td>54.101370</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Benoist Apparu</td>
+      <td>1969-11-24</td>
+      <td>16846 days</td>
+      <td>46.153425</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Nathalie Appéré</td>
+      <td>1975-07-08</td>
+      <td>14794 days</td>
+      <td>40.531507</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Kader Arif</td>
+      <td>1959-07-03</td>
+      <td>20643 days</td>
+      <td>56.556164</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Laurence Arribagé</td>
+      <td>1970-05-25</td>
+      <td>16664 days</td>
+      <td>45.654795</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>François Asensi</td>
+      <td>1945-06-01</td>
+      <td>25788 days</td>
+      <td>70.652055</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Christian Assaf</td>
+      <td>1972-09-01</td>
+      <td>15834 days</td>
+      <td>43.380822</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Isabelle Attard</td>
+      <td>1969-11-14</td>
+      <td>16856 days</td>
+      <td>46.180822</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Julien Aubert</td>
+      <td>1978-06-11</td>
+      <td>13725 days</td>
+      <td>37.602740</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Olivier Audibert Troin</td>
+      <td>1960-08-16</td>
+      <td>20233 days</td>
+      <td>55.432877</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Danielle Auroi</td>
+      <td>1944-02-29</td>
+      <td>26246 days</td>
+      <td>71.906849</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Pierre Aylagas</td>
+      <td>1942-07-24</td>
+      <td>26831 days</td>
+      <td>73.509589</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Jean-Marc Ayrault</td>
+      <td>1950-01-25</td>
+      <td>24089 days</td>
+      <td>65.997260</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Bruno Nestor Azerot</td>
+      <td>1961-07-22</td>
+      <td>19893 days</td>
+      <td>54.501370</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Alexis Bachelay</td>
+      <td>1973-08-19</td>
+      <td>15482 days</td>
+      <td>42.416438</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Guillaume Bachelay</td>
+      <td>1974-07-13</td>
+      <td>15154 days</td>
+      <td>41.517808</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>547</th>
+      <td>Stéphane Travert</td>
+      <td>1969-10-12</td>
+      <td>16889 days</td>
+      <td>46.271233</td>
+    </tr>
+    <tr>
+      <th>548</th>
+      <td>Catherine Troallic</td>
+      <td>1974-05-10</td>
+      <td>15218 days</td>
+      <td>41.693151</td>
+    </tr>
+    <tr>
+      <th>549</th>
+      <td>Jean-Paul Tuaiva</td>
+      <td>1972-10-30</td>
+      <td>15775 days</td>
+      <td>43.219178</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>Cécile Untermaier</td>
+      <td>1951-12-28</td>
+      <td>23387 days</td>
+      <td>64.073973</td>
+    </tr>
+    <tr>
+      <th>551</th>
+      <td>Jean-Jacques Urvoas</td>
+      <td>1959-09-19</td>
+      <td>20565 days</td>
+      <td>56.342466</td>
+    </tr>
+    <tr>
+      <th>552</th>
+      <td>Daniel Vaillant</td>
+      <td>1949-07-19</td>
+      <td>24279 days</td>
+      <td>66.517808</td>
+    </tr>
+    <tr>
+      <th>553</th>
+      <td>Jacques Valax</td>
+      <td>1951-08-23</td>
+      <td>23514 days</td>
+      <td>64.421918</td>
+    </tr>
+    <tr>
+      <th>554</th>
+      <td>François Vannson</td>
+      <td>1962-10-20</td>
+      <td>19438 days</td>
+      <td>53.254795</td>
+    </tr>
+    <tr>
+      <th>555</th>
+      <td>Catherine Vautrin</td>
+      <td>1960-07-26</td>
+      <td>20254 days</td>
+      <td>55.490411</td>
+    </tr>
+    <tr>
+      <th>556</th>
+      <td>Michel Vauzelle</td>
+      <td>1944-08-15</td>
+      <td>26078 days</td>
+      <td>71.446575</td>
+    </tr>
+    <tr>
+      <th>557</th>
+      <td>Francis Vercamer</td>
+      <td>1958-05-10</td>
+      <td>21062 days</td>
+      <td>57.704110</td>
+    </tr>
+    <tr>
+      <th>558</th>
+      <td>Patrice Verchère</td>
+      <td>1973-12-29</td>
+      <td>15350 days</td>
+      <td>42.054795</td>
+    </tr>
+    <tr>
+      <th>559</th>
+      <td>Fabrice Verdier</td>
+      <td>1968-12-16</td>
+      <td>17189 days</td>
+      <td>47.093151</td>
+    </tr>
+    <tr>
+      <th>560</th>
+      <td>Michel Vergnier</td>
+      <td>1946-11-25</td>
+      <td>25246 days</td>
+      <td>69.167123</td>
+    </tr>
+    <tr>
+      <th>561</th>
+      <td>Arnaud Viala</td>
+      <td>1974-12-04</td>
+      <td>15010 days</td>
+      <td>41.123288</td>
+    </tr>
+    <tr>
+      <th>562</th>
+      <td>Jean-Sébastien Vialatte</td>
+      <td>1951-01-30</td>
+      <td>23719 days</td>
+      <td>64.983562</td>
+    </tr>
+    <tr>
+      <th>563</th>
+      <td>Jean-Pierre Vigier</td>
+      <td>1969-10-22</td>
+      <td>16879 days</td>
+      <td>46.243836</td>
+    </tr>
+    <tr>
+      <th>564</th>
+      <td>Philippe Vigier</td>
+      <td>1958-02-03</td>
+      <td>21158 days</td>
+      <td>57.967123</td>
+    </tr>
+    <tr>
+      <th>565</th>
+      <td>Patrick Vignal</td>
+      <td>1958-01-22</td>
+      <td>21170 days</td>
+      <td>58.000000</td>
+    </tr>
+    <tr>
+      <th>566</th>
+      <td>François-Xavier Villain</td>
+      <td>1950-05-31</td>
+      <td>23963 days</td>
+      <td>65.652055</td>
+    </tr>
+    <tr>
+      <th>567</th>
+      <td>Jean-Michel Villaumé</td>
+      <td>1946-03-27</td>
+      <td>25489 days</td>
+      <td>69.832877</td>
+    </tr>
+    <tr>
+      <th>568</th>
+      <td>Philippe Vitel</td>
+      <td>1955-02-22</td>
+      <td>22235 days</td>
+      <td>60.917808</td>
+    </tr>
+    <tr>
+      <th>569</th>
+      <td>Jean Jacques Vlody</td>
+      <td>1967-08-19</td>
+      <td>17674 days</td>
+      <td>48.421918</td>
+    </tr>
+    <tr>
+      <th>570</th>
+      <td>Michel Voisin</td>
+      <td>1944-10-06</td>
+      <td>26026 days</td>
+      <td>71.304110</td>
+    </tr>
+    <tr>
+      <th>571</th>
+      <td>Jean-Luc Warsmann</td>
+      <td>1965-10-22</td>
+      <td>18340 days</td>
+      <td>50.246575</td>
+    </tr>
+    <tr>
+      <th>572</th>
+      <td>Laurent Wauquiez</td>
+      <td>1975-04-12</td>
+      <td>14881 days</td>
+      <td>40.769863</td>
+    </tr>
+    <tr>
+      <th>573</th>
+      <td>Éric Woerth</td>
+      <td>1956-01-29</td>
+      <td>21894 days</td>
+      <td>59.983562</td>
+    </tr>
+    <tr>
+      <th>574</th>
+      <td>Paola Zanetti</td>
+      <td>1976-09-01</td>
+      <td>14373 days</td>
+      <td>39.378082</td>
+    </tr>
+    <tr>
+      <th>575</th>
+      <td>Marie-Jo Zimmermann</td>
+      <td>1951-04-29</td>
+      <td>23630 days</td>
+      <td>64.739726</td>
+    </tr>
+    <tr>
+      <th>576</th>
+      <td>Michel Zumkeller</td>
+      <td>1966-01-21</td>
+      <td>18249 days</td>
+      <td>49.997260</td>
+    </tr>
+  </tbody>
 </table>
 <p>577 rows × 4 columns</p>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [26]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Âge (années)'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[26]:</div>
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Noms</th>
-<th>Dates de naissance</th>
-<th>Âge</th>
-<th>Âge (années)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>395</th>
-<td>Marion Maréchal-Le Pen</td>
-<td>1989-12-10</td>
-<td>9525 days</td>
-<td>26.095890</td>
-</tr>
-<tr>
-<th>359</th>
-<td>Marie Le Vern</td>
-<td>1983-01-11</td>
-<td>12050 days</td>
-<td>33.013699</td>
-</tr>
-<tr>
-<th>160</th>
-<td>Gérald Darmanin</td>
-<td>1982-10-11</td>
-<td>12142 days</td>
-<td>33.265753</td>
-</tr>
-<tr>
-<th>393</th>
-<td>Laurent Marcangeli</td>
-<td>1980-12-10</td>
-<td>12812 days</td>
-<td>35.101370</td>
-</tr>
-<tr>
-<th>105</th>
-<td>Fanélie Carrey-Conte</td>
-<td>1980-05-16</td>
-<td>13020 days</td>
-<td>35.671233</td>
-</tr>
-<tr>
-<th>0</th>
-<td>Damien Abad</td>
-<td>1980-04-05</td>
-<td>13061 days</td>
-<td>35.783562</td>
-</tr>
-<tr>
-<th>139</th>
-<td>Romain Colas</td>
-<td>1979-11-22</td>
-<td>13196 days</td>
-<td>36.153425</td>
-</tr>
-<tr>
-<th>195</th>
-<td>Virginie Duby-Muller</td>
-<td>1979-08-16</td>
-<td>13294 days</td>
-<td>36.421918</td>
-</tr>
-<tr>
-<th>290</th>
-<td>Razzy Hammadi</td>
-<td>1979-02-22</td>
-<td>13469 days</td>
-<td>36.901370</td>
-</tr>
-<tr>
-<th>176</th>
-<td>Sébastien Denaja</td>
-<td>1979-01-14</td>
-<td>13508 days</td>
-<td>37.008219</td>
-</tr>
-<tr>
-<th>292</th>
-<td>Mathieu Hanotin</td>
-<td>1978-08-22</td>
-<td>13653 days</td>
-<td>37.405479</td>
-</tr>
-<tr>
-<th>207</th>
-<td>Olivier Dussopt</td>
-<td>1978-08-16</td>
-<td>13659 days</td>
-<td>37.421918</td>
-</tr>
-<tr>
-<th>22</th>
-<td>Julien Aubert</td>
-<td>1978-06-11</td>
-<td>13725 days</td>
-<td>37.602740</td>
-</tr>
-<tr>
-<th>157</th>
-<td>Seybah Dagoma</td>
-<td>1978-06-09</td>
-<td>13727 days</td>
-<td>37.608219</td>
-</tr>
-<tr>
-<th>273</th>
-<td>Laurent Grandguillaume</td>
-<td>1978-01-20</td>
-<td>13867 days</td>
-<td>37.991781</td>
-</tr>
-<tr>
-<th>453</th>
-<td>Sébastien Pietrasanta</td>
-<td>1977-08-07</td>
-<td>14033 days</td>
-<td>38.446575</td>
-</tr>
-<tr>
-<th>46</th>
-<td>Nicolas Bays</td>
-<td>1977-05-01</td>
-<td>14131 days</td>
-<td>38.715068</td>
-</tr>
-<tr>
-<th>488</th>
-<td>Thierry Robert</td>
-<td>1977-04-01</td>
-<td>14161 days</td>
-<td>38.797260</td>
-</tr>
-<tr>
-<th>339</th>
-<td>Guillaume Larrivé</td>
-<td>1977-01-24</td>
-<td>14228 days</td>
-<td>38.980822</td>
-</tr>
-<tr>
-<th>469</th>
-<td>Christophe Premat</td>
-<td>1976-12-07</td>
-<td>14276 days</td>
-<td>39.112329</td>
-</tr>
-<tr>
-<th>574</th>
-<td>Paola Zanetti</td>
-<td>1976-09-01</td>
-<td>14373 days</td>
-<td>39.378082</td>
-</tr>
-<tr>
-<th>372</th>
-<td>Arnaud Leroy</td>
-<td>1976-04-23</td>
-<td>14504 days</td>
-<td>39.736986</td>
-</tr>
-<tr>
-<th>499</th>
-<td>Gwendal Rouillard</td>
-<td>1976-04-20</td>
-<td>14507 days</td>
-<td>39.745205</td>
-</tr>
-<tr>
-<th>100</th>
-<td>Yann Capet</td>
-<td>1975-12-31</td>
-<td>14618 days</td>
-<td>40.049315</td>
-</tr>
-<tr>
-<th>487</th>
-<td>Eduardo Rihan Cypel</td>
-<td>1975-11-13</td>
-<td>14666 days</td>
-<td>40.180822</td>
-</tr>
-<tr>
-<th>424</th>
-<td>Yannick Moreau</td>
-<td>1975-08-04</td>
-<td>14767 days</td>
-<td>40.457534</td>
-</tr>
-<tr>
-<th>528</th>
-<td>Julie Sommaruga</td>
-<td>1975-08-01</td>
-<td>14770 days</td>
-<td>40.465753</td>
-</tr>
-<tr>
-<th>16</th>
-<td>Nathalie Appéré</td>
-<td>1975-07-08</td>
-<td>14794 days</td>
-<td>40.531507</td>
-</tr>
-<tr>
-<th>461</th>
-<td>Barbara Pompili</td>
-<td>1975-06-13</td>
-<td>14819 days</td>
-<td>40.600000</td>
-</tr>
-<tr>
-<th>505</th>
-<td>Maina Sage</td>
-<td>1975-05-10</td>
-<td>14853 days</td>
-<td>40.693151</td>
-</tr>
-<tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>119</th>
-<td>Gérard Charasse</td>
-<td>1944-03-26</td>
-<td>26220 days</td>
-<td>71.835616</td>
-</tr>
-<tr>
-<th>24</th>
-<td>Danielle Auroi</td>
-<td>1944-02-29</td>
-<td>26246 days</td>
-<td>71.906849</td>
-</tr>
-<tr>
-<th>204</th>
-<td>Jean-Paul Dupré</td>
-<td>1944-02-05</td>
-<td>26270 days</td>
-<td>71.972603</td>
-</tr>
-<tr>
-<th>328</th>
-<td>Conchita Lacuey</td>
-<td>1943-09-30</td>
-<td>26398 days</td>
-<td>72.323288</td>
-</tr>
-<tr>
-<th>310</th>
-<td>Serge Janquin</td>
-<td>1943-08-05</td>
-<td>26454 days</td>
-<td>72.476712</td>
-</tr>
-<tr>
-<th>196</th>
-<td>Jean-Pierre Dufau</td>
-<td>1943-07-05</td>
-<td>26485 days</td>
-<td>72.561644</td>
-</tr>
-<tr>
-<th>535</th>
-<td>Suzanne Tallard</td>
-<td>1943-06-19</td>
-<td>26501 days</td>
-<td>72.605479</td>
-</tr>
-<tr>
-<th>232</th>
-<td>Michel Françaix</td>
-<td>1943-05-28</td>
-<td>26523 days</td>
-<td>72.665753</td>
-</tr>
-<tr>
-<th>521</th>
-<td>Roger-Gérard Schwartzenberg</td>
-<td>1943-04-17</td>
-<td>26564 days</td>
-<td>72.778082</td>
-</tr>
-<tr>
-<th>455</th>
-<td>Michel Piron</td>
-<td>1943-03-15</td>
-<td>26597 days</td>
-<td>72.868493</td>
-</tr>
-<tr>
-<th>69</th>
-<td>Jacques Bompard</td>
-<td>1943-02-24</td>
-<td>26616 days</td>
-<td>72.920548</td>
-</tr>
-<tr>
-<th>514</th>
-<td>Odile Saugues</td>
-<td>1943-01-26</td>
-<td>26645 days</td>
-<td>73.000000</td>
-</tr>
-<tr>
-<th>25</th>
-<td>Pierre Aylagas</td>
-<td>1942-07-24</td>
-<td>26831 days</td>
-<td>73.509589</td>
-</tr>
-<tr>
-<th>257</th>
-<td>Georges Ginesta</td>
-<td>1942-07-08</td>
-<td>26847 days</td>
-<td>73.553425</td>
-</tr>
-<tr>
-<th>120</th>
-<td>Gaby Charroux</td>
-<td>1942-06-25</td>
-<td>26860 days</td>
-<td>73.589041</td>
-</tr>
-<tr>
-<th>186</th>
-<td>Jean-Pierre Door</td>
-<td>1942-04-01</td>
-<td>26945 days</td>
-<td>73.821918</td>
-</tr>
-<tr>
-<th>200</th>
-<td>William Dumas</td>
-<td>1942-01-23</td>
-<td>27013 days</td>
-<td>74.008219</td>
-</tr>
-<tr>
-<th>382</th>
-<td>François Loncle</td>
-<td>1941-10-21</td>
-<td>27107 days</td>
-<td>74.265753</td>
-</tr>
-<tr>
-<th>237</th>
-<td>Yves Fromion</td>
-<td>1941-09-15</td>
-<td>27143 days</td>
-<td>74.364384</td>
-</tr>
-<tr>
-<th>188</th>
-<td>René Dosière</td>
-<td>1941-08-03</td>
-<td>27186 days</td>
-<td>74.482192</td>
-</tr>
-<tr>
-<th>283</th>
-<td>Jean-Claude Guibal</td>
-<td>1941-01-13</td>
-<td>27388 days</td>
-<td>75.035616</td>
-</tr>
-<tr>
-<th>512</th>
-<td>André Santini</td>
-<td>1940-10-20</td>
-<td>27473 days</td>
-<td>75.268493</td>
-</tr>
-<tr>
-<th>321</th>
-<td>Jacques Kossowski</td>
-<td>1940-10-11</td>
-<td>27482 days</td>
-<td>75.293151</td>
-</tr>
-<tr>
-<th>270</th>
-<td>Marc Goua</td>
-<td>1940-03-03</td>
-<td>27704 days</td>
-<td>75.901370</td>
-</tr>
-<tr>
-<th>152</th>
-<td>Jean-Michel Couve</td>
-<td>1940-01-03</td>
-<td>27764 days</td>
-<td>76.065753</td>
-</tr>
-<tr>
-<th>411</th>
-<td>Jean-Claude Mathis</td>
-<td>1939-08-15</td>
-<td>27905 days</td>
-<td>76.452055</td>
-</tr>
-<tr>
-<th>87</th>
-<td>Bernard Brochand</td>
-<td>1938-06-05</td>
-<td>28341 days</td>
-<td>77.646575</td>
-</tr>
-<tr>
-<th>167</th>
-<td>Lucien Degauchy</td>
-<td>1937-06-11</td>
-<td>28700 days</td>
-<td>78.630137</td>
-</tr>
-<tr>
-<th>397</th>
-<td>Alfred Marie-Jeanne</td>
-<td>1936-11-15</td>
-<td>28908 days</td>
-<td>79.200000</td>
-</tr>
-<tr>
-<th>518</th>
-<td>François Scellier</td>
-<td>1936-05-07</td>
-<td>29100 days</td>
-<td>79.726027</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Noms</th>
+      <th>Dates de naissance</th>
+      <th>Âge</th>
+      <th>Âge (années)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>395</th>
+      <td>Marion Maréchal-Le Pen</td>
+      <td>1989-12-10</td>
+      <td>9525 days</td>
+      <td>26.095890</td>
+    </tr>
+    <tr>
+      <th>359</th>
+      <td>Marie Le Vern</td>
+      <td>1983-01-11</td>
+      <td>12050 days</td>
+      <td>33.013699</td>
+    </tr>
+    <tr>
+      <th>160</th>
+      <td>Gérald Darmanin</td>
+      <td>1982-10-11</td>
+      <td>12142 days</td>
+      <td>33.265753</td>
+    </tr>
+    <tr>
+      <th>393</th>
+      <td>Laurent Marcangeli</td>
+      <td>1980-12-10</td>
+      <td>12812 days</td>
+      <td>35.101370</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>Fanélie Carrey-Conte</td>
+      <td>1980-05-16</td>
+      <td>13020 days</td>
+      <td>35.671233</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Damien Abad</td>
+      <td>1980-04-05</td>
+      <td>13061 days</td>
+      <td>35.783562</td>
+    </tr>
+    <tr>
+      <th>139</th>
+      <td>Romain Colas</td>
+      <td>1979-11-22</td>
+      <td>13196 days</td>
+      <td>36.153425</td>
+    </tr>
+    <tr>
+      <th>195</th>
+      <td>Virginie Duby-Muller</td>
+      <td>1979-08-16</td>
+      <td>13294 days</td>
+      <td>36.421918</td>
+    </tr>
+    <tr>
+      <th>290</th>
+      <td>Razzy Hammadi</td>
+      <td>1979-02-22</td>
+      <td>13469 days</td>
+      <td>36.901370</td>
+    </tr>
+    <tr>
+      <th>176</th>
+      <td>Sébastien Denaja</td>
+      <td>1979-01-14</td>
+      <td>13508 days</td>
+      <td>37.008219</td>
+    </tr>
+    <tr>
+      <th>292</th>
+      <td>Mathieu Hanotin</td>
+      <td>1978-08-22</td>
+      <td>13653 days</td>
+      <td>37.405479</td>
+    </tr>
+    <tr>
+      <th>207</th>
+      <td>Olivier Dussopt</td>
+      <td>1978-08-16</td>
+      <td>13659 days</td>
+      <td>37.421918</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Julien Aubert</td>
+      <td>1978-06-11</td>
+      <td>13725 days</td>
+      <td>37.602740</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>Seybah Dagoma</td>
+      <td>1978-06-09</td>
+      <td>13727 days</td>
+      <td>37.608219</td>
+    </tr>
+    <tr>
+      <th>273</th>
+      <td>Laurent Grandguillaume</td>
+      <td>1978-01-20</td>
+      <td>13867 days</td>
+      <td>37.991781</td>
+    </tr>
+    <tr>
+      <th>453</th>
+      <td>Sébastien Pietrasanta</td>
+      <td>1977-08-07</td>
+      <td>14033 days</td>
+      <td>38.446575</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>Nicolas Bays</td>
+      <td>1977-05-01</td>
+      <td>14131 days</td>
+      <td>38.715068</td>
+    </tr>
+    <tr>
+      <th>488</th>
+      <td>Thierry Robert</td>
+      <td>1977-04-01</td>
+      <td>14161 days</td>
+      <td>38.797260</td>
+    </tr>
+    <tr>
+      <th>339</th>
+      <td>Guillaume Larrivé</td>
+      <td>1977-01-24</td>
+      <td>14228 days</td>
+      <td>38.980822</td>
+    </tr>
+    <tr>
+      <th>469</th>
+      <td>Christophe Premat</td>
+      <td>1976-12-07</td>
+      <td>14276 days</td>
+      <td>39.112329</td>
+    </tr>
+    <tr>
+      <th>574</th>
+      <td>Paola Zanetti</td>
+      <td>1976-09-01</td>
+      <td>14373 days</td>
+      <td>39.378082</td>
+    </tr>
+    <tr>
+      <th>372</th>
+      <td>Arnaud Leroy</td>
+      <td>1976-04-23</td>
+      <td>14504 days</td>
+      <td>39.736986</td>
+    </tr>
+    <tr>
+      <th>499</th>
+      <td>Gwendal Rouillard</td>
+      <td>1976-04-20</td>
+      <td>14507 days</td>
+      <td>39.745205</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>Yann Capet</td>
+      <td>1975-12-31</td>
+      <td>14618 days</td>
+      <td>40.049315</td>
+    </tr>
+    <tr>
+      <th>487</th>
+      <td>Eduardo Rihan Cypel</td>
+      <td>1975-11-13</td>
+      <td>14666 days</td>
+      <td>40.180822</td>
+    </tr>
+    <tr>
+      <th>424</th>
+      <td>Yannick Moreau</td>
+      <td>1975-08-04</td>
+      <td>14767 days</td>
+      <td>40.457534</td>
+    </tr>
+    <tr>
+      <th>528</th>
+      <td>Julie Sommaruga</td>
+      <td>1975-08-01</td>
+      <td>14770 days</td>
+      <td>40.465753</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Nathalie Appéré</td>
+      <td>1975-07-08</td>
+      <td>14794 days</td>
+      <td>40.531507</td>
+    </tr>
+    <tr>
+      <th>461</th>
+      <td>Barbara Pompili</td>
+      <td>1975-06-13</td>
+      <td>14819 days</td>
+      <td>40.600000</td>
+    </tr>
+    <tr>
+      <th>505</th>
+      <td>Maina Sage</td>
+      <td>1975-05-10</td>
+      <td>14853 days</td>
+      <td>40.693151</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Gérard Charasse</td>
+      <td>1944-03-26</td>
+      <td>26220 days</td>
+      <td>71.835616</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Danielle Auroi</td>
+      <td>1944-02-29</td>
+      <td>26246 days</td>
+      <td>71.906849</td>
+    </tr>
+    <tr>
+      <th>204</th>
+      <td>Jean-Paul Dupré</td>
+      <td>1944-02-05</td>
+      <td>26270 days</td>
+      <td>71.972603</td>
+    </tr>
+    <tr>
+      <th>328</th>
+      <td>Conchita Lacuey</td>
+      <td>1943-09-30</td>
+      <td>26398 days</td>
+      <td>72.323288</td>
+    </tr>
+    <tr>
+      <th>310</th>
+      <td>Serge Janquin</td>
+      <td>1943-08-05</td>
+      <td>26454 days</td>
+      <td>72.476712</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>Jean-Pierre Dufau</td>
+      <td>1943-07-05</td>
+      <td>26485 days</td>
+      <td>72.561644</td>
+    </tr>
+    <tr>
+      <th>535</th>
+      <td>Suzanne Tallard</td>
+      <td>1943-06-19</td>
+      <td>26501 days</td>
+      <td>72.605479</td>
+    </tr>
+    <tr>
+      <th>232</th>
+      <td>Michel Françaix</td>
+      <td>1943-05-28</td>
+      <td>26523 days</td>
+      <td>72.665753</td>
+    </tr>
+    <tr>
+      <th>521</th>
+      <td>Roger-Gérard Schwartzenberg</td>
+      <td>1943-04-17</td>
+      <td>26564 days</td>
+      <td>72.778082</td>
+    </tr>
+    <tr>
+      <th>455</th>
+      <td>Michel Piron</td>
+      <td>1943-03-15</td>
+      <td>26597 days</td>
+      <td>72.868493</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>Jacques Bompard</td>
+      <td>1943-02-24</td>
+      <td>26616 days</td>
+      <td>72.920548</td>
+    </tr>
+    <tr>
+      <th>514</th>
+      <td>Odile Saugues</td>
+      <td>1943-01-26</td>
+      <td>26645 days</td>
+      <td>73.000000</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Pierre Aylagas</td>
+      <td>1942-07-24</td>
+      <td>26831 days</td>
+      <td>73.509589</td>
+    </tr>
+    <tr>
+      <th>257</th>
+      <td>Georges Ginesta</td>
+      <td>1942-07-08</td>
+      <td>26847 days</td>
+      <td>73.553425</td>
+    </tr>
+    <tr>
+      <th>120</th>
+      <td>Gaby Charroux</td>
+      <td>1942-06-25</td>
+      <td>26860 days</td>
+      <td>73.589041</td>
+    </tr>
+    <tr>
+      <th>186</th>
+      <td>Jean-Pierre Door</td>
+      <td>1942-04-01</td>
+      <td>26945 days</td>
+      <td>73.821918</td>
+    </tr>
+    <tr>
+      <th>200</th>
+      <td>William Dumas</td>
+      <td>1942-01-23</td>
+      <td>27013 days</td>
+      <td>74.008219</td>
+    </tr>
+    <tr>
+      <th>382</th>
+      <td>François Loncle</td>
+      <td>1941-10-21</td>
+      <td>27107 days</td>
+      <td>74.265753</td>
+    </tr>
+    <tr>
+      <th>237</th>
+      <td>Yves Fromion</td>
+      <td>1941-09-15</td>
+      <td>27143 days</td>
+      <td>74.364384</td>
+    </tr>
+    <tr>
+      <th>188</th>
+      <td>René Dosière</td>
+      <td>1941-08-03</td>
+      <td>27186 days</td>
+      <td>74.482192</td>
+    </tr>
+    <tr>
+      <th>283</th>
+      <td>Jean-Claude Guibal</td>
+      <td>1941-01-13</td>
+      <td>27388 days</td>
+      <td>75.035616</td>
+    </tr>
+    <tr>
+      <th>512</th>
+      <td>André Santini</td>
+      <td>1940-10-20</td>
+      <td>27473 days</td>
+      <td>75.268493</td>
+    </tr>
+    <tr>
+      <th>321</th>
+      <td>Jacques Kossowski</td>
+      <td>1940-10-11</td>
+      <td>27482 days</td>
+      <td>75.293151</td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>Marc Goua</td>
+      <td>1940-03-03</td>
+      <td>27704 days</td>
+      <td>75.901370</td>
+    </tr>
+    <tr>
+      <th>152</th>
+      <td>Jean-Michel Couve</td>
+      <td>1940-01-03</td>
+      <td>27764 days</td>
+      <td>76.065753</td>
+    </tr>
+    <tr>
+      <th>411</th>
+      <td>Jean-Claude Mathis</td>
+      <td>1939-08-15</td>
+      <td>27905 days</td>
+      <td>76.452055</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>Bernard Brochand</td>
+      <td>1938-06-05</td>
+      <td>28341 days</td>
+      <td>77.646575</td>
+    </tr>
+    <tr>
+      <th>167</th>
+      <td>Lucien Degauchy</td>
+      <td>1937-06-11</td>
+      <td>28700 days</td>
+      <td>78.630137</td>
+    </tr>
+    <tr>
+      <th>397</th>
+      <td>Alfred Marie-Jeanne</td>
+      <td>1936-11-15</td>
+      <td>28908 days</td>
+      <td>79.200000</td>
+    </tr>
+    <tr>
+      <th>518</th>
+      <td>François Scellier</td>
+      <td>1936-05-07</td>
+      <td>29100 days</td>
+      <td>79.726027</td>
+    </tr>
+  </tbody>
 </table>
 <p>577 rows × 4 columns</p>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant faire un histogramme des âges des députés :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [27]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [28]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'âge'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'nombre de députés'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;âge&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;nombre de députés&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[28]:</div>
+
+    <div class="prompt output_prompt">Out[28]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Text at 0x8a0e208></pre>
+<pre>&lt;matplotlib.text.Text at 0x8a0e208&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAAEWCAYAAAB42tAoAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGpBJREFUeJzt3XuUXVWd4PFvUaEij6sGAgmPBmWWOrYtit3NUmlnokCL
 qIBrzM83otJOz/KRwRk7wWlNmG67E3v5wNbRwVcHum34iY2BabCRwZJlL3FAYcYGVESBIKQMHQhB
@@ -4175,33 +4410,47 @@ T1JNEfFs4HvA84A7KDZ9uQD4j8AI8C6KeYpHgKTYKGbfcjL7Morhpw8CD1PsRX1kZl7X63ZI3XIy
 W6opM2+j2Kz+emAD8Bzg2+WPL6CYk/h/FMnkH4Htmbmj/PmZFMnkVmATxf7Mi3sWvLQH7FFIDYiI
 U4DPZObT+x2LtKeco5BmQUQ8CXgpRa9iMcWVUP/Q16CkWeLQkzQ7hijuq9hEMfR0C0WykOY8h54k
 SZXsUUiSKpkoJEmVTBSSpEomCklSJROFJKmSiUKSVOn/A7lzBwJ3L6zCAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Les statistiques que l'on peut calculer sont :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [29]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[29]:</div>
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>count    577.000000
 mean      57.998637
@@ -4213,584 +4462,616 @@ min       26.095890
 max       79.726027
 Name: Âge (années), dtype: float64</pre>
 </div>
+
 </div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Comparaison-avec-le-restant-de-la-France">Comparaison avec le restant de la France<a class="anchor-link" href="#Comparaison-avec-le-restant-de-la-France">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Comparaison-avec-le-restant-de-la-France">Comparaison avec le restant de la France<a class="anchor-link" href="#Comparaison-avec-le-restant-de-la-France">¶</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>On trouve sur le site de l'INSEE un lien vers des <a href="http://www.insee.fr/fr/themes/detail.asp?ref_id=bilan-demo&reg_id=0&page=donnees-detaillees/bilan-demo/pop_age2.htm">statistiques sur l'âge de la population française en 2014</a>.</p>
+<p>On trouve sur le site de l'INSEE un lien vers des <a href="http://www.insee.fr/fr/themes/detail.asp?ref_id=bilan-demo&amp;reg_id=0&amp;page=donnees-detaillees/bilan-demo/pop_age2.htm">statistiques sur l'âge de la population française en 2014</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">'http://www.insee.fr/fr/ppp/bases-de-donnees/donnees-detaillees/bilan-demo/fichiers-xls/pop-1janvier-fm.xls'</span><span class="p">,</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;http://www.insee.fr/fr/ppp/bases-de-donnees/donnees-detaillees/bilan-demo/fichiers-xls/pop-1janvier-fm.xls&#39;</span><span class="p">,</span>
                       <span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
                       <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                       <span class="n">skipfooter</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">df_pop</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[30]:</div>
+
+    <div class="prompt output_prompt">Out[30]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Année de naissance</th>
-<th>Âge révolu</th>
-<th>Nombre
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Année de naissance</th>
+      <th>Âge révolu</th>
+      <th>Nombre
 d'hommes</th>
-<th>Nombre
+      <th>Nombre
 de femmes</th>
-<th>Ensemble</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>2014</td>
-<td>0</td>
-<td>387051</td>
-<td>370260</td>
-<td>757311</td>
-</tr>
-<tr>
-<th>1</th>
-<td>2013</td>
-<td>1</td>
-<td>387916</td>
-<td>370500</td>
-<td>758416</td>
-</tr>
-<tr>
-<th>2</th>
-<td>2012</td>
-<td>2</td>
-<td>394045</td>
-<td>376249</td>
-<td>770294</td>
-</tr>
-<tr>
-<th>3</th>
-<td>2011</td>
-<td>3</td>
-<td>394471</td>
-<td>380218</td>
-<td>774689</td>
-</tr>
-<tr>
-<th>4</th>
-<td>2010</td>
-<td>4</td>
-<td>407929</td>
-<td>388696</td>
-<td>796625</td>
-</tr>
-<tr>
-<th>5</th>
-<td>2009</td>
-<td>5</td>
-<td>405344</td>
-<td>386586</td>
-<td>791930</td>
-</tr>
-<tr>
-<th>6</th>
-<td>2008</td>
-<td>6</td>
-<td>407169</td>
-<td>389524</td>
-<td>796693</td>
-</tr>
-<tr>
-<th>7</th>
-<td>2007</td>
-<td>7</td>
-<td>405278</td>
-<td>386970</td>
-<td>792248</td>
-</tr>
-<tr>
-<th>8</th>
-<td>2006</td>
-<td>8</td>
-<td>412787</td>
-<td>394049</td>
-<td>806836</td>
-</tr>
-<tr>
-<th>9</th>
-<td>2005</td>
-<td>9</td>
-<td>404066</td>
-<td>386640</td>
-<td>790706</td>
-</tr>
-<tr>
-<th>10</th>
-<td>2004</td>
-<td>10</td>
-<td>402204</td>
-<td>384465</td>
-<td>786669</td>
-</tr>
-<tr>
-<th>11</th>
-<td>2003</td>
-<td>11</td>
-<td>400289</td>
-<td>383260</td>
-<td>783549</td>
-</tr>
-<tr>
-<th>12</th>
-<td>2002</td>
-<td>12</td>
-<td>403767</td>
-<td>384236</td>
-<td>788003</td>
-</tr>
-<tr>
-<th>13</th>
-<td>2001</td>
-<td>13</td>
-<td>408339</td>
-<td>390995</td>
-<td>799334</td>
-</tr>
-<tr>
-<th>14</th>
-<td>2000</td>
-<td>14</td>
-<td>417354</td>
-<td>399436</td>
-<td>816790</td>
-</tr>
-<tr>
-<th>15</th>
-<td>1999</td>
-<td>15</td>
-<td>400215</td>
-<td>381184</td>
-<td>781399</td>
-</tr>
-<tr>
-<th>16</th>
-<td>1998</td>
-<td>16</td>
-<td>400967</td>
-<td>381289</td>
-<td>782256</td>
-</tr>
-<tr>
-<th>17</th>
-<td>1997</td>
-<td>17</td>
-<td>395245</td>
-<td>375323</td>
-<td>770568</td>
-</tr>
-<tr>
-<th>18</th>
-<td>1996</td>
-<td>18</td>
-<td>396418</td>
-<td>378272</td>
-<td>774690</td>
-</tr>
-<tr>
-<th>19</th>
-<td>1995</td>
-<td>19</td>
-<td>385463</td>
-<td>369869</td>
-<td>755332</td>
-</tr>
-<tr>
-<th>20</th>
-<td>1994</td>
-<td>20</td>
-<td>367552</td>
-<td>354457</td>
-<td>722009</td>
-</tr>
-<tr>
-<th>21</th>
-<td>1993</td>
-<td>21</td>
-<td>358340</td>
-<td>348128</td>
-<td>706468</td>
-</tr>
-<tr>
-<th>22</th>
-<td>1992</td>
-<td>22</td>
-<td>372304</td>
-<td>364953</td>
-<td>737257</td>
-</tr>
-<tr>
-<th>23</th>
-<td>1991</td>
-<td>23</td>
-<td>372851</td>
-<td>371150</td>
-<td>744001</td>
-</tr>
-<tr>
-<th>24</th>
-<td>1990</td>
-<td>24</td>
-<td>379819</td>
-<td>379366</td>
-<td>759185</td>
-</tr>
-<tr>
-<th>25</th>
-<td>1989</td>
-<td>25</td>
-<td>377886</td>
-<td>381935</td>
-<td>759821</td>
-</tr>
-<tr>
-<th>26</th>
-<td>1988</td>
-<td>26</td>
-<td>379413</td>
-<td>387338</td>
-<td>766751</td>
-</tr>
-<tr>
-<th>27</th>
-<td>1987</td>
-<td>27</td>
-<td>380395</td>
-<td>386549</td>
-<td>766944</td>
-</tr>
-<tr>
-<th>28</th>
-<td>1986</td>
-<td>28</td>
-<td>384267</td>
-<td>394913</td>
-<td>779180</td>
-</tr>
-<tr>
-<th>29</th>
-<td>1985</td>
-<td>29</td>
-<td>383224</td>
-<td>393452</td>
-<td>776676</td>
-</tr>
-<tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>76</th>
-<td>1938</td>
-<td>76</td>
-<td>195545</td>
-<td>249332</td>
-<td>444877</td>
-</tr>
-<tr>
-<th>77</th>
-<td>1937</td>
-<td>77</td>
-<td>186798</td>
-<td>244132</td>
-<td>430930</td>
-</tr>
-<tr>
-<th>78</th>
-<td>1936</td>
-<td>78</td>
-<td>181433</td>
-<td>243847</td>
-<td>425280</td>
-</tr>
-<tr>
-<th>79</th>
-<td>1935</td>
-<td>79</td>
-<td>171016</td>
-<td>239291</td>
-<td>410307</td>
-</tr>
-<tr>
-<th>80</th>
-<td>1934</td>
-<td>80</td>
-<td>166256</td>
-<td>240306</td>
-<td>406562</td>
-</tr>
-<tr>
-<th>81</th>
-<td>1933</td>
-<td>81</td>
-<td>151458</td>
-<td>228378</td>
-<td>379836</td>
-</tr>
-<tr>
-<th>82</th>
-<td>1932</td>
-<td>82</td>
-<td>148284</td>
-<td>231031</td>
-<td>379315</td>
-</tr>
-<tr>
-<th>83</th>
-<td>1931</td>
-<td>83</td>
-<td>135213</td>
-<td>217397</td>
-<td>352610</td>
-</tr>
-<tr>
-<th>84</th>
-<td>1930</td>
-<td>84</td>
-<td>125189</td>
-<td>211078</td>
-<td>336267</td>
-</tr>
-<tr>
-<th>85</th>
-<td>1929</td>
-<td>85</td>
-<td>107349</td>
-<td>189472</td>
-<td>296821</td>
-</tr>
-<tr>
-<th>86</th>
-<td>1928</td>
-<td>86</td>
-<td>94475</td>
-<td>176127</td>
-<td>270602</td>
-</tr>
-<tr>
-<th>87</th>
-<td>1927</td>
-<td>87</td>
-<td>81730</td>
-<td>161042</td>
-<td>242772</td>
-</tr>
-<tr>
-<th>88</th>
-<td>1926</td>
-<td>88</td>
-<td>70129</td>
-<td>147781</td>
-<td>217910</td>
-</tr>
-<tr>
-<th>89</th>
-<td>1925</td>
-<td>89</td>
-<td>59217</td>
-<td>133111</td>
-<td>192328</td>
-</tr>
-<tr>
-<th>90</th>
-<td>1924</td>
-<td>90</td>
-<td>48109</td>
-<td>114793</td>
-<td>162902</td>
-</tr>
-<tr>
-<th>91</th>
-<td>1923</td>
-<td>91</td>
-<td>38600</td>
-<td>99268</td>
-<td>137868</td>
-</tr>
-<tr>
-<th>92</th>
-<td>1922</td>
-<td>92</td>
-<td>31205</td>
-<td>85541</td>
-<td>116746</td>
-</tr>
-<tr>
-<th>93</th>
-<td>1921</td>
-<td>93</td>
-<td>24783</td>
-<td>71112</td>
-<td>95895</td>
-</tr>
-<tr>
-<th>94</th>
-<td>1920</td>
-<td>94</td>
-<td>18943</td>
-<td>58457</td>
-<td>77400</td>
-</tr>
-<tr>
-<th>95</th>
-<td>1919</td>
-<td>95</td>
-<td>8352</td>
-<td>27135</td>
-<td>35487</td>
-</tr>
-<tr>
-<th>96</th>
-<td>1918</td>
-<td>96</td>
-<td>5013</td>
-<td>18468</td>
-<td>23481</td>
-</tr>
-<tr>
-<th>97</th>
-<td>1917</td>
-<td>97</td>
-<td>2925</td>
-<td>12820</td>
-<td>15745</td>
-</tr>
-<tr>
-<th>98</th>
-<td>1916</td>
-<td>98</td>
-<td>1808</td>
-<td>8636</td>
-<td>10444</td>
-</tr>
-<tr>
-<th>99</th>
-<td>1915</td>
-<td>99</td>
-<td>1574</td>
-<td>6943</td>
-<td>8517</td>
-</tr>
-<tr>
-<th>100</th>
-<td>1914</td>
-<td>100</td>
-<td>1601</td>
-<td>7777</td>
-<td>9378</td>
-</tr>
-<tr>
-<th>101</th>
-<td>1913</td>
-<td>101</td>
-<td>847</td>
-<td>4804</td>
-<td>5651</td>
-</tr>
-<tr>
-<th>102</th>
-<td>1912</td>
-<td>102</td>
-<td>546</td>
-<td>3037</td>
-<td>3583</td>
-</tr>
-<tr>
-<th>103</th>
-<td>1911</td>
-<td>103</td>
-<td>362</td>
-<td>1943</td>
-<td>2305</td>
-</tr>
-<tr>
-<th>104</th>
-<td>1910</td>
-<td>104</td>
-<td>230</td>
-<td>1267</td>
-<td>1497</td>
-</tr>
-<tr>
-<th>105</th>
-<td>1909 ou avant</td>
-<td>105 ou plus</td>
-<td>18</td>
-<td>1086</td>
-<td>1104</td>
-</tr>
-</tbody>
+      <th>Ensemble</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2014</td>
+      <td>0</td>
+      <td>387051</td>
+      <td>370260</td>
+      <td>757311</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2013</td>
+      <td>1</td>
+      <td>387916</td>
+      <td>370500</td>
+      <td>758416</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2012</td>
+      <td>2</td>
+      <td>394045</td>
+      <td>376249</td>
+      <td>770294</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2011</td>
+      <td>3</td>
+      <td>394471</td>
+      <td>380218</td>
+      <td>774689</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2010</td>
+      <td>4</td>
+      <td>407929</td>
+      <td>388696</td>
+      <td>796625</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2009</td>
+      <td>5</td>
+      <td>405344</td>
+      <td>386586</td>
+      <td>791930</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2008</td>
+      <td>6</td>
+      <td>407169</td>
+      <td>389524</td>
+      <td>796693</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2007</td>
+      <td>7</td>
+      <td>405278</td>
+      <td>386970</td>
+      <td>792248</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2006</td>
+      <td>8</td>
+      <td>412787</td>
+      <td>394049</td>
+      <td>806836</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2005</td>
+      <td>9</td>
+      <td>404066</td>
+      <td>386640</td>
+      <td>790706</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2004</td>
+      <td>10</td>
+      <td>402204</td>
+      <td>384465</td>
+      <td>786669</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2003</td>
+      <td>11</td>
+      <td>400289</td>
+      <td>383260</td>
+      <td>783549</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>2002</td>
+      <td>12</td>
+      <td>403767</td>
+      <td>384236</td>
+      <td>788003</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>2001</td>
+      <td>13</td>
+      <td>408339</td>
+      <td>390995</td>
+      <td>799334</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2000</td>
+      <td>14</td>
+      <td>417354</td>
+      <td>399436</td>
+      <td>816790</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1999</td>
+      <td>15</td>
+      <td>400215</td>
+      <td>381184</td>
+      <td>781399</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1998</td>
+      <td>16</td>
+      <td>400967</td>
+      <td>381289</td>
+      <td>782256</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1997</td>
+      <td>17</td>
+      <td>395245</td>
+      <td>375323</td>
+      <td>770568</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1996</td>
+      <td>18</td>
+      <td>396418</td>
+      <td>378272</td>
+      <td>774690</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1995</td>
+      <td>19</td>
+      <td>385463</td>
+      <td>369869</td>
+      <td>755332</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1994</td>
+      <td>20</td>
+      <td>367552</td>
+      <td>354457</td>
+      <td>722009</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1993</td>
+      <td>21</td>
+      <td>358340</td>
+      <td>348128</td>
+      <td>706468</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1992</td>
+      <td>22</td>
+      <td>372304</td>
+      <td>364953</td>
+      <td>737257</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1991</td>
+      <td>23</td>
+      <td>372851</td>
+      <td>371150</td>
+      <td>744001</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1990</td>
+      <td>24</td>
+      <td>379819</td>
+      <td>379366</td>
+      <td>759185</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1989</td>
+      <td>25</td>
+      <td>377886</td>
+      <td>381935</td>
+      <td>759821</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>1988</td>
+      <td>26</td>
+      <td>379413</td>
+      <td>387338</td>
+      <td>766751</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1987</td>
+      <td>27</td>
+      <td>380395</td>
+      <td>386549</td>
+      <td>766944</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1986</td>
+      <td>28</td>
+      <td>384267</td>
+      <td>394913</td>
+      <td>779180</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1985</td>
+      <td>29</td>
+      <td>383224</td>
+      <td>393452</td>
+      <td>776676</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>1938</td>
+      <td>76</td>
+      <td>195545</td>
+      <td>249332</td>
+      <td>444877</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>1937</td>
+      <td>77</td>
+      <td>186798</td>
+      <td>244132</td>
+      <td>430930</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>1936</td>
+      <td>78</td>
+      <td>181433</td>
+      <td>243847</td>
+      <td>425280</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>1935</td>
+      <td>79</td>
+      <td>171016</td>
+      <td>239291</td>
+      <td>410307</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>1934</td>
+      <td>80</td>
+      <td>166256</td>
+      <td>240306</td>
+      <td>406562</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>1933</td>
+      <td>81</td>
+      <td>151458</td>
+      <td>228378</td>
+      <td>379836</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>1932</td>
+      <td>82</td>
+      <td>148284</td>
+      <td>231031</td>
+      <td>379315</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>1931</td>
+      <td>83</td>
+      <td>135213</td>
+      <td>217397</td>
+      <td>352610</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>1930</td>
+      <td>84</td>
+      <td>125189</td>
+      <td>211078</td>
+      <td>336267</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>1929</td>
+      <td>85</td>
+      <td>107349</td>
+      <td>189472</td>
+      <td>296821</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>1928</td>
+      <td>86</td>
+      <td>94475</td>
+      <td>176127</td>
+      <td>270602</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>1927</td>
+      <td>87</td>
+      <td>81730</td>
+      <td>161042</td>
+      <td>242772</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>1926</td>
+      <td>88</td>
+      <td>70129</td>
+      <td>147781</td>
+      <td>217910</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>1925</td>
+      <td>89</td>
+      <td>59217</td>
+      <td>133111</td>
+      <td>192328</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>1924</td>
+      <td>90</td>
+      <td>48109</td>
+      <td>114793</td>
+      <td>162902</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>1923</td>
+      <td>91</td>
+      <td>38600</td>
+      <td>99268</td>
+      <td>137868</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>1922</td>
+      <td>92</td>
+      <td>31205</td>
+      <td>85541</td>
+      <td>116746</td>
+    </tr>
+    <tr>
+      <th>93</th>
+      <td>1921</td>
+      <td>93</td>
+      <td>24783</td>
+      <td>71112</td>
+      <td>95895</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>1920</td>
+      <td>94</td>
+      <td>18943</td>
+      <td>58457</td>
+      <td>77400</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>1919</td>
+      <td>95</td>
+      <td>8352</td>
+      <td>27135</td>
+      <td>35487</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>1918</td>
+      <td>96</td>
+      <td>5013</td>
+      <td>18468</td>
+      <td>23481</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>1917</td>
+      <td>97</td>
+      <td>2925</td>
+      <td>12820</td>
+      <td>15745</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>1916</td>
+      <td>98</td>
+      <td>1808</td>
+      <td>8636</td>
+      <td>10444</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>1915</td>
+      <td>99</td>
+      <td>1574</td>
+      <td>6943</td>
+      <td>8517</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>1914</td>
+      <td>100</td>
+      <td>1601</td>
+      <td>7777</td>
+      <td>9378</td>
+    </tr>
+    <tr>
+      <th>101</th>
+      <td>1913</td>
+      <td>101</td>
+      <td>847</td>
+      <td>4804</td>
+      <td>5651</td>
+    </tr>
+    <tr>
+      <th>102</th>
+      <td>1912</td>
+      <td>102</td>
+      <td>546</td>
+      <td>3037</td>
+      <td>3583</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>1911</td>
+      <td>103</td>
+      <td>362</td>
+      <td>1943</td>
+      <td>2305</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>1910</td>
+      <td>104</td>
+      <td>230</td>
+      <td>1267</td>
+      <td>1497</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>1909 ou avant</td>
+      <td>105 ou plus</td>
+      <td>18</td>
+      <td>1086</td>
+      <td>1104</td>
+    </tr>
+  </tbody>
 </table>
 <p>106 rows × 5 columns</p>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Le nombre de français par classe d'âge est le suivant :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'Âge révolu'</span><span class="p">,</span> <span class="s1">'Ensemble'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'population'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pop</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;Âge révolu&#39;</span><span class="p">,</span> <span class="s1">&#39;Ensemble&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;population&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[31]:</div>
+
+    <div class="prompt output_prompt">Out[31]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Text at 0x9273f28></pre>
+<pre>&lt;matplotlib.text.Text at 0x9273f28&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaMAAAEYCAYAAADxmJlCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd4VUX6wPHvnECoFwQpGlAsdBQVAQURERfBjoVX1wIq
 u6trWXvBAvYV/Sl2dlexgK762usqNtaOqKArWFBXEBBcRJFOyJnfH+cELyWQm9zkJLnv53nykDv3
@@ -5049,150 +5330,195 @@ i4gS4dqei6p+QNSz2Rr4V1r5a8DlRNeo5hIlsWNKeK0xRMl2PnAf0YQLY8rEVmAwpgoQkeuJbow9
 KelYjEmC9YyMSYCIdIivHyEiPYmGuJ5MNipjkmPXjIxJRgp4WES2JppEcKOqPpdwTMYkxobpjDHG
 JM6G6YwxxiTOkpExxpjEWTIyxhiTOEtGxhhjEmfJyBhjTOIsGRljjEnc/wOCaVLNMhs1BgAAAABJ
 RU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Afin de pouvoir comparer la distribution des députés avec celle des français normaux, on va utiliser une méthode d'estimation par noyaux, analogue à un histogramme. Le code vient d'ici :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
 
 <span class="k">def</span> <span class="nf">kde_scipy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">"""Kernel Density Estimation with Scipy"""</span>
+    <span class="sd">&quot;&quot;&quot;Kernel Density Estimation with Scipy&quot;&quot;&quot;</span>
     <span class="c1"># Note that scipy weights its bandwidth by the covariance of the</span>
     <span class="c1"># input data.  To make the results comparable to the other methods,</span>
     <span class="c1"># we divide the bandwidth by the sample standard deviation here.</span>
     <span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bw_method</span><span class="o">=</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">kde</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Afin d'utiliser ce code, il nous faut transformer les données cumulées disponibles pour la population française en données ponctuelles (une série d'âges). Nous faisons ceci en prenant une certaine classe d'âge proportionnellement à un facteur de décimation.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [34]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">decimation_factor</span> <span class="o">=</span> <span class="mi">1000</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">decimation_factor</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">french_pop_ages</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_pop</span><span class="p">[</span><span class="s1">'Ensemble'</span><span class="p">]):</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_pop</span><span class="p">[</span><span class="s1">&#39;Ensemble&#39;</span><span class="p">]):</span>
     <span class="n">french_pop_ages</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ind</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">/</span> <span class="n">decimation_factor</span><span class="p">))]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [35]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[35]:</div>
+
+    <div class="prompt output_prompt">Out[35]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>64152</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On va faire les graphes sur des âges entre 0 et 100 ans.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [36]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">age_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">age_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [37]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pop_kde</span> <span class="o">=</span> <span class="n">kde_scipy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">),</span> <span class="n">age_grid</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-<span class="n">dep_kde</span> <span class="o">=</span> <span class="n">kde_scipy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">age_grid</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_kde</span> <span class="o">=</span> <span class="n">kde_scipy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">),</span> <span class="n">age_grid</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">dep_kde</span> <span class="o">=</span> <span class="n">kde_scipy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">age_grid</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [38]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> 
          <span class="n">pop_kde</span><span class="p">,</span> 
-         <span class="n">label</span><span class="o">=</span><span class="s1">'population française'</span><span class="p">)</span>
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;population française&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> 
          <span class="n">dep_kde</span><span class="p">,</span> 
-         <span class="n">label</span><span class="o">=</span><span class="s1">'députés'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'âge'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'densité'</span><span class="p">)</span>
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;députés&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;âge&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;densité&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[38]:</div>
+
+    <div class="prompt output_prompt">Out[38]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Text at 0xaaf2710></pre>
+<pre>&lt;matplotlib.text.Text at 0xaaf2710&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZ0AAAEWCAYAAAC9qEq5AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XecVNXd+PHPndmZrUNZtrG79LKwixRBQEABK6ARMXoE
 TRRURCPGksffoyaxJXmEWGKLBmskMYFjr7Ekij2IBaT3umxhC2yZLVPu7487u+wuW2Z2p+95v168
@@ -5559,48 +5885,69 @@ QzCQ4He4LrYHgYPAACBPVZeEvR/GtIQNJDAmJKr6MTALWAbsAIYAS4On5+Ku4XyES0xvAFWq6gfP
 34BLTGuBPbhJtfqG1nhjWomd6RiThIIZbp9R1QGJbosxrcmu6RiTBEQkA7gMd7bTFzei7dWENsqY
 NmDda8YkBw93384eXPfaGlziMSalWPeaMcaY0NiZjjHGmNBY0jHGGBMaSzrGGGNCY0nHGGNMaCzp
 GGOMCY0lHWOMMaH5f8cGDaeIDvlTAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ces densités étant difficiles à visualiser, on leur préfère généralement la visualisation de la fréquence cumulée, qui permet de les comparer facilement en terme de distribution :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [39]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span> <span class="c1"># recommended import according to the docs</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span> <span class="c1"># recommended import according to the docs</span>
 
-<span class="n">ecdf_mp</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">ECDF</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">ecdf_mp</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">ECDF</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">ecdf_french_pop</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">ECDF</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span>
 <span class="n">y_mp</span> <span class="o">=</span> <span class="n">ecdf_mp</span><span class="p">(</span><span class="n">age_grid</span><span class="p">)</span>
 <span class="n">y_french_pop</span> <span class="o">=</span> <span class="n">ecdf_french_pop</span><span class="p">(</span><span class="n">age_grid</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_mp</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'députés'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_french_pop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'population française'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_mp</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;députés&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">y_french_pop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;population française&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[39]:</div>
+
+    <div class="prompt output_prompt">Out[39]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.legend.Legend at 0xb672be0></pre>
+<pre>&lt;matplotlib.legend.Legend at 0xb672be0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEECAYAAAAvY19bAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAH3FJREFUeJzt3Xl01NX9//FnAsSyDCrfr1KTFGilIITGBRcWqzEuoO0h
 avFCsP4AAdGySSv94obg6TlAAfcNClKwUXi769GfWzVV0eICWFEBlSIkQNBvpBIjEEK+f8wwmYRM
@@ -5744,16 +6091,21 @@ x9/577WySKHmL+Fwn/85YLhzLs0591OgO/BevS8cqyd3A8M576Z6OOecmAQSA865gcCb+IepVQX+
 3IT/H8vw372/wj9ca3es4mxJzrlzgT8EhnN2woPl4Jw7GX8ndxtgM/4hjK3wZlnchr8yUAGsBcYC
 PjxSFs65R/FPYf9f+Be0ug14BnicOj5/YDjnGPzl1eBwTk3ZICLiMercFRHxGCV+ERGPUeIXEfEY
 JX4REY9R4hcR8RglfhERj1HiFxHxGCV+ERGP+T/pIMzcOVgvZQAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme on le voit, les répartitions sont très différents : plus de députés vieux par rapport à la population, mais également moins de députés "très vieux" par rapport à cette même population.</p>
+
 </div>
 </div>
 </div>
@@ -5761,34 +6113,51 @@ JX4REY9R4hcR8RglfhERj1HiFxHxGCV+ERGP+T/pIMzcOVgvZQAAAABJRU5ErkJggg==
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut également calculer un "taux de représentation" à l'aide de ces valeurs : c'est-à-dire un ratio entre la densité de députés pour un certain âge et le nombre de députés de cet âge-là.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [40]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">dep_kde</span> <span class="o">/</span> <span class="n">pop_kde</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'représentation actuelle des députés'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">age_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">'représentation équi-âge'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'âge'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'densité'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">dep_kde</span> <span class="o">/</span> <span class="n">pop_kde</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;représentation actuelle des députés&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">age_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;représentation équi-âge&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;âge&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;densité&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[40]:</div>
+
+    <div class="prompt output_prompt">Out[40]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.Text at 0xb6a8dd8></pre>
+<pre>&lt;matplotlib.text.Text at 0xb6a8dd8&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYcAAAEWCAYAAACNJFuYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xd8VFXawPHfmUAgDVRUlN5BmoINkaUldETXlWN517ar
 bnFdZEGX14K4K+6ra39XXPRVLIurx7YIKCAgIiKKogJK6EVEECkplBgy5/3jTiYJySQzyczcucnz
@@ -6027,34 +6396,48 @@ xqzDWbh+BbAb6AYsCzz9NM4Yw2qcBDIXOGaM8QeevwYngXwD7MdZeOW0uAUvRBTJmYMQ1RRYrfAp
 Y0xbt2MRItpkzEGIMGmtGwKDcM4eTsO5gulNV4MSIkakW0mI8CmceQ/7cbqVvsZJEELUOtKtJIQQ
 ohw5cxBCCFGOJAchhBDlSHIQQghRjiQHIYQQ5UhyEEIIUY4kByGEEOX8P9HLKZb11qiMAAAAAElF
 TkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut noter que les âges entre 50 et 70 sont surreprésentés, alors que les âges en dehors sont sous-représentés par la distribution actuelle des députés.</p>
 <p>Si l'on compare les quantiles entre la population française et les députés, on obtient :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [41]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">french_pop_ages</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[41]:</div>
+
+    <div class="prompt output_prompt">Out[41]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>count    64152.000000
 mean        40.538175
@@ -6066,24 +6449,36 @@ min          0.000000
 max        105.000000
 dtype: float64</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [42]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Âge (années)'</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Âge (années)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[42]:</div>
+
+    <div class="prompt output_prompt">Out[42]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>count    577.000000
 mean      57.998637
@@ -6095,9 +6490,12 @@ min       26.095890
 max       79.726027
 Name: Âge (années), dtype: float64</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -6138,13 +6536,14 @@ Name: Âge (années), dtype: float64</pre>
 </tr>
 </tbody>
 </table>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -6154,9 +6553,12 @@ Name: Âge (années), dtype: float64</pre>
 <p>Dans ce billet, nous avons étudié les données de l'âge disponibles pour les députés français. La distribution obtenue permet de retrouver les <a href="http://www.assemblee-nationale.fr/qui/xml/age.asp?legislature=14">histogrammes officiels</a> et fournir de plus amples détails, comme par exemple la moyenne d'âge d'environ 60 ans des députés français.</p>
 <p>Dans la deuxième partie du billet, nous avons comparé la distribution des âges des députés avec celles du français moyen. On constate que les deux distributions sont assez différentes. En particulier, les jeunes (jusqu'à 40 ans environ) ne sont pas représentés dans les âges des députés, alors que les âges entre 50 et 70 sont surreprésentés (facteur entre 2 et 5).</p>
 <p>De nombreuses questions peuvent être posées au vu de ces résultats : quels sont les avantages et les inconvénients de cette distribution inégale ? Peut-on supposer qu'elle induit un biais significatif sur les décisions et les manières de penser par rapport à la population ? Existe-t-il des points sur lesquels l'expérience des députés diffère sensiblement de celle de la population (internet est un point qui me vient à l'esprit) ? Cette répartition par rapport à la population se retrouve-t-elle dans d'autres pays comparables à la France ? Comment a-t-elle évolué dans le temps (il y a 50 ans par exemple) ?</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');

@@ -1567,6 +1567,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><em>Ce billet a été écrit à l'aide d'un notebook Jupyter. Son contenu est sous licence BSD. Une vue statique de ce notebook peut être consultée et téléchargée ici : <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20170508_ElectionsTour2.ipynb">20170508_ElectionsTour1.ipynb</a>.</em></p>
+
 </div>
 </div>
 </div>
@@ -1575,13 +1576,14 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce billet, nous allons continuer l'exercice du <a href="http://flothesof.github.io/cartes-premier-tour-presidentielle-2017.html">billet précédent</a> et dessiner quelques cartes en utilisant les données du deuxième tour de l'élection présidentielle 2017.</p>
 <p>En plus de cartes géographiques, nous allons faire des cartes simplifiées qui permettent de mieux appréhender les données de l'élection, inspiré par <a href="http://www.liberation.fr/elections-presidentielle-legislatives-2017/2017/04/25/pourquoi-la-simple-carte-n-est-pas-toujours-la-meilleure-forme-pour-raconter-une-election_1565064">cet article de Libération</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Obtention-des-données-depuis-le-site-du-ministère-de-l'intérieur-et-analyse-sommaire">Obtention des données depuis le site du ministère de l'intérieur et analyse sommaire<a class="anchor-link" href="#Obtention-des-données-depuis-le-site-du-ministère-de-l'intérieur-et-analyse-sommaire">¶</a></h1>
+<h1 id="Obtention-des-donn&#233;es-depuis-le-site-du-minist&#232;re-de-l'int&#233;rieur-et-analyse-sommaire">Obtention des donn&#233;es depuis le site du minist&#232;re de l'int&#233;rieur et analyse sommaire<a class="anchor-link" href="#Obtention-des-donn&#233;es-depuis-le-site-du-minist&#232;re-de-l'int&#233;rieur-et-analyse-sommaire">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1589,415 +1591,495 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme dans mon billet précédent, nous allons directement utiliser les données officielles, disponibles ici: <a href="http://elections.interieur.gouv.fr/presidentielle-2017/">http://elections.interieur.gouv.fr/presidentielle-2017/</a>. Nous utilisons la stratégie précédente, qui consiste à utiliser les liens affichés sur la carte pour obtenir les résultats par département. Dans un premier temps, nous récupérons les liens vers les pages individuelles des départements :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'http://elections.interieur.gouv.fr/presidentielle-2017/'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">map_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'map'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://elections.interieur.gouv.fr/presidentielle-2017/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">area_tags</span> <span class="o">=</span> <span class="n">map_tag</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'area'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">map_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">area_tags</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">area_tags</span> <span class="o">=</span> <span class="n">map_tag</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;area&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">unique_links</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">area_tags</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">unique_links</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans un deuxième temps, j'ai modifié la fonction du billet précédent pour également permettre d'obtenir les données concernant les abstentions, les votes nuls et les votes blancs.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="s2">"Extracts votes for all candidates from a given url."</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="s2">&quot;Extracts votes for all candidates from a given url.&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
     <span class="c1"># département name</span>
-    <span class="n">dept</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s1">'span12 pub-fil-ariane'</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">dept</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s1">&#39;span12 pub-fil-ariane&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
     <span class="c1"># candidate votes</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'tbody'</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;tbody&#39;</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">):</span>
-        <span class="n">results</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">):</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
     <span class="c1"># other data: non-voters, nil, invalid</span>
-    <span class="n">second_table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'tbody'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">second_table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">text</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'Blancs'</span><span class="p">,</span> <span class="s1">'Nuls'</span><span class="p">,</span> <span class="s1">'Abstentions'</span><span class="p">]:</span>
-            <span class="n">results</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
+    <span class="n">second_table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tbody&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">second_table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">text</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Blancs&#39;</span><span class="p">,</span> <span class="s1">&#39;Nuls&#39;</span><span class="p">,</span> <span class="s1">&#39;Abstentions&#39;</span><span class="p">]:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">dept</span><span class="p">,</span> <span class="n">results</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Testons cette fonction sur le département des Vosges.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/"</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_links</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://elections.interieur.gouv.fr/presidentielle-2017/&quot;</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_links</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">extract_candidate_votes</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>('Haute-Garonne (31)',
- {'Abstentions': 220547,
-  'Blancs': 60546,
-  'M. Emmanuel MACRON': 436941,
-  'Mme Marine LE PEN': 166668,
-  'Nuls': 22130})</pre>
+<pre>(&#39;Haute-Garonne (31)&#39;,
+ {&#39;Abstentions&#39;: 220547,
+  &#39;Blancs&#39;: 60546,
+  &#39;M. Emmanuel MACRON&#39;: 436941,
+  &#39;Mme Marine LE PEN&#39;: 166668,
+  &#39;Nuls&#39;: 22130})</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Cela fonctionne : appliquons ceci à chacun des départements pour construire une grande table de données.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">depts</span> <span class="o">=</span> <span class="p">[]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">depts</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">unique_links</span><span class="p">:</span>
-    <span class="n">dept</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">extract_candidate_votes</span><span class="p">(</span><span class="s2">"http://elections.interieur.gouv.fr/presidentielle-2017/"</span> <span class="o">+</span> <span class="n">link</span><span class="p">)</span> 
+    <span class="n">dept</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">extract_candidate_votes</span><span class="p">(</span><span class="s2">&quot;http://elections.interieur.gouv.fr/presidentielle-2017/&quot;</span> <span class="o">+</span> <span class="n">link</span><span class="p">)</span> 
     <span class="n">depts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dept</span><span class="p">)</span>
     <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [11]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-</pre></div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">depts</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">depts</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Abstentions</th>
-<th>Blancs</th>
-<th>M. Emmanuel MACRON</th>
-<th>Mme Marine LE PEN</th>
-<th>Nuls</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>Haute-Garonne (31)</th>
-<td>220547</td>
-<td>60546</td>
-<td>436941</td>
-<td>166668</td>
-<td>22130</td>
-</tr>
-<tr>
-<th>Loiret (45)</th>
-<td>103643</td>
-<td>30731</td>
-<td>195004</td>
-<td>113735</td>
-<td>9508</td>
-</tr>
-<tr>
-<th>Aveyron (12)</th>
-<td>43933</td>
-<td>16665</td>
-<td>109340</td>
-<td>40838</td>
-<td>7403</td>
-</tr>
-<tr>
-<th>Haute-Marne (52)</th>
-<td>32083</td>
-<td>9057</td>
-<td>45192</td>
-<td>44331</td>
-<td>3456</td>
-</tr>
-<tr>
-<th>Territoire de Belfort (90)</th>
-<td>23202</td>
-<td>6743</td>
-<td>36340</td>
-<td>26121</td>
-<td>2873</td>
-</tr>
-<tr>
-<th>Haute-Savoie (74)</th>
-<td>127886</td>
-<td>37148</td>
-<td>249127</td>
-<td>113718</td>
-<td>10282</td>
-</tr>
-<tr>
-<th>Val-d'Oise (95)</th>
-<td>204202</td>
-<td>42933</td>
-<td>342000</td>
-<td>129536</td>
-<td>11664</td>
-</tr>
-<tr>
-<th>Orne (61)</th>
-<td>45577</td>
-<td>14762</td>
-<td>88484</td>
-<td>55070</td>
-<td>4798</td>
-</tr>
-<tr>
-<th>Bouches-du-Rhône (13)</th>
-<td>364023</td>
-<td>81855</td>
-<td>519335</td>
-<td>378455</td>
-<td>26391</td>
-</tr>
-<tr>
-<th>Wallis et Futuna (986)</th>
-<td>2369</td>
-<td>76</td>
-<td>4715</td>
-<td>1243</td>
-<td>61</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Abstentions</th>
+      <th>Blancs</th>
+      <th>M. Emmanuel MACRON</th>
+      <th>Mme Marine LE PEN</th>
+      <th>Nuls</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Haute-Garonne (31)</th>
+      <td>220547</td>
+      <td>60546</td>
+      <td>436941</td>
+      <td>166668</td>
+      <td>22130</td>
+    </tr>
+    <tr>
+      <th>Loiret (45)</th>
+      <td>103643</td>
+      <td>30731</td>
+      <td>195004</td>
+      <td>113735</td>
+      <td>9508</td>
+    </tr>
+    <tr>
+      <th>Aveyron (12)</th>
+      <td>43933</td>
+      <td>16665</td>
+      <td>109340</td>
+      <td>40838</td>
+      <td>7403</td>
+    </tr>
+    <tr>
+      <th>Haute-Marne (52)</th>
+      <td>32083</td>
+      <td>9057</td>
+      <td>45192</td>
+      <td>44331</td>
+      <td>3456</td>
+    </tr>
+    <tr>
+      <th>Territoire de Belfort (90)</th>
+      <td>23202</td>
+      <td>6743</td>
+      <td>36340</td>
+      <td>26121</td>
+      <td>2873</td>
+    </tr>
+    <tr>
+      <th>Haute-Savoie (74)</th>
+      <td>127886</td>
+      <td>37148</td>
+      <td>249127</td>
+      <td>113718</td>
+      <td>10282</td>
+    </tr>
+    <tr>
+      <th>Val-d'Oise (95)</th>
+      <td>204202</td>
+      <td>42933</td>
+      <td>342000</td>
+      <td>129536</td>
+      <td>11664</td>
+    </tr>
+    <tr>
+      <th>Orne (61)</th>
+      <td>45577</td>
+      <td>14762</td>
+      <td>88484</td>
+      <td>55070</td>
+      <td>4798</td>
+    </tr>
+    <tr>
+      <th>Bouches-du-Rhône (13)</th>
+      <td>364023</td>
+      <td>81855</td>
+      <td>519335</td>
+      <td>378455</td>
+      <td>26391</td>
+    </tr>
+    <tr>
+      <th>Wallis et Futuna (986)</th>
+      <td>2369</td>
+      <td>76</td>
+      <td>4715</td>
+      <td>1243</td>
+      <td>61</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Nous pouvons par exemple sommer les données pour tous les départements et afficher le résultat.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Somme des votes'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Somme des votes&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[14]:</div>
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Somme des votes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>Abstentions</th>
-<td>12101416</td>
-</tr>
-<tr>
-<th>Blancs</th>
-<td>3019724</td>
-</tr>
-<tr>
-<th>M. Emmanuel MACRON</th>
-<td>20753798</td>
-</tr>
-<tr>
-<th>Mme Marine LE PEN</th>
-<td>10644118</td>
-</tr>
-<tr>
-<th>Nuls</th>
-<td>1049532</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Somme des votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Abstentions</th>
+      <td>12101416</td>
+    </tr>
+    <tr>
+      <th>Blancs</th>
+      <td>3019724</td>
+    </tr>
+    <tr>
+      <th>M. Emmanuel MACRON</th>
+      <td>20753798</td>
+    </tr>
+    <tr>
+      <th>Mme Marine LE PEN</th>
+      <td>10644118</td>
+    </tr>
+    <tr>
+      <th>Nuls</th>
+      <td>1049532</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut représenter ceci sous forme de graphique :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-talk'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-talk&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Somme des inscrits'</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Somme des inscrits'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Somme des inscrits&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Somme des inscrits&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[16]:</div>
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.axes._subplots.AxesSubplot at 0x108d7abe0></pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x108d7abe0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAn8AAAJECAYAAABn80KVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xm4XWV99//3JxNIRhISxTIkoEELAgpVVKwUq+KAYxFl
 EBELPE+l4IAIP+fpYWgpmmoVrQwSBS2OdaAqCrTaiiAgDoBAmCEQSEiYk3x/f+yd9HBIcvY5OTl7
@@ -2277,40 +2359,61 @@ q41z/jqT5FrgNuAG4CiwDzhc/qEkSdL/geWvU0nWAzcDu4DNwH5gb1WdaRpMkiSNNctf55KsAe4E
 7gB2VNWRxpEkSdIY823fTiWZSrIbOAlcD+wEHm+bSpIkjTtf+OhMkhsZzPm7BjgIfKSqnmmbSpIk
 rRY+9u1MknMM3vY9BJyd6zNVdc+KhpIkSauG5a8zSY4CC/1Rqqq2rVAcSZK0ylj+JEmSJogvfEiS
 JE0Qy58kSdIEsfxJkiRNEMufJEnSBLH8SZIkTRDLnyRJ0gT5L90TYDgGqNYlAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut refaire ce même graphique en proportion du total des voix qui pouvaient s'exprimer.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'</span><span class="si">% d</span><span class="s1">es inscrits'</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'</span><span class="si">% d</span><span class="s1">es inscrits'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">% d</span><span class="s1">es inscrits&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">% d</span><span class="s1">es inscrits&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[17]:</div>
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.axes._subplots.AxesSubplot at 0x108e0c828></pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x108e0c828&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnMAAAI6CAYAAABM586qAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmYnWV9//H3N5kEkOyBaCBACBgs2qJA1SpSJLIJuESt
 SwURMbSouLZSrIoISLG2P6EVbCg7isjSWkSEgiigZZNFQUAhCWsSDWYzZJnk+/vjnMTJMEPOTM45
@@ -2533,16 +2636,21 @@ AecCZ2bmkkqDSZKkolnm2iwihgOfB/4RODAzb6o4kiRJKphPs7ZJREyNiFOAecABwDHAbdWmkiRJ
 pfMBiBaLiHdSu2fuVcClwEGZ+UC1qSRJ0mDhZdYWi4h11J5mvQpY2dM5mXlaW0NJkqRBwzLXYhFx
 M/BC/5EzM/dvUxxJkjTIWOYkSZIK5gMQkiRJBbPMSZIkFcwyJ0mSVDDLnCRJUsEsc5IkSQWzzEmS
 JBXs/wM+RPmNsrJZ9AAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut noter que plus de personnes se sont abstenues que n'ont voté pour Marine Le Pen.</p>
+
 </div>
 </div>
 </div>
@@ -2550,40 +2658,52 @@ JBXs/wM+RPmNsrJZ9AAAAABJRU5ErkJggg==
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Comme dans mon billet précédent, on peut dessiner un diagramme vertical avec la répartition de toutes ces quantités en fonction des départements :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">vote_sum</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">df_votes</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vote_sum</span>
-<span class="n">df_votes</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'total'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">df_votes</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'total'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vote_sum</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_votes</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vote_sum</span>
+<span class="n">df_votes</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_votes</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 <span class="n">df_votes</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAANYCAYAAADZuhuBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xu85lPd//HXe8YYIodxyKAMN0lMiORsG5ScQpJChhyK
 n24VMXFLItStRKlEJuMQhUxGiJlxNpiQQ/cMOYWcZhzLYfD5/bE+35nvXK6959oze2bvPfv9fDzm
@@ -4084,16 +4204,21 @@ t4ELzWzfgZYd4vk1hJMl/Sewh7AZZLWk5ZJWAi8Dt5nZ3sYsa5ppHjBnAw/F6+OAu1vrexOVAH4L
 DAJ+D0wBqq0feWtKY5c1N3Jss5zqa84uWuH7k2cbSWeRWnNivVa17mTtImkKMJjK9QZa0ZqjuAPR
 cRzHcRzHcRw8xcJxHMdxHMdxquAOsuM4juM4juOkcAfZcRzHcRzHcVK4g+w4juM4juM4KdxBdhzH
 cRzHcZwU7iA7juM4juM4Tgp3kB3HcRzHcRwnxf8D91AmHJLZUB0AAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Le graphique précédent est intéressant. En particulier, il permet d'identifier visuellement le fait que l'abstentionnisme semble beaucoup plus prononcé chez les français de l'étranger et dans les DOM-TOM.</p>
+
 </div>
 </div>
 </div>
@@ -4101,13 +4226,14 @@ cRzHcZwU7iA7juM4juM4Tgp3kB3HcRzHcRwnxf8D91AmHJLZUB0AAAAASUVORK5CYII=
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Passons maintenant à la partie cartographie de ce billet. Nous allons dessiner des cartes à l'aide des données précédentes.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Cartes">Cartes<a class="anchor-link" href="#Cartes">¶</a></h1>
+<h1 id="Cartes">Cartes<a class="anchor-link" href="#Cartes">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -4115,44 +4241,49 @@ cRzHcZwU7iA7juM4juM4Tgp3kB3HcRzHcRwnxf8D91AmHJLZUB0AAAAASUVORK5CYII=
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Au lieu de faire des cartes géographiques utilisant les contours géographiques, nous allons contrairement au billet précédent représenter le vote à l'aide de cercles dont la taille représente le nombre de votants. Ces cercles sont placé sur la centroïde géographique département en question.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">shapefile</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">shapefile</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="sa">r</span><span class="s2">"files/departement_shapes/DEPARTEMENT.shp"</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;files/departement_shapes/DEPARTEMENT.shp&quot;</span><span class="p">)</span>
 <span class="n">shapes</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">shapes</span><span class="p">()</span>
 <span class="n">records</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
 <span class="n">fields</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">fields</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [22]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
 
 <span class="k">def</span> <span class="nf">draw_departements_and_centroids</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="s2">"Draws a map of the départements."</span>
+    <span class="s2">&quot;Draws a map of the départements.&quot;</span>
     <span class="k">if</span> <span class="n">radii</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">))]</span>
     <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">radius</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">radii</span><span class="p">):</span>
@@ -4170,48 +4301,66 @@ cRzHcZwU7iA7juM4juM4Tgp3kB3HcRzHcRwnxf8D91AmHJLZUB0AAAAASUVORK5CYII=
             <span class="n">segs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index2</span><span class="p">:])</span>
 
         <span class="n">lines</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="n">segs</span><span class="p">,</span><span class="n">antialiaseds</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">set_edgecolors</span><span class="p">(</span><span class="s1">'k'</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">set_edgecolors</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         
         <span class="n">centroid</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">centroid</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [23]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 
 <span class="n">draw_departements_and_centroids</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
-<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'X_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">'X_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Y_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Y_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;X_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;X_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Y_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Y_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">100000</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="mi">100000</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[23]:</div>
+
+    <div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(71326.0, 1328512.0, 6008968.0, 7159443.0)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoYAAAJLCAYAAAB6/FcTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXeYZFXxht9vc17CLrjEFoQVyUgSQUmCOERBQTKIgCIi
 Kj8aQQmmQQwIooiCgqIgCBIalKjkJILkIDQuacnL5li/P+oM9A6d+/bM7Gy9z7PPznTfe87p6fTd
@@ -5624,64 +5773,80 @@ VQLDiIiIiAASGEZERERElcAwIiIiIoAEhhERERFRJTCMiIiICCCBYURERERUCQwjIiIiAkhgGBER
 ERFVAsOIiIiIABIYRkRERESVwDAiIiIigASGEREREVElMIyIiIgIIIFhRERERFQJDCMiIiICSGAY
 EREREVUCw4iIiIgAEhhGRERERJXAMCIiIiKABIYRERERUSUwjIiIiAgggWFEREREVAkMIyIiIgJI
 YBgRERERVQLDiIiIiADg/wNYUUG5E4PXuAAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant dessiner des cartes avec les données issues du site du ministère de l'intérieur.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_radii</span><span class="p">(</span><span class="n">label_idx</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">):</span>
-    <span class="sd">"""Returns sorted radii by correct label index."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_radii</span><span class="p">(</span><span class="n">label_idx</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns sorted radii by correct label index.&quot;&quot;&quot;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">df_votes</span><span class="p">[</span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]]</span>
     <span class="n">radii</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">code_dpt</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">"(</span><span class="si">{}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_dpt</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_dpt</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span>
         <span class="n">radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [25]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">label_idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="n">radii</span> <span class="o">=</span> <span class="n">get_radii</span><span class="p">(</span><span class="n">label_idx</span><span class="p">)</span> <span class="o">/</span> <span class="mi">6</span>
     <span class="n">draw_departements_and_centroids</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
 
-    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'X_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">'X_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Y_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Y_CHF_LIEU'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;X_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;X_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Y_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Y_CHF_LIEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">100000</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="mi">100000</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">label_idx</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo8AAANpCAYAAABq+tNQAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXd4W+XVwH9H3nYcO87eIiSsMMJeJaxQhiDsVUqZZZRV
 KG1EGWW0VHylQKGUMsooe6+IGUYoG8JICBBWFEL2th1v63x/nFeJrEiybNxmvb/n0ePo3vfe+15F
@@ -8777,188 +8942,246 @@ mVXm4NHMzMzMKnPwaGZmZmaVOXg0MzMzs8ocPJqZmZlZZQ4ezczMzKwyB49mZmZmVpmDRzMzMzOr
 zMGjmZmZmVXm4NHMzMzMKnPwaGZmZmaVOXg0MzMzs8ocPJqZmZlZZQ4ezczMzKwyB49mZmZmVpmD
 RzMzMzOrzMGjmZmZmVXm4NHMzMzMKnPwaGZmZmaVOXg0MzMzs8ocPJqZmZlZZQ4ezczMzKyy/w9B
 y9t1FRDzMQAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Le problème de la représentation précédente, c'est que les cercles se recouvrent. On va donc utiliser un autre environnement pour représenter les données : une libraire de graphes, <code>networkx</code>.</p>
 <p>On va construire un graphe qui relie chaque département à son plus proche centroïde voisin. Puis on va trouver une disposition qui permet de représenter facilement chaque département.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [26]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [27]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">code_to_idx</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">code_to_idx</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [28]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">idx_to_code</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_to_code</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [29]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">KDTree</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">KDTree</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">kdtree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdtree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">kdtree</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdtree</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[32]:</div>
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(96, 2)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Avec l'algorithme de plus proche voisin, on peut facilement déterminer les plus proches voisins d'un noeud donné à l'aide de la fonction <code>query</code>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">kdtree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kdtree</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdtree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kdtree</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[33]:</div>
+
+    <div class="prompt output_prompt">Out[33]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(array([     0.        ,  48030.21679557,  90082.12623391]),
  array([ 2, 44, 89]))</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On va également construire un dictionnaire du nombre de votes par département :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [34]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">vote_sum</span><span class="p">[</span><span class="n">vote_sum</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">"(</span><span class="si">{}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vote_sum</span><span class="p">[</span><span class="n">vote_sum</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[34]:</div>
+
+    <div class="prompt output_prompt">Out[34]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>218179</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [35]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pop_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">,</span> <span class="p">[</span><span class="n">vote_sum</span><span class="p">[</span><span class="n">vote_sum</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">"(</span><span class="si">{}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">]))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">,</span> <span class="p">[</span><span class="n">vote_sum</span><span class="p">[</span><span class="n">vote_sum</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">]))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Construisons maintenant le graphe :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [36]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">G</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">G</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">dept_id</span><span class="p">,</span> <span class="n">centroid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">centroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
     <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">dept_id</span><span class="p">)</span>
     <span class="n">node_id</span> <span class="o">=</span> <span class="n">code_to_idx</span><span class="p">[</span><span class="n">dept_id</span><span class="p">]</span>
@@ -8968,63 +9191,87 @@ y9t1FRDzMQAAAABJRU5ErkJggg==
         <span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">neighbor_id</span><span class="p">])</span>
         <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">dept_id</span><span class="p">,</span> <span class="n">neighbor_id</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [37]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">weight</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weight</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[37]:</div>
+
+    <div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>-428840</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On va initialement positionner les départements à leurs coordonnées centroïdes :</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [38]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">initial_pos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">idx_to_code</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">centroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">centroids</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">initial_pos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">idx_to_code</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">centroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">centroids</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [39]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">initial_pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">initial_pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.5/site-packages/networkx/drawing/nx_pylab.py:126: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
     Future behavior will be consistent with the long-time default:
@@ -9039,13 +9286,19 @@ y9t1FRDzMQAAAABJRU5ErkJggg==
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/__init__.py:917: UserWarning: axes.hold is deprecated. Please remove it from your matplotlibrc and/or style files.
   warnings.warn(self.msg_depr_set % key)
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/rcsetup.py:152: UserWarning: axes.hold is deprecated, will be removed in 3.0
-  warnings.warn("axes.hold is deprecated, will be removed in 3.0")
+  warnings.warn(&#34;axes.hold is deprecated, will be removed in 3.0&#34;)
 </pre>
 </div>
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0UAAAIuCAYAAABww6OYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xdc1dX/wPEX4EYRBFwpjsSB4h64cqXiyIYjxZGamasc
 qam5zbKfmTnSVMyNpg2zb2imZiql5N6iJW5EEBEQFLjv3x+fC7IFBEe8n4/HfcD9fM7nfM7n3ot+
@@ -11426,44 +11679,58 @@ iIhIozEUERERERGRRmMoIiIiIiIijcZQREREREREGo2hiIiIiIiINBpDERERERERaTSGIiIiIiIi
 0mgMRUREREREpNEYioiIiIiISKMxFBERERERkUZjKCIiIiIiIo3GUERERERERBqNoYiIiIiIiDQa
 QxEREREREWk0hiIiIiIiItJoDEVERERERKTRGIqIiIiIiEijMRQREREREZFGYygiIiIiIiKNxlBE
 REREREQa7f8DzIZSJdWXUJgAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Et puis on va ensuite donner un nouveau placement à l'aide d'un layout de type ressort.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [40]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">initial_pos</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="p">[</span><span class="s1">'75'</span><span class="p">],</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">'weight'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">initial_pos</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;75&#39;</span><span class="p">],</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [41]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.5/site-packages/networkx/drawing/nx_pylab.py:126: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
     Future behavior will be consistent with the long-time default:
@@ -11478,13 +11745,19 @@ REREREQa7f8DzIZSJdWXUJgAAAAASUVORK5CYII=
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/__init__.py:917: UserWarning: axes.hold is deprecated. Please remove it from your matplotlibrc and/or style files.
   warnings.warn(self.msg_depr_set % key)
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/rcsetup.py:152: UserWarning: axes.hold is deprecated, will be removed in 3.0
-  warnings.warn("axes.hold is deprecated, will be removed in 3.0")
+  warnings.warn(&#34;axes.hold is deprecated, will be removed in 3.0&#34;)
 </pre>
 </div>
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0UAAAIuCAYAAABww6OYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xt8zvX/x/HHNuRQm7GTaeY4NiGGIadyTo5RhBA6OJTK
 OSoyKZFDKzKEyYyvQw45Rclxzoo5NIYch81sNnbtev3++Gxr55Mxfnvdb7frtl2fw/vzfl+b+jz3
@@ -14170,33 +14443,45 @@ iIiIiE1TKBIREREREZumUCQiIiIiIjZNoUhERERERGyaQpGIiIiIiNg0hSIREREREbFpCkUiIiIi
 ImLTFIpERERERMSmKRSJiIiIiIhNUygSERERERGbplAkIiIiIiI2TaFIRERERERsmkKRiIiIiIjY
 NIUiERERERGxaQpFIiIiIiJi0xSKRERERETEpikUiYiIiIiITVMoEhERERERm/b/hrLFmgmzPlsA
 AAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Avec ce nouveau placement des départements, on peut maintenant essayer de dessiner des cercles de tailles différentes. Dans un premier temps, on dessine avec la taille de population.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [49]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="p">[</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mi">500</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="p">[</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mi">500</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.5/site-packages/networkx/drawing/nx_pylab.py:126: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
     Future behavior will be consistent with the long-time default:
@@ -14211,13 +14496,19 @@ AAAASUVORK5CYII=
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/__init__.py:917: UserWarning: axes.hold is deprecated. Please remove it from your matplotlibrc and/or style files.
   warnings.warn(self.msg_depr_set % key)
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/rcsetup.py:152: UserWarning: axes.hold is deprecated, will be removed in 3.0
-  warnings.warn("axes.hold is deprecated, will be removed in 3.0")
+  warnings.warn(&#34;axes.hold is deprecated, will be removed in 3.0&#34;)
 </pre>
 </div>
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0UAAAIuCAYAAABww6OYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd8VGXWB/DfnZlkJr33QBIghA7SUamKoiurK4uvYl9f
 y1rWDroWrGvbdVUsy64NXcvuoq/oSlcBpfck1AChpJCeTMokM7e8f5wMmSTTe5Lz/XzyUZLJvc/U
@@ -15725,91 +16016,119 @@ aYQiAAAAAE4jFAEAAABwGqEIAAAAgNMIRQAAAACcRigCAAAA4DRCEQAAAACnEYoAAAAAOI1QBAAA
 AMBphCIAAAAATiMUAQAAAHAaoQgAAACA0whFAAAAAJxGKAIAAADgNEIRAAAAAKcRigAAAAA4jVAE
 AAAAwGmEIgAAAABOIxQBAAAAcBqhCAAAAIDTCEUAAAAAnEYoAgAAAOA0QhEAAAAAp/0/i0pYBmce
 I6gAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant refaire les différentes cartes précédentes.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [43]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="p">[</span><span class="s1">'abstention, nuls, blancs'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">Abstentions</span> <span class="o">+</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">Nuls</span> <span class="o">+</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">Blancs</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="p">[</span><span class="s1">&#39;abstention, nuls, blancs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">Abstentions</span> <span class="o">+</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">Nuls</span> <span class="o">+</span> <span class="n">df_votes</span><span class="o">.</span><span class="n">Blancs</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [44]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_votes</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[44]:</div>
+
+    <div class="prompt output_prompt">Out[44]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Index(['Abstentions', 'Blancs', 'M. Emmanuel MACRON', 'Mme Marine LE PEN',
-       'Nuls', 'abstention, nuls, blancs'],
-      dtype='object')</pre>
+<pre>Index([&#39;Abstentions&#39;, &#39;Blancs&#39;, &#39;M. Emmanuel MACRON&#39;, &#39;Mme Marine LE PEN&#39;,
+       &#39;Nuls&#39;, &#39;abstention, nuls, blancs&#39;],
+      dtype=&#39;object&#39;)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [45]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_radii_by_col</span><span class="p">(</span><span class="n">col_label</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">):</span>
-    <span class="sd">"""Returns sorted radii by correct label index."""</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_radii_by_col</span><span class="p">(</span><span class="n">col_label</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">CODE_DEPT</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns sorted radii by correct label index.&quot;&quot;&quot;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">df_votes</span><span class="p">[</span><span class="n">col_label</span><span class="p">]</span>
     <span class="n">radii</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">code_dpt</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">"(</span><span class="si">{}</span><span class="s2">)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_dpt</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_dpt</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span>
         <span class="n">radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [51]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">col_label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">'M. Emmanuel MACRON'</span><span class="p">,</span> <span class="s1">'Mme Marine LE PEN'</span><span class="p">,</span> <span class="s1">'abstention, nuls, blancs'</span><span class="p">]):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">col_label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;M. Emmanuel MACRON&#39;</span><span class="p">,</span> <span class="s1">&#39;Mme Marine LE PEN&#39;</span><span class="p">,</span> <span class="s1">&#39;abstention, nuls, blancs&#39;</span><span class="p">]):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">radii</span> <span class="o">=</span> <span class="n">get_radii_by_col</span><span class="p">(</span><span class="n">col_label</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="o">/</span> <span class="mi">1000</span>
     <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="n">radii</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">10.</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col_label</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.5/site-packages/networkx/drawing/nx_pylab.py:126: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
     Future behavior will be consistent with the long-time default:
@@ -15824,13 +16143,19 @@ I6gAAAAASUVORK5CYII=
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/__init__.py:917: UserWarning: axes.hold is deprecated. Please remove it from your matplotlibrc and/or style files.
   warnings.warn(self.msg_depr_set % key)
 /Users/kappamaki/anaconda/lib/python3.5/site-packages/matplotlib/rcsetup.py:152: UserWarning: axes.hold is deprecated, will be removed in 3.0
-  warnings.warn("axes.hold is deprecated, will be removed in 3.0")
+  warnings.warn(&#34;axes.hold is deprecated, will be removed in 3.0&#34;)
 </pre>
 </div>
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACgQAAAL6CAYAAADzWa+6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAewgAAHsIBbtB1PgAAIABJREFUeJzs3XdYFFf/NvCboqAgIJFiR42iICj23sWCxt41guYXS2KN
 iL0bscTHJCaxPYq9R+y9YImKgmBB1ChNRQFBEekw7x++7MPsLss22np/rmuvi5mdU3Z2djhn5jvn
@@ -21385,23 +21710,28 @@ IBAAAAAAAAAAAAAqIAgEAAAAAAAAAACACggCAQAAAAAAAAAAoAKCQAAAAAAAAAAAAKiAIBAAAAAA
 AAAAAAAqIAgEAAAAAAAAAACACggCAQAAAAAAAAAAoAKCQAAAAAAAAAAAAKiAIBAAAAAAAAAAAAAq
 IAgEAAAAAAAAAACACggCAQAAAAAAAAAAoAKCQAAAAAAAAAAAAKiAIBAAAAAAAAAAAAAqIAgEAAAA
 AAAAAACACggCAQAAAAAAAAAAoAL/D7BYozgPRyBgAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ces trois cartes permettent de comparer les votes en fonction des deux candidats ainsi que l'abstention. On se rend ici compte que l'abstention est, dans de nombreux départements, plus forte que le vote pour Marine Le Pen par exemple, ce qui témoigne de l'importance de cet effet.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h1>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -21409,9 +21739,12 @@ AAAAAACACggCAQAAAAAAAAAAoAL/D7BYozgPRyBgAAAAAElFTkSuQmCC
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dans ce billet, nous avons utilisé les données du ministère de l'intérieur pour analyser les résultats du second tour de l'élection présidentielle 2017. Ceci nous a permis de voir que les manières de voter sont différente selon les départements français. Nous avons également dessiné quelques cartes en essayant d'avoir une approche à la fois basée sur la géographie et sur une manière pertinente de représentation des données, qui sont assez complexes à appréhender.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
