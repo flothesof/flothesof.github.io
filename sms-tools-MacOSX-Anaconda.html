@@ -500,7 +500,6 @@ article .meta a.comments_btn:hover {
 <div class="highlight"><pre><span></span><code><span class="err">git clone https://github.com/MTG/sms-tools.git</span>
 </code></pre></div>
 
-
 <h2>Creating a new conda environment with Python 2.7</h2>
 <p>Once you've downloaded the software package, it's time to create a virtual environment for sms-tools.</p>
 <p>What is a virtual environment? It's a sort of sandbox within which you'll work with specific versions of Python and its packages, so as not to interfere with your system Python.</p>
@@ -508,29 +507,24 @@ article .meta a.comments_btn:hover {
 <div class="highlight"><pre><span></span><code><span class="err">conda create -n sms python=2.7 ipython numpy matplotlib scipy cython</span>
 </code></pre></div>
 
-
 <p>The previous command tells conda to create a new environment using Python 2.7 and installing the packages that follow. The reason we install these packages is that they're needed by the sms-tools.</p>
 <h2>Compiling the Cython code parts</h2>
 <p>Now that we have a new environment with all the packages we need, let's activate it. We need to do this every time we want to work with the course tools:</p>
 <div class="highlight"><pre><span></span><code><span class="err">source activate sms</span>
 </code></pre></div>
 
-
 <p>This command should slightly alter the prompt which now usually looks like this for me:</p>
 <div class="highlight"><pre><span></span><code><span class="err">(sms)kappamaki@Florians-MBP:~/workspace%</span>
 </code></pre></div>
-
 
 <p>The (sms) part means that I have activated the right environment.</p>
 <p>Let's now switch to the directory where we put the sms-tools from earlier. In my case I type:</p>
 <div class="highlight"><pre><span></span><code><span class="err">(sms)kappamaki@Florians-MBP:~/workspace% cd coursera-aspma/sms-tools/software/models/utilFunctions_C/</span>
 </code></pre></div>
 
-
 <p>Once I'm in that directory, I need to type the following:</p>
 <div class="highlight"><pre><span></span><code><span class="err">(sms)kappamaki@Florians-MBP:~/workspace/coursera-aspma/sms-tools/software/models/utilFunctions_C% python compileModule.py build_ext --inplace</span>
 </code></pre></div>
-
 
 <p>Once I hit enter, I get several warnings and a message that the Cython code was compiled.</p>
 <p>This is it, we're done!</p>
@@ -542,12 +536,10 @@ article .meta a.comments_btn:hover {
 <span class="c">error: command &#39;gcc&#39; failed with exit status 1</span>
 </code></pre></div>
 
-
 <p>After googling this error, in particular the line starting with "ld:", I needed to do the following before compiling again:</p>
 <div class="highlight"><pre><span></span><code><span class="err">cd /usr/local/lib</span>
 <span class="err">sudo ln -s ../../lib/libSystem.B.dylib libgcc_s.10.5.dylib</span>
 </code></pre></div>
-
 
 <p>After that, it should work fine. </p>
 <h1>Wrap-up</h1>
