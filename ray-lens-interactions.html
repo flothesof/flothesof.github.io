@@ -465,6 +465,7 @@ article .meta a.comments_btn:hover {
                         </a></li>
                             <li><a href="pages/about.html" title="About">About</a></li>
                             <li><a href="/archives.html" title="Archive">Archive</a></li>
+                            <li><a class="nodec icon-rss" href="rss.xml" title="flothesof.github.io RSS feed" rel="me"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -477,25 +478,30 @@ article .meta a.comments_btn:hover {
             <h1>Ray Lens Interactions in Optics</h1>
 			<time datetime="article.date.isoformat()" pubdate>Mon, 23 Apr 2018</time>			
 			<div>
-					<a href="http://localhost:8000/tag/optics.html" class="tag">Optics</a>
-					<a href="http://localhost:8000/tag/physics.html" class="tag">Physics</a>
+					<a href="http://flothesof.github.io/tag/optics.html" class="tag">Optics</a>
+					<a href="http://flothesof.github.io/tag/physics.html" class="tag">Physics</a>
 			</div>
         </header>
 
         <div class="article_content">
-            <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Since I'm now learning photography, I've been doing a bit of reading on optics foundations. In this post, I'll try to perform a couple computations and ray tracing for a spherical lens.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-spherical-lens-problem">The spherical lens problem<a class="anchor-link" href="#The-spherical-lens-problem">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's suppose your camera has a spherical lens. Further supposing it's 2D, we can model it as a circle. We now imagine that a point is scattering light rays in all directions through this spherical lens. Our goal is then:</p>
 <ul>
 <li>to compute the point of intersection with the lens</li>
@@ -506,237 +512,230 @@ article .meta a.comments_btn:hover {
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Modelling-the-important-concepts">Modelling the important concepts<a class="anchor-link" href="#Modelling-the-important-concepts">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>First, the lens (we assume that it's centered at the $(0, 0)$ point):</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Lens</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Lens&#39;</span><span class="p">,</span> <span class="n">field_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">])</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lens</span> <span class="o">=</span> <span class="n">Lens</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 
 <span class="n">lens</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>Lens(r=10, n=1.5)</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, the point source. We will model locations as complex numbers.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">PointSource</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;PointSource&#39;</span><span class="p">,</span> <span class="n">field_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coord&#39;</span><span class="p">])</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>And now, the ray:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Ray</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Ray&#39;</span><span class="p">,</span> <span class="n">field_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">])</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">.1</span><span class="n">j</span><span class="p">))</span>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">+.</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Using a ray, we can derive its line equation easily:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ray</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">coord</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>(-10+0j)</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ray</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">real</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>1.0</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">line_equation</span><span class="p">(</span><span class="n">ray</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns line equation ax + by + c = 0.&quot;&quot;&quot;</span>
     <span class="n">a</span> <span class="o">=</span> <span class="o">-</span> <span class="n">ray</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">imag</span>
@@ -745,23 +744,24 @@ article .meta a.comments_btn:hover {
     <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use thise equation to write a plotting function for rays:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -779,61 +779,58 @@ article .meta a.comments_btn:hover {
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-ko&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's plot some parallel rays:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">origin_y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
     <span class="n">ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">PointSource</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">origin_y</span><span class="p">),</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
     <span class="n">plot_ray</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXwAAAD8CAYAAAB0IB+mAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJztnXd4VFX6x78noYmFLoSSUFVkdVGx
@@ -1109,45 +1106,43 @@ Ai/4DMMwGQIv+AzDMBnC/wHUN/Fqp9+PVAAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>As well as some spherical rays:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">theta_deg</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
     <span class="n">ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">PointSource</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mi">0</span><span class="p">),</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta_deg</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta_deg</span><span class="p">))))</span>
     <span class="n">plot_ray</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAD8CAYAAABjAo9vAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzsvXlsm+l97/t9uUii9n3f932XN0ke
@@ -1591,26 +1586,29 @@ AKoBXATQY7l7Zl/zpwAAAEhJREFUI3rz7E69Lh4T2IUQQgyPN6RihBBC9CGBXQghvIwEdiGE8DIS
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Intersections">Intersections<a class="anchor-link" href="#Intersections">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Using these elements, we can write model an intersection routine:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
 <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="n">lens</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1644,23 +1642,24 @@ AKoBXATQY7l7Zl/zpwAAAEhJREFUI3rz7E69Lh4T2IUQQgyPN6RihBBC9CGBXQghvIwEdiGE8DIS
         <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test this:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lens</span> <span class="o">=</span> <span class="n">Lens</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span><span class="p">))</span>
 <span class="n">ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.2</span><span class="n">j</span><span class="p">))</span>
@@ -1668,55 +1667,53 @@ AKoBXATQY7l7Zl/zpwAAAEhJREFUI3rz7E69Lh4T2IUQQgyPN6RihBBC9CGBXQghvIwEdiGE8DIS
 <span class="n">intersection</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="n">lens</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
 <pre>a: 0.2, b: 1.0, c: 0.4, r: 1
 aa: 1.04, bb: 0.16000000000000003, cc: -0.84, delta: 3.52
 </pre>
 </div>
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
-
+    <div class="prompt output_prompt">Out[16]:</div>
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+
+<div class="output_text output_subarea output_execute_result">
 <pre>(-0.9789261076583519-0.20421477846832947j)</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-refracted-ray">The refracted ray<a class="anchor-link" href="#The-refracted-ray">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can now determine the angle of the incoming ray, relative to the local normal of the lens by using the Snell law. To do this, there are a number of subproblems to solve:</p>
 <ul>
 <li>compute the normal and the tangential vector from an intersection point on the circle</li>
@@ -1726,22 +1723,27 @@ aa: 1.04, bb: 0.16000000000000003, cc: -0.84, delta: 3.52
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Normals-on-the-circle">Normals on the circle<a class="anchor-link" href="#Normals-on-the-circle">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>A simple approach to this problem is to use polar coordinates:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">atan2</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
 
 <span class="k">def</span> <span class="nf">lens_normal_tangent</span><span class="p">(</span><span class="n">intersection_point</span><span class="p">,</span> <span class="n">lens</span><span class="p">):</span>
@@ -1752,23 +1754,24 @@ aa: 1.04, bb: 0.16000000000000003, cc: -0.84, delta: 3.52
     <span class="k">return</span> <span class="n">normal</span><span class="p">,</span> <span class="n">tangent</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see if the results are correct:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
@@ -1788,39 +1791,35 @@ aa: 1.04, bb: 0.16000000000000003, cc: -0.84, delta: 3.52
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="prompt output_prompt">Out[18]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-2, 0, -1, 1]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAEzCAYAAABjZzSkAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzs3Xl4U9W6BvB3NU3apOlEW1rokDIJ
@@ -2322,42 +2321,44 @@ AAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Refracted-ray">Refracted ray<a class="anchor-link" href="#Refracted-ray">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now compute the refracted ray.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dot_product</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the dot product between two vectors represented as complex numbers.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">v1</span> <span class="o">*</span> <span class="n">v2</span><span class="o">.</span><span class="n">conjugate</span><span class="p">())</span><span class="o">.</span><span class="n">real</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">acos</span><span class="p">,</span> <span class="n">asin</span><span class="p">,</span> <span class="n">copysign</span>
 
 <span class="k">def</span> <span class="nf">compute_refracted_ray</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="n">intersection_point</span><span class="p">,</span> <span class="n">lens</span><span class="p">,</span> <span class="n">inward</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -2382,23 +2383,24 @@ AAAASUVORK5CYII=
         <span class="k">return</span> <span class="n">normal</span><span class="p">,</span> <span class="kc">None</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's test the output of this function:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lens</span> <span class="o">=</span> <span class="n">Lens</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span><span class="p">))</span>
 <span class="n">ray</span> <span class="o">=</span> <span class="n">Ray</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">0.3</span><span class="n">j</span><span class="p">))</span>
@@ -2416,39 +2418,35 @@ AAAASUVORK5CYII=
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-4, 4, -4, 4]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAHf9JREFUeJzt3Xt0FeW5BvDnJfcLcg3hkoSAEoTS
@@ -2594,26 +2592,29 @@ yDgMPiIyDoOPiIzzf5rpouIV/n+TAAAAAElFTkSuQmCC
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Applying-the-tracing-to-several-setups">Applying the tracing to several setups<a class="anchor-link" href="#Applying-the-tracing-to-several-setups">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now let's see if we can plot several rays:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
@@ -2627,25 +2628,22 @@ yDgMPiIyDoOPiIzzf5rpouIV/n+TAAAAAElFTkSuQmCC
         <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzsnXdYVEfbxu+zSwfpVRFUxF4Re0Fj
@@ -3038,21 +3036,22 @@ gg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Does this change if all rays are horizontal and farther away?</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
@@ -3066,39 +3065,35 @@ gg==
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+    <div class="prompt output_prompt">Out[23]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-4, 4, -4, 4]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzsnXlczen7/1/vczrtGypKSk2yREjJ
@@ -3607,15 +3602,14 @@ YII=
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
@@ -3629,39 +3623,35 @@ YII=
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+    <div class="prompt output_prompt">Out[24]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-4, 4, -4, 4]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzsnXdYU2f7x78ngbCRPRyAouKuUBEV
@@ -4173,26 +4163,29 @@ hDLH/wNJ0I1jTuCwIAAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Taking-into-account-the-full-lens">Taking into account the full lens<a class="anchor-link" href="#Taking-into-account-the-full-lens">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, here we are not taking the second refraction into account correctly, since we're just tracing rays outwards from the lens. Let's try to add this element.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
@@ -4215,39 +4208,35 @@ hDLH/wNJ0I1jTuCwIAAAAABJRU5ErkJggg==
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+    <div class="prompt output_prompt">Out[25]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-4, 4, -4, 4]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzsnXdYVMfXx793d+m9NwUUBAuoIPZE
@@ -4775,21 +4764,22 @@ TkSuQmCC
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>What about some point like source?</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
@@ -4812,39 +4802,35 @@ TkSuQmCC
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="prompt output_prompt">Out[26]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-4, 4, -4, 4]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzt3XlUHNedL/Dv7aabZt93mkWAQAjQ
@@ -5121,15 +5107,14 @@ msPBxxjTHA4+xpjm/D81ZuymceBHmwAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">lens</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
@@ -5152,39 +5137,35 @@ msPBxxjTHA4+xpjm/D81ZuymceBHmwAAAABJRU5ErkJggg==
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="prompt output_prompt">Out[27]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[-4, 4, -4, 4]</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEzCAYAAACopm/uAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4wLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvFvnyVgAAIABJREFUeJzs3Xd0FdXaBvBnTklOCmmEBBIgoYXe
@@ -5568,23 +5549,27 @@ hU9RlG6HCp+iKN0OFT5FUbodKnyKonQ7VPgURel2/B+5cebwrvUNWgAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Note</strong> there was a bug in my code initially, but thanks to my friend ZRC's review, this is now corrected. Thank you!</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's stop this exploration here. As we have seen in this blog entry, it's not that difficult to trace a couple of rays going through an imaging system. Using the above plots, we've seen that a spherical lens always focuses the rays into its center, even if they come from different directions and angles. This is one of the wonderful properties of imaging systems. I quote <a href="http://web.mit.edu/2.710/Fall06/2.710-wk2-b-sl.pdf">this</a> MIT lecture on optics  to better explain why I think this is interesting:</p>
 <ul>
 <li>Each point in an object scatters the incident illumination into a spherical wave, according to the Huygens principle.</li>
@@ -5595,13 +5580,16 @@ hU9RlG6HCp+iKN0OFT5FUbodKnyKonQ7VPgURel2/B+5cebwrvUNWgAAAABJRU5ErkJggg==
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20180423_RayLensIntersection.ipynb">20180423_RayLensIntersection.ipynb</a>.</em></p>
 
 </div>
 </div>
-
+</div>
+ 
 
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
@@ -5638,23 +5626,38 @@ hU9RlG6HCp+iKN0OFT5FUbodKnyKonQ7VPgURel2/B+5cebwrvUNWgAAAABJRU5ErkJggg==
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://localhost:8000/tag/optics.html" class="tag">Optics</a>
-                    <a href="http://localhost:8000/tag/physics.html" class="tag">Physics</a>
+                    <a href="http://flothesof.github.io/tag/optics.html" class="tag">Optics</a>
+                    <a href="http://flothesof.github.io/tag/physics.html" class="tag">Physics</a>
             </div>
             <hr>
             <div class="share">
                 <ul>
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/ray-lens-interactions.html&amp;t=Ray Lens Interactions in Optics" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
-                    <li><a href="https://twitter.com/share?url=http://localhost:8000/ray-lens-interactions.html&amp;text=Ray Lens Interactions in Optics&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
-                    <li><a href="https://getpocket.com/save?url=http://localhost:8000/ray-lens-interactions.html&amp;title=Ray Lens Interactions in Optics" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
-                    <li><a href="https://news.ycombinator.com/submitlink?u=http://localhost:8000/ray-lens-interactions.html&amp;t=Ray Lens Interactions in Optics" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
-                    <li><a href="https://www.reddit.com/submit?url=http://localhost:8000/ray-lens-interactions.html&amp;title=Ray Lens Interactions in Optics" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://flothesof.github.io/ray-lens-interactions.html&amp;t=Ray Lens Interactions in Optics" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
+                    <li><a href="https://twitter.com/share?url=http://flothesof.github.io/ray-lens-interactions.html&amp;text=Ray Lens Interactions in Optics&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
+                    <li><a href="https://getpocket.com/save?url=http://flothesof.github.io/ray-lens-interactions.html&amp;title=Ray Lens Interactions in Optics" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
+                    <li><a href="https://news.ycombinator.com/submitlink?u=http://flothesof.github.io/ray-lens-interactions.html&amp;t=Ray Lens Interactions in Optics" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
+                    <li><a href="https://www.reddit.com/submit?url=http://flothesof.github.io/ray-lens-interactions.html&amp;title=Ray Lens Interactions in Optics" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
                 </ul>
             </div>
             <hr>
         </div>
     </article>
 
+  <section>
+        <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'froliansblog';
+      var disqus_identifier = '/ray-lens-interactions.html';
+      var disqus_url = 'http://flothesof.github.io/ray-lens-interactions.html';
+      var disqus_title = 'Ray Lens Interactions in Optics';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </section>
 
 </div>
 
@@ -5716,5 +5719,23 @@ pre code {
       </p>
     </footer>
 -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68753870-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68753870-1');
+    ga('send', 'pageview');
+</script>
     </body>
 </html>

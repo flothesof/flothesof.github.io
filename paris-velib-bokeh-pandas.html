@@ -465,6 +465,7 @@ article .meta a.comments_btn:hover {
                         </a></li>
                             <li><a href="pages/about.html" title="About">About</a></li>
                             <li><a href="/archives.html" title="Archive">Archive</a></li>
+                            <li><a class="nodec icon-rss" href="rss.xml" title="flothesof.github.io RSS feed" rel="me"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -477,89 +478,92 @@ article .meta a.comments_btn:hover {
             <h1>Visualizing the Vélib Stations in Paris using pandas and bokeh</h1>
 			<time datetime="article.date.isoformat()" pubdate>Fri, 05 Feb 2016</time>			
 			<div>
-					<a href="http://localhost:8000/tag/dataviz.html" class="tag">Dataviz</a>
-					<a href="http://localhost:8000/tag/velib.html" class="tag">Vélib</a>
+					<a href="http://flothesof.github.io/tag/dataviz.html" class="tag">Dataviz</a>
+					<a href="http://flothesof.github.io/tag/velib.html" class="tag">Vélib</a>
 			</div>
         </header>
 
         <div class="article_content">
-            <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post, we will visualize the Paris Vélib bicycle stations using pandas and then, to do interactive exploration, <code>bokeh</code>. The goal is to get familiar with the plotting syntax of <code>bokeh</code>, which is quite different from <code>matplotlib</code>, the classic plotting package in the Python scientific stack.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Fetching-the-data">Fetching the data<a class="anchor-link" href="#Fetching-the-data">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>JC Decaux, the company responsible for the Paris shared biking system Vélib, has an open-data service available here: <a href="https://developer.jcdecaux.com/#/opendata/vls?page=static">https://developer.jcdecaux.com/#/opendata/vls?page=static</a>. We can use it to fetch the static data describing the different stations.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s2">&quot;https://developer.jcdecaux.com/rest/vls/stations/Paris.json&quot;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's look at the head of the data:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -621,67 +625,68 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's see what we can do with it!</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Examining-the-data">Examining the data<a class="anchor-link" href="#Examining-the-data">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>A first question that can be asked is "how many stations are there in each city / neighbourhood?". It turns out that we can extract a 5 digit postcode from each address field quite easily using regular expressions. This is because the <code>pandas.str.findall</code> function <a href="http://pandas.pydata.org/pandas-docs/stable/text.html">accepts regular expressions as arguments</a>.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;postcode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;\d\d\d\d\d&quot;</span><span class="p">)]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -749,61 +754,58 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This allows us to easily count the number of stations in given locations:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;bmh&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAGqCAYAAAAWf7K6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X18nHd55/vvZRtSYrDrAHECRlEhCwTWJbgmpalo1Co8
 pji0C9lC2yUN7dnDw4GFnC6B0ja0C4dwllKWQmhrGkxbyoMDxe1ZmhAHpVFZHorjICAJD42iiMZO
@@ -1120,51 +1122,51 @@ rkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This allows us to determine that there are the most stations in the 15th arrondissement of Paris.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also decide to plot each station as a dot on a map. Let's try that:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAskAAAI7CAYAAAAebwb/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvX+UXsV55/mt9+0O6ActO0QN8jJYjYWjHLtFTwM+IDoI
 omgMmHGWCM/JmcNmGBLMYCWjxYzXwOyR0pw4Mo5ZH2VG4xARz9jRycYjdchmYyGjEKeZRhOM3bSm
@@ -1894,49 +1896,49 @@ VEIIISQGRTIhhBBCCCExKJIJIYQQQgiJ8f8BA3CrCpM0LZIAAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can faintly distinguish the Seine River contour, were there are no Vélib stations.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, a last visualization could be to compute the mean coordinates of stations for each postcode and plot them on a map:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">mean_stations</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1992,36 +1994,32 @@ VEIIISQGRTIhhBBCCCExKJIJIYQQQgiJ8f8BA3CrCpM0LZIAAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -2089,77 +2087,73 @@ VEIIISQGRTIhhBBCCCExKJIJIYQQQgiJ8f8BA3CrCpM0LZIAAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="p">[</span><span class="s1">&#39;station_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can also label the points <a href="http://stackoverflow.com/questions/15910019/annotate-data-points-while-plotting-from-pandas-dataframe/15911372#15911372">as in this SO thread</a>.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">label_point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">})</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s1">&#39;val&#39;</span><span class="p">]))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">mean_stations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">mean_stations</span><span class="p">[</span><span class="s1">&#39;station_count&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 <span class="n">label_point</span><span class="p">(</span><span class="n">mean_stations</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">mean_stations</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">mean_stations</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAskAAAI7CAYAAAAebwb/AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XtUV1X+//Hn+QBiihDppHhhGjNHStTiY5ZcC4fRciQv
 qWXZlGuK8heN42SWrS9Ug5VK2m285TQ1aOqoWShlCAJaOZNoDk2mqZmCxIwG3lBAOL8/0M+AoqFc
@@ -2947,37 +2941,33 @@ StRJFhERERGpRJ1kEREREZFK1EkWEREREank/wPsIfNXv/UsMgAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_stations</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>array([ 48.86298384,  48.86822491,  48.86294019,  48.85563069,
         48.84541393,  48.84970745,  48.85669329,  48.87365634,
         48.87717112,  48.8757906 ,  48.85910098,  48.8404467 ,
@@ -2996,36 +2986,36 @@ StRJFhERERGpRJ1kEREREZFK1EkWEREREank/wPsIfNXv/UsMgAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we can put everything together: stations and mean locations of stations.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> 
         <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">cmap</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">postcode</span><span class="o">.</span><span class="n">values</span><span class="p">],</span>
@@ -3035,25 +3025,22 @@ StRJFhERERGpRJ1kEREREZFK1EkWEREREank/wPsIfNXv/UsMgAAAABJRU5ErkJggg==
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApMAAAI7CAYAAACwWRB+AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xlc1VX6wPHPuQv7IggIgqi4tFIuqKWiFtpUmpaaWpbT
 ZKXVlFP9Kq2mPbPSmZZxMitttZqxpjItMyrTykpNM3NfAREQke2y3OX8/rh4BQEB4cv6vF+v+xq+
@@ -5757,79 +5744,84 @@ AElFTkSuQmCC
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Using-Bokeh">Using Bokeh<a class="anchor-link" href="#Using-Bokeh">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The maps I plotted in the previous section were static. This is a limiting factor when exploring a dataset. To really come to grips with the data, it is often useful to make it interactive, which is what we will do using <code>bokeh</code>. We will follow the <a href="http://bokeh.pydata.org/en/latest/docs/user_guide/quickstart.html#userguide-quickstart">quickstart guide to Bokeh</a> and try to obtain the same plots as above using this framework.</p>
 <p>To get a feeling for how <code>bokeh</code> works, we will first use the high level <code>bokeh.charts</code> interface and then the medium and low-level <code>bokeh.plotting</code> and <code>bokeh.models</code>.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="High-level-version">High level version<a class="anchor-link" href="#High-level-version">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>First, we import the different elements we need for bokeh.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.plotting</span> <span class="k">as</span> <span class="nn">bp</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's tell bokeh to show things in the notebook:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">output_notebook</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea ">
 
     <div class="bk-banner">
         <a href="http://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
@@ -5839,17 +5831,18 @@ AElFTkSuQmCC
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div id="90d210ed-1aba-4c1e-9f0d-838d1ba45572" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+
+<div id="a8355328-bf86-4396-8ff6-f82d2b832e21"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
+var element = $('#a8355328-bf86-4396-8ff6-f82d2b832e21');
 
 (function(global) {
   function now() {
@@ -5938,58 +5931,55 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's use the high level function found the charts module:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.charts</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bokeh</span><span class="o">.</span><span class="n">charts</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;postcode&#39;</span><span class="p">,</span>
                         <span class="n">tools</span><span class="o">=</span><span class="s2">&quot;crosshair, hover, wheel_zoom, pan&quot;</span><span class="p">)</span>
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea ">
 
 
     <div class="plotdiv" id="1c804d5d-118d-42db-9a3b-9ee34c09c435"></div>
@@ -6082,43 +6072,48 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
-
+    <div class="prompt output_prompt">Out[20]:</div>
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+
+<div class="output_html rendered_html output_subarea output_execute_result">
 <p><code>&lt;Bokeh Notebook handle for <strong>In[20]</strong>&gt;</code></p>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>That was easy! The visualization is interesting and we didn't have much to do to obtain it.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>What if we want a hover tool displaying the address over each station? I didn't find any easy way to extend the previous chart, so let's switch to a lower level of plotting and do this in detail.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Medium-and-low-level-bokeh">Medium and low-level bokeh<a class="anchor-link" href="#Medium-and-low-level-bokeh">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We now need to do the following things to make our plot, from the medium or low-level perspective:</p>
 <ul>
 <li>create a figure</li>
@@ -6128,35 +6123,33 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 <p>Let's do a simple scatter plot to show how this goes:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;simple scatter plot&quot;</span><span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea ">
 
 
     <div class="plotdiv" id="34e0c02a-bd5e-463d-bddb-40216998bf2c"></div>
@@ -6249,26 +6242,25 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
-
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+
+<div class="output_html rendered_html output_subarea output_execute_result">
 <p><code>&lt;Bokeh Notebook handle for <strong>In[21]</strong>&gt;</code></p>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's customize this plot a little more:</p>
 <ul>
 <li>add colors to each dot according to postcode</li>
@@ -6277,17 +6269,20 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We will start with the colors. I didn't figure out how to apply this easily with bokeh, so I had to resort to a manual generation of each color code using matplotlib classes, in particular a ScalarMappable.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 
 <span class="n">color_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">cmap</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">postcode</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
@@ -6296,104 +6291,99 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 <span class="n">sm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="s1">&#39;hot&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can test the output into rgba space using <code>to_rgba</code>:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+    <div class="prompt output_prompt">Out[23]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>(10, 0, 0, 255)</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, let's just generate the list of colors we need:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;#</span><span class="si">%02x%02x%02x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">g</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">color_index</span><span class="p">]</span>
 <span class="p">]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+    <div class="prompt output_prompt">Out[25]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[&#39;#ffb700&#39;,
  &#39;#830000&#39;,
  &#39;#660000&#39;,
@@ -6409,12 +6399,12 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now customize the tooltip shown while hovering. The way to do this is well described in the <a href="http://nbviewer.jupyter.org/github/bokeh/bokeh-notebooks/blob/master/tutorial/04%20-%20interactions.ipynb">Bokeh tutorial about interactions</a>:</p>
 <ul>
 <li>we need to build a datasource containing a description field</li>
@@ -6422,12 +6412,13 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 </ul>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">bokeh.models</span> <span class="k">as</span> <span class="nn">bm</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">ColumnDataSource</span><span class="p">(</span>
@@ -6450,23 +6441,24 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 <span class="n">zoom</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">WheelZoomTool</span><span class="p">()</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, here's the scatter plot, in low-level plotting language, with hovering tooltips!</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Vélib stations in Paris&quot;</span><span class="p">,</span> 
               <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">hover</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">zoom</span><span class="p">])</span>
 <span class="n">p</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
@@ -6474,24 +6466,21 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea ">
 
 
     <div class="plotdiv" id="87ac6776-61f4-4a5f-a3f5-55b98f609573"></div>
@@ -6584,35 +6573,35 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
-
+    <div class="prompt output_prompt">Out[27]:</div>
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+
+<div class="output_html rendered_html output_subarea output_execute_result">
 <p><code>&lt;Bokeh Notebook handle for <strong>In[27]</strong>&gt;</code></p>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>I've just found out that it is possible to <a href="http://bokeh.pydata.org/en/latest/docs/user_guide/geo.html">plot markers on top of a Google Map using <code>bokeh</code></a>. Let's try and do this:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">geo_source</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">GeoJSONDataSource</span><span class="p">(</span>
         <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
@@ -6639,24 +6628,21 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 <span class="n">bp</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea ">
 
 
     <div class="plotdiv" id="c1ef20c9-555d-4c26-8ddf-2c0988d432a3"></div>
@@ -6749,60 +6735,63 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
-
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+
+<div class="output_html rendered_html output_subarea output_execute_result">
 <p><code>&lt;Bokeh Notebook handle for <strong>In[28]</strong>&gt;</code></p>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Unfortunately, this doesn't work, yet. There are several bug reports describing this behaviour (one of them is here: <a href="https://github.com/bokeh/bokeh/issues/3737">https://github.com/bokeh/bokeh/issues/3737</a>). Hopefully, this will get fixed soon!</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Using-Folium">Using Folium<a class="anchor-link" href="#Using-Folium">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>A last thing I wanted to try was to use Folium for displaying interactive maps. It seems very simple to use to get markers on a map using an OpenStreetMap tiling.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">map_osm</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.86</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">lng</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
                          <span class="n">df</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
@@ -6811,24 +6800,21 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 <span class="n">map_osm</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+    <div class="prompt output_prompt">Out[30]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <iframe srcdoc="<!DOCTYPE html>
 <head>
   <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
@@ -18029,23 +18015,26 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>That's it for today! I hope you had fun!</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20160205_VisualizingVelibStations.ipynb">20160205_VisualizingVelibStations.ipynb</a>.</p>
 
 </div>
 </div>
-
+</div>
+ 
 
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
@@ -18082,23 +18071,38 @@ var element = document.getElementById('90d210ed-1aba-4c1e-9f0d-838d1ba45572');
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://localhost:8000/tag/dataviz.html" class="tag">Dataviz</a>
-                    <a href="http://localhost:8000/tag/velib.html" class="tag">Vélib</a>
+                    <a href="http://flothesof.github.io/tag/dataviz.html" class="tag">Dataviz</a>
+                    <a href="http://flothesof.github.io/tag/velib.html" class="tag">Vélib</a>
             </div>
             <hr>
             <div class="share">
                 <ul>
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/paris-velib-bokeh-pandas.html&amp;t=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
-                    <li><a href="https://twitter.com/share?url=http://localhost:8000/paris-velib-bokeh-pandas.html&amp;text=Visualizing the Vélib Stations in Paris using pandas and bokeh&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
-                    <li><a href="https://getpocket.com/save?url=http://localhost:8000/paris-velib-bokeh-pandas.html&amp;title=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
-                    <li><a href="https://news.ycombinator.com/submitlink?u=http://localhost:8000/paris-velib-bokeh-pandas.html&amp;t=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
-                    <li><a href="https://www.reddit.com/submit?url=http://localhost:8000/paris-velib-bokeh-pandas.html&amp;title=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://flothesof.github.io/paris-velib-bokeh-pandas.html&amp;t=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
+                    <li><a href="https://twitter.com/share?url=http://flothesof.github.io/paris-velib-bokeh-pandas.html&amp;text=Visualizing the Vélib Stations in Paris using pandas and bokeh&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
+                    <li><a href="https://getpocket.com/save?url=http://flothesof.github.io/paris-velib-bokeh-pandas.html&amp;title=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
+                    <li><a href="https://news.ycombinator.com/submitlink?u=http://flothesof.github.io/paris-velib-bokeh-pandas.html&amp;t=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
+                    <li><a href="https://www.reddit.com/submit?url=http://flothesof.github.io/paris-velib-bokeh-pandas.html&amp;title=Visualizing the Vélib Stations in Paris using pandas and bokeh" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
                 </ul>
             </div>
             <hr>
         </div>
     </article>
 
+  <section>
+        <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'froliansblog';
+      var disqus_identifier = '/paris-velib-bokeh-pandas.html';
+      var disqus_url = 'http://flothesof.github.io/paris-velib-bokeh-pandas.html';
+      var disqus_title = 'Visualizing the Vélib Stations in Paris using pandas and bokeh';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </section>
 
 </div>
 
@@ -18160,5 +18164,23 @@ pre code {
       </p>
     </footer>
 -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68753870-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68753870-1');
+    ga('send', 'pageview');
+</script>
     </body>
 </html>

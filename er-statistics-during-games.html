@@ -465,6 +465,7 @@ article .meta a.comments_btn:hover {
                         </a></li>
                             <li><a href="pages/about.html" title="About">About</a></li>
                             <li><a href="/archives.html" title="Archive">Archive</a></li>
+                            <li><a class="nodec icon-rss" href="rss.xml" title="flothesof.github.io RSS feed" rel="me"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -477,31 +478,38 @@ article .meta a.comments_btn:hover {
             <h1>Do People Attend Emergency Rooms Less During Sports Events?</h1>
 			<time datetime="article.date.isoformat()" pubdate>Sat, 15 Oct 2016</time>			
 			<div>
-					<a href="http://localhost:8000/tag/statistics.html" class="tag">Statistics</a>
+					<a href="http://flothesof.github.io/tag/statistics.html" class="tag">Statistics</a>
 			</div>
         </header>
 
         <div class="article_content">
-            <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20161015_SimpleStatisticalTestERAttendance.ipynb">20161015_SimpleStatisticalTestERAttendance.ipynb</a>.</em></p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>In this notebook, I am trying to answer a question arising from the lecture of the following article: J. S. Furyk et al., “Emergency department presentations during the State of Origin rugby league series: a retrospective statewide analysis,” The Medical journal of Australia, vol. 197, no. 11, pp. 663–666, 2012. You can find the PDF <a href="https://www.mja.com.au/system/files/issues/197_11_101212/fur11557_fm.pdf">here</a>.</p>
 <p>The authors of the study conclude they have a statistically significantly lower emergency room attendance during game days. The question is: can we replicate their conclusion from their data?</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="What-is-this-study-about?">What is this study about?<a class="anchor-link" href="#What-is-this-study-about?">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This article is about determining whether there were fewer visits to emergency rooms during rugby event days. The data used in this article is as follows:</p>
 <blockquote><p>Main outcome measures: Number of patients presenting to Queensland EDs on 24 game days and 80 control days.</p>
 <p>In total, there were 49 702 ED presentations on game days and 172 351 presentations on control days.</p>
@@ -509,17 +517,20 @@ article .meta a.comments_btn:hover {
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's transform this data in a neat little table:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">49702</span><span class="p">],</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">172351</span><span class="p">]],</span> 
                   <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rugby game&#39;</span><span class="p">,</span> <span class="s1">&#39;control&#39;</span><span class="p">],</span> 
@@ -527,24 +538,21 @@ article .meta a.comments_btn:hover {
 <span class="n">df</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
+    <div class="prompt output_prompt">Out[1]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -573,43 +581,41 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, let's do some simple math. What's the average number of people in the ER for these two categories of days?</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees per day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;number of days&#39;</span><span class="p">]</span>
 <span class="n">df</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
+    <div class="prompt output_prompt">Out[2]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -641,116 +647,118 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We see that on average, there were less people in the ER on game days than on control days. 83 to be precise:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees per day&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;control&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees per day&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;rugby game&#39;</span><span class="p">]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>83.470833333333303</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Is 83 people (more or less), a lot, compared to roughly 2100 per day?</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="mi">83</span> <span class="o">/</span> <span class="mi">2100</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>0.039523809523809524</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>It's 4 percent. The article says that this 4 percent difference is statistically significant. How can we prove that?</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This is a tough question. We need a statiscal model to answer it.</p>
 <p>Why? Because intuitively you know that there are many reasons to observe variations in numbers and doing it over 24 / 80 days averages the result, but maybe not enough.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Single-day-model">Single day model<a class="anchor-link" href="#Single-day-model">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's build our model for the number of patients for a single day. It is composed of:</p>
 <ul>
 <li>a mean attendance</li>
@@ -759,115 +767,111 @@ article .meta a.comments_btn:hover {
 <p>We'll use a gaussian distribution based on these two values. Let's write a function that simulates a single day attendance:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">single_day</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
     <span class="s2">&quot;Simulates the number of ER attendees for a single day.&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">std</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>If we say that on average the standard deviation is a 100 people per day, we can simulate a distribution for a single day:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>2149.6714153011235</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can do this for 24 days in a row:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)]</span>
 <span class="n">dist</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[2086.1735698828816,
  2164.7688538100692,
  2252.3029856408025,
@@ -897,43 +901,41 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's ask pandas about this distribution's mean and standard deviation:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>count      24.000000
 mean     2080.898268
 std        96.697184
@@ -948,43 +950,41 @@ dtype: float64</pre>
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>One thing that appears in the above data is that the mean of the data does not necessarily reflect the mean we supplied to the generating function (2080 instead of 2100). The same goes for the standard deviation. This is a sample size effect which disappears if we work with large samples. We'll try 10x, 100x and 1000x larger samples below.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">240</span><span class="p">)])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>count     240.000000
 mean     2100.234578
 std        99.303645
@@ -999,37 +999,33 @@ dtype: float64</pre>
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2400</span><span class="p">)])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>count    2400.000000
 mean     2103.999784
 std        98.471270
@@ -1044,37 +1040,33 @@ dtype: float64</pre>
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">single_day</span><span class="p">(</span><span class="mi">2100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24000</span><span class="p">)])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>count    24000.000000
 mean      2099.943087
 std         99.887928
@@ -1089,84 +1081,89 @@ dtype: float64</pre>
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We see a progression: 2080, 2100, 2103, 2099. This is a wiggly thing. That's the reason for which we need to do statistical tests to see if it's a significant thing to have a difference in 4% on average.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Running-statistical-tests">Running statistical tests<a class="anchor-link" href="#Running-statistical-tests">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>How do statistical tests work? I'll quote an illustration from Allen Downey found in his wonderful article: <a href="http://allendowney.blogspot.fr/2016/06/there-is-still-only-one-test.html">"There is still only one test"</a>.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><img src="https://lh4.googleusercontent.com/Bud31guq0w0FvylY57VMR0zHkYqxIpYAfOqgZietyvv1n2ToNEHwHKZWYix8pwct8kDKsZKiwvOWm6PIFEL3gBIQmbakQYHwVT02nn9_H8Fht_zaSBlrRNcqwZa950Vb5nt-5B84" alt="onlyonetest"></p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;attendees&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;number of days&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>2135.125</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Our <strong>data</strong> is the number of ER people on game days (49 702) and on control days (172 351).</p>
 <p>Our <strong>model under the H0 hypothesis</strong> ("there is no effect of rugby games") is that on average 2135.125 people visit the ER. Using our previously discussed random model, we can simulate a lot of samples of 24 / 80 days under this assumption.</p>
 <p><strong>Test statistic</strong>: using the data from the 80 control days and 24 game days, we'll simply substract the number of attendees in the control case from the number of attendees in the game case, normalizing by the number of days in control and game cases.</p>
 <p>Let's use the <a href="http://greenteapress.com/thinkstats2/html/thinkstats2010.html">HypothesisTest class found in Allen Downey's book Think Stats2</a> for this.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">HypothesisTest</span><span class="p">():</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
@@ -1193,43 +1190,45 @@ dtype: float64</pre>
         <span class="k">raise</span> <span class="n">UnimplementedMethodException</span><span class="p">()</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Our only needed simulation parameter is going to be the standard deviation of the attendance or "by how many people can attendance vary per day". We'll use the arbitrarily value of 100 (for now).</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">variance_param</span> <span class="o">=</span> <span class="mi">100</span> 
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can generate our model easily with the function already defined previously:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ERTest</span><span class="p">(</span><span class="n">HypothesisTest</span><span class="p">):</span>
     <span class="s2">&quot;Model for replicating the Furyk et al. (2012) study.&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">):</span>
@@ -1249,153 +1248,147 @@ dtype: float64</pre>
         <span class="k">return</span> <span class="n">simulated_data</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Good, now we're ready to run our simulation.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49702</span><span class="p">,</span> <span class="mi">172351</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ert</span> <span class="o">=</span> <span class="n">ERTest</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ert</span><span class="o">.</span><span class="n">actual</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+    <div class="prompt output_prompt">Out[19]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>83.4708333333333</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ert</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+    <div class="prompt output_prompt">Out[20]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>0.0001</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>What this means is that using the above hypotheses, the likelihood to observe our actual result, with a difference in means of 83 people per day and the given sample sizes (24 / 80) is very unlikely to be due to chance.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>To get a better feeling for the distribution of the test statistic, let's plot it:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;bmh&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_test_stat</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="s2">&quot;Plots the test statistic distribution and observed value.&quot;</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">test_stats</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cumulative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1406,39 +1399,35 @@ dtype: float64</pre>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_test_stat</span><span class="p">(</span><span class="n">ert</span><span class="p">,</span> <span class="s2">&quot;variance: </span><span class="si">{}</span><span class="s2"> people per day&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variance_param</span><span class="p">))</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYcAAAEdCAYAAADn46tbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXmYFsW1/z9fEFQQIRgHFR1EIa6IwSUm0Zg4BtEkYtw1
 MW5ZDBpNbqKi0YvmZlOvcU00Rq9x4xJ/aBI1KhrxmowiS3AMiaiAyCIICsoisjic3x9VLzTvvO+8
@@ -1746,88 +1735,84 @@ MAtMI+6T3bbV2Tji6Oc9wsyZm9q4OklaygTR3vLdaCQ9S5it2KZ91c1KjuM4TgN85OA4juM0wJWD
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>What this means is that if we had randomly taken 24 days and 80 days with a standard deviation of 100 people, there's almost no chance of observing a difference in number of people of 83.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>What if the standard deviation was larger? Luckily we can repeat our experiment by changing only this value.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">variance_param</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">ert1</span> <span class="o">=</span> <span class="n">ERTest</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">variance_param</span><span class="p">)</span>
 <span class="n">ert1</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+    <div class="prompt output_prompt">Out[24]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>0.2327</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_test_stat</span><span class="p">(</span><span class="n">ert1</span><span class="p">,</span> <span class="s2">&quot;variance: </span><span class="si">{}</span><span class="s2"> people per day&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variance_param</span><span class="p">))</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAAEdCAYAAADwwTuSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJztnXmYFcXVuN/DsKiAKOiAogMoRFFRgxtZlOgoolHI5waa
 GDXGxKiJJp8LGA1qNIr+4hJNNCZ+xI0QPjVREzYFQz6UbYKDE0EFRLZhEUEWkW04vz+q7tC09965
@@ -2138,38 +2123,45 @@ I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, we see that the observed difference would be likely to be observed by chance. Having a difference of 83 people per day is likely to be normal over 24/80 days if numbers fluctuate by 500 people every day.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The point of all of this is: if we don't know by how much numbers fluctuate every day and how (here I used a Gaussian assumption but really, I have no idea), we can't say if this is statistically significant. I wonder why the authors have not mentioned this basic statistic of their sample in the article.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions-and-last-plot">Conclusions and last plot<a class="anchor-link" href="#Conclusions-and-last-plot">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>To conclude, let's do a parametric plot of P-values, depending on the unknown parameter, the standard deviation of the number of people per day at the ER in Queensland, Australia.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pvalues</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">variances</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">750</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">variance_param</span> <span class="ow">in</span> <span class="n">variances</span><span class="p">:</span>
@@ -2177,39 +2169,35 @@ I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
     <span class="n">pvalues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ert2</span><span class="o">.</span><span class="n">PValue</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="p">[</span><span class="n">variances</span><span class="p">,</span> <span class="n">pvalues</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;variance (people per day)&#39;</span><span class="p">,</span> <span class="s1">&#39;p-value&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 <span class="n">df2</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="prompt output_prompt">Out[27]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -2288,51 +2276,46 @@ I2fMaBiGYRg58/8BkQk26ec/F34AAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;variance (people per day)&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;p-value&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;-o&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x111051b38&gt;</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAESCAYAAAD9gqKNAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8VPXV+PHPSSAhEAghEJZAwuqGKKKyuKEGFR9tqWvR
 p1W0Kta1Vfu4Pa2lfeHSSrXWn0qLSq1StNGn2kVk0aJRUBDQiCAkQFYWSUIgELLMnN8f9yaZCQmZ
@@ -2615,17 +2598,18 @@ QmCC
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The point that this plot makes is: depending on the attendance at the ER, the numbers used in the study can or cannot be statistically significant. If the fluctuation in attendance for a 2100 people ER is above 200 people per day (roughly 10%), the numbers from the study would be judged non significant. On the other hand, if the numbers are around 50 people per day (low fluctuation) then there is a real effect. It would be interesting to contact the author about this point.</p>
 
 </div>
 </div>
-
+</div>
+ 
 
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
@@ -2662,22 +2646,37 @@ QmCC
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://localhost:8000/tag/statistics.html" class="tag">Statistics</a>
+                    <a href="http://flothesof.github.io/tag/statistics.html" class="tag">Statistics</a>
             </div>
             <hr>
             <div class="share">
                 <ul>
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/er-statistics-during-games.html&amp;t=Do People Attend Emergency Rooms Less During Sports Events?" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
-                    <li><a href="https://twitter.com/share?url=http://localhost:8000/er-statistics-during-games.html&amp;text=Do People Attend Emergency Rooms Less During Sports Events?&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
-                    <li><a href="https://getpocket.com/save?url=http://localhost:8000/er-statistics-during-games.html&amp;title=Do People Attend Emergency Rooms Less During Sports Events?" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
-                    <li><a href="https://news.ycombinator.com/submitlink?u=http://localhost:8000/er-statistics-during-games.html&amp;t=Do People Attend Emergency Rooms Less During Sports Events?" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
-                    <li><a href="https://www.reddit.com/submit?url=http://localhost:8000/er-statistics-during-games.html&amp;title=Do People Attend Emergency Rooms Less During Sports Events?" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://flothesof.github.io/er-statistics-during-games.html&amp;t=Do People Attend Emergency Rooms Less During Sports Events?" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
+                    <li><a href="https://twitter.com/share?url=http://flothesof.github.io/er-statistics-during-games.html&amp;text=Do People Attend Emergency Rooms Less During Sports Events?&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
+                    <li><a href="https://getpocket.com/save?url=http://flothesof.github.io/er-statistics-during-games.html&amp;title=Do People Attend Emergency Rooms Less During Sports Events?" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
+                    <li><a href="https://news.ycombinator.com/submitlink?u=http://flothesof.github.io/er-statistics-during-games.html&amp;t=Do People Attend Emergency Rooms Less During Sports Events?" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
+                    <li><a href="https://www.reddit.com/submit?url=http://flothesof.github.io/er-statistics-during-games.html&amp;title=Do People Attend Emergency Rooms Less During Sports Events?" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
                 </ul>
             </div>
             <hr>
         </div>
     </article>
 
+  <section>
+        <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'froliansblog';
+      var disqus_identifier = '/er-statistics-during-games.html';
+      var disqus_url = 'http://flothesof.github.io/er-statistics-during-games.html';
+      var disqus_title = 'Do People Attend Emergency Rooms Less During Sports Events?';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </section>
 
 </div>
 
@@ -2739,5 +2738,23 @@ pre code {
       </p>
     </footer>
 -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68753870-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68753870-1');
+    ga('send', 'pageview');
+</script>
     </body>
 </html>

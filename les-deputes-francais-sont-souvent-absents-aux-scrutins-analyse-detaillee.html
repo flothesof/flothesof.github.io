@@ -465,6 +465,7 @@ article .meta a.comments_btn:hover {
                         </a></li>
                             <li><a href="pages/about.html" title="About">About</a></li>
                             <li><a href="/archives.html" title="Archive">Archive</a></li>
+                            <li><a class="nodec icon-rss" href="rss.xml" title="flothesof.github.io RSS feed" rel="me"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -477,65 +478,69 @@ article .meta a.comments_btn:hover {
             <h1>Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député</h1>
 			<time datetime="article.date.isoformat()" pubdate>Thu, 18 Feb 2016</time>			
 			<div>
-					<a href="http://localhost:8000/tag/france.html" class="tag">France</a>
-					<a href="http://localhost:8000/tag/politique.html" class="tag">Politique</a>
+					<a href="http://flothesof.github.io/tag/france.html" class="tag">France</a>
+					<a href="http://flothesof.github.io/tag/politique.html" class="tag">Politique</a>
 			</div>
         </header>
 
         <div class="article_content">
-            <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Lors du <a href="http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins.html">billet précédent</a>, nous avons téléchargé les données globales pour les scrutins de la 14ème législature disponibles sur le site de l'assemblée nationale. Nous en avons conclut qu'en général, les députés ne prenaient pas part aux scrutins. Aujourd'hui, nous allons nous intéresser aux données détaillées disponibles sur le site de l'assemblée, pour répondre à d'autres questions : qui va aux scrutins ? L'absentéisme est-il le fait de tout le monde, ou bien seulement d'une partie des députés ?</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="T&#233;l&#233;chargement-des-donn&#233;es-des-scrutins">T&#233;l&#233;chargement des donn&#233;es des scrutins<a class="anchor-link" href="#T&#233;l&#233;chargement-des-donn&#233;es-des-scrutins">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Pour ce faire, nous allons tout d'abord télécharger les données détaillées disponibles sur chaque page "scrutin". Par exemple : <a href="http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/1238">http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/1238</a>. Nous stockons ces données dans un dictionnaire indexé par le numéro du scrutin.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">download_scrutin</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Télécharge un scrutin en fonction de son numéro.&quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">num</span>
     <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># https://www.reddit.com/r/Python/comments/34tdr2/a_simple_progress_bar_for_ipython_notebooks/</span>
 <span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">FloatProgress</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
@@ -551,92 +556,94 @@ article .meta a.comments_btn:hover {
         <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">download_scrutin</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Extraction-des-noms-des-participants-au-scrutin">Extraction des noms des participants au scrutin<a class="anchor-link" href="#Extraction-des-noms-des-participants-au-scrutin">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On fait une soupe :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">],</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On cherche tous les noms de députés présents dans la page. Ceux-ci sont répartis par groupes, identifiés par des balises "TTgroupe" :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;TTgroupe&quot;</span><span class="p">})</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Si on prend le premier groupe et que l'on y cherche toutes les balises "ti", on trouve :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">g</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[&lt;li&gt;            Ibrahim &lt;b&gt;Aboubacar&lt;/b&gt;&lt;/li&gt;,
  &lt;li&gt; Patricia &lt;b&gt;Adam&lt;/b&gt;&lt;/li&gt;,
  &lt;li&gt; Sylviane &lt;b&gt;Alaux&lt;/b&gt;&lt;/li&gt;,
@@ -652,59 +659,56 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Bingo ! Ecrivons une fonction pour retourner le nom de tous les députés présents dans le groupe :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">mps_in_group</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Retourne les noms de tous les députés présents dans un groupe.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">)]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mps_in_group</span><span class="p">(</span><span class="n">g</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>[&#39;Ibrahim\xa0Aboubacar&#39;,
  &#39;Patricia\xa0Adam&#39;,
  &#39;Sylviane\xa0Alaux&#39;,
@@ -720,27 +724,30 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On remarque que les noms des députés sont séparés par des <a href="https://fr.wikipedia.org/wiki/Espace_ins%C3%A9cable">espaces insécables</a>, une des particularités de la typographie française.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant extraire la totalité des députés votants à un scrutin à partir de la source du scrutin détaillé.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">all_mps</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extrait tous les députés votants lors d&#39;un scrutin.&quot;&quot;&quot;</span>
     <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
@@ -751,68 +758,70 @@ article .meta a.comments_btn:hover {
     <span class="k">return</span> <span class="n">all_mps</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut vérifier que pour le scrutin 1 <a href="http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/1">http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/1</a>, le nombre de votants est correct :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_mps</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">]))</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>544</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Il semblerait que oui. Nous pouvons maintenant construire un tableau avec la liste des scrutins et les noms des votants.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Un-grand-tableau-avec-pandas">Un grand tableau avec pandas<a class="anchor-link" href="#Un-grand-tableau-avec-pandas">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Les informations essentielles dont nous avons besoin sont les suivantes :</p>
 <ul>
 <li>numéro du scrutin</li>
@@ -824,12 +833,13 @@ article .meta a.comments_btn:hover {
 <p>Pour cela, nous reprenons le code du <a href="http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins.html">billet précédent</a> et l'enrichissons avec l'extraction que nous venons de développer.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_information</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extrait les informations d&#39;une ligne du tableau des scrutins.&quot;&quot;&quot;</span>
     <span class="n">elems</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)</span>
@@ -848,17 +858,16 @@ article .meta a.comments_btn:hover {
     <span class="k">return</span> <span class="n">num</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">pour</span><span class="p">,</span> <span class="n">contre</span><span class="p">,</span> <span class="n">abstention</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1300</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
     <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www2.assemblee-nationale.fr/scrutins/liste/(offset)/</span><span class="si">{}</span><span class="s2">/(legislature)/14/(type)/TOUS/(idDossier)/TOUS&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
@@ -868,60 +877,56 @@ article .meta a.comments_btn:hover {
     <span class="n">data</span> <span class="o">+=</span> <span class="p">[</span><span class="n">extract_information</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;numero&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;objet&#39;</span><span class="p">,</span> <span class="s1">&#39;pour&#39;</span><span class="p">,</span> <span class="s1">&#39;contre&#39;</span><span class="p">,</span> <span class="s1">&#39;abstention&#39;</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">day_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;01-lundi&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;02-mardi&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;03-mercredi&#39;</span><span class="p">,</span> 
                <span class="mi">3</span><span class="p">:</span><span class="s1">&#39;04-jeudi&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;05-vendredi&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;06-samedi&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;07-dimanche&#39;</span><span class="p">}</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;presents&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;contre&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;abstention&#39;</span><span class="p">]</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;absents&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">577</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">presents</span>
 <span class="n">df</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -929,38 +934,34 @@ article .meta a.comments_btn:hover {
 <span class="n">df</span><span class="o">.</span><span class="n">numero</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">numero</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+    <div class="prompt output_prompt">Out[17]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1046,84 +1047,80 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On va procéder au travail préliminaire pour l'extraction des noms des députés :</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Pour chaque scrutin, on procède à l'extraction des noms et on l'insère dans la DataFrame que nous venons de créer.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;votants&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_mps</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">num</span><span class="p">])</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">numero</span><span class="p">]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
 <pre>Wall time: 1min 1s
 </pre>
 </div>
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+    <div class="prompt output_prompt">Out[19]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1215,74 +1212,70 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut vérifier que l'extraction est bonne en comparant les nombres de présents avec la longueur de la liste des votants :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;bmh&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">presents</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">votants</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x11beed30&gt;</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAEACAYAAABI5zaHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXlgFdXZP/45NyskEBbZF1nCFlyCC4jGWhWt+talSq2v
 rXv7fit1ae0itP3V16Wib20V22qt2opWRMQNixRREI3s+xJIAiFAiCEsISH7Xc7vj3tn7pmZMzNn
@@ -1870,58 +1863,55 @@ FyDCyj2MMMII4wJEWLmHEUYYYVyA+H8DjFYBKw/puQAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Apparemment, il y a des incohérences. On trouve en effet des pages de scrutins pour lesquels les noms des députés ne sont pas connus exactement. Par exemple le scrutin n°2, <a href="http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/2">http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/2</a> où de nombreux députés ont délégué leur droit de vote. Ceci fait qu'ils n'apparaissent pas dans les pages à l'endroit habituel.</p>
 <p>On va donc garder pour la suite seulement les scrutins pour lesquels les données haut-niveau concordent avec les extractions des noms.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">coherent</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">presents</span> <span class="o">==</span> <span class="n">df</span><span class="o">.</span><span class="n">votants</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">coherent</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+    <div class="prompt output_prompt">Out[23]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>False    708
 True     530
 dtype: int64</pre>
@@ -1930,133 +1920,133 @@ dtype: int64</pre>
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Cela nous laisse un certain nombre de scrutins à analyser.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Extraction-de-la-pr&#233;sence-par-d&#233;put&#233;">Extraction de la pr&#233;sence par d&#233;put&#233;<a class="anchor-link" href="#Extraction-de-la-pr&#233;sence-par-d&#233;put&#233;">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut analyser les données présentes et extraire le nombre de votes par députés. Tout d'abord, extrayons le nombre de députés uniques trouvés dans les données :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">voting</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">coherent</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">:</span>
     <span class="n">c</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">voting</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="prompt output_prompt">Out[26]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>623</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On trouve 623 noms au lieu des 577 que l'on attend. Ceci est sans doute dû au remplacement des députés appelés à d'autres fonctions. On peut trouver un excellent texte sur le site du Monde à ce sujet : <a href="http://www.lemonde.fr/idees/article/2012/07/03/un-depute-suppleant-est-un-representant-a-part-entiere_1728419_3232.html">http://www.lemonde.fr/idees/article/2012/07/03/un-depute-suppleant-est-un-representant-a-part-entiere_1728419_3232.html</a>.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut maintenant regarder qui a été le plus souvent là lors des scrutins pris en compte :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">most_common</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;depute&#39;</span><span class="p">,</span> <span class="s1">&#39;scrutins&#39;</span><span class="p">])</span>
 <span class="n">df2</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="prompt output_prompt">Out[27]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -2381,60 +2371,57 @@ dtype: int64</pre>
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut représenter tout ceci graphiquement :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">df2</span><span class="o">.</span><span class="n">scrutins</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;nombre de scrutins&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;compte du nombre de députés&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.text.Text at 0x11fc90f0&gt;</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY8AAAESCAYAAAAFYll6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XucHHWZ7/HPN4EgBIhZJIQgg8G44iUmZI+IijcGEWEX
 OB5BxfVC1FVYBV0vwK6KeEGQZSGuGldATlCjQlxvyAoCHjSuiBomcASURO65IIIJAUIgPPtH1UCn
@@ -2622,42 +2609,40 @@ Fw8zM2uZi4eZmbXMxcPMzFrm4mFmZi1z8TAzs5a5eJiZWcv+B8QFTcfA4Eg1AAAAAElFTkSuQmCC
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Et extraire les statistiques descriptives complètes :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[29]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -2707,37 +2692,33 @@ Fw8zM2uZi4eZmbXMxcPMzFrm4mFmZi1z8TAzs5a5eJiZWcv+B8QFTcfA4Eg1AAAAAElFTkSuQmCC
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">coherent</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+    <div class="prompt output_prompt">Out[30]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>False    708
 True     530
 dtype: int64</pre>
@@ -2746,150 +2727,149 @@ dtype: int64</pre>
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>La moyenne se situe à 140 scrutins par député, sur 530 scrutins. On retrouve donc là le chiffre d'absentéisme à 3/4 des scrutins, déjà obtenu lors du billet précédent. On constate qu'il y a là une relative homogénéité entre députés, comme le montre l'histogramme précédent : les députés votent en moyennent lors d'un scrutin sur quatre et se comportent un peu comme des variables aléatoires dans le sens où la répartition des votes suit une courbe en cloche.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut s'intéresser aux députés qui votent peu et regarder lors de quels scrutins ils votent. On peut reprendre une visualisation précédente et placer des points plus ou moins gros en fonction du nombre de députés "qui votent peu" présents.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rarely</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">depute</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">scrutins</span> <span class="o">&lt;</span> <span class="mi">117</span><span class="p">]</span> 
 <span class="n">often</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">depute</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">scrutins</span> <span class="o">&gt;</span> <span class="mi">167</span><span class="p">]</span> 
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>J'ai ici choisi les quartiles à 25% et 75% pour la définition des deux groupes de députés.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">marker_size</span><span class="p">(</span><span class="n">mp_list</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compte le nombre de personnes dans group présent dans la liste mp_list.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">([</span><span class="n">member</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">mp_list</span> <span class="k">if</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut tester la fonction sur un seul scrutin :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">marker_size</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">,</span> <span class="n">rarely</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[33]:</div>
+    <div class="prompt output_prompt">Out[33]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>29</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">marker_size</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">,</span> <span class="n">often</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
+    <div class="prompt output_prompt">Out[34]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>81</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Et produire des graphiques qui témoignent des comportements :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;pour&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;contre&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="p">[</span><span class="n">marker_size</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">rarely</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">coherent</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;implication des députés qui participent</span><span class="se">\n</span><span class="s1">&quot;moins souvent que les autres&quot;&#39;</span><span class="p">)</span>
@@ -2899,39 +2879,35 @@ dtype: int64</pre>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">577</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
+    <div class="prompt output_prompt">Out[35]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>(-10, 577)</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmUAAAHVCAYAAACwrYzPAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xt8FOXZ//HPtUlIAkJqQU7RoCgQPAKCokLBIm3FUktp
 rUXQWq3UVlvUPj+0fVrroYJSq622Wh4Uta2HFilaxXpqxKJVRBFTLIgxHBOIGIQkBHLY+/fHTGCz
@@ -3942,15 +3918,14 @@ mpQppZRSSkUATcqUUkoppSLA/wPok9v6LPNKQwAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;pour&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;contre&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="p">[</span><span class="n">marker_size</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">often</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">coherent</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;implication des députés qui participent</span><span class="se">\n</span><span class="s1">&quot;plus souvent que les autres&quot;&#39;</span><span class="p">)</span>
@@ -3960,39 +3935,35 @@ mpQppZRSSkUATcqUUkoppSLA/wPok9v6LPNKQwAAAABJRU5ErkJggg==
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">577</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[36]:</div>
+    <div class="prompt output_prompt">Out[36]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>(-10, 577)</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmUAAAHVCAYAAACwrYzPAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl8VNX5x/HPM0lIwpJokUWiQalAwA0QFRUUtfhTLLXU
 /mwroLW2Rau2qG1RW6vUtmhdaKutllKRttalyA+txd2IggulIqYgCDGsCUQMQhITssz5/XFvYBiy
@@ -5180,12 +5151,12 @@ jUaj0Wg0pQDtlGk0Go1Go9GUArRTptFoNBqNRlMK+P8OklspdYY+/wAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut tirer de ces deux graphiques l'interprétation suivante :</p>
 <ul>
 <li>les députés qui participent moins souvent que les autres ont plutôt tendance à participer aux gros scrutins </li>
@@ -5194,12 +5165,13 @@ jUaj0Wg0pQDtlGk0Go1Go9GUArRTptFoNBqNRlMK+P8OklspdYY+/wAAAABJRU5ErkJggg==
 <p>Pour mieux mettre en évidence la différence de comportement, on peut représenter en valeur absolue la différence de participation de ces deux groupes de taille comparable :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;pour&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;contre&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">marker_size</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">often</span><span class="p">)</span> <span class="o">-</span> <span class="n">marker_size</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">rarely</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">coherent</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;implication des députés qui participent</span><span class="se">\n</span><span class="s1">&quot;plus souvent que les autres&quot;&#39;</span><span class="p">)</span>
@@ -5209,39 +5181,35 @@ jUaj0Wg0pQDtlGk0Go1Go9GUArRTptFoNBqNRlMK+P8OklspdYY+/wAAAABJRU5ErkJggg==
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">577</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
+    <div class="prompt output_prompt">Out[37]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>(-10, 577)</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmUAAAHVCAYAAACwrYzPAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3X98lXX9//HH62xjG8gmTmAyHUkBA1MBUVFBMKUUQyNN
 S0DtJ5laqBXaJ0PUwjLB1PxBllrf1AwJzbBQWxiaEok4f4A4BwgbTBzCNradbef9/eO6BofDBjvs
@@ -6360,46 +6328,50 @@ QqFQFAOUKFMoFAqFQqEoBvx/18Ne/gOhWlcAAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Plus les marqueurs sont gros sur le graphique précédent, plus les scrutins ont été suivis différamments par les députés des deux groupes. Il n'est pas évident de bien voir la différence, mais on remarque que de nombreux "petits scrutins" ont des poids relativement larges dans ce graphique.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Et-ma-d&#233;put&#233;e-?">Et ma d&#233;put&#233;e ?<a class="anchor-link" href="#Et-ma-d&#233;put&#233;e-?">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>J'habite actuellement à sommaruga. Je suis représenté par <a href="http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA610195">Julie Sommaruga</a> à l'assemblée nationale. Quel comportement Mme Sommaruga adopte-t-elle par rapport aux scrutins ?</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sommaruga</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">depute</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">depute</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;Sommaruga&quot;</span><span class="p">)]</span> 
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;pour&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;contre&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="o">*</span><span class="n">marker_size</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">sommaruga</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">coherent</span><span class="p">]</span><span class="o">.</span><span class="n">votants</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;implication de Julie Sommaruga&#39;</span><span class="p">)</span>
@@ -6409,39 +6381,35 @@ QqFQFAOUKFMoFAqFQqEoBvx/18Ne/gOhWlcAAAAASUVORK5CYII=
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">577</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
+    <div class="prompt output_prompt">Out[39]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>(-10, 577)</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmUAAAHECAYAAAB4J13xAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xt8VPW1///XmiQk3BKRWyQaFJUEEQVERQ2KUmqBg4q2
 VhHEnuMp2npBsaKeh7VqKyq1aNWqlIr2/GytBylWv6iITVGwiihiVEDBcE0gQqIkIZdJ5vP7Yw+Q
@@ -7136,60 +7104,57 @@ FKCkTERERCQFKCkTERERSQFKykRERERSwP8DL8S091zjiBMAAAAASUVORK5CYII=
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>On peut remarque Mme Sommaruga participe à des scrutins avec de nombreuses participations ou sans. On peut redessiner ces données sur un seul axe en comptant le nombre de votants total :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">relevant</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Julie</span><span class="se">\xa0</span><span class="s1">Sommaruga&#39;</span> <span class="ow">in</span> <span class="n">mp</span> <span class="k">for</span> <span class="n">mp</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">votants</span><span class="p">]</span>
 <span class="n">df</span><span class="p">[</span><span class="n">relevant</span><span class="p">]</span><span class="o">.</span><span class="n">presents</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;nombre de députés présents&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;compte du nombre de scrutins&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
+    <div class="prompt output_prompt">Out[40]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.text.Text at 0x123ab358&gt;</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY8AAAESCAYAAAAFYll6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmYHWWd9vHvnbAoAUIGDSFAs2VwjYHMiCiLQisiKDjv
 pSg6oMRhFB3BZZDgOKKOOCAyEl+VUREGcSICDq6MrI7ao4gYGngFkQQhQJJmNWExgsnv/aPqwOHY
@@ -7377,45 +7342,54 @@ AAAAAElFTkSuQmCC
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Ceci conforte l'idée selon laquelle Mme Sommaruga vient principalement assister à des grands scrutins, mais s'investit aussi parfois sur des sujets qui n'attirent pas beaucoup de députés dans l'hémicycle.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="R&#233;flexion">R&#233;flexion<a class="anchor-link" href="#R&#233;flexion">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Les chiffres de cette étude montrent, comme dans le <a href="http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins.html">billet précédent</a>, que les députés ne viennent pas souvent prendre part aux scrutins, mis à part les scrutins où ils sont très nombreux. On peut s'interroger sur cette observation. Est-ce un dysfonctionnement de notre système politique ? Ou bien le reflet que de nombreux scrutins ne sont pas forcément pertinents pour tout le monde ? <a href="http://juliesommaruga.fr/le-role-du-depute">Julie Sommaruga déclare sur son site public</a> que sa vision du député est la suivante :</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <blockquote><p>L’Assemblée nationale se situe au cœur de notre démocratie comme le montrent les textes qui régissent le fonctionnement de la Vème République. Représenter les citoyens, légiférer et contrôler l’action du Gouvernement : tel est le triptyque qui guide l’action des 577 députés de la France de métropole et d’Outre-mer.</p>
 </blockquote>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Au vu des chiffres, présentés ici, on peut dire que l'assemblée ne se situe pas au coeur de la démocratie française, contrairement à ce que pense Mme Sommaruga. Mais quelles raisons poussent les députés à ne pas être présents lors des scrutins ? Ceci reste obscur. En particulier, dans le cadre actuel de l'état d'urgence, il me semble qu'il y a un problème majeur. Cet état, qui tient en haleine le pays depuis les attentats du 13 novembre 2015, a été prolongé lors du scrutin 1238 <a href="http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/1238">http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/14/(num)/1238</a>. Pourtant, ce scrutin n'a pas vu venir grand monde à l'assemblée :</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">presents</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">numero</span> <span class="o">==</span> <span class="s1">&#39;1238&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">presents</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;prolongation état d&#39;urgence&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -7423,39 +7397,35 @@ AAAAAElFTkSuQmCC
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;compte du nombre de scrutins&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[41]:</div>
+    <div class="prompt output_prompt">Out[41]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.text.Text at 0x12748eb8&gt;</pre>
 </div>
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedImage jp-OutputArea-output ">
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY8AAAESCAYAAAAFYll6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcFNW5//HPF1AiOxgHVBxFiXG5icovssjuKHHFmFyN
 5l4RjUajUWMSFbyJW1QkyY2aGM3icjGKROM1YjS4gCEZoiDiGC4QBBKQRUDEMAphEZ7fH1U99jTT
@@ -7703,17 +7673,18 @@ Gw/nnHMF88bDOedcwbzxcM45VzBvPJxzzhXMGw/nnHMF+/+Y+rLa3lP/jgAAAABJRU5ErkJggg==
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Pourquoi ?</p>
 
 </div>
 </div>
-
+</div>
+ 
 
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
@@ -7750,23 +7721,38 @@ Gw/nnHMF88bDOedcwbzxcM45VzBvPJxzzhXMGw/nnHMF+/+Y+rLa3lP/jgAAAABJRU5ErkJggg==
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://localhost:8000/tag/france.html" class="tag">France</a>
-                    <a href="http://localhost:8000/tag/politique.html" class="tag">Politique</a>
+                    <a href="http://flothesof.github.io/tag/france.html" class="tag">France</a>
+                    <a href="http://flothesof.github.io/tag/politique.html" class="tag">Politique</a>
             </div>
             <hr>
             <div class="share">
                 <ul>
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;t=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
-                    <li><a href="https://twitter.com/share?url=http://localhost:8000/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;text=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
-                    <li><a href="https://getpocket.com/save?url=http://localhost:8000/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;title=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
-                    <li><a href="https://news.ycombinator.com/submitlink?u=http://localhost:8000/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;t=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
-                    <li><a href="https://www.reddit.com/submit?url=http://localhost:8000/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;title=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;t=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
+                    <li><a href="https://twitter.com/share?url=http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;text=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
+                    <li><a href="https://getpocket.com/save?url=http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;title=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
+                    <li><a href="https://news.ycombinator.com/submitlink?u=http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;t=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
+                    <li><a href="https://www.reddit.com/submit?url=http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html&amp;title=Les députés français et l'absentéisme aux scrutins de l'assemblée nationale : analyse par député" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
                 </ul>
             </div>
             <hr>
         </div>
     </article>
 
+  <section>
+        <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'froliansblog';
+      var disqus_identifier = '/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html';
+      var disqus_url = 'http://flothesof.github.io/les-deputes-francais-sont-souvent-absents-aux-scrutins-analyse-detaillee.html';
+      var disqus_title = 'Les députés français et l\'absentéisme aux scrutins de l\'assemblée nationale : analyse par député';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </section>
 
 </div>
 
@@ -7828,5 +7814,23 @@ pre code {
       </p>
     </footer>
 -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68753870-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68753870-1');
+    ga('send', 'pageview');
+</script>
     </body>
 </html>

@@ -465,6 +465,7 @@ article .meta a.comments_btn:hover {
                         </a></li>
                             <li><a href="pages/about.html" title="About">About</a></li>
                             <li><a href="/archives.html" title="Archive">Archive</a></li>
+                            <li><a class="nodec icon-rss" href="rss.xml" title="flothesof.github.io RSS feed" rel="me"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -477,133 +478,132 @@ article .meta a.comments_btn:hover {
             <h1>Plotting the World Oil Reserves</h1>
 			<time datetime="article.date.isoformat()" pubdate>Wed, 02 Jan 2019</time>			
 			<div>
-					<a href="http://localhost:8000/tag/oil.html" class="tag">Oil</a>
-					<a href="http://localhost:8000/tag/dataviz.html" class="tag">Dataviz</a>
-					<a href="http://localhost:8000/tag/web-scraping.html" class="tag">Web Scraping</a>
+					<a href="http://flothesof.github.io/tag/oil.html" class="tag">Oil</a>
+					<a href="http://flothesof.github.io/tag/dataviz.html" class="tag">Dataviz</a>
+					<a href="http://flothesof.github.io/tag/web-scraping.html" class="tag">Web Scraping</a>
 			</div>
         </header>
 
         <div class="article_content">
-            <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Have you ever seen this plot?</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://planetforlife.com/images/growinggap.jpg&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
+    <div class="prompt output_prompt">Out[1]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <img src="http://planetforlife.com/images/growinggap.jpg"/>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>What this plot shows are historical discoveries of regular conventional oil (aka "oil fields") and production (aka "taking oil out of the oil field"). People who try to understand the world often think about this problem when they consider how much our current way of life is based on oil.</p>
 <p>Ever since I first saw a version of this plot in a talk (<a href="https://www.youtube.com/watch?v=sjRkU8eMW_4">this one</a>), I've been wondering about this fascinating data. Since there is an oil field list page on Wikipedia, let's try to see if we can roughly replicate this curve.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Oil-fields-on-Wikipedia">Oil fields on Wikipedia<a class="anchor-link" href="#Oil-fields-on-Wikipedia">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The data for oil fields can be found here: <a href="https://en.wikipedia.org/wiki/List_of_oil_fields">https://en.wikipedia.org/wiki/List_of_oil_fields</a>. Let's download the data and parse it into a table. We can do this with a little bit of manual fiddling using <code>requests</code>, <code>beautifulsoup</code> and <code>pandas</code>.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_oil_fields&#39;</span><span class="p">)</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;wikitable&#39;</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
     .dataframe thead tr:only-child th {
@@ -696,56 +696,60 @@ article .meta a.comments_btn:hover {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Analysis">Analysis<a class="anchor-link" href="#Analysis">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we have this list of oil fields, we can do some elementary plot by country and year discovered.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="By-country">By country<a class="anchor-link" href="#By-country">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
 <span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;bokeh&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+<div id="b2d30e32-bfdf-42a3-8ba0-ad17581eaddb"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#b2d30e32-bfdf-42a3-8ba0-ad17581eaddb');
 
 (function(root) {
   function now() {
@@ -1280,14 +1284,13 @@ var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+
+<div class="output_html rendered_html output_subarea ">
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <style>div.hololayout {
@@ -1485,17 +1488,18 @@ roTBs2RqAAAAAElFTkSuQmCC'
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+
+<div id="3313e92c-8bb7-4253-8ee4-6561253e1a61"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#3313e92c-8bb7-4253-8ee4-6561253e1a61');
 function HoloViewsWidget() {
 }
 
@@ -2294,40 +2298,38 @@ if (window.Jupyter !== undefined) {
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 tools=[&#39;hover&#39;] xrotation=45] 
 hv.Bars(df.groupby(&#39;Location&#39;).agg(&#39;count&#39;)[&#39;Field&#39;])
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="e98214a5-ffc8-467b-bf73-d7e24989753b"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#e98214a5-ffc8-467b-bf73-d7e24989753b');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1005')) && !(document.getElementById('_anim_imgNone'))) {
@@ -2380,21 +2382,22 @@ if (!(document.getElementById('1005')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>However, as you can see in the above plot, some labels are not adequate and repeat the countries several times. Let's clean this up by replacing each country with its nearest neighbor from a list of world countries.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pycountry</span>
 <span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">SequenceMatcher</span>
 
@@ -2417,56 +2420,53 @@ if (!(document.getElementById('1005')) && !(document.getElementById('_anim_imgNo
         <span class="k">return</span> <span class="nb">max</span><span class="p">(((</span><span class="n">co</span><span class="p">,</span> <span class="n">similar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">co</span><span class="p">))</span> <span class="k">for</span> <span class="n">co</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="p">[</span><span class="n">match_country</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">Location</span><span class="p">]</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45] 
 hv.Bars(df.groupby(&#39;Location&#39;).agg(&#39;count&#39;)[&#39;Field&#39;].sort_values())
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="d2addae2-6bd2-4c11-bceb-dea4a279f0b9"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#d2addae2-6bd2-4c11-bceb-dea4a279f0b9');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1116')) && !(document.getElementById('_anim_imgNone'))) {
@@ -2519,71 +2519,74 @@ if (!(document.getElementById('1116')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The above plot nicely shows the key players in the oil market: Russia and the Gulf states.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="By-discovery-year">By discovery year<a class="anchor-link" href="#By-discovery-year">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We also need to clean up the data of discovery year. We will do so using a regular expression.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d</span><span class="si">{4}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45] 
 hv.Bars(df.groupby(&#39;Discovered&#39;).agg(&#39;count&#39;)[&#39;Field&#39;])
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="86189c26-9d80-45e1-98cb-17df8d7db3cb"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#86189c26-9d80-45e1-98cb-17df8d7db3cb');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1227')) && !(document.getElementById('_anim_imgNone'))) {
@@ -2636,74 +2639,72 @@ if (!(document.getElementById('1227')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Here the trend is not yet apparent. Let's regroup these by ten year bins.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Discovered</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2020</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45]
 hv.Bars((bin_edges, hist), kdims=&#39;Decade discovered&#39;, vdims=&#39;number of oil fields&#39;)
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="4e0b032a-81a0-4d9e-9f33-18ba3fe284b9"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#4e0b032a-81a0-4d9e-9f33-18ba3fe284b9');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1338')) && !(document.getElementById('_anim_imgNone'))) {
@@ -2756,84 +2757,91 @@ if (!(document.getElementById('1338')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>So it seems indeed that the amount of oil fields discovered has been on the decline for quite a long time.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Analysis-of-the-amount-of-oil">Analysis of the amount of oil<a class="anchor-link" href="#Analysis-of-the-amount-of-oil">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>However, what really matters is the amount of oil discovered. Can we also do this? To achieve that, we need to extract the amount of oil from our table.</p>
 <p>We first need to clean up the data a little bit.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
     <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Recoverable oil, past and future (billion barrels)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d+(?:\.\d+)?)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's plot the data in billion barrels, first per country, then per decade discovered.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="By-country">By country<a class="anchor-link" href="#By-country">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45] 
 hv.Bars(df[[&#39;Location&#39;, &#39;Recoverable oil&#39;]].groupby(&#39;Location&#39;).agg(&#39;sum&#39;).sort_values(by=&#39;Recoverable oil&#39;))
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="prompt output_prompt">Out[16]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="20f5055d-0126-4978-9fab-f7fd90345efc"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#20f5055d-0126-4978-9fab-f7fd90345efc');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1449')) && !(document.getElementById('_anim_imgNone'))) {
@@ -2886,61 +2894,60 @@ if (!(document.getElementById('1449')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="By-discovery-year">By discovery year<a class="anchor-link" href="#By-discovery-year">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">subdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Discovered&#39;</span><span class="p">,</span> <span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Discovered&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
                                <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2020</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Recoverable oil&#39;</span><span class="p">])</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Bars [width=600 height=500 tools=[&#39;hover&#39;] xrotation=45]
 hv.Bars((bin_edges, hist), kdims=&#39;Decade discovered&#39;, vdims=&#39;Billions of barrels&#39;)
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="prompt output_prompt">Out[18]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="62d61d1e-c154-4787-8534-0d7b972d9d42"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#62d61d1e-c154-4787-8534-0d7b972d9d42');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1560')) && !(document.getElementById('_anim_imgNone'))) {
@@ -2993,35 +3000,43 @@ if (!(document.getElementById('1560')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Again, we see a sharp drop in discoveries since at least three decades. This could very possibly mean that the age of big oil field discoveries is over.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Forecasting-using-the-Hubbert-curve">Forecasting using the Hubbert curve<a class="anchor-link" href="#Forecasting-using-the-Hubbert-curve">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, we would like to have an idea for how long the production can adapt to the worldwide oil demand. To do that, we can use the Hubbert model (as in the famous <a href="https://en.wikipedia.org/wiki/Hubbert_curve">Hubbert curve</a>) to fit the data we have gathered and give some predictions about world oil production.</p>
 <p>First, let's take a look at the Hubbert model itself.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-Hubbert-model">The Hubbert model<a class="anchor-link" href="#The-Hubbert-model">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The Hubbert model proposes a parametric form for the cumulative extracted oil as a function of time described by the following equation (primary reference for this is <a href="http://sepwww.stanford.edu/sep/jon/hubbert.pdf">here</a>):</p>
 $$
 Q(t) = \frac{Q_{\infty}}{1 + \exp(-\omega (t - \tau))}
@@ -3029,71 +3044,69 @@ $$<p>The parameter $Q_{\infty}$ gives the total quantity of oil you can extract 
 <p>Let's have a quick look at the cumulative production curve.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hubbert_cumprod</span><span class="p">(</span><span class="n">qinf</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Hubbert cumulative production function.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">qinf</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">omega</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">tau</span><span class="p">)))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="n">cumprod</span> <span class="o">=</span> <span class="n">hubbert_cumprod</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cumprod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">cumprod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;cumulative production&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="n">tau_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;tau&#39;</span><span class="p">)</span>
 
 <span class="n">cumprod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="054f5e89-1dd3-45d0-8ea6-499880357f4d"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#054f5e89-1dd3-45d0-8ea6-499880357f4d');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1670')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3146,76 +3159,74 @@ if (!(document.getElementById('1670')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The time derivative of the cumulative production is the <em>instantaneous</em> production, the production at a given moment in time. We can plot it alongside the previous graph.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hubbert_prod</span><span class="p">(</span><span class="n">qinf</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Hubbert instantaneous production function.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">qinf</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">omega</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">tau</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">omega</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">tau</span><span class="p">)))</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">prod</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
 <span class="n">prod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">prod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;instantaneous production&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">cumprod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span> <span class="o">+</span> <span class="n">prod_plot</span> <span class="o">*</span> <span class="n">tau_plot</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+    <div class="prompt output_prompt">Out[24]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="d56118d1-638e-4081-8a0e-3f4b8f3f5566"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#d56118d1-638e-4081-8a0e-3f4b8f3f5566');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2067')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3268,49 +3279,49 @@ if (!(document.getElementById('2067')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Fitting-the-model-to-our-data">Fitting the model to our data<a class="anchor-link" href="#Fitting-the-model-to-our-data">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Now of course, the question is: how do we use that model and our data that we have used in the above section together? I propose the following: we fit the time dynamics corresponding to the $\omega$ parameter using the average world data and then use this to do some forecasting.</p>
 <p>A simple strategy for this fit is to use the data on the peak production associated to the oil fields. Some of the fields give a starting data as well as a peak date. For instance the Ghawar Field in Saudi Arabia has the following data:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+    <div class="prompt output_prompt">Out[25]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>Field                                                         Ghawar Field
 Location                                                      Saudi Arabia
 Discovered                                                            1948
@@ -3326,145 +3337,142 @@ Name: 0, dtype: object</pre>
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>The field started production in 1951, peaked in 2005 (even though this is disputed) and has a total recoverable oil quantity of at least 88 billion barrels. This means we can fit the production data using the current production of 5 million barrels per day. Since our units is billion barrels for the reserve, we will convert this production value to billion barrels per year:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="mf">5e6</span> <span class="o">*</span> <span class="mi">365</span> <span class="o">*</span> <span class="mf">1e-9</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="prompt output_prompt">Out[26]:</div>
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<div class="output_text output_subarea output_execute_result">
 <pre>1.8250000000000002</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can then fit the $\omega$ value at time $t = \tau + n$ where $n$ is the number of years since the peak using this formula:</p>
 $$
 P(t=\tau + n) = \frac {\omega Q_{\infty}} {(\exp(\omega n /2 ) + \exp(-\omega n /2 ))^2}
 $$
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Here $n$ is approximately 15 years and $Q_{\infty}$ 88 billion barrels.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">curve_fit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="n">omega</span> <span class="o">*</span> <span class="mi">88</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
          <span class="n">xdata</span> <span class="o">=</span> <span class="p">[</span><span class="mf">15.</span><span class="p">],</span>
          <span class="n">ydata</span><span class="o">=</span> <span class="p">[</span><span class="mf">1.82</span><span class="p">],</span>
          <span class="n">p0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.6/site-packages/scipy/optimize/minpack.py:787: OptimizeWarning: Covariance of the parameters could not be estimated
   category=OptimizeWarning)
 </pre>
 </div>
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
-
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+
+<div class="output_text output_subarea output_execute_result">
 <pre>(array([0.1028937]), array([[inf]]))</pre>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's see if the data we get is the one we expect:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mi">2005</span>
 <span class="n">omega</span> <span class="o">=</span> <span class="mf">0.1028</span>
 <span class="n">Q</span> <span class="o">=</span> <span class="mi">88</span>
@@ -3473,72 +3481,68 @@ $$
 <span class="n">prod</span> <span class="o">=</span> <span class="n">hubbert_prod</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cumprod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">cumprod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;cumulative production&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
 <span class="n">tau_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;tau&#39;</span><span class="p">)</span>
 <span class="n">prod_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">prod</span><span class="p">),</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;instantaneous production&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_point</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Points</span><span class="p">((</span><span class="mi">2019</span><span class="p">,</span> <span class="mf">1.82</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data point&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [tools=[&#39;hover&#39;] width=600] Overlay [legend_position=&#39;top_left&#39;]
 prod_plot * tau_plot * data_point
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
+    <div class="prompt output_prompt">Out[32]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="38b3bcf2-1a7c-4279-89d9-d9f05139dabc"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#38b3bcf2-1a7c-4279-89d9-d9f05139dabc');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNone'))) {
@@ -3591,27 +3595,30 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Of course, this fit is not very good. But I can't think of a better way than just this simple point estimate.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can move on and do this fit on the other oil fields that have the complete data: recoverable oil, peak year and current production. A little more of data munging is needed:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peaked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d</span><span class="si">{4}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">])</span>
@@ -3621,24 +3628,21 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[33]:</div>
+    <div class="prompt output_prompt">Out[33]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
     .dataframe thead tr:only-child th {
@@ -3755,45 +3759,43 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's drop the fields that don't have enough data:</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fit_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Field&#39;</span><span class="p">,</span> <span class="s1">&#39;Location&#39;</span><span class="p">,</span> <span class="s1">&#39;Discovered&#39;</span><span class="p">,</span> <span class="s1">&#39;Recoverable oil&#39;</span><span class="p">,</span> <span class="s1">&#39;Peak&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;Production&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;Production&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;Production&#39;</span><span class="p">])</span>
 <span class="n">fit_data</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">fit_data</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
+    <div class="prompt output_prompt">Out[34]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
     .dataframe thead tr:only-child th {
@@ -3920,21 +3922,22 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's now loop over this table and fit the omega values.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="k">def</span> <span class="nf">fit_func</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
@@ -3956,23 +3959,20 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 <span class="n">fit_data</span><span class="p">[</span><span class="s1">&#39;model_production&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_production</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
 <pre>/Users/kappamaki/anaconda/lib/python3.6/site-packages/scipy/optimize/minpack.py:787: OptimizeWarning: Covariance of the parameters could not be estimated
   category=OptimizeWarning)
 </pre>
@@ -3980,36 +3980,32 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fit_data</span><span class="p">[[</span><span class="s1">&#39;Field&#39;</span><span class="p">,</span> <span class="s1">&#39;Production&#39;</span><span class="p">,</span> <span class="s1">&#39;model_production&#39;</span><span class="p">]]</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[36]:</div>
+    <div class="prompt output_prompt">Out[36]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
     .dataframe thead tr:only-child th {
@@ -4096,52 +4092,58 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>If we compare the model predictions as well as the real values, we can see that the point-fit is not really a good method (in the sense that it doesn't fit the data really well).</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>But at least, we now have some values for the $\omega$ parameter. So we can turn to forecasting oil reserves as a function of time, using the average omega value.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Forecasting-using-the-Hubbert-model">Forecasting using the Hubbert model<a class="anchor-link" href="#Forecasting-using-the-Hubbert-model">&#182;</a></h2>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Our final plot will be simple: using an average value for the omega parameter, we can plot the yearly oil production in billion of barrels as a function of time under the assumption that all oil fields follow the Hubbert model.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_omega</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">omega</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">subdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Field&#39;</span><span class="p">,</span> <span class="s1">&#39;Discovered&#39;</span><span class="p">,</span> <span class="s1">&#39;Peak&#39;</span><span class="p">,</span> <span class="s1">&#39;Recoverable oil&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">])</span>
 <span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;UntilPeak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">subdf</span><span class="p">[</span><span class="s1">&#39;Discovered&#39;</span><span class="p">])</span>
@@ -4149,38 +4151,34 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 <span class="n">subdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">),</span> <span class="s1">&#39;Peak&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subdf</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">)]</span><span class="o">.</span><span class="n">Discovered</span> <span class="o">+</span> <span class="n">subdf</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">subdf</span><span class="o">.</span><span class="n">Peak</span><span class="p">)]</span><span class="o">.</span><span class="n">UntilPeak</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">subdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
+    <div class="prompt output_prompt">Out[39]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <style>
     .dataframe thead tr:only-child th {
@@ -4255,15 +4253,14 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1880</span><span class="p">,</span> <span class="mi">2080</span><span class="p">)</span>
 <span class="n">total_production</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
 <span class="n">curves</span> <span class="o">=</span> <span class="p">[]</span>
@@ -4273,42 +4270,40 @@ if (!(document.getElementById('2312')) && !(document.getElementById('_anim_imgNo
     <span class="n">curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">field_production</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">series</span><span class="o">.</span><span class="n">Field</span><span class="p">,</span> <span class="n">kdims</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">vdims</span><span class="o">=</span><span class="s1">&#39;billion barrels&#39;</span><span class="p">))</span>
 </pre></div>
 
-     </div>
-</div>
+    </div>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [width=600 tools=[&#39;hover&#39;]]
 hv.Overlay(curves)
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[41]:</div>
+    <div class="prompt output_prompt">Out[41]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="d542e4c6-afb9-4afb-a03a-54c2eb6f1616"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#d542e4c6-afb9-4afb-a03a-54c2eb6f1616');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2618')) && !(document.getElementById('_anim_imgNone'))) {
@@ -4361,47 +4356,47 @@ if (!(document.getElementById('2618')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>And finally, we can show the total production over the years computed using this data as well as the cumulative production.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">opts</span> Curve [tools=[&#39;hover&#39;]]
 hv.Curve((t, total_production), kdims=&#39;year&#39;, vdims=&#39;billion barrels&#39;, label=&#39;yearly production&#39;).opts(width=300) + \
     hv.Curve((t, total_production.cumsum()), kdims=&#39;year&#39;, vdims=&#39;cumulated billion barrels&#39;, label=&#39;cumulative production&#39;).opts(width=300)
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[42]:</div>
+    <div class="prompt output_prompt">Out[42]:</div>
 
 
 
 
-<div id="a35b2080-ddf7-462b-9aab-90ba2ff1146e" class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript">
+
+<div id="0c891e8a-9b4f-4715-aa88-1fa12318df35"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = document.getElementById('a35b2080-ddf7-462b-9aab-90ba2ff1146e');
+var element = $('#0c891e8a-9b4f-4715-aa88-1fa12318df35');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNone'))) {
@@ -4454,34 +4449,41 @@ if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNo
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Are these curves realistic? Well, probably not. In particular, they don't look like the data that I cited at the beginning of this article. Does that mean that the model we used to describe this situation is wrong? Yes, very probably (or our fit procedure, of course)! However, it is still usefull in the sense that it gives a numerical estimate of the world oil production from first principles as well as its dynamics.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>I hope you had fun following along this data exploration. While the first parts were simply descriptive, we tried to apply some basic modeling to the publicly available data. I don't think the result is very good, but it nonetheless is an interesting approach to get to know some of basic data related to oil fields.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the IPython notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20190102_OilFieldsWikipedia.ipynb">20190102_OilFieldsWikipedia.ipynb</a>.</em></p>
 
 </div>
 </div>
-
+</div>
+ 
 
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
@@ -4518,24 +4520,39 @@ if (!(document.getElementById('5939')) && !(document.getElementById('_anim_imgNo
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://localhost:8000/tag/oil.html" class="tag">Oil</a>
-                    <a href="http://localhost:8000/tag/dataviz.html" class="tag">Dataviz</a>
-                    <a href="http://localhost:8000/tag/web-scraping.html" class="tag">Web Scraping</a>
+                    <a href="http://flothesof.github.io/tag/oil.html" class="tag">Oil</a>
+                    <a href="http://flothesof.github.io/tag/dataviz.html" class="tag">Dataviz</a>
+                    <a href="http://flothesof.github.io/tag/web-scraping.html" class="tag">Web Scraping</a>
             </div>
             <hr>
             <div class="share">
                 <ul>
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/plotting-world-oil-reserves.html&amp;t=Plotting the World Oil Reserves" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
-                    <li><a href="https://twitter.com/share?url=http://localhost:8000/plotting-world-oil-reserves.html&amp;text=Plotting the World Oil Reserves&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
-                    <li><a href="https://getpocket.com/save?url=http://localhost:8000/plotting-world-oil-reserves.html&amp;title=Plotting the World Oil Reserves" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
-                    <li><a href="https://news.ycombinator.com/submitlink?u=http://localhost:8000/plotting-world-oil-reserves.html&amp;t=Plotting the World Oil Reserves" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
-                    <li><a href="https://www.reddit.com/submit?url=http://localhost:8000/plotting-world-oil-reserves.html&amp;title=Plotting the World Oil Reserves" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://flothesof.github.io/plotting-world-oil-reserves.html&amp;t=Plotting the World Oil Reserves" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
+                    <li><a href="https://twitter.com/share?url=http://flothesof.github.io/plotting-world-oil-reserves.html&amp;text=Plotting the World Oil Reserves&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
+                    <li><a href="https://getpocket.com/save?url=http://flothesof.github.io/plotting-world-oil-reserves.html&amp;title=Plotting the World Oil Reserves" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
+                    <li><a href="https://news.ycombinator.com/submitlink?u=http://flothesof.github.io/plotting-world-oil-reserves.html&amp;t=Plotting the World Oil Reserves" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
+                    <li><a href="https://www.reddit.com/submit?url=http://flothesof.github.io/plotting-world-oil-reserves.html&amp;title=Plotting the World Oil Reserves" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
                 </ul>
             </div>
             <hr>
         </div>
     </article>
 
+  <section>
+        <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'froliansblog';
+      var disqus_identifier = '/plotting-world-oil-reserves.html';
+      var disqus_url = 'http://flothesof.github.io/plotting-world-oil-reserves.html';
+      var disqus_title = 'Plotting the World Oil Reserves';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </section>
 
 </div>
 
@@ -4597,5 +4614,23 @@ pre code {
       </p>
     </footer>
 -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68753870-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68753870-1');
+    ga('send', 'pageview');
+</script>
     </body>
 </html>

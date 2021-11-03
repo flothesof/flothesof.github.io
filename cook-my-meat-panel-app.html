@@ -465,6 +465,7 @@ article .meta a.comments_btn:hover {
                         </a></li>
                             <li><a href="pages/about.html" title="About">About</a></li>
                             <li><a href="/archives.html" title="Archive">Archive</a></li>
+                            <li><a class="nodec icon-rss" href="rss.xml" title="flothesof.github.io RSS feed" rel="me"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -477,62 +478,67 @@ article .meta a.comments_btn:hover {
             <h1>Building a Panel app for our Cook my Meat clone</h1>
 			<time datetime="article.date.isoformat()" pubdate>Fri, 17 Jan 2020</time>			
 			<div>
-					<a href="http://localhost:8000/tag/food.html" class="tag">Food</a>
-					<a href="http://localhost:8000/tag/numerical-physics.html" class="tag">Numerical Physics</a>
-					<a href="http://localhost:8000/tag/physics.html" class="tag">Physics</a>
-					<a href="http://localhost:8000/tag/dataviz.html" class="tag">Dataviz</a>
+					<a href="http://flothesof.github.io/tag/food.html" class="tag">Food</a>
+					<a href="http://flothesof.github.io/tag/numerical-physics.html" class="tag">Numerical Physics</a>
+					<a href="http://flothesof.github.io/tag/physics.html" class="tag">Physics</a>
+					<a href="http://flothesof.github.io/tag/dataviz.html" class="tag">Dataviz</a>
 			</div>
         </header>
 
         <div class="article_content">
-            <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+            <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>In <a href="http://flothesof.github.io/heat-equation-cook-my-meat.html">our previous post</a>, we designed a thermal simulation to mimic some of the dynamics of cooking steak or roasts.</p>
 <p>In this post, we focus on transforming the code we wrote into a smallish dashboard type of functions using <code>panel</code>, a recent library designed for data science and Jupyter Notebooks.</p>
 <p>A nice introduction to <code>panel</code> can be found at this PyData Berlin 2019 talk by its lead develop Philipp Rudiger: <a href="https://www.youtube.com/watch?v=Ohr29FJjBi0">https://www.youtube.com/watch?v=Ohr29FJjBi0</a>.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Making-a-panel-app">Making a panel app<a class="anchor-link" href="#Making-a-panel-app">&#182;</a></h1>
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's first import our previously written functions.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">heat1D</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div id="e3057649-eaa4-46b1-8358-3f9a5e964fa9" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+<div id="038caa4a-bc3a-48d1-b26b-aacda84994ee"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('e3057649-eaa4-46b1-8358-3f9a5e964fa9');
+var element = $('#038caa4a-bc3a-48d1-b26b-aacda84994ee');
 
 (function(root) {
   function now() {
@@ -1765,14 +1771,13 @@ var element = document.getElementById('e3057649-eaa4-46b1-8358-3f9a5e964fa9');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+
+<div class="output_html rendered_html output_subarea ">
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <style>div.hololayout {
@@ -1888,17 +1893,18 @@ div.bk-hbox div.bk-data-table {
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div id="e3057649-eaa4-46b1-8358-3f9a5e964fa9" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+
+<div id="7f323ba9-8f17-4464-9a50-6268456de970"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('e3057649-eaa4-46b1-8358-3f9a5e964fa9');
+var element = $('#7f323ba9-8f17-4464-9a50-6268456de970');
 function HoloViewsWidget() {
 }
 
@@ -2734,21 +2740,22 @@ if (window.Jupyter !== undefined) {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>And now, let's arrange everything together using some widgets and layouts. As you will see below, <code>panel</code> provides a simple layouting system consisting of Rows and Columns as well as a decorator (@) system for specifying reactive plot dependencies.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
 <span class="n">pn</span><span class="o">.</span><span class="n">extension</span><span class="p">()</span>
@@ -2820,27 +2827,26 @@ if (window.Jupyter !== undefined) {
                 <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">show_plot</span><span class="p">,</span> <span class="n">show_table</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">))</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
 
-<div id="e3057649-eaa4-46b1-8358-3f9a5e964fa9" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+<div id="f9c3984d-0b53-459b-be8e-241e1a80b19d"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('e3057649-eaa4-46b1-8358-3f9a5e964fa9');
+var element = $('#f9c3984d-0b53-459b-be8e-241e1a80b19d');
 
 (function(root) {
   function now() {
@@ -3986,17 +3992,18 @@ var element = document.getElementById('e3057649-eaa4-46b1-8358-3f9a5e964fa9');
 
 </div>
 
-<div class="jp-OutputArea-child">
+<div class="output_area">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
+    <div class="prompt"></div>
 
 
 
-<div id="e3057649-eaa4-46b1-8358-3f9a5e964fa9" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+
+
+<div id="8faec4cd-c5f3-4266-a425-117a599f41ed"></div>
+<div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = document.getElementById('e3057649-eaa4-46b1-8358-3f9a5e964fa9');
+var element = $('#8faec4cd-c5f3-4266-a425-117a599f41ed');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
    if ((window.HoloViews === undefined) || (window.HoloViews instanceof HTMLElement)) {
@@ -4208,42 +4215,40 @@ if (window.Jupyter !== undefined) {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we just embed the result, meaning the app is pre-rendered, allowing some interaction without a server.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
 </pre></div>
 
-     </div>
+    </div>
 </div>
 </div>
-</div>
 
-<div class="jp-Cell-outputWrapper">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="output_area">
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="prompt"></div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div class="output_html rendered_html output_subarea ">
 <div id='1001'>
 
 
@@ -4283,23 +4288,26 @@ if (window.Jupyter !== undefined) {
 </div>
 
 </div>
-
 </div>
 
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>That's it! We've put together a simple app that allows users to explore results in an interactive fashion. If we wanted, we could host the computation to allow for more interactivity, for instance using <a href="https://mybinder.org/">MyBinder</a>.</p>
 
 </div>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><em>This post was entirely written using the Jupyter Notebook. Its content is BSD-licensed. You can see a static view or download this notebook with the help of nbviewer at <a href="http://nbviewer.ipython.org/urls/raw.github.com/flothesof/posts/master/20200116_CookMyMeatPanelApp.ipynb">20200116_CookMyMeatPanelApp.ipynb</a>.</em></p>
 
 </div>
 </div>
-
+</div>
+ 
 
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
@@ -4336,25 +4344,40 @@ if (window.Jupyter !== undefined) {
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://localhost:8000/tag/food.html" class="tag">Food</a>
-                    <a href="http://localhost:8000/tag/numerical-physics.html" class="tag">Numerical Physics</a>
-                    <a href="http://localhost:8000/tag/physics.html" class="tag">Physics</a>
-                    <a href="http://localhost:8000/tag/dataviz.html" class="tag">Dataviz</a>
+                    <a href="http://flothesof.github.io/tag/food.html" class="tag">Food</a>
+                    <a href="http://flothesof.github.io/tag/numerical-physics.html" class="tag">Numerical Physics</a>
+                    <a href="http://flothesof.github.io/tag/physics.html" class="tag">Physics</a>
+                    <a href="http://flothesof.github.io/tag/dataviz.html" class="tag">Dataviz</a>
             </div>
             <hr>
             <div class="share">
                 <ul>
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/cook-my-meat-panel-app.html&amp;t=Building a Panel app for our Cook my Meat clone" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
-                    <li><a href="https://twitter.com/share?url=http://localhost:8000/cook-my-meat-panel-app.html&amp;text=Building a Panel app for our Cook my Meat clone&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
-                    <li><a href="https://getpocket.com/save?url=http://localhost:8000/cook-my-meat-panel-app.html&amp;title=Building a Panel app for our Cook my Meat clone" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
-                    <li><a href="https://news.ycombinator.com/submitlink?u=http://localhost:8000/cook-my-meat-panel-app.html&amp;t=Building a Panel app for our Cook my Meat clone" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
-                    <li><a href="https://www.reddit.com/submit?url=http://localhost:8000/cook-my-meat-panel-app.html&amp;title=Building a Panel app for our Cook my Meat clone" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://flothesof.github.io/cook-my-meat-panel-app.html&amp;t=Building a Panel app for our Cook my Meat clone" title="Share on Facebook" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Share on Facebook" src="/theme/social_flat_rounded_rects_svg/Facebook.svg"></a><a></a></li>
+                    <li><a href="https://twitter.com/share?url=http://flothesof.github.io/cook-my-meat-panel-app.html&amp;text=Building a Panel app for our Cook my Meat clone&amp;via=frolianlb" title="Tweet" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Tweet" src="/theme/social_flat_rounded_rects_svg/Twitter.svg"></a><a></a></li>
+                    <li><a href="https://getpocket.com/save?url=http://flothesof.github.io/cook-my-meat-panel-app.html&amp;title=Building a Panel app for our Cook my Meat clone" title="Add to Pocket" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Add to Pocket" src="/theme/social_flat_rounded_rects_svg/Pocket.svg"></a><a></a></li>
+                    <li><a href="https://news.ycombinator.com/submitlink?u=http://flothesof.github.io/cook-my-meat-panel-app.html&amp;t=Building a Panel app for our Cook my Meat clone" title="Submit to Hacker News" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Hacker News" src="/theme/social_flat_rounded_rects_svg/HackerNews.svg"></a><a></a></li>
+                    <li><a href="https://www.reddit.com/submit?url=http://flothesof.github.io/cook-my-meat-panel-app.html&amp;title=Building a Panel app for our Cook my Meat clone" title="Submit to Reddit" target="_blank" rel="noopener noreferrer"><img loading="lazy" alt="Submit to Reddit" src="/theme/social_flat_rounded_rects_svg/Reddit.svg"></a><a></a></li>
                 </ul>
             </div>
             <hr>
         </div>
     </article>
 
+  <section>
+        <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'froliansblog';
+      var disqus_identifier = '/cook-my-meat-panel-app.html';
+      var disqus_url = 'http://flothesof.github.io/cook-my-meat-panel-app.html';
+      var disqus_title = 'Building a Panel app for our Cook my Meat clone';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </section>
 
 </div>
 
@@ -4416,5 +4439,23 @@ pre code {
       </p>
     </footer>
 -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68753870-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68753870-1');
+    ga('send', 'pageview');
+</script>
     </body>
 </html>
