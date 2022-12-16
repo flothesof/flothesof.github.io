@@ -475,9 +475,11 @@ article .meta a.comments_btn:hover {
     <article>
         <header>
             <h1>GMSH tutorial: how to draw a mesh over an image?</h1>
-			<time datetime="article.date.isoformat()" pubdate>Wed, 07 Dec 2022</time>			
+			<time datetime="article.date.isoformat()" pubdate>Fri, 16 Dec 2022</time>			
 			<div>
-					<a href="http://flothesof.github.io/tag/software.html" class="tag">Software</a>
+					<a href="http://flothesof.github.io/tag/geometry.html" class="tag">Geometry</a>
+					<a href="http://flothesof.github.io/tag/physics.html" class="tag">Physics</a>
+					<a href="http://flothesof.github.io/tag/image-processing.html" class="tag">Image Processing</a>
 			</div>
         </header>
 
@@ -488,8 +490,9 @@ It is both a command line tool and a graphical user interface.</p>
 <h1>Drawing a mesh on top of an image</h1>
 <p>An interesting feature of the graphical user interface is that it can display images as a background to the interactive drawing.
 According to the <a href="https://gmsh.info/doc/texinfo/gmsh.html#General-options">documentation</a>, it is possible to include images in JPEG, PNG or PDF format. </p>
-<p>Searching on the internet, I have found a starting point for this tutorial in this post from 2014: http://onelab.info/pipermail/gmsh/2014/009289.html</p>
-<p>However, since it is not very explicit, I’ll try to explain a few of the options with associated screenshots.</p>
+<p>Searching on the internet, I have found a starting point for this tutorial in this post from 2014: <a href="http://onelab.info/pipermail/gmsh/2014/009289.html">http://onelab.info/pipermail/gmsh/2014/009289.html</a></p>
+<p>However, I find the post hard to follow and had to make up my own understanding.
+The document this, I’ll try to explain a few of the options GMSH offers with associated screenshots in this tutorial.</p>
 <h2>Writing a mesh.geo file with a background image (version 1)</h2>
 <p>If you have an image you want to draw on top, start by creating new <code>mesh.geo</code> file with the following lines.</p>
 <div class="highlight"><pre><span></span><code><span class="n">General</span><span class="p">.</span><span class="n">BackgroundImageFileName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;background_image.jpg&quot;</span><span class="p">;</span><span class="w"></span>
@@ -507,14 +510,67 @@ According to the <a href="https://gmsh.info/doc/texinfo/gmsh.html#General-option
 <p>Once in the main screen, you should now see your image. </p>
 <p><img alt="v1" src="/other/gmsh-tutorial/version1.JPG"></p>
 <h2>Writing a mesh.geo file with a background image (version 2)</h2>
-<p>As you may have noticed in the previous image, the </p>
+<p>As you may have noticed in the previous image, the background image is distorted by 
+as it has been automatically adjusted to the width of the GMSH application window. 
+It is possible to modify this behaviour by adjusting the script.</p>
+<div class="highlight"><pre><span></span><code><span class="n">General</span><span class="p">.</span><span class="n">BackgroundImageFileName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;background_image.jpg&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">General</span><span class="p">.</span><span class="n">BackgroundImage3D</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 2D bg image (if set to 1, will draw in 3D model coordinates)</span>
+<span class="n">General</span><span class="p">.</span><span class="n">BackgroundImagePositionX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e5</span><span class="p">;</span><span class="w"> </span><span class="c1">// centered</span>
+<span class="n">General</span><span class="p">.</span><span class="n">BackgroundImagePositionY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e5</span><span class="p">;</span><span class="w"> </span><span class="c1">// centered</span>
+<span class="n">General</span><span class="p">.</span><span class="n">BackgroundImageWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// don’t stretch</span>
+<span class="n">General</span><span class="p">.</span><span class="n">BackgroundImageHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// don’t stretch</span>
+</code></pre></div>
+
+<p><img alt="v2" src="/other/gmsh-tutorial/version2.JPG"></p>
+<h2>Drawing a rectangular boundary before adding points</h2>
+<p>One thing I have noticed is that GMSH automatically resizes the zooming of the image once you add points.
+The workaround I found is to draw a rectangular window which can be easily adapted 
+the background image. To do this, we can add the following code to <code>mesh.geo</code> 
+(depending on the size of your image, you will have to change the <code>image_width</code> and height variables):</p>
+<div class="highlight"><pre><span></span><code><span class="n">image_width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">768</span><span class="p">;</span><span class="w"></span>
+<span class="n">image_height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// border points</span>
+<span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="o">-</span><span class="n">image_width</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">image_height</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">};</span><span class="w"></span>
+<span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">image_width</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">image_height</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">};</span><span class="w"></span>
+<span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">image_width</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="n">image_height</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">};</span><span class="w"></span>
+<span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="o">-</span><span class="n">image_width</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="n">image_height</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">// outer contour</span>
+<span class="n">Line</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+<span class="n">Line</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">};</span><span class="w"></span>
+<span class="n">Line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">Line</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">};</span><span class="w"></span>
+</code></pre></div>
+
+<p>Once we have done this, we get the following:</p>
+<p><img alt="v3" src="/other/gmsh-tutorial/version3.JPG"></p>
+<p>We can now draw the usual primitives (points, lines, etc.) on top and create 
+a mesh of our background image. An important options is to adjust the snapping 
+to a value that makes sense for your image, since the points snap to an 
+imaginary grid that uses the resolution shown in the window below.</p>
+<p><img alt="snap" src="/other/gmsh-tutorial/point_options.JPG"></p>
+<h1>Final model and finite element computation</h1>
+<p>If everything goes well, you should be able to master the meshing process and obtain
+something like this:</p>
+<p><img alt="mesh" src="/other/gmsh-tutorial/mesh.JPG"></p>
+<p>This mesh can then be used with a finite element toolkit like <a href="https://sfepy.org">Sfepy</a> (but 
+there are many others like <a href="https://fenicsproject.org/">Fenics</a>, <a href="https://freefem.org/">Freefem</a> or <a href="https://github.com/gridap/Gridap.jl">Gridap</a>) 
+to solve a static elasticity problem.</p>
+<p><img alt="result" src="/other/gmsh-tutorial/output/result.png"></p>
+<h1>Downloads</h1>
+<p>The <code>mesh.geo</code> file can be downloaded here: <a href="/other/gmsh-tutorial/mesh.geo">mesh.geo</a>.</p>
+<p>The <code>mesh.vtk</code> file can be downloaded here: <a href="/other/gmsh-tutorial/mesh.vtk">mesh.vtk</a>.</p>
+<p>The sfepy script can be downloaded here: <a href="/other/gmsh-tutorial/notre_dame.py">notre_dame.py</a></p>
         </div>
 
         <div class="meta">
             <hr>
                 <p>This article has been tagged with the following terms:</p>
             <div>
-                    <a href="http://flothesof.github.io/tag/software.html" class="tag">Software</a>
+                    <a href="http://flothesof.github.io/tag/geometry.html" class="tag">Geometry</a>
+                    <a href="http://flothesof.github.io/tag/physics.html" class="tag">Physics</a>
+                    <a href="http://flothesof.github.io/tag/image-processing.html" class="tag">Image Processing</a>
             </div>
             <hr>
             <div class="share">
