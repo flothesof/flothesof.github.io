@@ -7819,7 +7819,8 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
+    const parser = new DOMParser();
 
     mermaid.initialize({
       maxTextSize: 100000,
@@ -7835,39 +7836,52 @@ a.anchor-link {
     let _nextMermaidId = 0;
 
     function makeMermaidImage(svg) {
-      const img = document.createElement('img');
-      const maxWidth = svg.match(/max-width: (\d+)/);
-      if (maxWidth && maxWidth[1]) {
-        const width = parseInt(maxWidth[1]);
-        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
-          img.width = width;
-        }
+      const img = document.createElement("img");
+      const doc = parser.parseFromString(svg, "image/svg+xml");
+      const svgEl = doc.querySelector("svg");
+      const { maxWidth } = svgEl?.style || {};
+      const firstTitle = doc.querySelector("title");
+      const firstDesc = doc.querySelector("desc");
+
+      img.setAttribute("src", `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      if (maxWidth) {
+        img.width = parseInt(maxWidth);
       }
-      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
-      return img;
+      if (firstTitle) {
+        img.setAttribute("alt", firstTitle.textContent);
+      }
+      if (firstDesc) {
+        const caption = document.createElement("figcaption");
+        caption.className = "sr-only";
+        caption.textContent = firstDesc.textContent;
+        return [img, caption];
+      }
+      return [img];
     }
 
     async function makeMermaidError(text) {
-      let errorMessage = '';
+      let errorMessage = "";
       try {
         await mermaid.parse(text);
       } catch (err) {
         errorMessage = `${err}`;
       }
 
-      const result = document.createElement('details');
-      const summary = document.createElement('summary');
-      const pre = document.createElement('pre');
-      const code = document.createElement('code');
+      const result = document.createElement("details");
+      result.className = 'jp-RenderedMermaid-Details';
+      const summary = document.createElement("summary");
+      summary.className = 'jp-RenderedMermaid-Summary';
+      const pre = document.createElement("pre");
+      const code = document.createElement("code");
       code.innerText = text;
       pre.appendChild(code);
       summary.appendChild(pre);
       result.appendChild(summary);
 
-      const warning = document.createElement('pre');
+      const warning = document.createElement("pre");
       warning.innerText = errorMessage;
       result.appendChild(warning);
-      return result;
+      return [result];
     }
 
     async function renderOneMarmaid(src) {
@@ -7877,30 +7891,41 @@ a.anchor-link {
       const el = document.createElement("div");
       el.style.visibility = "hidden";
       document.body.appendChild(el);
-      let result = null;
+      let results = null;
+      let output = null;
       try {
         const { svg } = await mermaid.render(id, raw, el);
-        result = makeMermaidImage(svg);
+        results = makeMermaidImage(svg);
+        output = document.createElement("figure");
+        results.map(output.appendChild, output);
       } catch (err) {
         parent.classList.add("jp-mod-warning");
-        result = await makeMermaidError(raw);
+        results = await makeMermaidError(raw);
+        output = results[0];
       } finally {
         el.remove();
       }
       parent.classList.add("jp-RenderedMermaid");
-      parent.appendChild(result);
+      parent.appendChild(output);
     }
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
 </script>
 <style>
-  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+  .jp-Mermaid:not(.jp-RenderedMermaid) {
     display: none;
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+
+  .jp-RenderedMermaid {
+    overflow: auto;
+    display: flex;
+  }
+
+  .jp-RenderedMermaid.jp-mod-warning {
     width: auto;
-    padding: 10px;
+    padding: 0.5em;
+    margin-top: 0.5em;
     border: var(--jp-border-width) solid var(--jp-warn-color2);
     border-radius: var(--jp-border-radius);
     color: var(--jp-ui-font-color1);
@@ -7908,17 +7933,32 @@ a.anchor-link {
     white-space: pre-wrap;
     word-wrap: break-word;
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+
+  .jp-RenderedMermaid figure {
+    margin: 0;
+    overflow: auto;
+    max-width: 100%;
+  }
+
+  .jp-RenderedMermaid img {
+    max-width: 100%;
+  }
+
+  .jp-RenderedMermaid-Details > pre {
     margin-top: 1em;
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+
+  .jp-RenderedMermaid-Summary {
     color: var(--jp-warn-color2);
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
-    display: inline-block;
-  }
-  .jp-RenderedMermaid > .mermaid {
+
+  .jp-RenderedMermaid:not(.jp-mod-warning) pre {
     display: none;
+  }
+
+  .jp-RenderedMermaid-Summary > pre {
+    display: inline-block;
+    white-space: normal;
   }
 </style>
 <!-- End of mermaid configuration --></head>
@@ -8131,9 +8171,9 @@ $$</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="aab7d4e9-7e56-47b9-ad23-528e806de0e1" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="61dca660-6b60-4cda-bc7c-1072cdd9f0fb" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('aab7d4e9-7e56-47b9-ad23-528e806de0e1');
+var element = document.getElementById('61dca660-6b60-4cda-bc7c-1072cdd9f0fb');
 
 (function(root) {
   function now() {
@@ -8853,9 +8893,9 @@ roTBs2RqAAAAAElFTkSuQmCC" style="height:25px; border-radius:12px; display: inlin
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="7689e6e5-ff7f-4b7e-b64f-6d6e2e517b04" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="e1f85833-3b3c-42b7-b553-0e61a7737f2e" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('7689e6e5-ff7f-4b7e-b64f-6d6e2e517b04');
+var element = document.getElementById('e1f85833-3b3c-42b7-b553-0e61a7737f2e');
 function HoloViewsWidget() {
 }
 
@@ -9673,9 +9713,9 @@ if (window.Jupyter !== undefined) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="481d39d2-b928-4e87-b101-50087273e5e5" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="32fa6532-e4eb-4b21-9164-66274f9b3455" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('481d39d2-b928-4e87-b101-50087273e5e5');
+var element = document.getElementById('32fa6532-e4eb-4b21-9164-66274f9b3455');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1004')) && !(document.getElementById('_anim_imgNone'))) {
@@ -9760,9 +9800,9 @@ if (!(document.getElementById('1004')) && !(document.getElementById('_anim_imgNo
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="3b872815-4149-4aac-856e-9e7cec6fdc17" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="4b3ce3a7-079b-4f15-8a52-177aa4cc219e" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('3b872815-4149-4aac-856e-9e7cec6fdc17');
+var element = document.getElementById('4b3ce3a7-079b-4f15-8a52-177aa4cc219e');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1114')) && !(document.getElementById('_anim_imgNone'))) {
@@ -9853,9 +9893,9 @@ td_hmap
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="1948f046-c9c5-47e8-afaa-a6bd8b814b85" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="335b1b4f-e881-4690-9882-b2705dc4f142" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('1948f046-c9c5-47e8-afaa-a6bd8b814b85');
+var element = document.getElementById('335b1b4f-e881-4690-9882-b2705dc4f142');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1224')) && !(document.getElementById('_anim_imgdb5cce439df648c5aa16306c183fb3b9'))) {
@@ -10091,9 +10131,9 @@ $$</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="0a65db59-75bb-4e70-abef-65e18fbd5fd8" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="9724575c-b12c-4880-8ac4-14d15c6ed669" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('0a65db59-75bb-4e70-abef-65e18fbd5fd8');
+var element = document.getElementById('9724575c-b12c-4880-8ac4-14d15c6ed669');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1547')) && !(document.getElementById('_anim_imgNone'))) {
@@ -10173,9 +10213,9 @@ fd_hmap
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="17b651aa-3fae-4dd1-b97c-27987359031d" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="0f581ac2-e20c-40d1-afbb-688539169245" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('17b651aa-3fae-4dd1-b97c-27987359031d');
+var element = document.getElementById('0f581ac2-e20c-40d1-afbb-688539169245');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1657')) && !(document.getElementById('_anim_imga0631d449ccb48869e51314bf7898c00'))) {
@@ -10325,9 +10365,9 @@ fd_hmap * td_hmap
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="71c4d108-2395-4d6a-8321-d64209029df7" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="6ff87319-5e29-49f1-89de-442380bcf226" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('71c4d108-2395-4d6a-8321-d64209029df7');
+var element = document.getElementById('6ff87319-5e29-49f1-89de-442380bcf226');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('1980')) && !(document.getElementById('_anim_img601cad669b0b495c94f13d2adfa380fa'))) {
@@ -10496,9 +10536,9 @@ fd_hmap2 * td_hmap
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="cef84afe-c163-4393-b62c-a3e003239e66" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="0b4e2eee-5aab-4f85-a730-b707acae355e" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('cef84afe-c163-4393-b62c-a3e003239e66');
+var element = document.getElementById('0b4e2eee-5aab-4f85-a730-b707acae355e');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2414')) && !(document.getElementById('_anim_img43e6f333c0d8485daaa3084ca487852f'))) {
@@ -10690,9 +10730,9 @@ if (!(document.getElementById('2414')) && !(document.getElementById('_anim_imgNo
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="24434a4d-1a3d-4331-9fd9-b2fcdce11a01" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="c83b431f-e820-44b5-b814-a836adfaf237" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('24434a4d-1a3d-4331-9fd9-b2fcdce11a01');
+var element = document.getElementById('c83b431f-e820-44b5-b814-a836adfaf237');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('2848')) && !(document.getElementById('_anim_imgNone'))) {
@@ -10893,9 +10933,9 @@ td_hmap
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="9d88bb25-57c3-4b61-a0c4-bc56d00109be" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="application/javascript" id="67f230f0-4e05-4e9a-978d-617a64c443cd" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('9d88bb25-57c3-4b61-a0c4-bc56d00109be');
+var element = document.getElementById('67f230f0-4e05-4e9a-978d-617a64c443cd');
 
 // Ugly hack - see HoloViews #2574 for more information
 if (!(document.getElementById('3069')) && !(document.getElementById('_anim_imgf448c1d9b1894f50a7ee668d7935c926'))) {

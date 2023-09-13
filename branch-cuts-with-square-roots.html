@@ -7815,7 +7815,8 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
+    const parser = new DOMParser();
 
     mermaid.initialize({
       maxTextSize: 100000,
@@ -7831,39 +7832,52 @@ a.anchor-link {
     let _nextMermaidId = 0;
 
     function makeMermaidImage(svg) {
-      const img = document.createElement('img');
-      const maxWidth = svg.match(/max-width: (\d+)/);
-      if (maxWidth && maxWidth[1]) {
-        const width = parseInt(maxWidth[1]);
-        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
-          img.width = width;
-        }
+      const img = document.createElement("img");
+      const doc = parser.parseFromString(svg, "image/svg+xml");
+      const svgEl = doc.querySelector("svg");
+      const { maxWidth } = svgEl?.style || {};
+      const firstTitle = doc.querySelector("title");
+      const firstDesc = doc.querySelector("desc");
+
+      img.setAttribute("src", `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      if (maxWidth) {
+        img.width = parseInt(maxWidth);
       }
-      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
-      return img;
+      if (firstTitle) {
+        img.setAttribute("alt", firstTitle.textContent);
+      }
+      if (firstDesc) {
+        const caption = document.createElement("figcaption");
+        caption.className = "sr-only";
+        caption.textContent = firstDesc.textContent;
+        return [img, caption];
+      }
+      return [img];
     }
 
     async function makeMermaidError(text) {
-      let errorMessage = '';
+      let errorMessage = "";
       try {
         await mermaid.parse(text);
       } catch (err) {
         errorMessage = `${err}`;
       }
 
-      const result = document.createElement('details');
-      const summary = document.createElement('summary');
-      const pre = document.createElement('pre');
-      const code = document.createElement('code');
+      const result = document.createElement("details");
+      result.className = 'jp-RenderedMermaid-Details';
+      const summary = document.createElement("summary");
+      summary.className = 'jp-RenderedMermaid-Summary';
+      const pre = document.createElement("pre");
+      const code = document.createElement("code");
       code.innerText = text;
       pre.appendChild(code);
       summary.appendChild(pre);
       result.appendChild(summary);
 
-      const warning = document.createElement('pre');
+      const warning = document.createElement("pre");
       warning.innerText = errorMessage;
       result.appendChild(warning);
-      return result;
+      return [result];
     }
 
     async function renderOneMarmaid(src) {
@@ -7873,30 +7887,41 @@ a.anchor-link {
       const el = document.createElement("div");
       el.style.visibility = "hidden";
       document.body.appendChild(el);
-      let result = null;
+      let results = null;
+      let output = null;
       try {
         const { svg } = await mermaid.render(id, raw, el);
-        result = makeMermaidImage(svg);
+        results = makeMermaidImage(svg);
+        output = document.createElement("figure");
+        results.map(output.appendChild, output);
       } catch (err) {
         parent.classList.add("jp-mod-warning");
-        result = await makeMermaidError(raw);
+        results = await makeMermaidError(raw);
+        output = results[0];
       } finally {
         el.remove();
       }
       parent.classList.add("jp-RenderedMermaid");
-      parent.appendChild(result);
+      parent.appendChild(output);
     }
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
 </script>
 <style>
-  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+  .jp-Mermaid:not(.jp-RenderedMermaid) {
     display: none;
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+
+  .jp-RenderedMermaid {
+    overflow: auto;
+    display: flex;
+  }
+
+  .jp-RenderedMermaid.jp-mod-warning {
     width: auto;
-    padding: 10px;
+    padding: 0.5em;
+    margin-top: 0.5em;
     border: var(--jp-border-width) solid var(--jp-warn-color2);
     border-radius: var(--jp-border-radius);
     color: var(--jp-ui-font-color1);
@@ -7904,17 +7929,32 @@ a.anchor-link {
     white-space: pre-wrap;
     word-wrap: break-word;
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+
+  .jp-RenderedMermaid figure {
+    margin: 0;
+    overflow: auto;
+    max-width: 100%;
+  }
+
+  .jp-RenderedMermaid img {
+    max-width: 100%;
+  }
+
+  .jp-RenderedMermaid-Details > pre {
     margin-top: 1em;
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+
+  .jp-RenderedMermaid-Summary {
     color: var(--jp-warn-color2);
   }
-  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
-    display: inline-block;
-  }
-  .jp-RenderedMermaid > .mermaid {
+
+  .jp-RenderedMermaid:not(.jp-mod-warning) pre {
     display: none;
+  }
+
+  .jp-RenderedMermaid-Summary > pre {
+    display: inline-block;
+    white-space: normal;
   }
 </style>
 <!-- End of mermaid configuration --></head>
@@ -8196,9 +8236,9 @@ $$</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="3b9e300d-8cfc-4f60-9d16-470004cd82c1" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="bcc60257-5b37-436b-a4d3-94eb10d699f1" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('3b9e300d-8cfc-4f60-9d16-470004cd82c1');
+var element = document.getElementById('bcc60257-5b37-436b-a4d3-94eb10d699f1');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -8985,9 +9025,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="019ea28c-0ec1-4486-852a-c1eaaab62ef0" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="72139a1b-dfea-4f2b-873a-1a28ec43585f" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('019ea28c-0ec1-4486-852a-c1eaaab62ef0');
+var element = document.getElementById('72139a1b-dfea-4f2b-873a-1a28ec43585f');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -9851,9 +9891,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="10ba2bb7-b1f2-41e5-abf3-5703d75bfff6" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="0d4cca40-4022-42e6-9942-f9f5dbd88cf3" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('10ba2bb7-b1f2-41e5-abf3-5703d75bfff6');
+var element = document.getElementById('0d4cca40-4022-42e6-9942-f9f5dbd88cf3');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -10774,9 +10814,9 @@ $$</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="4c60c73b-d28a-40fc-9f51-c84a8cc5fa08" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="98a61542-0c4a-47e0-bb22-09917855a744" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('4c60c73b-d28a-40fc-9f51-c84a8cc5fa08');
+var element = document.getElementById('98a61542-0c4a-47e0-bb22-09917855a744');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -11563,9 +11603,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="a91c5de5-b7f0-4205-86f9-664d72c9b90e" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="e0048a7d-eb48-4741-be99-be9b6340c20a" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('a91c5de5-b7f0-4205-86f9-664d72c9b90e');
+var element = document.getElementById('e0048a7d-eb48-4741-be99-be9b6340c20a');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -12388,9 +12428,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="1377ce0a-40a4-4be1-ac7e-6c3c7003af4a" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="c41217f6-6960-427b-b04c-b16e126c8c79" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('1377ce0a-40a4-4be1-ac7e-6c3c7003af4a');
+var element = document.getElementById('c41217f6-6960-427b-b04c-b16e126c8c79');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -13177,9 +13217,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="70c631af-6ed5-4df9-9f30-84d624bee053" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="53d83514-ca02-4202-8002-ec36eb5d9728" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('70c631af-6ed5-4df9-9f30-84d624bee053');
+var element = document.getElementById('53d83514-ca02-4202-8002-ec36eb5d9728');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -13966,9 +14006,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="13e83651-c888-4fae-9f02-84e7a2f3969b" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="d2f393fa-6e2c-4426-9528-dbfaac75da82" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('13e83651-c888-4fae-9f02-84e7a2f3969b');
+var element = document.getElementById('d2f393fa-6e2c-4426-9528-dbfaac75da82');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -14791,9 +14831,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="d7dea343-029b-4329-85e7-53224df5b988" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="bc18f059-ed89-4641-bb8d-6defc28ba13b" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('d7dea343-029b-4329-85e7-53224df5b988');
+var element = document.getElementById('bc18f059-ed89-4641-bb8d-6defc28ba13b');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -15580,9 +15620,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="e1510f22-af2e-4e52-be70-85144ae864e2" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="622a61d1-6ef6-4db5-89de-aa79ec3f6ac0" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('e1510f22-af2e-4e52-be70-85144ae864e2');
+var element = document.getElementById('622a61d1-6ef6-4db5-89de-aa79ec3f6ac0');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -16369,9 +16409,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="9209f7d5-3b58-440a-8faa-fb71b01021c3" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="ff5596be-2eca-420c-ba25-21b34bf24b69" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('9209f7d5-3b58-440a-8faa-fb71b01021c3');
+var element = document.getElementById('ff5596be-2eca-420c-ba25-21b34bf24b69');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -17194,9 +17234,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="88bda69b-9847-478f-8e6f-c6a52f4293fc" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="f1c323e4-8588-4c73-9296-e72b745bcd1c" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('88bda69b-9847-478f-8e6f-c6a52f4293fc');
+var element = document.getElementById('f1c323e4-8588-4c73-9296-e72b745bcd1c');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -17983,9 +18023,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="152fde15-5fa0-473c-a6b6-3dff69fde557" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="972b854b-0f24-4414-8172-46f6e25a0106" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('152fde15-5fa0-473c-a6b6-3dff69fde557');
+var element = document.getElementById('972b854b-0f24-4414-8172-46f6e25a0106');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -18772,9 +18812,9 @@ if (IPython.notebook.kernel != null) {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="5f66a9a8-5505-4258-8b4d-9a54998ba687" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="9a6a29a0-9466-4330-806f-04dcb2fb6e07" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('5f66a9a8-5505-4258-8b4d-9a54998ba687');
+var element = document.getElementById('9a6a29a0-9466-4330-806f-04dcb2fb6e07');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
