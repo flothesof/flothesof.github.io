@@ -8745,7 +8745,11 @@ AAAAAAAAAAAtaWxzdAAAACWpdG9vAAAAHWRhdGEAAAABAAAAAExhdmY1OS4yNy4xMDA=
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Let’s try to make a vizualization of the distances to the sample mean and population mean to get a better insight.</p>
+<p>Let’s try to make a vizualization of the distances to the sample mean and population mean to get a better insight. To do this, we simulate a large number of samples by drawingthem  from the original population. We then compute two things:</p>
+<ul>
+<li>the average distance of the sample points to the sample mean $\bar{x}$</li>
+<li>the average distance of the sample points to the true population mean $\mu$</li>
+</ul>
 </div>
 </div>
 </div>
@@ -8908,7 +8912,7 @@ AAAAAAAAAAAtaWxzdAAAACWpdG9vAAAAHWRhdGEAAAABAAAAAExhdmY1OS4yNy4xMDA=
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Since we have all these samples, we can also do a running mean (i.e. averaging the values as a function of the number of simulated samples). This will highlight whether the average distances converge onto something.</p>
+<p>Since we have all these samples, we can also do a running mean (i.e. averaging the values as a function of the number of simulated samples). This will highlight whether the average distances converge to something.</p>
 </div>
 </div>
 </div>
@@ -8954,7 +8958,7 @@ AAAAAAAAAAAtaWxzdAAAACWpdG9vAAAAHWRhdGEAAAABAAAAAExhdmY1OS4yNy4xMDA=
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Clearly, this shows that indeed, the average distance to the sample mean is smaller than the average distance to the population mean: this is exactly the reason why the</p>
+<p>Clearly, this shows that indeed, the average distance to the sample mean is smaller than the average distance to the population mean: this is exactly the reason why we need to adapt the variance estimation for small sample sizes.</p>
 </div>
 </div>
 </div>
@@ -9082,7 +9086,9 @@ I’m imagining how the correction could have been much more complicated, e.g. s
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>$S^2_n = \frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^2$ is a biased estimator of population variance based on the sample <strong>because it uses $\bar{x}$ which introduces an error due to sampling itself (and not the unknown population mean $\mu$)</strong>. Use $S^2_{n-1} = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2$ instead, if your goal is to have a better estimate of the population variance.</p>
+<p>$S^2_n = \frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^2$ is a biased estimator of the population variance when computed on a sample.
+This is <strong>because it uses $\bar{x}$, computed using the sample points, which introduces a bias</strong> (seen here as average distances to mean systematically smaller than to $\mu$).</p>
+<p>Use $S^2_{n-1} = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2$ if your goal is to have a better estimate of the population variance based on the sample data.</p>
 </div>
 </div>
 </div>
